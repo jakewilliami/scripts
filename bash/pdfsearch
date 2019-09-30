@@ -1,0 +1,11 @@
+#! /bin/bash
+
+#ensure you run `brew install poppler` and `brew install pdfgrep`
+
+pdfgrep -ril $1
+
+: '
+for i in *.pdf;
+    pdftotext "$i" - | grep -i "$1";
+done
+'
