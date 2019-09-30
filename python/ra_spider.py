@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import urllib.request
 import urllib.error
 import webbrowser
