@@ -1,0 +1,5 @@
+#! /bin/bash
+#Script for emptying downloads!
+
+cd ~/Downloads
+rm -rf *

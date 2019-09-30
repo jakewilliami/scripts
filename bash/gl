@@ -1,0 +1,16 @@
+#! /bin/bash
+#Script for git log!  REQUIRES `PERL`.
+
+#Define local variables
+LOGNUMBER=$([ -z "$1" ] && echo "10") #LOGNUMBER only works at the end of the code (otherwise it is echoing in the wrong place, leaving an empty -).  This is telling us to echo "10" if the argument is empty
+
+git log --color --no-merges --pretty=format:"%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" --abbrev-commit $2 -$1$LOGNUMBER | perl -pe ' if (/<([^>]*)>/) 
+{
+if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
+    { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
+else 
+    { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
+}'
+
+#$2 used for the -p option
+#can use %C(red reverse)
