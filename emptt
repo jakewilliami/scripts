@@ -1,7 +1,19 @@
 #! /bin/bash
-#Script for emptying trash!
+#Script for emptying *!
 
-cd ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/
-rm -rf *
-cd ~/.Trash/
-rm -rf *
+if [ $1 = t ]
+then
+    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*
+elif [ $1 = d ]
+    rm -rf ~/Downloads/*
+else
+    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
+
+: '
+array=( $IMAGES_DIR $BACKUP_DIR )
+for i in "${array[@]}"
+do
+    if [ "$(ls -A "$i")" ]; then     
+        rm "${i:?}"/*                 
+    fi
+done'
