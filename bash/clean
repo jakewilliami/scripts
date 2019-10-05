@@ -8,6 +8,7 @@ elif [ $1 = d ]
     rm -rf ~/Downloads/*
 else
     rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
+fi
 
 : '
 array=( $IMAGES_DIR $BACKUP_DIR )
