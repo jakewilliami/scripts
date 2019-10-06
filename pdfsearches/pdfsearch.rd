@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+
 
 # `sudo gem install pdf-reader`
 require 'pdf-reader'

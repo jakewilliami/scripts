@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+
 
 #forces us to write good code and show us comprehensive errors
 use strict;
