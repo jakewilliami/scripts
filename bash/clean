@@ -1,21 +1,18 @@
 #! /bin/bash
 #Script for emptying *!
 
-if [ "$1" = "t" ]
+if [ "$1" = "-t" ]
 then
     rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*
-elif [ "$1" = "d" ]
+elif [ "$1" = "-d" ]
 then
     rm -rf ~/Downloads/*
+elif [ "$1" = "-h" ]
+then
+    echo -e "\033[1;33mUse the -t option to empty trash, or -d option to empty downloads.  Omitting options altogether will do both.\033[0;38m"
+elif [ "$1" != "-t" ] || [ "$1" != "-d" ] || [ "$1" != "-h" ]
+then
+    echo -e "\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
 else
     rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
 fi
-
-: '
-array=( $IMAGES_DIR $BACKUP_DIR )
-for i in "${array[@]}"
-do
-    if [ "$(ls -A "$i")" ]; then     
-        rm "${i:?}"/*                 
-    fi
-done'
