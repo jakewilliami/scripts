@@ -10,6 +10,8 @@ Once the scripts have been written, you will need to add the script location to 
 
 You only need to do the above for bash scripts (which, for ease of commandifying them, do not have a file extension).  To run julia scripts, type `julia <name_of_script>` in the directory of the script.  Similarly, for python, run `python3 <name_of_script>`; for perl, `perl <name_of_script>`, for ruby, `ruby <name_of_script>`.  You get the idea.
 
+Finally, if a script has a `cd` command in it, to execute the script AND go to that directory specified in the script, you will need to type `. <name_of_script>`.
+
 Happy scripting!
 
 ---
