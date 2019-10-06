@@ -3,7 +3,7 @@
 #Define local variables
 REPLACING_TEX="\033[01;31mReplacing outdated .tex file(s) in git repository.\033[0;38m"
 COMPLETED_TEX="\033[1;38;5;2m.tex transfer complete.\033[0;38m"
-REPLACING_JSON="\033[01;31mReplacing outdated .json file(s) in git repository.\033[0;38m"
+REPLACING_JSON="\033[01;33mReplacing outdated .json file(s) in git repository.\033[0;38m"
 COMPLETED_JSON="\033[1;38;5;2m.json transfer complete.\033[0;38m"
 ALL_GOOD_TEX="\033[1;38;5;2mYour git repository's templates directory's .tex files are up to date with your local templates directory.\033[0;38m"
 ALL_GOOD_JSON="\033[1;38;5;2mYour git repository's templates directory's .json files are up to date with your local templates directory.\033[0;38m"
