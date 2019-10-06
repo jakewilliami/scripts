@@ -1,11 +1,32 @@
 #! /bin/bash
+res1=$(date +%s.%N)
+
+#begin search
+start=`date +%s`
 
 #ensure you run `brew install poppler` and `brew install pdfgrep`
-
 pdfgrep -ril $1
 
+#OLD CODE THAT DIDN'T WORK
 : '
 for i in *.pdf;
     pdftotext "$i" - | grep -i "$1";
 done
 '
+
+#end of search
+end=`date +%s`
+
+#calculates runtime
+runtime=$((end-start))
+
+#prints runtime
+if [ "$runtime" = "0" ]
+then
+    echo -e "\033[1;38;5;2mSearch took less than a second to complete.\033[0;38m"
+elif [ "$runtime" = "1" ]
+then
+    echo -e "\033[1;38;5;2mSearch took $runtime second to complete.\033[0;38m"
+else
+    echo -e "\033[1;38;5;2mSearch took $runtime seconds to complete.\033[0;38m"
+fi

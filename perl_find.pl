@@ -1,6 +1,46 @@
 #!/usr/bin/perl
 
-print "Hello World!\n";
+#forces us to write good code
+use strict;
+use warnings;
+use diagnostics;
+
+#adds function to print line followed by a new line
+use feature 'say';
+
+#for demonstration of switch (give and win) statement inside of perl
+use feature "switch";
+
+#for defining to use a specific version of Perl
+use v5.30;
+
+#three main datatypes in perl: scalars, arrays, and hashes.  
+
+#To declare a variable:
+my $var_name = "Teagoslavia!"
+
+print $var_name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 =begin comment
 perl -MFile::Find -le '
