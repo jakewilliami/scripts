@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import PyPDF2
+'''import PyPDF2
 
 pdfFileObj = open('/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf', 'rb')
 pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
@@ -20,14 +20,14 @@ pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 # if you get the UnicodeEncodeError: 'charmap' codec can't encode characters, add .encode("utf-8") to your text
 text = pageObj.extractText().encode('utf-8')
         
-print("The word {} was found {} times".format(search_word, search_word_count))
+print("The word {} was found {} times".format(search_word, search_word_count))'''
 
 
 ####################################################################
 
 #Early version of code for pdfsearch
 
-'''
+
 import PyPDF2
 import re
 import os
@@ -39,29 +39,29 @@ def pdfHasTerm(pdf, term):
     # get number of pages
     NumPages = object.getNumPages()
 
-    # extract text and do the search
-    for i in range(0, NumPages):
-        PageObj = object.getPage(i)
-        Text = PageObj.extractText() 
-        #print(Text)
-        matches = re.search(term, Text)
-        if matches:
-            print("this is page " + str(i)) 
-            print (matches)
-            return True
-    
-    return False
+#    # extract text and do the search
+#    for i in range(0, NumPages):
+#        PageObj = object.getPage(i)
+#        Text = PageObj.extractText() 
+#        #print(Text)
+#        matches = re.search(term, Text)
+#        if matches:
+#            print("this is page " + str(i)) 
+#            print (matches)
+#            return True
+#    
+#    return False
 
 root = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/'
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
-            if pdfHasTerm(os.path.join(root, file), 'allport'):
+            if pdfHasTerm(os.path.join(root, file), 'Allport'):
                 print (file)
-               ''' 
+               
 
 ###########################################################################
-
+            
 #Had to run (after entering the python3 environment) to get nltk (downloader was broken): 
 
 #import nltk
