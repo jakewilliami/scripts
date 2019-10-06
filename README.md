@@ -18,8 +18,8 @@ Happy scripting!
 
 (That sub-heading would be an awesome band name).  For reference, I have:
 
-green = `echo -e "\033[1;38;5;2m <  ENTER_TEXT_HERE > \033[0;38m"`
+bold green = `echo -e "\033[1;38;5;2m <  ENTER_TEXT_HERE > \033[0;38m"`
 
 bold yellow = `echo -e "\033[1;33m <  ENTER_TEXT_HERE > \033[0;38m"`
 
-red = `echo -e "\033[01;31m <  ENTER_TEXT_HERE > \033[0;38m"`
+bold red = `echo -e "\033[01;31m <  ENTER_TEXT_HERE > \033[0;38m"`
