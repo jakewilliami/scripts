@@ -35,6 +35,7 @@ import os
 def pdfHasTerm(pdf, term):
     # open the pdf file
     object = PyPDF2.PdfFileReader(pdf)
+    return True
 
     # get number of pages
     NumPages = object.getNumPages()
@@ -56,8 +57,8 @@ root = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PS
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
-            if pdfHasTerm(os.path.join(root, file), 'allport'):
-                print (file)
+            if pdfHasTerm(os.path.join(root, file), 'Allport'):
+                print(root, file)
                
 
 ###########################################################################
