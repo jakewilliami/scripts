@@ -56,7 +56,7 @@ root = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PS
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
-            if pdfHasTerm(os.path.join(root, file), 'Allport'):
+            if pdfHasTerm(os.path.join(root, file), 'allport'):
                 print (file)
                
 

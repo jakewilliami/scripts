@@ -2,3 +2,4 @@
 
 cd ~/bin/scripts/
 ls -AG1 $1
+git pull
