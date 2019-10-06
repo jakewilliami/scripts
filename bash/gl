@@ -12,5 +12,10 @@ else
     { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
 }'
 
+if [ "$2" != "-p" ]
+then
+    echo -e "\033[1;33mNot a valid option.  Do you mean -p?\033[0;38m"
+fig
+
 #$2 used for the -p option
 #can use %C(red reverse)
