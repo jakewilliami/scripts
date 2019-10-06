@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
 #forces us to write good code and show us comprehensive errors
-#use strict;
-#use warnings;
+use strict;
+use warnings;
 #use diagnostics;
 
 #adds function to print line followed by a new line
@@ -18,21 +18,18 @@ use v5.30;
 use PDF::Core;
 use File::Extract::PDF;
 use CAM::PDF;
+
+#cannot install
+#use CGI::Application::Search;
+
+my $filename = "/Users/jakeireland/Desktop/CHEM203 CompChem Assignment 2019.pdf";
  
-$pdf=PDF::Core->new ;
-$pdf=PDF->new(filename);
- 
-$res= $pdf->GetObject($ref);
- 
-$name = UnQuoteName($pdfname);                                                          
-$string = UnQuoteString($pdfstring);                                                    
- 
-$pdfname = QuoteName($name);                                                    
-$pdfhexstring = QuoteHexString($string);
-$pdfstring = QuoteString($string);
- 
-$obj = PDFGetPrimitive (filehandle, \$offset);
-$line = PDFGetLine (filehandle, \$offset);
+#my $pdf = CAM::PDF->new($filename);
+# 
+#my $contentTree = $pdf->getPageContentTree(4);
+#$contentTree->validate() || die 'Syntax error';
+#print $contentTree->render('CAM::PDF::Renderer::Text');
+#$pdf->setPageContent(5, $contentTree->toString());
 
 
 
