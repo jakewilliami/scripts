@@ -5,7 +5,9 @@
 start=$(python3 -c 'import time; print(time.time())')
 
 #begin search
-pdfgrep -ril $1
+pdf_search=$(pdfgrep -ril $1)
+
+echo -e "\033[1;38m${pdf_search}\033[0;38m"
 
 #end of search
 
@@ -25,4 +27,4 @@ pdf_count=$(pdfgrep -ril $1 | wc -l)
 
 echo -e "\033[1;33m$runtime seconds\033[0;38m"
 
-echo -e "\033[1;38;5;2mThe word \"$1\" was found in "${pdf_count}" PDFs"
+echo -e "\033[1;38;5;2mThe word \"$1\" was found in "${pdf_count}" PDFs\033[0;38m"
