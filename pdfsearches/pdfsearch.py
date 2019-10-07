@@ -55,4 +55,4 @@ pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 # if you get the UnicodeEncodeError: 'charmap' codec can't encode characters, add .encode("utf-8") to your text
 text = pageObj.extractText().encode('utf-8')
         
-print(bcolours.BGREEN + "The word {} was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
+print(bcolours.BGREEN + "The word \"{}\" was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
