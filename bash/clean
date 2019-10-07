@@ -1,5 +1,5 @@
 #! /bin/bash
-#Script for emptying *!
+#Script for emptying * directories!
 
 if [ "$1" = "-t" ]
 then
