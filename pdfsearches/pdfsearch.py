@@ -34,7 +34,7 @@ def pdfHasTerm(pdf, term):
             return True
     return False
 
-root = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/'
+root = './'
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
