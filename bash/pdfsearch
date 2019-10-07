@@ -21,4 +21,8 @@ end=$(python3 -c 'import time; print(time.time())')
 runtime=$(echo "$end - $start" | bc)
 #runtime_rounded=$(python3 -c 'from os import environ; environ[$runtime]')
 #print(round("${runtime}", 2))')
+pdf_count=$(pdfgrep -ril $1 | wc -l)
+
 echo -e "\033[1;33m$runtime seconds\033[0;38m"
+
+echo -e "\033[1;38;5;2mThe word \"$1\" was found in "${pdf_count}" PDFs"
