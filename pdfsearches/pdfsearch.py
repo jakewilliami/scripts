@@ -4,6 +4,12 @@ import PyPDF2
 import re
 import os
 
+class bcolours:
+    BGREEN = '\033[1;38;5;2m'
+    BYELLOW = '\033[1;33m'
+    BRED = '\033[01;31m'
+    NORM = '\033[0;38m'
+
 search_word = "allport"
 search_word_count = 0
 pdf_count = 0
@@ -30,7 +36,7 @@ for root, dirs, files in os.walk(root):
         if file.endswith('.pdf'):
             if pdfHasTerm(os.path.join(root, file), 'Allport'):
                 pdfFileObj = open(os.path.join(root, file), 'rb')
-                print(root, file)
+                print(bcolours.BYELLOW + root, file + bcolours.NORM)
                 
 pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 
@@ -49,4 +55,4 @@ pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 # if you get the UnicodeEncodeError: 'charmap' codec can't encode characters, add .encode("utf-8") to your text
 text = pageObj.extractText().encode('utf-8')
         
-print("The word {} was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count))
+print(bcolours.BGREEN + "The word {} was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
