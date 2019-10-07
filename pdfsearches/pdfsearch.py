@@ -3,11 +3,15 @@
 import PyPDF2
 import re
 import os
+import time
+
+start_time = time.time()
 
 class bcolours:
     BGREEN = '\033[1;38;5;2m'
     BYELLOW = '\033[1;33m'
-    BRED = '\033[01;31m'
+    BRED = '\033[1;31m'
+    BWHITE = '\033[1;38m'
     NORM = '\033[0;38m'
 
 search_word = "allport"
@@ -36,7 +40,7 @@ for root, dirs, files in os.walk(root):
         if file.endswith('.pdf'):
             if pdfHasTerm(os.path.join(root, file), 'Allport'):
                 pdfFileObj = open(os.path.join(root, file), 'rb')
-                print(bcolours.BYELLOW + root, file + bcolours.NORM)
+                print(bcolours.BWHITE + root, file + bcolours.NORM)
                 
 pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 
@@ -56,3 +60,5 @@ pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 text = pageObj.extractText().encode('utf-8')
         
 print(bcolours.BGREEN + "The word \"{}\" was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
+
+print(bcolours.BYELLOW + "%s seconds" % round(time.time() - start_time, 2) + bcolours.NORM)
