@@ -8,7 +8,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Please enter a string to search for.')
 parser.add_argument('search_string', help="Your desired search term name.")
-args = parser.parse_args()
+args = parser.parse_args() 
 
 root = './'
 
