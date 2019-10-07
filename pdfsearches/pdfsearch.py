@@ -26,6 +26,7 @@ search_word_count = 0
 pdf_count = 0
 
 def pdfHasTerm(pdf, term):
+    local_word_count = 0
     object = PyPDF2.PdfFileReader(pdf, strict=False)
 
     # get number of pages
@@ -37,32 +38,20 @@ def pdfHasTerm(pdf, term):
         Text = PageObj.extractText() 
         matches = re.search('(?i)' + term, Text)
         if matches:
-            return True
-    return False
+            #print(matches)
+            local_word_count += 1 
+    return local_word_count
 
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
-            if pdfHasTerm(os.path.join(root, file), search_word):
+            results = pdfHasTerm(os.path.join(root, file), search_word)
+            if results > 0:
+                search_word_count += results
                 pdfFileObj = open(os.path.join(root, file), 'rb')
-                print(bcolours.BWHITE + root, file + bcolours.NORM)
+                print(bcolours.BWHITE + os.path.join(root, file) + bcolours.NORM)
+                pdf_count += 1
 
 print(bcolours.BYELLOW + "%s seconds" % (time.time() - start_time) + bcolours.NORM)
-
-pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
-
-for pageNum in range(1, pdfReader.numPages):
-    pageObj = pdfReader.getPage(pageNum)
-    text = pageObj.extractText().encode('utf-8')
-    search_text = text.lower().split()
-    for word in search_text:
-        if search_word in word.decode("utf-8"):
-            search_word_count += 1
-            pdf_count += 1
-
-pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
-
-# if you get the UnicodeEncodeError: 'charmap' codec can't encode characters, add .encode("utf-8") to your text
-text = pageObj.extractText().encode('utf-8')
 
 print(bcolours.BGREEN + "The word \"{}\" was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
