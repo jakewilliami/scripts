@@ -41,7 +41,9 @@ for root, dirs, files in os.walk(root):
             if pdfHasTerm(os.path.join(root, file), 'Allport'):
                 pdfFileObj = open(os.path.join(root, file), 'rb')
                 print(bcolours.BWHITE + root, file + bcolours.NORM)
-                
+
+print(bcolours.BYELLOW + "%s seconds" % (time.time() - start_time) + bcolours.NORM)
+
 pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 
 for pageNum in range(1, pdfReader.numPages):
@@ -58,7 +60,5 @@ pdfReader = PyPDF2.PdfFileReader(pdfFileObj, strict=False)
 
 # if you get the UnicodeEncodeError: 'charmap' codec can't encode characters, add .encode("utf-8") to your text
 text = pageObj.extractText().encode('utf-8')
-        
-print(bcolours.BGREEN + "The word \"{}\" was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
 
-print(bcolours.BYELLOW + "%s seconds" % round(time.time() - start_time, 2) + bcolours.NORM)
+print(bcolours.BGREEN + "The word \"{}\" was found {} times in {} pdfs".format(search_word, search_word_count, pdf_count) + bcolours.NORM)
