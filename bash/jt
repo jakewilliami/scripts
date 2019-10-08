@@ -1,3 +1,3 @@
 #! /bin/bash
 
-open /usr/local/bin/julia
+sudo open /usr/local/bin/julia
