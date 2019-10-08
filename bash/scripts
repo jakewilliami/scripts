@@ -1,11 +1,12 @@
 #! /bin/bash
 
-#it gave me a `bad interpreter` error after refactoring the repo, so I ran `sed -i '' $'s/\r$//'` and it worked again...
-
 cd ~/bin/scripts/ #when use -F don't need -p  #use -R to list subdirs
-shopt -s extglob
-#LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31'
+#shopt -s extglob
 #find . -ls -name 'README.md' -prune #| ls -GF * 2> /dev/null
 #ls -GF * 2> /dev/null !(README.md)
-ls -GF !(README.md) #* 2> /dev/null
-#git pull
+#ls | grep -v "README.md" #!(README.md) #* 2> /dev/null
+#| awk -v black=$(tput setaf 0) -v red=$(tput setaf 1) -v blue=$(tput setaf 4) '{$2=red $2; $3= blue $3; $9=black $9} 1'
+
+ls -G
+
+#I have added `export CLICOLOR=YES; export LSCOLORS=Exfxcxdxbxegedabagacad` to my .bashrc and .bash_profile
