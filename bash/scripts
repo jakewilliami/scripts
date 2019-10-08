@@ -10,3 +10,4 @@ cd ~/bin/scripts/ #when use -F don't need -p  #use -R to list subdirs
 ls -G
 
 #I have added `export CLICOLOR=YES; export LSCOLORS=Exfxcxdxbxegedabagacad` to my .bashrc and .bash_profile
+
