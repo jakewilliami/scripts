@@ -1,7 +1,10 @@
 #! /bin/bash
 #Script for emptying * directories! 
 
-if [ "$1" = "-t" ]
+if [ "$1" = "" ]
+then
+    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
+elif [ "$1" = "-t" ]
 then
     rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*
 elif [ "$1" = "-d" ]
@@ -13,6 +16,4 @@ then
 elif [ "$1" != "-t" ] || [ "$1" != "-d" ] || [ "$1" != "-h" ]
 then
     echo -e "\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
-else
-    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
 fi
