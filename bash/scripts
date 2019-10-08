@@ -1,5 +1,7 @@
 #! /bin/bash
 
+#it gave me a `bad interpreter` error after refactoring the repo, so I ran `sed -i '' $'s/\r$//'` and it worked again...
+
 cd ~/bin/scripts/ #when use -F don't need -p  #use -R to list subdirs
 shopt -s extglob
 #LS_COLORS='di=1:fi=0:ln=31:pi=5:so=5:bd=5:cd=5:or=31'
@@ -7,31 +9,3 @@ shopt -s extglob
 #ls -GF * 2> /dev/null !(README.md)
 ls -GF !(README.md) #* 2> /dev/null
 #git pull
-
-#LSCOLORS
-#
-#                            a     black
-#                           b     red
-#                           c     green
-#                           d     brown
-#                           e     blue
-#                           f     magenta
-#                           g     cyan
-#                           h     light grey
-#                           A     bold black, usually shows up as dark grey
-#                           B     bold red
-#                           C     bold green
-#                           D     bold brown, usually shows up as yellow
-#                           E     bold blue
-#                           F     bold magenta
-#                           G     bold cyan
-#                           H     bold light grey; looks like bright white
-#                           x     default foreground or background
-
-#LS_COLWIDTHS    If this variable is set, it is considered to be a colon-
-#                     delimited list of minimum column widths.  Unreasonable and
-#                     insufficient widths are ignored (thus zero signifies a
-#                     dynamically sized column).  Not all columns have changeable
-#                     widths.  The fields are, in order: inode, block count, num-
-#                     ber of links, user name, group name, flags, file size, file
-#                     name.
