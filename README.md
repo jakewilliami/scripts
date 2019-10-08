@@ -27,3 +27,7 @@ bold yellow = `echo -e "\033[1;33m <  ENTER_TEXT_HERE > \033[0;38m"`
 bold red = `echo -e "\033[01;31m <  ENTER_TEXT_HERE > \033[0;38m"`
 
 A side note on colour: I use the terminal theme [Arthur](https://github.com/lysyi3m/macos-terminal-themes).  For information of `ls` colour output, see comments in `./scripts`.
+
+### In Case of Moving Files Around
+
+See commit `ef3086a148b7c3f129213e7b438b70d8ad53379a` for an explanation.
