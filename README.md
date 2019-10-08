@@ -30,4 +30,4 @@ A side note on colour: I use the terminal theme [Arthur](https://github.com/lysy
 
 ### In Case of Moving Files Around
 
-See commit `ef3086a148b7c3f129213e7b438b70d8ad53379a` for an explanation.
+See commit message `ef3086a148b7c3f129213e7b438b70d8ad53379a` for an explanation.  (Note that I had to push after doing this using `git push -f origin master`.)
