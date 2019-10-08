@@ -30,4 +30,7 @@ A side note on colour: I use the terminal theme [Arthur](https://github.com/lysy
 
 ### In Case of Moving Files Around
 
-See commit message `ef3086a148b7c3f129213e7b438b70d8ad53379a` for an explanation.  (Note that I had to push after doing this using `git push -f origin master`.)
+See commit message `ef3086a148b7c3f129213e7b438b70d8ad53379a` for the original notes on this process.  The process of moving files *while retaining their commit history* is as follows:
+1. `git filter-branch --tree-filter 'if [ -f <file_to_be_moved> ]; then mkdir <new_dir> && mv <file_to_be_moved> ./<new_dir>/<file_to_be_moved>; fi'`.  Note that this will fail if the `new_dir` already exists.
+2. If you are doing this more than once, after each move, you will have to run `git update-ref -d refs/original/refs/heads/master`.
+3. Once you are finished moving all of the files you need to move, push by using `git push -f origin master`.
