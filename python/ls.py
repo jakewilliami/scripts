@@ -56,9 +56,10 @@ def list_files(start_path):
         root_dir = args.dir
         sub_dirs = [join(root_dir, dir) for dir in listdir(root_dir) if isdir(join(root_dir, dir))]
         for subdir in sub_dirs:
-            sub_sub_stuff = [join(subdir, dir) for dir in listdir(subdir)]
+            sub_sub_stuff = [join(subdir, dir) for dir in listdir(subdir) if subdir == subdir]
             for subsubstuff in sub_sub_stuff:
-                print(BColours.BBLUE + '{}{}'.format(sub_indent, subsubstuff) + BColours.NORM)
+                if subsubstuff.find(subdir):
+                    print(BColours.BBLUE + '{}{}'.format(sub_indent, subsubstuff) + BColours.NORM)
 
 
 list_files(args.dir)
