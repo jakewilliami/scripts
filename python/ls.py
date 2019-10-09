@@ -48,9 +48,9 @@ def list_files(start_path):
         elif os.path.basename(root).startswith('.'):
             if not os.path.basename(root) == '.':
                 continue
-        elif os.path.isdir(os.path.basename(root)):
+        elif isdir(os.path.basename(root)):
             print(BColours.BBLUE + '{}{}/'.format(indent, os.path.basename(root)) + BColours.NORM)
-        elif os.path.isfile(os.path.basename(root)):
+        elif isfile(os.path.basename(root)):
             print(BColours.BRED + '{}{}/'.format(indent, os.path.basename(root)) + BColours.NORM)
         sub_indent = ' ' * 8 * (level + 1)
         root_dir = args.dir
