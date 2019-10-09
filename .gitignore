@@ -1,4 +1,3 @@
 .DS_Store
 rust/rusty_ls/target/
-rust/rusty_ls/src/
 rust/Cargo.*
