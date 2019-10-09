@@ -19,12 +19,11 @@ Happy scripting!
 ### Chromatic Echos
 
 (That sub-heading would be an awesome band name).  For reference, I have:
-
-bold green = `echo -e "\033[1;38;5;2m <  ENTER_TEXT_HERE > \033[0;38m"`
-
-bold yellow = `echo -e "\033[1;33m <  ENTER_TEXT_HERE > \033[0;38m"`
-
-bold red = `echo -e "\033[01;31m <  ENTER_TEXT_HERE > \033[0;38m"`
+* bold green = `echo -e "\033[1;38;5;2m <ENTER_TEXT_HERE> \033[0;38m"`
+* bold yellow = `echo -e "\033[1;33m <ENTER_TEXT_HERE> \033[0;38m"`
+* bold red = `echo -e "\033[01;31m <ENTER_TEXT_HERE> \033[0;38m"`
+* bold blue = `echo -e "\033[1;34m <ENTER_TEXT_HERE> \033[0;38m"`
+* bold white = `echo -e "\033[1;38m <ENTER_TEXT_HERE> \033[0;38m"`
 
 A side note on colour: I use the terminal theme [Arthur](https://github.com/lysyi3m/macos-terminal-themes).  For information of `ls` colour output, see comments in `./scripts`.
 
