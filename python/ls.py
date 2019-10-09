@@ -9,14 +9,27 @@ parser.add_argument('dir', help="Your desired directory.")
 args = parser.parse_args()
 
 
-class BColours:
-    BGREEN = '\033[1;38;5;2m'
-    BYELLOW = '\033[1;33m'
-    BRED = '\033[1;31m'
-    BWHITE = '\033[1;38m'
-    BBLUE = '\033[1;34m'
-    NORM = '\033[0;38m'
+BGREEN = '\033[1;38;5;2m'
+BYELLOW = '\033[1;33m'
+BRED = '\033[1;31m'
+BWHITE = '\033[1;38m'
+BBLUE = '\033[1;34m'
+NORM = '\033[0;38m'
+JULIA = '\033[1;38;5;128m'
+PYTHON = '\033[1;38;5;18m'
+JAVA = '\033[1;38;5;94m'
+RUST = '\033[1;38;5;5m'
+SHELL = '\033[1;38;5;46m'
+PERL = '\033[1;38;5;39m'
+RUBY = '\033[1;38;5;88m'
 
+colorMap = {'.jl': JULIA,
+            '.py': PYTHON,
+            '.java': JAVA,
+            '.rs': RUST,
+            '.sh': SHELL,
+            '.pl': PERL,
+            '.rb': RUBY}
 
 '''
 for file in os.listdir(args.dir):
@@ -39,27 +52,37 @@ def walk_level(some_dir, level=1):
             del dirs[:]
 
 
-def list_files(start_path):
-    for root, dirs, files in walk_level(start_path, 1):
-        level = root.replace(start_path, '').count(os.sep)
-        indent = ' ' * 8 * level
-        if os.path.basename(root) == 'README.md':
+def print_file(file, level):
+    for extension in colorMap.keys():
+        if file.endswith(extension):
+            print('{}{}{}{}'.format('\t' * level, colorMap.get(extension), file, NORM))
+            return
+    print('{}{}{}{}'.format('\t' * level, BRED, file, NORM))
+
+
+def print_dirs(root, dirs):
+    for dir in dirs:
+        if dir.startswith('.'):
             continue
-        elif os.path.basename(root).startswith('.'):
-            if not os.path.basename(root) == '.':
-                continue
-        elif isdir(os.path.basename(root)):
-            print(BColours.BBLUE + '{}{}/'.format(indent, os.path.basename(root)) + BColours.NORM)
-        elif isfile(os.path.basename(root)):
-            print(BColours.BRED + '{}{}/'.format(indent, os.path.basename(root)) + BColours.NORM)
-        sub_indent = ' ' * 8 * (level + 1)
-        root_dir = args.dir
-        sub_dirs = [join(root_dir, dir) for dir in listdir(root_dir) if isdir(join(root_dir, dir))]
-        for subdir in sub_dirs:
-            sub_sub_stuff = [join(subdir, dir) for dir in listdir(subdir) if subdir == subdir]
-            for subsubstuff in sub_sub_stuff:
-                if subsubstuff.find(subdir):
-                    print(BColours.BBLUE + '{}{}'.format(sub_indent, subsubstuff) + BColours.NORM)
+        print('\t{}{}{}/'.format(BBLUE, dir, NORM))
+        for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
+            for child in dirs1:
+                print_file(child, 2)
+            for child in files1:
+                print_file(child, 2)
+
+
+def print_files(root, files):
+    for file in files:
+        if file == 'README.md' or file == '.gitignore':
+            continue
+        print_file(file, 1)
+
+
+def list_files(start_path):
+    for root, dirs, files in walk_level(start_path, 0):
+        print_dirs(root, dirs)
+        print_files(root, files)
 
 
 list_files(args.dir)
