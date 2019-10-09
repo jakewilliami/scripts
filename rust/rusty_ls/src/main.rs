@@ -3,9 +3,6 @@
 //#[macro_use]
 extern crate structopt;
 
-//cargo install cargo-edit
-//cargo add structopt
-
 use std::fs;
 //use std::path::Path;
 use std::error::Error;
