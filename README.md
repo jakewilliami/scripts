@@ -6,7 +6,7 @@ While I am beginning to look into different sorts of programming, I want to have
 
 ### Executing commands
 
-Once the scripts have been written, you will need to add the script location to your path (this is a trivial think in the *nix world, so look it up if you don't know how; it varies from system to system but you only have to do it once), and then make it exacutable.  To do the latter, simply type (in the directory of your script) `chmod u+x <name_of_script>`, and your script will be executable (from that directory only, until you add it to your path; then it will be executable anywhere).
+Once the scripts have been written, you will need to add the script location to your path (this is a trivial think in the \*nix world, so look it up if you don't know how; it varies from system to system but you only have to do it once), and then make it exacutable.  (For me, it was enough to add `export PATH=$PATH:<path_to_dir>` to my `~/.bash_profile`, and then run that line in the normal terminal and it should be added to your path; check by `echo $PATH`).  To do the latter, simply type (in the directory of your script) `chmod u+x <name_of_script>`, and your script will be executable (from that directory only, until you add it to your path; then it will be executable anywhere).
 
 You only need to do the above for bash scripts (which, for ease of commandifying them, do not have a file extension).  To run julia scripts, type `julia <name_of_script>` in the directory of the script.  Similarly, for python, run `python3 <name_of_script>`; for perl, `perl <name_of_script>`, for ruby, `ruby <name_of_script>`.  You get the idea.
 
