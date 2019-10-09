@@ -56,27 +56,9 @@ def list_files(start_path):
         root_dir = args.dir
         sub_dirs = [join(root_dir, dir) for dir in listdir(root_dir) if isdir(join(root_dir, dir))]
         for subdir in sub_dirs:
-            sub_sub_dirs = [join(subdir, dir) for dir in listdir(subdir) if isdir(join(subdir, dir))]
-            for subsubdir in sub_sub_dirs:
-                print(BColours.BBLUE + '{}{}'.format(sub_indent, subsubdir) + BColours.NORM)
-            sub_files = [join(subdir, file) for file in listdir(subdir) if isfile(join(subdir, file))]
-            for subfile in sub_files:
-                print(BColours.BRED + '{}{}'.format(sub_indent, subfile) + BColours.NORM)
-
-
-            # for f in listdir(subdir):
-            #     if isfile(join(subdir, f)):
-            #         print(BColours.BYELLOW + '{}{}'.format(sub_indent, f) + BColours.NORM)
-            #     else:
-            #         print(BColours.BWHITE + '{}{}'.format(sub_indent, f) + BColours.NORM)
-
-        # for f in os.listdir(args.dir):
-        #     if f == "README.md":
-        #         continue
-        #     elif os.path.isdir(f):
-        #         print(BColours.BRED + '{}{}'.format(sub_indent, f) + BColours.NORM)
-        #     elif os.path.isfile(f):
-        #         print(BColours.BBLUE + '{}{}'.format(sub_indent, f) + BColours.NORM)
+            sub_sub_stuff = [join(subdir, dir) for dir in listdir(subdir)]
+            for subsubstuff in sub_sub_stuff:
+                print(BColours.BBLUE + '{}{}'.format(sub_indent, subsubstuff) + BColours.NORM)
 
 
 list_files(args.dir)
