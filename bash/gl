@@ -29,15 +29,10 @@ git log --color --no-merges --pretty=format:\
     else 
         { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
 } '
+   
+if [ $1 = "-i" ]
+then
+    ghi list
+fi
     
-
-
-#if [ -z "$2" ]
-#then
-#    "${GITLOG}"
-#else
-#    if [ "$2" != "-p" ]
-#    then
-#        echo -e "\033[1;33mNot a valid option.  Do you mean -p?\033[0;38m"
-#    fi
-#fi
+#echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  You may also have meant -i.\033[0;38m"
