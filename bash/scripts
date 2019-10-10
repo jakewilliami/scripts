@@ -1,13 +1,6 @@
 #! /bin/bash
 
-cd ~/bin/scripts/ #when use -F don't need -p  #use -R to list subdirs
-#shopt -s extglob
-#find . -ls -name 'README.md' -prune #| ls -GF * 2> /dev/null
-#ls -GF * 2> /dev/null !(README.md)
-#ls | grep -v "README.md" #!(README.md) #* 2> /dev/null
-#| awk -v black=$(tput setaf 0) -v red=$(tput setaf 1) -v blue=$(tput setaf 4) '{$2=red $2; $3= blue $3; $9=black $9} 1'
+DIR="/Users/jakeireland/bin/scripts/"
 
-ls -G
-
-#I have added `export CLICOLOR=YES; export LSCOLORS=Exfxcxdxbxegedabagacad` to my .bashrc and .bash_profile
-
+cd "${DIR}" #when use -F don't need -p  #use -R to list subdirs
+python3 "${DIR}"python/ls.py "${DIR}"
