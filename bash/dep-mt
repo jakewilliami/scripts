@@ -1,10 +1,11 @@
 #! /bin/bash
-#Script for modding time!
+# Script for modding time!
+# ensure  brew install ghi
 
-#changes directory
+# changes directory
 cd ~/IntelliJProjects/Electrum
 
-#define local variables
+# define local variables
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CLEANLINESS=$(git status --porcelain)
 IDE_DIR="/Users/jakeireland/Applications/JetBrains Toolbox/IntelliJ IDEA Community Release.app"
@@ -15,34 +16,44 @@ OPT_ERR="\033[1;33m$1 is not a valid option.  Use -a to supress opening $IDE, or
 DIRTY_BRANCH="\033[01;31mDo something with untracked or uncommitted changes.\033[0;38m"
 
 
-#begin script
-#111#clean AND right branch AND no option
+# begin script
+# 111  # clean AND right branch AND no option
 if [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ -z "$1" ]
 then
-    git pull && open -a "${IDE_DIR}" && echo -e "${MT}"
-#110#clean AND right branch AND option -a
+    git pull && \
+    open -a "${IDE_DIR}" && \
+    echo -e "${MT}" && \
+    ghi list
+# 110  # clean AND right branch AND option -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ "$1" = "-a" ]
 then
-     git pull && echo -e "${MT}"
-#101#clean AND incorrect branch AND no option
+     git pull && \
+     echo -e "${MT}" && \
+     ghi list
+# 101  # clean AND incorrect branch AND no option
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ] && [ -z "$1" ]
 then
-    git checkout "${DESIRED_BRANCH}" && git pull && open -a "${IDE_DIR}" && echo -e "${MT}"
-#100#clean AND incorrect branch AND option -a
+    git checkout "${DESIRED_BRANCH}" && \
+    git pull && \
+    open -a "${IDE_DIR}" && \
+    echo -e "${MT}"  && \
+    ghi list
+# 100  # clean AND incorrect branch AND option -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ] && [ "$1" = "-a" ]
 then
-    git checkout "${DESIRED_BRANCH}" && git pull && echo -e "${MT}"
-#110#clean AND correct branch AND option not -a
+    git checkout "${DESIRED_BRANCH}" && \
+    git pull && \
+    echo -e "${MT}" && \
+    ghi list
+# 110  # clean AND correct branch AND option not -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ "$1" != "-a" ]
 then
     echo -e "${OPT_ERR}"
-#10err#clean AND incorrect branch AND option not -a
+# 10err  # clean AND incorrect branch AND option not -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ] && [ "$1" != "-a" ]
 then
     git checkout "${DESIRED_BRANCH}" && echo -e "${OPT_ERR}"
-#0**#incorrect branch
+# 0**  # incorrect branch
 else 
     echo -e "${DIRTY_BRANCH}"
 fi
-
-#See also ~/.gitconfig for colourised git output messages
