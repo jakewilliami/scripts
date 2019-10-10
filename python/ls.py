@@ -1,5 +1,9 @@
 import os
 import argparse
+import string
+
+# import pandas as pd
+# import texttable as tt
 
 from os import listdir
 from os.path import isfile, isdir, join
@@ -8,19 +12,18 @@ parser = argparse.ArgumentParser(description='Please enter a file directory')
 parser.add_argument('dir', help="Your desired directory.")
 args = parser.parse_args()
 
-
 BGREEN = '\033[1;38;5;2m'
 BYELLOW = '\033[1;33m'
 BRED = '\033[1;31m'
 BWHITE = '\033[1;38m'
 BBLUE = '\033[1;34m'
 NORM = '\033[0;38m'
-JULIA = '\033[1;38;5;128m'
+JULIA = '\033[1;38;5;213m'  # '\033[1;38;5;128m'
 PYTHON = '\033[1;38;5;18m'
 JAVA = '\033[1;38;5;94m'
 RUST = '\033[1;38;5;5m'
-SHELL = '\033[1;38;5;46m'
-PERL = '\033[1;38;5;39m'
+SHELL = '\033[1;38;5;28m'  # '\033[1;38;5;46m'
+PERL = '\033[1;38;5;111m'  # '\033[1;38;5;39m'
 RUBY = '\033[1;38;5;88m'
 
 colorMap = {'.jl': JULIA,
@@ -57,7 +60,7 @@ def print_file(file, level):
         if file.endswith(extension):
             print('{}{}{}{}'.format('\t' * level, colorMap.get(extension), file, NORM))
             return
-    print('{}{}{}{}'.format('\t' * level, BRED, file, NORM))
+    print('{}{}{}{}'.format('\t' * level, SHELL, file, NORM))
 
 
 def print_dirs(root, dirs):
