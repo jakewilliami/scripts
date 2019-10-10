@@ -4,18 +4,40 @@
 #Define local variables
 LOGNUMBER=$([ -z "$1" ] && echo "10") #LOGNUMBER only works at the end of the code (otherwise it is echoing in the wrong place, leaving an empty -).  This is telling us to echo "10" if the argument is empty
 
-git log --color --no-merges --pretty=format:"%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" --abbrev-commit $2 -$1$LOGNUMBER | perl -pe ' if (/<([^>]*)>/) 
-{
-if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
-    { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
-else 
-    { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
-}'
-
-if [ "$2" != "-p" ]
+if [ -z "$2" ]
 then
-    echo -e "\033[1;33mNot a valid option.  Do you mean -p?\033[0;38m"
-fig
+    :  #Do nothing
+elif [ "$2" = "mt" ]
+then
+    echo -e "\033[1;38;5;28mGit Log for MODDING TIME\033[0;38m"
+    cd ~/IntelliJProjects/Electrum
+elif [ "$2" = "mymacros" ]
+then
+    echo -e "\033[1;38;5;28mGit Log for My Macros\033[0;38m"
+    cd ~/Documents/my_macros
+else
+    cd $2
+fi
 
-#$2 used for the -p option
-#can use %C(red reverse)
+git log --color --no-merges --pretty=format:\
+"%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
+--abbrev-commit -$1$LOGNUMBER | perl -pe \
+' if (/<([^>]*)>/)
+    {
+    if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
+        { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
+    else 
+        { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
+} '
+    
+
+
+#if [ -z "$2" ]
+#then
+#    "${GITLOG}"
+#else
+#    if [ "$2" != "-p" ]
+#    then
+#        echo -e "\033[1;33mNot a valid option.  Do you mean -p?\033[0;38m"
+#    fi
+#fi
