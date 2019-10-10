@@ -59,7 +59,7 @@ def print_dirs(root, dirs):
         print('\t{}{}{}/'.format(BBLUE, dir, NORM))
         for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
             for child in dirs1:
-                print_file(child, 2)
+                print('\t\t{}{}{}/'.format(BBLUE, child, NORM))
             for child in files1:
                 print_file(child, 2)
 
