@@ -1,9 +1,5 @@
 import os
 import argparse
-import string
-
-# import pandas as pd
-# import texttable as tt
 
 from os import listdir
 from os.path import isfile, isdir, join
@@ -18,13 +14,14 @@ BRED = '\033[1;31m'
 BWHITE = '\033[1;38m'
 BBLUE = '\033[1;34m'
 NORM = '\033[0;38m'
-JULIA = '\033[1;38;5;213m'  # '\033[1;38;5;128m'
-PYTHON = '\033[1;38;5;18m'
+JULIA = '\033[1;38;5;133m'  # '\033[1;38;5;128m' or 213 m
+PYTHON = '\033[1;38;5;26m'  # '\033[1;38;5;18m'
 JAVA = '\033[1;38;5;94m'
 RUST = '\033[1;38;5;5m'
 SHELL = '\033[1;38;5;28m'  # '\033[1;38;5;46m'
 PERL = '\033[1;38;5;111m'  # '\033[1;38;5;39m'
 RUBY = '\033[1;38;5;88m'
+ELIXIR = '\033[1;38;5;54m'
 
 colorMap = {'.jl': JULIA,
             '.py': PYTHON,
@@ -32,16 +29,8 @@ colorMap = {'.jl': JULIA,
             '.rs': RUST,
             '.sh': SHELL,
             '.pl': PERL,
-            '.rb': RUBY}
-
-'''
-for file in os.listdir(args.dir):
-    if file == "README.md":
-        continue
-    elif os.path.isdir(file):
-        print(BColours.BRED + file + BColours.NORM)
-    elif os.path.isfile(file):
-        print(BColours.BBLUE + file + BColours.NORM)'''
+            '.rb': RUBY,
+            '.ex': ELIXIR}
 
 
 def walk_level(some_dir, level=1):
