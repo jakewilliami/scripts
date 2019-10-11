@@ -13,8 +13,8 @@ GIT_LOCATION="/Users/jakeireland/Documents/my_macros/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"
 
-DIFFT=true
-DIFFJ=true
+DIFFT=false
+DIFFJ=false
 
 #Begin script
 
@@ -24,10 +24,9 @@ cd "${GIT_LOCATION}" || exit $?
 for t in "${LOCAL_DIR}"/*.tex; do
    if ! cmp -s "$t" "${GIT_DIR}"/$(basename $t)
    then
+        DIFFT=true
         echo -e "${REPLACING_TEX}" 
         cp -fr "$t" "${GIT_DIR}/" && echo -e ${COMPLETED_TEX}
-    else
-        DIFFT=false
     fi
 done
 
@@ -40,10 +39,9 @@ fi
 for j in "${LOCAL_DIR}"/*.json; do
    if ! cmp -s "$j" "${GIT_DIR}"/$(basename $j)
    then
+        DIFFJ=true
         echo -e "${REPLACING_JSON}" 
         cp -fr "$j" "${GIT_DIR}/" && echo -e ${COMPLETED_JSON}
-    else
-        DIFFJ=false
     fi
 done
 
