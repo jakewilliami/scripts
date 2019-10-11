@@ -23,6 +23,7 @@ PERL = '\033[1;38;5;111m'  # '\033[1;38;5;39m'
 RUBY = '\033[1;38;5;88m'
 ELIXIR = '\033[1;38;5;54m'
 LISP = '\033[1;38;5;29m'
+LUA = '\033[1;38;5;17m'
 
 colorMap = {'.jl': JULIA,
             '.py': PYTHON,
@@ -32,7 +33,8 @@ colorMap = {'.jl': JULIA,
             '.pl': PERL,
             '.rb': RUBY,
             '.ex': ELIXIR,
-            '.lisp': LISP}
+            '.lisp': LISP,
+            '.lua': LUA}
 
 
 def walk_level(some_dir, level=1):
