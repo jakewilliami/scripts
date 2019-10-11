@@ -35,7 +35,7 @@ found = false
 PDF::Reader.open(filename) do |reader|
     reader.pages.each do |page|
         plaintext = page.text
-        grepped = plaintext.match stringname
+        grepped = plaintext.match(/#{stringname}/i)
         if grepped.nil?
               
         else
