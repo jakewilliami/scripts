@@ -26,7 +26,7 @@ end
 
 filename = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf'
 
-stringname = "Allport"
+stringname = ARGV[0]
 
 reader = PDF::Reader.new('/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf')
 
@@ -45,9 +45,9 @@ PDF::Reader.open(filename) do |reader|
 end
 
 if (found == true)
-    puts "Found in #{filename}!".green
+    puts "String #{stringname} found in #{filename}!".green
 else
-    puts "Not found in #{filename}".red
+    puts "String #{stringname} not found in #{filename}".red
 end
 
 #puts reader.pdf_version
