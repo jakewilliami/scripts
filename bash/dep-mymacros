@@ -10,11 +10,11 @@ ALL_GOOD_JSON="\033[1;38;5;2mYour git repository's templates directory's .json f
 
 GIT_LOCATION="/Users/jakeireland/Documents/my_macros/"
 
-#LOCAL_DIR="/Users/jakeireland/.config/texstudio/templates/user/"
-#GIT_DIR="/Users/jakeireland/Documents/my_macros/tea_templates/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"
 
+DIFFT=true
+DIFFJ=true
 
 #Begin script
 
@@ -27,9 +27,15 @@ for t in "${LOCAL_DIR}"/*.tex; do
         echo -e "${REPLACING_TEX}" 
         cp -fr "$t" "${GIT_DIR}/" && echo -e ${COMPLETED_TEX}
     else
-        echo -e "${ALL_GOOD_TEX}"
+        DIFFT=false
     fi
 done
+
+if [ $DIFFT = false ]
+then
+    echo -e "${ALL_GOOD_TEX}"
+fi
+
 
 for j in "${LOCAL_DIR}"/*.json; do
    if ! cmp -s "$j" "${GIT_DIR}"/$(basename $j)
@@ -37,6 +43,11 @@ for j in "${LOCAL_DIR}"/*.json; do
         echo -e "${REPLACING_JSON}" 
         cp -fr "$j" "${GIT_DIR}/" && echo -e ${COMPLETED_JSON}
     else
-        echo -e "${ALL_GOOD_JSON}"
+        DIFFJ=false
     fi
 done
+
+if [ "$DIFFJ" = "false" ]
+then
+    echo -e "${ALL_GOOD_JSON}"
+fi
