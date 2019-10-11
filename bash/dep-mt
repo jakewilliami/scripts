@@ -22,29 +22,25 @@ if [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ -z "$1" ]
 then
     git pull && \
     open -a "${IDE_DIR}" && \
-    echo -e "${MT}" && \
-    ghi list
+    echo -e "${MT}"
 # 110  # clean AND right branch AND option -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ "$1" = "-a" ]
 then
      git pull && \
-     echo -e "${MT}" && \
-     ghi list
+     echo -e "${MT}"
 # 101  # clean AND incorrect branch AND no option
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ] && [ -z "$1" ]
 then
     git checkout "${DESIRED_BRANCH}" && \
     git pull && \
     open -a "${IDE_DIR}" && \
-    echo -e "${MT}"  && \
-    ghi list
+    echo -e "${MT}"
 # 100  # clean AND incorrect branch AND option -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ] && [ "$1" = "-a" ]
 then
     git checkout "${DESIRED_BRANCH}" && \
     git pull && \
-    echo -e "${MT}" && \
-    ghi list
+    echo -e "${MT}"
 # 110  # clean AND correct branch AND option not -a
 elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ] && [ "$1" != "-a" ]
 then
