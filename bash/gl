@@ -1,28 +1,19 @@
 #! /bin/bash
 #Script for git log!  REQUIRES `PERL`.
 
-#Define local variables
-LOGNUMBER=$([[ -z "$1" ]] && echo "10") #LOGNUMBER only works at the end of the code (otherwise it is echoing in the wrong place, leaving an empty -).  This is telling us to echo "10" if the argument is empty
-
-if [[ -z "$2" ]]
-then
-    :  #Do nothing
-elif [[ "$2" = "mt" ]]
-then
-    echo -e "\033[1;38;5;28mGit Log for MODDING TIME\033[0;38m"
-    cd ~/IntelliJProjects/Electrum
-elif [[ "$2" = "mymacros" ]]
-then
-    echo -e "\033[1;38;5;28mGit Log for My Macros\033[0;38m"
-    cd ~/Documents/my_macros
-else
-    cd $2
-fi
+LOGNUMBER=$([[ -z "$1" ]] && echo "10")
+COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 
 if [[ $1 = "-i" ]]
 then
     ghi list
-else
+elif [[ $1 = "-c" ]]
+then
+    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH today.\033[0;38m"
+elif [[ -z $1 ]]
+then
 git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
 --abbrev-commit -$1$LOGNUMBER | perl -pe \
@@ -33,6 +24,8 @@ git log --color --no-merges --pretty=format:\
     else 
         { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
 } '
+else
+    echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  Try -i for issues or -c for commit count.\033[0;38m"
 fi
     
 #echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  You may also have meant -i.\033[0;38m"
