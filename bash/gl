@@ -2,16 +2,16 @@
 #Script for git log!  REQUIRES `PERL`.
 
 #Define local variables
-LOGNUMBER=$([ -z "$1" ] && echo "10") #LOGNUMBER only works at the end of the code (otherwise it is echoing in the wrong place, leaving an empty -).  This is telling us to echo "10" if the argument is empty
+LOGNUMBER=$([[ -z "$1" ]] && echo "10") #LOGNUMBER only works at the end of the code (otherwise it is echoing in the wrong place, leaving an empty -).  This is telling us to echo "10" if the argument is empty
 
-if [ -z "$2" ]
+if [[ -z "$2" ]]
 then
     :  #Do nothing
-elif [ "$2" = "mt" ]
+elif [[ "$2" = "mt" ]]
 then
     echo -e "\033[1;38;5;28mGit Log for MODDING TIME\033[0;38m"
     cd ~/IntelliJProjects/Electrum
-elif [ "$2" = "mymacros" ]
+elif [[ "$2" = "mymacros" ]]
 then
     echo -e "\033[1;38;5;28mGit Log for My Macros\033[0;38m"
     cd ~/Documents/my_macros
@@ -19,6 +19,10 @@ else
     cd $2
 fi
 
+if [[ $1 = "-i" ]]
+then
+    ghi list
+else
 git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
 --abbrev-commit -$1$LOGNUMBER | perl -pe \
@@ -29,10 +33,6 @@ git log --color --no-merges --pretty=format:\
     else 
         { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
 } '
-   
-if [ $1 = "-i" ]
-then
-    ghi list
 fi
     
 #echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  You may also have meant -i.\033[0;38m"
