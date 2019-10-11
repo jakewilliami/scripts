@@ -12,7 +12,7 @@ then
 elif [[ $1 = "-c" ]]
 then
     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH today.\033[0;38m"
-elif [[ -z $1 ]]
+elif [ -z $1 ] || [[ $1 =~ ^[-+]?[0-9]+$ ]]
 then
 git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
