@@ -3,10 +3,10 @@
 #ensure you run `brew install pdfgrep` and `brew install coreutils`, and ensure you have python if you use the python method to calculate time
 
 #start=$(python3 -c 'import time; print(time.time())')
-start=`gdate +%s.%N`
+start=`gdate +%s.%N` || exit $?
 
 #begin search
-pdf_search=$(pdfgrep -ril $1)
+pdf_search=$(pdfgrep -ril $1) || exit $?
 
 echo -e "\033[1;38m${pdf_search}\033[0;38m"
 
