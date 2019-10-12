@@ -9,7 +9,7 @@ REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 HELP="\033[1;33mNot a valid option.  Use -h for help.\033[0;38m"
 
 display_help() {
-    echo -e "\033[1;38mUsage: [option...]\033[0;38m"
+    echo -e "\033[1;38mUsage: gl [option...]\033[0;38m"
     echo
     echo -e "\033[1;38;5;26m   -c           \033[1;33mShows present commit count on working branch.\033[0;38m"
     echo -e "\033[1;38;5;26m   -s           \033[1;33mShows git status minimally.\033[0;38m"
