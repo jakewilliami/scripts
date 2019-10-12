@@ -8,7 +8,7 @@ While I am beginning to look into different sorts of programming, I want to have
 
 Once the scripts have been written, you will need to add the script location to your path, and then make it exacutable.  The former can be done by:
 ```
-echo 'export PATH=$PATH:/path/to/dir"' >> ~/.bash_profile
+echo 'export PATH=$PATH:/path/to/dir' >> ~/.bash_profile
 ```
 To make the script executable, simply type (in the directory of your script) 
 ```
@@ -48,6 +48,6 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 
 ### In Case of Issues
 
-If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' ./gradlew`.
+If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' /path/to/file`.
 
 See commit `git show e3e79ca03dc16526b486e06b7e88d8db566986e4` in branch `1.14.4` in [this repo](https://github.com/Explosive-Crayons/Electrum) for more on this.
