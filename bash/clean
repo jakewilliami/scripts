@@ -1,19 +1,38 @@
 #! /bin/bash
 #Script for emptying * directories! 
 
-if [ "$1" = "" ]
+HELP="\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
+
+display_help() {
+    echo -e "\033[1;38mUsage: empt [option...]\033[0;38m"
+    echo
+    echo -e "\033[1;3;31mOmitting option altogether will iteratively delete everything in both Trash and Downloads.\033[0;38m"
+    echo
+    echo -e "\033[1;38;5;26m   -t           \033[1;33mInteratively 31mdeletes everything in Trash (shared and local).\033[0;38m"
+    echo -e "\033[1;38;5;26m   -d           \033[1;33mInteratively deletes everything in Downloads folder.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+    exit $?
+}
+
+while getopts ":tdh" OPTION; do
+        case $OPTION in
+                t)
+                    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*  
+                    ;;
+
+                d)
+                    rm -rf ~/Downloads/*
+                    ;;
+                h)
+                    display_help
+                    ;;
+                \?)
+                    echo -e "${HELP}" && exit $?
+                    ;;
+        esac
+done
+
+if [[ -z $1 ]]
 then
     rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
-elif [ "$1" = "-t" ]
-then
-    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*
-elif [ "$1" = "-d" ]
-then
-    rm -rf ~/Downloads/*
-elif [ "$1" = "-h" ]
-then
-    echo -e "\033[1;33mUse the -t option to empty trash, or -d option to empty downloads.  Omitting options altogether will do both.\033[0;38m"
-elif [ "$1" != "-t" ] || [ "$1" != "-d" ] || [ "$1" != "-h" ]
-then
-    echo -e "\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
 fi
