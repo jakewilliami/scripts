@@ -40,6 +40,6 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 
 ### In Case of Issues
 
-If bash rejects the `\r` characters they can be removed with `sed -i $'s/\r$//' ./gradlew`.
+If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' ./gradlew`.
 
 See commit `git show e3e79ca03dc16526b486e06b7e88d8db566986e4` in branch `1.14.4` in [this repo](https://github.com/Explosive-Crayons/Electrum) for more on this.
