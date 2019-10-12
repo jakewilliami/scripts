@@ -1,11 +1,23 @@
 #! /bin/bash
 #Script for git log!  REQUIRES `PERL`.
 
+
 LOGNUMBER=$([[ -z "$1" ]] && echo "10")
 COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 HELP="\033[1;33mNot a valid option.  Use -h for help.\033[0;38m"
+
+display_help() {
+    echo -e "\033[1;38mUsage: [option...]\033[0;38m"
+    echo
+    echo -e "\033[1;38;5;26m   -c           \033[1;33mShows present commit count on working branch.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -s           \033[1;33mShows git status minimally.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -i           \033[1;33mShows currently open issues in working branch.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+    exit $?
+}
+
 
 while getopts ":csih" OPTION; do
         case $OPTION in
@@ -20,23 +32,14 @@ while getopts ":csih" OPTION; do
                     ghi list
                     ;;
                 h)
-                    echo "Usage:"
-                    echo "gl -c"
-                    echo "gl -s"
-                    echo "gl -i"
-                    echo "gl -h"
-                    echo ""
-                    echo "   -c     Shows present commit count on working branch."
-                    echo "   -s     Shows git status minimally."
-                    echo "   -i     Shows currently open issues in working branch."
-                    echo "   -h     Help (present output)."
-                    exit $?
+                    display_help
                     ;;
                 \?)
                     echo -e "${HELP}" && exit $?
                     ;;
         esac
 done
+
 
 if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]
 then
