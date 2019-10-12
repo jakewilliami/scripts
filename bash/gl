@@ -5,19 +5,42 @@ LOGNUMBER=$([[ -z "$1" ]] && echo "10")
 COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+HELP="\033[1;33mNot a valid option.  Use -h for help.\033[0;38m"
 
-if [[ $1 = "-i" ]]
+while getopts ":csih" OPTION; do
+        case $OPTION in
+                s)
+                    git status --short --branch   
+                    ;;
+
+                c)
+                    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
+                    ;;
+                i)
+                    ghi list
+                    ;;
+                h)
+                    echo "Usage:"
+                    echo "gl -c"
+                    echo "gl -s"
+                    echo "gl -i"
+                    echo "gl -h"
+                    echo ""
+                    echo "   -c     Shows present commit count on working branch."
+                    echo "   -s     Shows git status minimally."
+                    echo "   -i     Shows currently open issues in working branch."
+                    echo "   -h     Help (present output)."
+                    exit $?
+                    ;;
+                \?)
+                    echo -e "${HELP}" && exit $?
+                    ;;
+        esac
+done
+
+if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]
 then
-    ghi list
-elif [[ $1 = "-s" ]]
-then
-    git status --short --branch
-elif [[ $1 = "-c" ]]
-then
-    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
-elif [ -z $1 ] || [[ $1 =~ ^[-+]?[0-9]+$ ]] #Checks for integer (unless empty, then prints default)
-then
-git log --color --no-merges --pretty=format:\
+    git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
 --abbrev-commit -$1$LOGNUMBER | perl -pe \
 ' if (/<([^>]*)>/)
@@ -27,8 +50,4 @@ git log --color --no-merges --pretty=format:\
     else 
         { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
 } '
-else
-    echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  Try -i for issues or -c for commit count.\033[0;38m"
 fi
-    
-#echo -e "\033[1;33mNot a valid option.  You either need to enter an integer to specify how many commits you want to see.  You may also have meant -i.\033[0;38m"
