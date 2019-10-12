@@ -14,7 +14,7 @@ then
     git status --short --branch
 elif [[ $1 = "-c" ]]
 then
-    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH today.\033[0;38m"
+    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
 elif [ -z $1 ] || [[ $1 =~ ^[-+]?[0-9]+$ ]] #Checks for integer (unless empty, then prints default)
 then
 git log --color --no-merges --pretty=format:\
