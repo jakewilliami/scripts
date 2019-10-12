@@ -10,7 +10,7 @@ Once the scripts have been written, you will need to add the script location to 
 ```
 echo 'export PATH=$PATH:/path/to/dir' >> ~/.bash_profile
 ```
-To make the script executable, simply type (in the directory of your script) 
+You may need to restart terminal after this step.  To make the script executable, simply type (in the directory of your script) 
 ```
 chmod u+x <name_of_script>`
 ```
