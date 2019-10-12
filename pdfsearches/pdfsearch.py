@@ -27,14 +27,14 @@ pdf_count = 0
 
 def pdfHasTerm(pdf, term):
     local_word_count = 0
-    object = PyPDF2.PdfFileReader(pdf, strict=False)
+    objectPDF = PyPDF2.PdfFileReader(pdf, strict=False)
 
     # get number of pages
-    NumPages = object.getNumPages()
+    NumPages = objectPDF.getNumPages()
 
     # extract text and do the search
     for i in range(0, NumPages):
-        PageObj = object.getPage(i)
+        PageObj = objectPDF.getPage(i)
         Text = PageObj.extractText() 
         matches = re.search('(?i)' + term, Text)
         if matches:
@@ -45,12 +45,16 @@ def pdfHasTerm(pdf, term):
 for root, dirs, files in os.walk(root):
     for file in files:
         if file.endswith('.pdf'):
-            results = pdfHasTerm(os.path.join(root, file), search_word)
-            if results > 0:
-                search_word_count += results
-                pdfFileObj = open(os.path.join(root, file), 'rb')
-                print(bcolours.BWHITE + os.path.join(root, file) + bcolours.NORM)
-                pdf_count += 1
+            try:
+                results = pdfHasTerm(os.path.join(root, file), search_word)
+                if results > 0:
+                    search_word_count += results
+                    pdfFileObj = open(os.path.join(root, file), 'rb')
+                    print(bcolours.BWHITE + os.path.join(root, file) + bcolours.NORM)
+                    pdf_count += 1
+                    pdfFileObj.close()
+            except:
+                print("ERROR")
 
 print(bcolours.BYELLOW + "%s seconds" % (time.time() - start_time) + bcolours.NORM)
 
