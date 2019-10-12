@@ -1,4 +1,8 @@
 #! /bin/bash
-#Script for opening in Brackets.app
-
-open -a "Brackets.app" $1
+# Script for opening in Brackets.app
+if [[ -f $1 ]] # Checks to see if file exists in current working directory
+then
+    open -a "Brackets.app" $1
+else
+    open -a "Brackets.app" ~/bin/scripts/bash/$1
+fi
