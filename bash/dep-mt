@@ -18,13 +18,13 @@ DIRTY_BRANCH="\033[01;31mDo something with untracked or uncommitted changes.\033
 display_help() {
     echo -e "\033[1;38mUsage: mt [option...]\033[0;38m"
     echo
-    echo -e "\033[1;3;38mThe present script will check to see if the modding branch 1.14.4 is clean, and go to that branch, as well as open IntelliJ.\033[0;38m"
+    echo -e "\033[1;3;38mThe present script will check to see if the modding branch 1.14.4 is clean, and go to that branch, as well as open IntelliJ.  You will have to run the command again with a `.` at the front in order to cd to this repo.\033[0;38m"
     echo
-    echo -e "\033[1;38;5;26m   -a           \033[1;33mSupresses opening IntelliJ\033[0;38m"
+    echo -e "\033[1;38;5;26m   -a           \033[1;33mOpens IntelliJ\033[0;38m"
+    echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current branch.\033[0;38m"
     echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
     exit $?
 }
-
 
 if [[ ! -z "$CLEANLINESS" ]]
 then
@@ -32,48 +32,54 @@ then
     exit $?
 fi
 
-while getopts ":ah" OPTION; do
+
+while getopts ":abh" OPTION; do
         case $OPTION in
                 a)
-                    if [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ]
+                    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
                     then
                         git pull && \
+                        open -a "${IDE_DIR}" && \
                         echo -e "${MT}"
-                    elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ]
-                    then
+                    else
                         git checkout "${DESIRED_BRANCH}" && \
                         git pull && \
+                        open -a "${IDE_DIR}" && \
                         echo -e "${MT}"
                     fi
+                    ;;
+                b)  
+                    git pull && \
+                    open -a "${IDE_DIR}" && \
+                    echo -e "${MT}"
                     ;;
                 h)
                     display_help
                     ;;
                 \?)
-                    if [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ]
+                    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
                     then
                        echo -e "${OPT_ERR}" 
-                    elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ]
-                    then
+                    else
                         git checkout "${DESIRED_BRANCH}" && \
                         echo -e "${OPT_ERR}"
                     fi
+                    exit $?
                     ;;
         esac
 done
 
 if [[ -z $1 ]]
 then
-    if [ -z "$CLEANLINESS" ] && [ "$BRANCH" = "${DESIRED_BRANCH}" ]
+    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
     then
         git pull && \
-        open -a "${IDE_DIR}" && \
         echo -e "${MT}"
-    elif [ -z "$CLEANLINESS" ] && [ "$BRANCH" != "${DESIRED_BRANCH}" ]
-    then
+    else
         git checkout "${DESIRED_BRANCH}" && \
         git pull && \
-        open -a "${IDE_DIR}" && \
         echo -e "${MT}"
     fi
 fi
+
+exec bash
