@@ -62,7 +62,7 @@ to actually go to the directory specified in the script.  To make this less anno
 ```
 alias <name_of_script>=". <name_of_script>"
 ```
-which will work for the most part.  However, this causes session errors when you have options in your script (if you enter an invalid option, it will close your current session for [some](https://stackoverflow.com/questions/32418438/how-can-i-disable-bash-sessions-in-os-x-el-capitan) [reason](https://www.reddit.com/r/osx/comments/397uep/changes_to_bash_sessions_and_terminal_in_el/).).  To get around this, I have added
+which will work for the most part.  However, this causes session errors when you have options in your script (if you enter an invalid option, it will close your current session [for](https://stackoverflow.com/questions/32418438/how-can-i-disable-bash-sessions-in-os-x-el-capitan) some [reason](https://www.reddit.com/r/osx/comments/397uep/changes_to_bash_sessions_and_terminal_in_el/)).  To get around this, I have added
 ```
 exec bash
 ```
