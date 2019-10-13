@@ -32,6 +32,8 @@ stringName = ARGV[0]
 found = false
 os_walk = Dir.glob( "#{mainDir}/**/*.pdf" )
 
+startTime = Time.now.to_f
+
 for f in os_walk do
     reader = PDF::Reader.new(f)
     PDF::Reader.open(f) do |reader|
@@ -51,6 +53,11 @@ for f in os_walk do
     end
     end
 end
+
+endTime = Time.now.to_f
+runTime = endTime - startTime
+
+puts "#{runTime} seconds"
 
 #puts reader.pdf_version
 #puts reader.info
