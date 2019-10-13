@@ -14,7 +14,7 @@ require 'rubygems'
 require 'pdf/reader'
 require 'colorize'
 require 'pathname'
-require 'rails'
+#require 'rails/engine'
 
 #puts 'What is your name?'
 #name = gets.chomp
