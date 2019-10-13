@@ -18,8 +18,6 @@ and your script will be executable (from that directory only, until you add it t
 
 You only need to do the above for bash scripts (which, for ease of commandifying them, do not have a file extension).  Running other kinds of scripts may have different requirements.
 
-Finally, if a script has a `cd` command in it, to execute the script AND go to that directory specified in the script, you will need to type `. <name_of_script>`.
-
 Happy scripting!
 
 ---
@@ -51,3 +49,21 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' /path/to/file`.
 
 See commit `git show e3e79ca03dc16526b486e06b7e88d8db566986e4` in branch `1.14.4` in [this repo](https://github.com/Explosive-Crayons/Electrum) for more on this.
+
+---
+
+### A Note on `cd` in Subshell
+
+When you write `cd /path/to/dir` in a script and run it, you don't actually change working directories in your session (only in the subshell running in the script).  An easy workaround is to write
+```
+. <name_of_script>
+```
+to actually go to the directory specified in the script.  To make this less annoying, I have added to my `~/.bashrc` the following line:
+```
+alias <name_of_script>=". <name_of_script>"
+```
+which will work for the most part.  However, this causes session errors when you have options in your script (if you enter an invalid option, it will close your current session for [https://stackoverflow.com/questions/32418438/how-can-i-disable-bash-sessions-in-os-x-el-capitan](some) [https://www.reddit.com/r/osx/comments/397uep/changes_to_bash_sessions_and_terminal_in_el/](reason).).  To get around this, I have added
+```
+exec bash
+```
+at the end of the script that doesn't work as an alias, and it now works.  However, this is not the [https://unix.stackexchange.com/a/278080/372726](best option) (see comments by @G-Man).
