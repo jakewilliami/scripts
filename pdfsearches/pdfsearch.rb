@@ -15,11 +15,10 @@ require "find"
 ##########################################################
 
 class String
-def bold;           "\033[1m#{self}"end
-def italic;         "\033[3m#{self}" end
-def underline;      "\033[4m#{self}" end
-def blink;          "\033[5m#{self}" end
-def reverse_color;  "\033[7m#{self}" end
+def bgreen; "\033[1;38;5;2m#{self}\033[0;38m" end
+def byellow; "\033[1;33m#{self}\033[0;38m" end
+def bred; "\033[1;31m#{self}\033[0;38m" end
+def bwhite; "\033[1;38m#{self}\033[0;38m" end
 end
 
 fileName = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf'
@@ -47,9 +46,6 @@ for f in os_walk do
             if (found == true)
                 pdfCount = pdfCount + 1
             end
-#                puts "String #{stringName} found in #{f}!".green
-#            else
-#                puts "String #{stringName} not found in #{f}".red
         end
     end
     end
@@ -58,10 +54,7 @@ end
 endTime = Time.now.to_f
 runTime = endTime - startTime
 
-puts "this is the count #{pdfCount}"
-puts "\n#{runTime} seconds"
+#puts f.bwhite
 
-#puts reader.pdf_version
-#puts reader.info
-#puts reader.metadata
-#puts reader.page_count
+puts "#{runTime} seconds".byellow
+puts "The word #{stringName} was found #{pdfCount} times in 1 pdfs".bgreen
