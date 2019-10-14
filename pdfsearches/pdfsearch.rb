@@ -28,8 +28,8 @@ mainDir = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2
 
 stringName = ARGV[0]
 
-
 found = false
+pdfCount = 0
 os_walk = Dir.glob( "#{mainDir}/**/*.pdf" )
 
 startTime = Time.now.to_f
@@ -45,10 +45,11 @@ for f in os_walk do
         else
             found = true
             if (found == true)
-                puts "String #{stringName} found in #{f}!".green
-            else
-                puts "String #{stringName} not found in #{f}".red
+                pdfCount = pdfCount + 1
             end
+#                puts "String #{stringName} found in #{f}!".green
+#            else
+#                puts "String #{stringName} not found in #{f}".red
         end
     end
     end
@@ -57,7 +58,8 @@ end
 endTime = Time.now.to_f
 runTime = endTime - startTime
 
-puts "#{runTime} seconds"
+puts "this is the count #{pdfCount}"
+puts "\n#{runTime} seconds"
 
 #puts reader.pdf_version
 #puts reader.info
