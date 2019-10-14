@@ -27,13 +27,14 @@ mainDir = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2
 
 stringName = ARGV[0]
 
-found = false
+foundCount = 0
 pdfCount = 0
 os_walk = Dir.glob( "#{mainDir}/**/*.pdf" )
 
 startTime = Time.now.to_f
 
 for f in os_walk do
+    found = false
     reader = PDF::Reader.new(f)
     PDF::Reader.open(f) do |reader|
     reader.pages.each do |page|
@@ -42,19 +43,20 @@ for f in os_walk do
         if grepped.nil?
 
         else
-            found = true
-            if (found == true)
-                pdfCount = pdfCount + 1
+            foundCount += 1
+            if not found
+                pdfCount += 1
+                found = true
+                puts f.bwhite
             end
         end
     end
     end
 end
 
+
 endTime = Time.now.to_f
 runTime = endTime - startTime
 
-#puts f.bwhite
-
 puts "#{runTime} seconds".byellow
-puts "The word #{stringName} was found #{pdfCount} times in 1 pdfs".bgreen
+puts "The word #{stringName} was found #{foundCount} times in #{pdfCount} pdfs".bgreen
