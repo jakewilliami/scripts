@@ -21,9 +21,7 @@ def bred; "\033[1;31m#{self}\033[0;38m" end
 def bwhite; "\033[1;38m#{self}\033[0;38m" end
 end
 
-fileName = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf'
-
-mainDir = '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/'
+mainDir = './'
 
 stringName = ARGV[0]
 
