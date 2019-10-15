@@ -8,6 +8,7 @@
 use v5.30;
 
 # install using `cpanm lib::rary`
+use warnings;
 use PDF::Core;
 use File::Extract::PDF;
 use CAM::PDF;
@@ -24,6 +25,9 @@ use Time::HiRes qw( time );
 
 my $fileDir = "/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/";
 my $searchString = $ARGV[0];
+#my $insensitiveSearch = /$searchString/i;
+
+print color("BOLD RED"), "This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\n", color("reset");
 
 my $startTime = time();
 
