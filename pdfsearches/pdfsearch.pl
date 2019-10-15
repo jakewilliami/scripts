@@ -17,6 +17,7 @@ use Term::ANSIColor;
 use strict;
 use File::Find;
 use Time::HiRes qw( time );
+use File::Spec::Functions 'catfile';
 
 # This is a helper function to initialize our %mutc variable.  (https://github.com/evalEmpire/method-signatures/pull/129/commits/bbed93f169a74b94da67c08d1f5f9e2c39daf130)
 #no warnings 'deprecated';
@@ -27,9 +28,7 @@ my $fileDir = "/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimest
 my $searchString = $ARGV[0];
 #my $insensitiveSearch = /$searchString/i;
 
-print color("BOLD RED"), "This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\n", color("reset");
-
-my $startTime = time();
+print color("BOLD RED"), "This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\n\n", color("reset");
 
 sub eachFile {
   my $filename = $_;
@@ -39,12 +38,28 @@ sub eachFile {
             my $tFromAny = Text::FromAny->new(
             file => $f);
             my $text = $tFromAny->text;
+#            my $fullfilename = join($fullpath, $filename)
             if (index($text, $searchString) != -1) {
-               print color("BOLD"), "\"${searchString}\" found in ${filename}!\n", color("reset");
+               print color("BOLD"), "\"${searchString}\" found in ${fullpath}/${filename}!\n", color("reset");
             } 
         }
     }
 }
+
+my $startTime = time();
+
+#sub perl_style_count {
+#        $fileName = shift;
+#        open(FILE, "<$fileName") or die "Could not open file: $!";
+#
+#        my ($lines, $words, $chars) = (0,0,0);
+#
+#        while (<FILE>) {
+#            $lines++;
+#            $chars += length($_);
+#            $words += scalar(split(/\s+/, $_));
+#        }
+#}
 
 find (\&eachFile, $fileDir);
 
