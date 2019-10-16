@@ -2,6 +2,23 @@
 
 #ensure you run `brew install pdfgrep` and `brew install coreutils`, and ensure you have python if you use the python method to calculate time
 
+display_help() {
+    echo -e "\033[1;38mUsage: cd /dir/to/search/ && pdfsearch \"<search_term>\" [option...]\033[0;38m"
+    echo
+    echo -e "\033[1;3;38mThe present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  \033[1;33mThere is no current counter to tell how many times the search term was found.\033[0;38m"
+    echo
+    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+    exit $?
+}
+
+while getopts "h" OPTION; do
+    case $OPTION in
+        h)
+            display_help
+            ;; 
+    esac
+done
+
 #start=$(python3 -c 'import time; print(time.time())')
 start=`gdate +%s.%N` || exit $?
 

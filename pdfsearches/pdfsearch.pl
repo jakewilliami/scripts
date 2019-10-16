@@ -18,6 +18,8 @@ use strict;
 use File::Find;
 use Time::HiRes qw( time );
 use File::Spec::Functions 'catfile';
+use Getopt::Long qw(GetOptions);
+use Term::ExtendedColor ':attributes';
 
 # This is a helper function to initialize our %mutc variable.  (https://github.com/evalEmpire/method-signatures/pull/129/commits/bbed93f169a74b94da67c08d1f5f9e2c39daf130)
 #no warnings 'deprecated';
@@ -28,7 +30,12 @@ my $fileDir = "./";
 my $searchString = $ARGV[0];
 #my $insensitiveSearch = /$searchString/i;
 
-print color("BOLD RED"), "\nThis PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\nThis PDF searching tool presently cannot tell how many search terms are found; only in how many PDFs.  Sorry for any inconvenience.\n\n", color("reset");
+if ($ARGV[0] = "-h") {
+    print color("BOLD"), "Usage: cd /dir/to/search/ && pdfsearch.pl \"<search_term>\" [option...]\n", color("reset");
+    print color("BOLD"), italic("\nThe present programme will search PDFs in current directory and subdirectories for a search term, then print the PDFs for which said tern is found, and then print how many PDFs the search term was found in.  "), color("BOLD YELLOW"), italic("This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively. It also presently cannot tell how many search terms are found; only in how many PDFs.  Sorry for any inconvenience.\n"), color("reset");
+    print color("BOLD BLUE"), "\n   -h           ", color("BOLD YELLOW"), "Shows help (present output).\n", color("reset");
+    exit;
+}
 
 my $countPdfsFound = 0;
 my $countTerms = 0;
