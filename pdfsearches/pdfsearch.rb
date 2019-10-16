@@ -31,10 +31,7 @@ foundCount = 0
 pdfCount = 0
 os_walk = Dir.glob( "#{mainDir}/**/*.pdf" )
 
-#print color("BOLD"), "Usage: cd /dir/to/search/ && pdfsearch \"<search_term>\" [option...]\n", color("reset");
-#    print color("BOLD"), italic("\nThe present programme will search PDFs in current directory and subdirectories for a search term, then print the PDFs for which said tern is found, and then print how many PDFs the search term was found in.  "), color("BOLD YELLOW"), italic("This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively. It also presently cannot tell how many search terms are found; only in how many PDFs.  Sorry for any inconvenience.\n"), color("reset");
-
-if ARGV[0] = "-h"
+if ARGV[0] eq "-h"
     puts "Usage: cd /dir/to/search/ && pdfsearch \"<search_term>\" [option...]\n".bwhite
     puts "The present programme will search PDFs in current directory and subdirectories for a search term, then print the PDFs for which said tern is found, and then print how many PDFs the search term was found in, and how many times it was found.".bitwhite
     puts

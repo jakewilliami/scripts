@@ -17,7 +17,7 @@ class bcolours:
     BBLUE = '\033[1;38;5;26m'
 
 parser = argparse.ArgumentParser(description=bcolours.BRED + 'Please enter a string to search for.' + bcolours.NORM)
-parser.add_argument(bcolours.BBLUE + 'search_string' + bcolours.NORM, help=bcolours.BYELLOW + "Your desired search term name." + bcolours.NORM)
+parser.add_argument('search_string', help=bcolours.BYELLOW + "Your desired search term name." + bcolours.NORM)
 args = parser.parse_args() 
 
 start_time = time.time()

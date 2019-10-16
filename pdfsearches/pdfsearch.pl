@@ -30,7 +30,7 @@ my $fileDir = "./";
 my $searchString = $ARGV[0];
 #my $insensitiveSearch = /$searchString/i;
 
-if ($ARGV[0] = "-h") {
+if ($ARGV[0] eq "-h") {
     print color("BOLD"), "Usage: cd /dir/to/search/ && pdfsearch.pl \"<search_term>\" [option...]\n", color("reset");
     print color("BOLD"), italic("\nThe present programme will search PDFs in current directory and subdirectories for a search term, then print the PDFs for which said tern is found, and then print how many PDFs the search term was found in.  "), color("BOLD YELLOW"), italic("This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively. It also presently cannot tell how many search terms are found; only in how many PDFs.  Sorry for any inconvenience.\n"), color("reset");
     print color("BOLD BLUE"), "\n   -h           ", color("BOLD YELLOW"), "Shows help (present output).\n", color("reset");
