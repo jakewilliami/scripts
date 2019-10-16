@@ -28,19 +28,24 @@ my $fileDir = "/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimest
 my $searchString = $ARGV[0];
 #my $insensitiveSearch = /$searchString/i;
 
-print color("BOLD RED"), "This PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\n\n", color("reset");
+print color("BOLD RED"), "\nThis PDF searching tool is presently case sensitive.  Ensure you are entering your search term case sensitively.\nThis PDF searching tool presently cannot tell how many search terms are found; only in how many PDFs.  Sorry for any inconvenience.\n\n", color("reset");
+
+my $countPdfsFound = 0;
+my $countTerms = 0;
+
+my $found = "false";
 
 sub eachFile {
-  my $filename = $_;
-  my $fullpath = $File::Find::name;
-  foreach my $f ($filename) {
+    my $filename = $_;
+    my $fullpath = $File::Find::name;
+    foreach my $f ($filename) {
         if ($f =~ /\.pdf\z/) {
             my $tFromAny = Text::FromAny->new(
             file => $f);
             my $text = $tFromAny->text;
-#            my $fullfilename = join($fullpath, $filename)
             if (index($text, $searchString) != -1) {
-               print color("BOLD"), "\"${searchString}\" found in ${fullpath}/${filename}!\n", color("reset");
+                print color("BOLD"), "\"${searchString}\" found in ${fullpath}/${filename}!\n", color("reset");
+                $countPdfsFound++;
             } 
         }
     }
@@ -48,23 +53,10 @@ sub eachFile {
 
 my $startTime = time();
 
-#sub perl_style_count {
-#        $fileName = shift;
-#        open(FILE, "<$fileName") or die "Could not open file: $!";
-#
-#        my ($lines, $words, $chars) = (0,0,0);
-#
-#        while (<FILE>) {
-#            $lines++;
-#            $chars += length($_);
-#            $words += scalar(split(/\s+/, $_));
-#        }
-#}
-
 find (\&eachFile, $fileDir);
 
 my $endTime = time();
 my $runTime = $endTime - $startTime;
 
-print color("BOLD YELLOW"), "${runTime} seconds\n", color("reset");
-print color("BOLD GREEN"), "The word \"${searchString}\" was found 3 times in 2 pdfs", color("reset");
+print color("BOLD YELLOW"), "\n${runTime} seconds\n", color("reset");
+print color("BOLD GREEN"), "The word \"${searchString}\" was found in ${countPdfsFound} pdfs\n", color("reset");
