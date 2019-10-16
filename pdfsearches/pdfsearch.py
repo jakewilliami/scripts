@@ -6,10 +6,6 @@ import os
 import time
 import argparse
 
-parser = argparse.ArgumentParser(description='Please enter a string to search for.')
-parser.add_argument('search_string', help="Your desired search term name.")
-args = parser.parse_args() 
-
 root = './'
 
 class bcolours:
@@ -18,6 +14,11 @@ class bcolours:
     BRED = '\033[1;31m'
     BWHITE = '\033[1;38m'
     NORM = '\033[0;38m'
+    BBLUE = '\033[1;38;5;26m'
+
+parser = argparse.ArgumentParser(description=bcolours.BRED + 'Please enter a string to search for.' + bcolours.NORM)
+parser.add_argument(bcolours.BBLUE + 'search_string' + bcolours.NORM, help=bcolours.BYELLOW + "Your desired search term name." + bcolours.NORM)
+args = parser.parse_args() 
 
 start_time = time.time()
     
