@@ -67,3 +67,13 @@ which will work for the most part.  However, this causes session errors when you
 exec bash
 ```
 at the end of the script that doesn't work as an alias, and it now works.  However, this is not the [best option](https://unix.stackexchange.com/a/278080/372726) (see comments by @G-Man).
+
+---
+
+### A Note on `pdfsearch` in Terminal
+
+I have run
+```
+echo 'alias pdfsearch.<extension>="<program with which to run> ~/bin/scripts/pdfsearches/pdfsearch.<extension>"' >> ~/.bashrc && bash
+```
+For example, I ran `echo 'alias pdfsearch.rb="ruby ~/bin/scripts/pdfsearches/pdfsearch.rb"' >> ~/.bashrc && bash`, and now I can just run `pdfsearch.rb <search string>` in any directory.
