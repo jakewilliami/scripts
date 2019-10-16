@@ -2,5 +2,5 @@
 
 DIR="/Users/jakeireland/bin/scripts/"
 
-cd "${DIR}" #when use -F don't need -p  #use -R to list subdirs
+cd "${DIR}"
 python3 "${DIR}"python/ls.py "${DIR}"
