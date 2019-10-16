@@ -24,7 +24,7 @@ use File::Spec::Functions 'catfile';
 #require Any::Moose;
 #Any::Moose->import('::Util::TypeConstraints');
 
-my $fileDir = "/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/";
+my $fileDir = "./";
 my $searchString = $ARGV[0];
 #my $insensitiveSearch = /$searchString/i;
 
