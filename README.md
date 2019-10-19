@@ -14,7 +14,7 @@ You may need to restart terminal after this step.  To make the script executable
 ```
 chmod u+x <name_of_script>`
 ```
-and your script will be executable (from that directory only, until you add it to your path; then it will be executable anywhere).
+and your script will be executable (from that directory only, until you add it to your path; then it will be executable anywhere).  In addition to this, for my 2008 iMac, I had to run `/path/to/script/dir/<name_of_scripts>` (not just `<name_of_script>`) for the command to work, as if it doesn't register my path.  I am in the process of fixing this.
 
 You only need to do the above for bash scripts (which, for ease of commandifying them, do not have a file extension).  Running other kinds of scripts may have different requirements.
 
