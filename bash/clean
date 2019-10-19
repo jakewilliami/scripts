@@ -4,7 +4,7 @@
 HELP="\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
 
 display_help() {
-    echo -e "\033[1;38mUsage: empt [option...]\033[0;38m"
+    echo -e "\033[1;38mUsage: [sudo] empt [option...]\033[0;38m"
     echo
     echo -e "\033[1;3;31mOmitting option altogether will iteratively delete everything in both Trash and Downloads.\033[0;38m"
     echo
@@ -17,11 +17,11 @@ display_help() {
 while getopts ":tdh" OPTION; do
         case $OPTION in
                 t)
-                    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash*  
+                    rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -drf ~/.Trash*  
                     ;;
 
                 d)
-                    rm -rf ~/Downloads/*
+                    rm -drf ~/Downloads/*
                     ;;
                 h)
                     display_help
@@ -34,5 +34,5 @@ done
 
 if [[ -z $1 ]]
 then
-    rm -rf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -rf ~/.Trash* && rm -rf ~/Downloads/*
+    rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -drf ~/.Trash* && rm -drf ~/Downloads/*
 fi
