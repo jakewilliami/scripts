@@ -1,10 +1,28 @@
-# Scripts for Bash et al.
+<h1 align="center">
+  Scripts for Bash et al.
+</h1>
+
+
+## Description
 
 While I am beginning to look into different sorts of programming, I want to have as much experience as possible.  Hence, I have created this repository as a kind of playground for various scripts I try to write.  Be warned that not everything in here may be functional.
 
+One of these directories is called `pdfsearches`, in which I play around in different languages in order to get a feel of their function and syntax, while trying to create a tool to iteratively search through PDFs in for a search term.
+
+## Contents
+
+- [Description](#description)
+- [Contents](#contents)
+- [Executing Commands](#executing-commands)
+- [Chromatic Echos](#chromatic-echos)
+- [In Case of Moving Files Around](#in-case-of-moving-files-around)
+- [In Case of Issues](#in-case-of-issues)
+- [A Note on `cd` in Subshell](#a-note-on-cd-in-subshell)
+- [A Note on `pdfsearch` in Terminal](#a-note-on-pdfsearch-in-terminal)
+
 ---
 
-### Executing commands
+## Executing commands
 
 Once the scripts have been written, you will need to add the script location to your path, and then make it exacutable.  The former can be done by:
 ```
@@ -22,7 +40,7 @@ Happy scripting!
 
 ---
 
-### Chromatic Echos
+## Chromatic Echos
 
 (That sub-heading would be an awesome band name).  For reference, I have:
 * bold green = `echo -e "\033[1;38;5;2m <ENTER_TEXT_HERE> \033[0;38m"`
@@ -35,7 +53,7 @@ A side note on colour: I use the terminal theme [Arthur](https://github.com/lysy
 
 ---
 
-### In Case of Moving Files Around
+## In Case of Moving Files Around
 
 See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the original notes on this process.  The process of moving files *while retaining their commit history* is as follows:
 1. `git filter-branch --tree-filter 'if [ -f <file_to_be_moved> ]; then mkdir <new_dir> && mv <file_to_be_moved> ./<new_dir>/<file_to_be_moved>; fi'`.  Note that this will fail if the `new_dir` already exists.
@@ -44,7 +62,7 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 
 ---
 
-### In Case of Issues
+## In Case of Issues
 
 If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' /path/to/file`.
 
@@ -52,7 +70,7 @@ See commit `git show e3e79ca03dc16526b486e06b7e88d8db566986e4` in branch `1.14.
 
 ---
 
-### A Note on `cd` in Subshell
+## A Note on `cd` in Subshell
 
 When you write `cd /path/to/dir` in a script and run it, you don't actually change working directories in your session (only in the subshell running in the script).  An easy workaround is to write
 ```
@@ -70,7 +88,7 @@ at the end of the script that doesn't work as an alias, and it now works.  Howev
 
 ---
 
-### A Note on `pdfsearch` in Terminal
+## A Note on `pdfsearch` in Terminal
 
 I have run
 ```
