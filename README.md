@@ -38,7 +38,6 @@ You only need to do the above for bash scripts (which, for ease of commandifying
 
 Happy scripting!
 
----
 
 ## Chromatic Echos
 
@@ -51,7 +50,6 @@ Happy scripting!
 
 A side note on colour: I use the terminal theme [Arthur](https://github.com/lysyi3m/macos-terminal-themes).  For information of `ls` colour output, see comments in `./scripts`.
 
----
 
 ## In Case of Moving Files Around
 
@@ -60,7 +58,6 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 2. If you are doing this more than once, after each move, you will have to run `git update-ref -d refs/original/refs/heads/master`.
 3. Once you are finished moving all of the files you need to move, push by using `git push -f origin master`.
 
----
 
 ## In Case of Issues
 
@@ -68,7 +65,6 @@ If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$/
 
 See commit `git show e3e79ca03dc16526b486e06b7e88d8db566986e4` in branch `1.14.4` in [this repo](https://github.com/Explosive-Crayons/Electrum) for more on this.
 
----
 
 ## A Note on `cd` in Subshell
 
@@ -86,7 +82,6 @@ exec bash
 ```
 at the end of the script that doesn't work as an alias, and it now works.  However, this is not the [best option](https://unix.stackexchange.com/a/278080/372726) (see comments by @G-Man).
 
----
 
 ## A Note on `pdfsearch` in Terminal
 
