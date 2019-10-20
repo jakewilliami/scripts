@@ -1,35 +1,75 @@
 #! /bin/bash
-#Script for git log!  REQUIRES `PERL`.
+# Script for git log!  REQUIRES `perl`.
+# ensure you run `brew install cmake pkg-config icu4c && gem install github-linguist` for option `-l`
 
+# Colours
+NORM="\033[0;38m"
+JULIA="\033[1;38;5;133m"  # '\033[1;38;5;128m' or 213 m
+PYTHON="\033[1;38;5;26m"  # '\033[1;38;5;18m'
+JAVA="\033[1;38;5;94m"
+RUST="\033[1;38;5;5m"
+SHELL="\033[1;38;5;28m"  # '\033[1;38;5;46m'
+PERL="\033[1;38;5;111m"  # '\033[1;38;5;39m'
+RUBY="\033[1;38;5;88m"
+ELIXIR="\033[1;38;5;54m"
+COMMONLISP="\033[1;38;5;29m"
+LUA="\033[1;38;5;17m"
 
+# Small Variabels
 LOGNUMBER=$([[ -z "$1" ]] && echo "10")
 COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+GHLING=$(github-linguist)
 HELP="\033[1;33mNot a valid option.  Use -h for help.\033[0;38m"
 
+# Help
 display_help() {
     echo -e "\033[1;38mUsage: gl [option...]\033[0;38m"
     echo
     echo -e "\033[1;38;5;26m   -c           \033[1;33mShows present commit count on working branch.\033[0;38m"
     echo -e "\033[1;38;5;26m   -s           \033[1;33mShows git status minimally.\033[0;38m"
     echo -e "\033[1;38;5;26m   -i           \033[1;33mShows currently open issues in working branch.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -l           \033[1;33mShows language breakdown in present repository (may take a minute to load as it needs to access GitHub).\033[0;38m"
     echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
     exit $?
 }
 
+# Languages as string
+languages() {  # prints each line of languages after '%' character in captials without leading whitespace and without spaces between words, all in one line
+    github-linguist | sed 's/.*%//' | awk '{$1=$1};1' | awk '{print toupper($0)}' | awk '{ gsub (" ", "", $0); print}' | awk '{print}' ORS=' '
+}
 
-while getopts ":csih" OPTION; do
+
+#CASES=$(languages | sed -e 's/.*//' )
+
+print_language_breakdown() {
+    array=(`languages`)
+    for i in "${array[@]}"  # from 0--|lowest used lang|
+    do
+        LANGINFO=$( github-linguist | grep -i -- "$i"$ )
+        echo -en "${!i}$LANGINFO${NORM}\n"  # the `${!i}` expands variables indirectly from colours defined above(http://mywiki.wooledge.org/BashFAQ/006#Indirection)
+    done
+}
+
+# Options
+while getopts ":csilh" OPTION; do
         case $OPTION in
                 s)
+                    # Check status
                     git status --short --branch   
                     ;;
-
                 c)
+                    # Check commit count
                     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
                     ;;
                 i)
+                    # Check open issues
                     ghi list
+                    ;;
+                l)
+                    # Check language breakdown
+                    print_language_breakdown
                     ;;
                 h)
                     display_help
@@ -41,11 +81,11 @@ while getopts ":csih" OPTION; do
 done
 
 
-if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]
+if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
 then
     git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
---abbrev-commit -$1$LOGNUMBER | perl -pe \
+--abbrev-commit -$1$LOGNUMBER | perl -pe \  # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour
 ' if (/<([^>]*)>/)
     {
     if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
