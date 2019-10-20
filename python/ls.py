@@ -1,40 +1,39 @@
+#!/usr/bin/env python
+
 import os
 import argparse
+import json
+import sys
+
 
 from os import listdir
 from os.path import isfile, isdir, join
+
 
 parser = argparse.ArgumentParser(description='Please enter a file directory')
 parser.add_argument('dir', help="Your desired directory.")
 args = parser.parse_args()
 
-BGREEN = '\033[1;38;5;2m'
-BYELLOW = '\033[1;33m'
-BRED = '\033[1;31m'
-BWHITE = '\033[1;38m'
-BBLUE = '\033[1;34m'
-NORM = '\033[0;38m'
-JULIA = '\033[1;38;5;133m'  # '\033[1;38;5;128m' or 213 m
-PYTHON = '\033[1;38;5;26m'  # '\033[1;38;5;18m'
-JAVA = '\033[1;38;5;94m'
-RUST = '\033[1;38;5;5m'
-SHELL = '\033[1;38;5;28m'  # '\033[1;38;5;46m'
-PERL = '\033[1;38;5;111m'  # '\033[1;38;5;39m'
-RUBY = '\033[1;38;5;88m'
-ELIXIR = '\033[1;38;5;54m'
-LISP = '\033[1;38;5;29m'
-LUA = '\033[1;38;5;17m'
 
-colorMap = {'.jl': JULIA,
-            '.py': PYTHON,
-            '.java': JAVA,
-            '.rs': RUST,
-            '.sh': SHELL,
-            '.pl': PERL,
-            '.rb': RUBY,
-            '.ex': ELIXIR,
-            '.lisp': LISP,
-            '.lua': LUA}
+with open("/Users/jakeireland/bin/scripts/bash/textcolours.json") as textcolours:
+    colour_dict = json.load(textcolours)
+
+    
+colourMap = {'.jl': colour_dict["JULIA"],
+            '.py': colour_dict["PYTHON"],
+            '.java': colour_dict["JAVA"],
+            '.rs': colour_dict["RUST"],
+            '.sh': colour_dict["SHELL"],
+            '.pl': colour_dict["PERL"],
+            '.rb': colour_dict["RUBY"],
+            '.ex': colour_dict["ELIXIR"],
+            '.lisp': colour_dict["LISP"],
+            '.lua': colour_dict["LUA"],
+            '.c': colour_dict["C"],
+            '.cpp': colour_dict["CPP"],
+            '.R': colour_dict["R"],
+            '.json': colour_dict["JAVASCRIPT"]
+            }
 
 
 def walk_level(some_dir, level=1):
@@ -46,24 +45,23 @@ def walk_level(some_dir, level=1):
         num_sep_this = root.count(os.path.sep)
         if num_sep + level <= num_sep_this:
             del dirs[:]
-
-
+            
 def print_file(file, level):
-    for extension in colorMap.keys():
+    for extension in colourMap.keys():
         if file.endswith(extension):
-            print('{}{}{}{}'.format('\t' * level, colorMap.get(extension), file, NORM))
+            print('{}{}{}{}'.format('\t' * level, colourMap.get(extension), file, colour_dict["NORM"]))
             return
-    print('{}{}{}{}'.format('\t' * level, SHELL, file, NORM))
+    print('{}{}{}{}'.format('\t' * level, colour_dict["SHELL"], file, colour_dict["NORM"]))
 
 
 def print_dirs(root, dirs):
     for dir in dirs:
         if dir.startswith('.'):
             continue
-        print('\t{}{}{}/'.format(BBLUE, dir, NORM))
+        print('\t{}{}{}/'.format(colour_dict["BBLUE"], dir, colour_dict["NORM"]))
         for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
             for child in dirs1:
-                print('\t\t{}{}{}/'.format(BBLUE, child, NORM))
+                print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
             for child in files1:
                 print_file(child, 2)
 

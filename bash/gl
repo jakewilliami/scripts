@@ -1,19 +1,12 @@
 #! /bin/bash
 # Script for git log!  REQUIRES `perl`.
 # ensure you run `brew install cmake pkg-config icu4c && gem install github-linguist` for option `-l`
+# ensure you run `brew install jq`
+
+JSON_FILE=FALSE
 
 # Colours
-NORM="\033[0;38m"
-JULIA="\033[1;38;5;133m"  # '\033[1;38;5;128m' or 213 m
-PYTHON="\033[1;38;5;26m"  # '\033[1;38;5;18m'
-JAVA="\033[1;38;5;94m"
-RUST="\033[1;38;5;5m"
-SHELL="\033[1;38;5;28m"  # '\033[1;38;5;46m'
-PERL="\033[1;38;5;111m"  # '\033[1;38;5;39m'
-RUBY="\033[1;38;5;88m"
-ELIXIR="\033[1;38;5;54m"
-COMMONLISP="\033[1;38;5;29m"
-LUA="\033[1;38;5;17m"
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' /Users/jakeireland/bin/scripts/bash/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> /Users/jakeireland/bin/scripts/bash/textcolours.txt && source /Users/jakeireland/bin/scripts/bash/textcolours.txt && JSON_FILE=TRUE
 
 # Small Variabels
 LOGNUMBER=$([[ -z "$1" ]] && echo "10")
@@ -82,15 +75,21 @@ done
 
 
 if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
-then
+then # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour
     git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
---abbrev-commit -$1$LOGNUMBER | perl -pe \  # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour
-' if (/<([^>]*)>/)
-    {
-    if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
-        { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
-    else 
-        { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
-} '
+--abbrev-commit -$1$LOGNUMBER | perl -pe \
+    ' if (/<([^>]*)>/)
+        {
+        if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
+            { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
+        else 
+            { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
+    } '
+fi
+
+# Clean up
+if [[ JSON_FILE=TRUE ]]
+then
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
 fi
