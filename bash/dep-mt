@@ -1,9 +1,21 @@
 #! /bin/bash
 # Script for modding time!
-# ensure  brew install ghi
+
+BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+JSON_FILE=FALSE
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
+
+cleanup() {
+    if [[ JSON_FILE=TRUE ]]
+    then
+        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    fi 
+}
 
 # changes directory
-cd ~/IntelliJProjects/Electrum
+cd ~/IntelliJProjects/Electrum || exit $?
 
 # define local variables
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -23,7 +35,8 @@ display_help() {
     echo -e "\033[1;38;5;26m   -a           \033[1;33mOpens IntelliJ\033[0;38m"
     echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current branch.\033[0;38m"
     echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
-    exit $?
+    # Clean up
+    cleanup && exit $?
 }
 
 while getopts "h" OPTION; do
@@ -38,7 +51,7 @@ if [[ ! -z "$CLEANLINESS" ]]
 then
     echo -e "${DIRTY_BRANCH}" && \
     exec bash && \
-    exit $?
+    cleanup && exit $?
 fi
 
 
@@ -70,7 +83,7 @@ while getopts ":ab" OPTION; do
                         git checkout "${DESIRED_BRANCH}" && \
                         echo -e "${OPT_ERR}"
                     fi
-                    exit $?
+                    cleanup && exit $?
                     ;;
         esac
 done
@@ -88,4 +101,4 @@ then
     fi
 fi
 
-exec bash
+cleanup && exec bash

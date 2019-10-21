@@ -1,17 +1,22 @@
 #! /bin/bash
 #Script for emptying * directories! 
 
-HELP="\033[1;33mInvalid option.  Use option -h for help.\033[0;38m"
+BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+JSON_FILE=FALSE
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
+
+HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
 
 display_help() {
-    echo -e "\033[1;38mUsage: [sudo] empt [option...]\033[0;38m"
+    echo -e "\033[1;38mUsage: [sudo] empt [option...]${NORM}"
     echo
-    echo -e "\033[1;3;31mOmitting option altogether will iteratively delete everything in both Trash and Downloads.\033[0;38m"
+    echo -e "${ITBRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "\033[1;38;5;26m   -t           \033[1;33mInteratively 31mdeletes everything in Trash (shared and local).\033[0;38m"
-    echo -e "\033[1;38;5;26m   -d           \033[1;33mInteratively deletes everything in Downloads folder.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
-    exit $?
+    echo -e "${DARKBBLUE}   -t           ${BYELLOW}Interatively ${BRED}deletes everything in Trash ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${DARKBBLUE}   -d           ${BYELLOW}Interatively ${BRED}deletes everything in Downloads folder.${NORM}"
+    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows help (present output).${NORM}"
 }
 
 while getopts ":tdh" OPTION; do
@@ -27,7 +32,7 @@ while getopts ":tdh" OPTION; do
                     display_help
                     ;;
                 \?)
-                    echo -e "${HELP}" && exit $?
+                    echo -e "${HELP}"
                     ;;
         esac
 done
@@ -35,4 +40,10 @@ done
 if [[ -z $1 ]]
 then
     rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -drf ~/.Trash* && rm -drf ~/Downloads/*
+fi
+
+# Clean up
+if [[ JSON_FILE=TRUE ]]
+then
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
 fi

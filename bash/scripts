@@ -2,5 +2,5 @@
 
 DIR="/Users/jakeireland/bin/scripts/"
 
-cd "${DIR}"
+cd "${DIR}" || exit $?
 python3 "${DIR}"python/ls.py "${DIR}"

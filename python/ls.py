@@ -46,7 +46,8 @@ def walk_level(some_dir, level=1):
         num_sep_this = root.count(os.path.sep)
         if num_sep + level <= num_sep_this:
             del dirs[:]
-            
+        
+        
 def print_file(file, level):
     for extension in colourMap.keys():
         if file.endswith(extension):
@@ -64,12 +65,14 @@ def print_dirs(root, dirs):
             for child in dirs1:
                 print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
             for child in files1:
+                if child == '.DS_Store':
+                    continue
                 print_file(child, 2)
 
 
 def print_files(root, files):
     for file in files:
-        if file == 'README.md' or file == '.gitignore':
+        if file == 'README.md' or file == '.gitignore' or file == '.DS_Store':
             continue
         print_file(file, 1)
 

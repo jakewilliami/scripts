@@ -16,17 +16,17 @@ COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 GHLING=$(github-linguist)
-HELP="\033[1;33mNot a valid option.  Use -h for help.\033[0;38m"
+HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
 
 # Help
 display_help() {
-    echo -e "\033[1;38mUsage: gl [option...]\033[0;38m"
+    echo -e "${BWHITE}Usage: gl [option...]${BNORM}"
     echo
-    echo -e "\033[1;38;5;26m   -c           \033[1;33mShows present commit count on working branch.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -s           \033[1;33mShows git status minimally.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -i           \033[1;33mShows currently open issues in working branch.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -l           \033[1;33mShows language breakdown in present repository (may take a minute to load as it needs to access GitHub).\033[0;38m"
-    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+    echo -e "${DARKBBLUE}   -c           ${BYELLOW}Shows present commit count on working branch.${NORM}"
+    echo -e "${DARKBBLUE}   -s           ${BYELLOW}Shows git status minimally.${BNORM}"
+    echo -e "${DARKBBLUE}   -i           ${BYELLOW}Shows currently open issues in working branch.${BNORM}"
+    echo -e "${DARKBBLUE}   -l           ${BYELLOW}Shows language breakdown in present repository (may take a minute to access GitHub).${BNORM}"
+    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows help (present output).${BNORM}"
     exit $?
 }
 
@@ -41,13 +41,12 @@ languages() {  # languages | after `%` and white space | in uppercase | with spa
 
 print_language_breakdown() {
     LANGUAGE_BREAKDOWN_STR=$(github-linguist)
-    array=(`languages`)
     for i in $(languages)  #"${array[@]}"  # from 0--|lowest used lang|
     do
         j=$(echo $i | awk '{ gsub ("_", " ", $0); print}')
         k=$(echo $i | awk '{ gsub ("_", "", $0); print}')
         LANGINFO=$(echo "${LANGUAGE_BREAKDOWN_STR}" | egrep -i -- "$j"$ )  # ^.*
-        echo -en "${!k}$LANGINFO${NORM}\n"  # the `${!k}` expands variables indirectly from colours defined above(http://mywiki.wooledge.org/BashFAQ/006#Indirection)
+        echo -en "${!k}$LANGINFO${NORM}\n"  # the `${!i}` expands variables indirectly from colours defined above(http://mywiki.wooledge.org/BashFAQ/006#Indirection)
     done
 }
 
