@@ -2,11 +2,13 @@
 # Script for git log!  REQUIRES `perl`.
 # ensure you run `brew install cmake pkg-config icu4c && gem install github-linguist` for option `-l`
 # ensure you run `brew install jq`
+#ensure you run `brew install yarn && yarn global add taskbook`
 
+BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 JSON_FILE=FALSE
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' /Users/jakeireland/bin/scripts/bash/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> /Users/jakeireland/bin/scripts/bash/textcolours.txt && source /Users/jakeireland/bin/scripts/bash/textcolours.txt && JSON_FILE=TRUE
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
 
 # Small Variabels
 LOGNUMBER=$([[ -z "$1" ]] && echo "10")
@@ -29,19 +31,23 @@ display_help() {
 }
 
 # Languages as string
-languages() {  # prints each line of languages after '%' character in captials without leading whitespace and without spaces between words, all in one line
-    github-linguist | sed 's/.*%//' | awk '{$1=$1};1' | awk '{print toupper($0)}' | awk '{ gsub (" ", "", $0); print}' | awk '{print}' ORS=' '
+languages() {  # languages | after `%` and white space | in uppercase | with spaces as underscores 
+    github-linguist | \
+    sed 's/.*%[[:blank:]]*//' | \
+    awk '{print toupper($0)}' | \
+    awk '{ gsub (" ", "_", $0); print}'
 }
 
 
-#CASES=$(languages | sed -e 's/.*//' )
-
 print_language_breakdown() {
+    LANGUAGE_BREAKDOWN_STR=$(github-linguist)
     array=(`languages`)
-    for i in "${array[@]}"  # from 0--|lowest used lang|
+    for i in $(languages)  #"${array[@]}"  # from 0--|lowest used lang|
     do
-        LANGINFO=$( github-linguist | grep -i -- "$i"$ )
-        echo -en "${!i}$LANGINFO${NORM}\n"  # the `${!i}` expands variables indirectly from colours defined above(http://mywiki.wooledge.org/BashFAQ/006#Indirection)
+        j=$(echo $i | awk '{ gsub ("_", " ", $0); print}')
+        k=$(echo $i | awk '{ gsub ("_", "", $0); print}')
+        LANGINFO=$(echo "${LANGUAGE_BREAKDOWN_STR}" | egrep -i -- "$j"$ )  # ^.*
+        echo -en "${!k}$LANGINFO${NORM}\n"  # the `${!k}` expands variables indirectly from colours defined above(http://mywiki.wooledge.org/BashFAQ/006#Indirection)
     done
 }
 
@@ -49,19 +55,19 @@ print_language_breakdown() {
 while getopts ":csilh" OPTION; do
         case $OPTION in
                 s)
-                    # Check status
+                    # Prints what in repo has been altered since last commit + push
                     git status --short --branch   
                     ;;
                 c)
-                    # Check commit count
+                    # Prints commit count
                     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
                     ;;
                 i)
-                    # Check open issues
+                    # Prints open issues
                     ghi list
                     ;;
                 l)
-                    # Check language breakdown
+                    # Prints language breakdown
                     print_language_breakdown
                     ;;
                 h)
