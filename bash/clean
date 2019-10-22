@@ -21,13 +21,13 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 # Help
 HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
 display_help() {
-    echo -e "\033[1;38mUsage: [sudo] empt [option...]${NORM}"
+    echo -e "${BWHITE}Usage: [sudo] empt [option...]${NORM}"
     echo
-    echo -e "${ITBRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
+    echo -e "${BWHITE}The present script will help to clear deprecated files.  ${ITBRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "${DARKBBLUE}   -t           ${BYELLOW}Interatively ${BRED}deletes everything in Trash ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${DARKBBLUE}   -d           ${BYELLOW}Interatively ${BRED}deletes everything in Downloads folder.${NORM}"
-    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows help (present output).${NORM}"
+    echo -e "${DARKBBLUE}   -t           ${BYELLOW}Interatively ${BRED}deletes everything in ${DARKBBLUE}t${BRED}rash ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${DARKBBLUE}   -d           ${BYELLOW}Interatively ${BRED}deletes everything in ${DARKBBLUE}d${BRED}ownloads folder.${NORM}"
+    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows ${DARKBBLUE}h${BYELLOW}elp (present output).${NORM}"
 }
 
 

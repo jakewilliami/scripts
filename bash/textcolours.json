@@ -4,6 +4,7 @@
     "BRED": "\u001b[1;31m",
     "ITBRED": "\u001b[1;3;31m",
     "BWHITE": "\u001b[1;38m",
+    "ITBWHITE": "\u001b[1;3;38m",
     "BBLUE": "\u001b[1;34m",
     "DARKBBLUE": "\u001b[1;38;5;26m",
     "NORM": "\u001b[0;38m",

@@ -25,11 +25,13 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 display_help() {
     echo -e "${BWHITE}Usage: gl [option...]${BNORM}"
     echo
-    echo -e "${DARKBBLUE}   -c           ${BYELLOW}Shows present commit count on working branch.${NORM}"
-    echo -e "${DARKBBLUE}   -s           ${BYELLOW}Shows git status minimally.${BNORM}"
-    echo -e "${DARKBBLUE}   -i           ${BYELLOW}Shows currently open issues in working branch.${BNORM}"
-    echo -e "${DARKBBLUE}   -l           ${BYELLOW}Shows language breakdown in present repository (may take a minute to access GitHub).${BNORM}"
-    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows help (present output).${BNORM}"
+    echo -e "${ITBWHITE}The present script will print a Git log of things that one may find useful or want to know.  See below for options.  By default, it will print the past ten commits to the current branch, not including merges.${NORM}"
+    echo
+    echo -e "${DARKBBLUE}   -c           ${BYELLOW}Current ${DARKBBLUE}c${BYELLOW}ommit count on working branch in the past 24 hours.${NORM}"
+    echo -e "${DARKBBLUE}   -s           ${BYELLOW}Prints current git ${DARKBBLUE}s${BYELLOW}tatus minimally.${BNORM}"
+    echo -e "${DARKBBLUE}   -i           ${BYELLOW}Currently open ${DARKBBLUE}i${BYELLOW}ssues in repository.${BNORM}"
+    echo -e "${DARKBBLUE}   -l           ${BYELLOW}Prints ${DARKBBLUE}l${BYELLOW}anguage breakdown in present repository.${BNORM}"
+    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows ${DARKBBLUE}h${BYELLOW}elp (present output).${BNORM}"
     exit $?
 }
 

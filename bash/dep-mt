@@ -30,11 +30,11 @@ DIRTY_BRANCH="\033[01;31mDo something with untracked or uncommitted changes.\033
 display_help() {
     echo -e "\033[1;38mUsage: mt [option...]\033[0;38m"
     echo
-    echo -e "\033[1;3;38mThe present script will check to see if the modding branch 1.14.4 is clean, and go to that branch, as well as open IntelliJ.\033[0;38m"
+    echo -e "\033[1;3;38mThe present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.\033[0;38m"
     echo
-    echo -e "\033[1;38;5;26m   -a           \033[1;33mOpens IntelliJ\033[0;38m"
-    echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current branch.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+    echo -e "\033[1;38;5;26m   -a           \033[1;33mOpens \033[1;38;5;26ma\033[1;33mpplication IntelliJ\033[0;38m"
+    echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current \033[1;38;5;26mb\033[1;33mranch.\033[0;38m"
+    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows \033[1;38;5;26mh\033[1;33melp (present output).\033[0;38m"
     # Clean up
     clean-exit
 }
