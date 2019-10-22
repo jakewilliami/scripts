@@ -30,6 +30,8 @@ display_help() {
     echo -e "${DARKBBLUE}   -c           ${BYELLOW}Current ${DARKBBLUE}c${BYELLOW}ommit count on working branch in the past 24 hours.${NORM}"
     echo -e "${DARKBBLUE}   -s           ${BYELLOW}Prints current git ${DARKBBLUE}s${BYELLOW}tatus minimally.${BNORM}"
     echo -e "${DARKBBLUE}   -i           ${BYELLOW}Currently open ${DARKBBLUE}i${BYELLOW}ssues in repository.${BNORM}"
+    echo -e "${DARKBBLUE}   -b           ${BYELLOW}Lists ${DARKBBLUE}b${BYELLOW}ranches of current repository, and highlights current branch.${BNORM}"
+    echo -e "${DARKBBLUE}   -t           ${BYELLOW}Lists this repository's issues' ${DARKBBLUE}t${BYELLOW}ags/labels.${BNORM}"
     echo -e "${DARKBBLUE}   -l           ${BYELLOW}Prints ${DARKBBLUE}l${BYELLOW}anguage breakdown in present repository.${BNORM}"
     echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows ${DARKBBLUE}h${BYELLOW}elp (present output).${BNORM}"
     exit $?
@@ -56,7 +58,7 @@ print_language_breakdown() {
 }
 
 # Options
-while getopts ":csbilh" OPTION; do
+while getopts ":scbtilh" OPTION; do
         case $OPTION in
                 s)
                     # Prints what in repo has been altered since last commit + push
@@ -69,6 +71,8 @@ while getopts ":csbilh" OPTION; do
                     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
                     ;;
                 b)  git branch
+                    ;;
+                t)  ghi label
                     ;;
                 i)
                     # Prints open issues
