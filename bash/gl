@@ -31,7 +31,7 @@ display_help() {
     echo -e "${BBLUE}   -s           ${BYELLOW}Prints current git ${BBLUE}s${BYELLOW}tatus minimally.${BNORM}"
     echo -e "${BBLUE}   -i           ${BYELLOW}Currently open ${BBLUE}i${BYELLOW}ssues in repository.${BNORM}"
     echo -e "${BBLUE}   -b           ${BYELLOW}Lists ${BBLUE}b${BYELLOW}ranches of current repository, and highlights current branch.${BNORM}"
-    echo -e "${BBLUE}   -t           ${BYELLOW}Lists this repository's issues' ${BBLUE}t${BYELLOW}ags/labels.${BNORM}"
+    echo -e "${BBLUE}   -t           ${BYELLOW}Lists this repository's issues' ${BBLUE}t${BYELLOW}ags/labels.  Use \`ghi label <issue number(s)> -a <\"tag\">\` to add tags to issue(s).${BNORM}"
     echo -e "${BBLUE}   -l           ${BYELLOW}Prints ${BBLUE}l${BYELLOW}anguage breakdown in present repository.${BNORM}"
     echo -e "${BBLUE}   -h           ${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${BNORM}"
     exit $?
@@ -72,7 +72,7 @@ while getopts ":scbtilh" OPTION; do
                     ;;
                 b)  git branch
                     ;;
-                t)  ghi label
+                t)  ghi label --list
                     ;;
                 i)
                     # Prints open issues
