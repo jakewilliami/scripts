@@ -8,10 +8,8 @@ BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 
 #Clean up
 clean-exit() {
-    if [[ -f ${BASH_DIR}/textcolours.txt ]]
-    then
-        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-    fi
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
     exit $?
 }
 
@@ -65,10 +63,8 @@ for t in "${LOCAL_DIR}"/*.tex; do
     fi
 done
 
-if [ $DIFFT = false ]
-then
-    echo -e "${ALL_GOOD_TEX}"
-fi
+[ $DIFFT = false ] && \
+echo -e "${ALL_GOOD_TEX}"
 
 
 for j in "${LOCAL_DIR}"/*.json; do
@@ -80,15 +76,12 @@ for j in "${LOCAL_DIR}"/*.json; do
     fi
 done
 
-if [ "$DIFFJ" = "false" ]
-then
-    echo -e "${ALL_GOOD_JSON}"
-fi
+
+[ "$DIFFJ" = "false" ] && \
+echo -e "${ALL_GOOD_JSON}"
 
 
 #clean up
-if [[ -f ${BASH_DIR}/textcolours.txt ]]
-then
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-fi
+[[ -f ${BASH_DIR}/textcolours.txt ]] && \
+rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
 exec bash

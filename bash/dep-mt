@@ -4,10 +4,8 @@
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 
 clean-exit() {
-    if [[ -f ${BASH_DIR}/textcolours.txt ]]
-    then
-        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-    fi
+    [ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
     exit $?
 }
 
@@ -51,12 +49,10 @@ done
 
 
 # If dirty
-if [[ ! -z "$CLEANLINESS" ]]
-then
-    echo -e "${DIRTY_BRANCH}" && \
-    exec bash && \
-    clean-exit
-fi
+[[ ! -z "$CLEANLINESS" ]] && \
+echo -e "${DIRTY_BRANCH}" && \
+exec bash && \
+clean-exit
 
 
 # Options
@@ -110,8 +106,6 @@ fi
 
 
 #clean up
-if [[ -f ${BASH_DIR}/textcolours.txt ]]
-then
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-fi
+[[ -f ${BASH_DIR}/textcolours.txt ]] && \
+rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
 exec bash

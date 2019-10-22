@@ -7,10 +7,8 @@ BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 
 # Clean up
 clean-exit() {
-    if [[ -f ${BASH_DIR}/textcolours.txt ]]
-    then
-        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-    fi
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
     exit $?
 }
 
