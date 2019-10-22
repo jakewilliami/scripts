@@ -24,9 +24,10 @@ display_help() {
     echo
     echo -e "${ITBWHITE}The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  ${BYELLOW}There is no current counter to tell how many times the search term was found.${NORM}"
     echo
-    echo -e "${BBLUE}   -h           ${BYELLOW}Shows help (present output).${NORM}"
+    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
     clean-exit
 }
+
 
 while getopts "h" OPTION; do
     case $OPTION in

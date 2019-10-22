@@ -20,6 +20,25 @@ clean-exit() {
 jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
 
 
+display_help() {
+    echo -e "${BWHITE}Usage: mymacros [option... | file name...]${BWHITE}"
+    echo
+    echo -e "${ITBWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
+    clean-exit
+}
+
+
+while getopts "h" OPTION; do
+    case $OPTION in
+        h)
+            display_help
+            ;; 
+    esac
+done
+
+
 #Define local variables
 REPLACING_TEX="${BYELLOW}Replacing outdated .tex file(s) in git repository.${NORM}"
 COMPLETED_TEX="${BGREEN}.tex transfer complete.${NORM}"
@@ -67,4 +86,9 @@ then
 fi
 
 
-clean-exit
+#clean up
+if [[ -f ${BASH_DIR}/textcolours.txt ]]
+then
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+fi
+exec bash

@@ -32,9 +32,9 @@ display_help() {
     echo
     echo -e "${ITBWHITE}The present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.${NORM}"
     echo
-    echo -e "${BBLUE}   -a           ${BYELLOW}Opens ${BBLUE}a${BYELLOW}pplication IntelliJ${NORM}"
-    echo -e "${BBLUE}   -b           ${BYELLOW}Stays on current ${BBLUE}b${BYELLOW}ranch.${NORM}"
-    echo -e "${BBLUE}   -h           ${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
+    echo -e "${BBLUE}\t -a \t${BYELLOW}Opens ${BBLUE}a${BYELLOW}pplication IntelliJ${NORM}"
+    echo -e "${BBLUE}\t -b \t${BYELLOW}Stays on current ${BBLUE}b${BYELLOW}ranch.${NORM}"
+    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
     # Clean up
     clean-exit
 }
