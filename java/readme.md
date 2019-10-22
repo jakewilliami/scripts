@@ -4,3 +4,4 @@ Scripts for Bash et al.
 
 
 ## Description
+To help with my aid in [this mod](https://github.com/Explosive-Crayons/Electrum), I have created a Java directory in which to play around.
