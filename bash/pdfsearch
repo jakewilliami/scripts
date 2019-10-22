@@ -1,14 +1,31 @@
 #! /bin/bash
-
 #ensure you run `brew install pdfgrep` and `brew install coreutils`, and ensure you have python if you use the python method to calculate time
 
-display_help() {
-    echo -e "\033[1;38mUsage: cd /dir/to/search/ && pdfsearch \"<search_term>\" [option...]\033[0;38m"
-    echo
-    echo -e "\033[1;3;38mThe present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  \033[1;33mThere is no current counter to tell how many times the search term was found.\033[0;38m"
-    echo
-    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
+
+BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+
+
+# Clean up
+clean-exit() {
+    if [[ -f ${BASH_DIR}/textcolours.txt ]]
+    then
+        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    fi
     exit $?
+}
+
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+display_help() {
+    echo -e "${BWHITE}Usage: cd /dir/to/search/ && pdfsearch [\"search term(s)\"] [option...]${BWHITE}"
+    echo
+    echo -e "${ITBWHITE}The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  ${BYELLOW}There is no current counter to tell how many times the search term was found.${NORM}"
+    echo
+    echo -e "${BBLUE}   -h           ${BYELLOW}Shows help (present output).${NORM}"
+    clean-exit
 }
 
 while getopts "h" OPTION; do
@@ -20,10 +37,10 @@ while getopts "h" OPTION; do
 done
 
 #start=$(python3 -c 'import time; print(time.time())')
-start=`gdate +%s.%N` || exit $?
+start=`gdate +%s.%N` || clean-exit
 
 #begin search
-pdf_search=$(pdfgrep -ril $1) || exit $?
+pdf_search=$(pdfgrep -ril $1) || clean-exit
 
 echo -e "\033[1;38m${pdf_search}\033[0;38m"
 
@@ -47,3 +64,6 @@ echo -e "\033[1;38;5;2mThe word \"$1\" was found in"${pdf_count}" PDFs\033[0;38m
 #ruby -e 'puts Time.now.to_f/10000000000'#Output in seconds
 #php -r 'echo microtime(TRUE)/10000000000;' 
 #| perl -MTime::Piece -pe 's/(\d{13})/Time::Piece->localtime($1 \/1000)->strftime("%Y-%m-%d %a")/e'
+
+
+clean-exit

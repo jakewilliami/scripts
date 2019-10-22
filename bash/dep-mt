@@ -23,18 +23,18 @@ CLEANLINESS=$(git status --porcelain)
 IDE_DIR="/Users/jakeireland/Applications/JetBrains Toolbox/IntelliJ IDEA Community Release.app"
 IDE="IntelliJ"
 DESIRED_BRANCH="1.14.4"
-MT="\033[1;38;5;2mModding time!\033[0;38m"
-OPT_ERR="\033[1;33m$1 is not a valid option.  Use option -h for help.\033[0;38m"
-DIRTY_BRANCH="\033[01;31mDo something with untracked or uncommitted changes.\033[0;38m"
+MT="${BGREEN}Modding time!${NORM}"
+OPT_ERR="${BYELLOW}$1 is not a valid option.  Use option -h for help.${NORM}"
+DIRTY_BRANCH="${BRED}Do something with untracked or uncommitted changes.${NORM}"
 
 display_help() {
-    echo -e "\033[1;38mUsage: mt [option...]\033[0;38m"
+    echo -e "${BWHITE}Usage: mt [option...]${NORM}"
     echo
-    echo -e "\033[1;3;38mThe present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.\033[0;38m"
+    echo -e "${ITBWHITE}The present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.${NORM}"
     echo
-    echo -e "\033[1;38;5;26m   -a           \033[1;33mOpens \033[1;38;5;26ma\033[1;33mpplication IntelliJ\033[0;38m"
-    echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current \033[1;38;5;26mb\033[1;33mranch.\033[0;38m"
-    echo -e "\033[1;38;5;26m   -h           \033[1;33mShows \033[1;38;5;26mh\033[1;33melp (present output).\033[0;38m"
+    echo -e "${BBLUE}   -a           ${BYELLOW}Opens ${BBLUE}a${BYELLOW}pplication IntelliJ${NORM}"
+    echo -e "${BBLUE}   -b           ${BYELLOW}Stays on current ${BBLUE}b${BYELLOW}ranch.${NORM}"
+    echo -e "${BBLUE}   -h           ${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
     # Clean up
     clean-exit
 }

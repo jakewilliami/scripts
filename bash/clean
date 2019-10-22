@@ -25,9 +25,9 @@ display_help() {
     echo
     echo -e "${BWHITE}The present script will help to clear deprecated files.  ${ITBRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "${DARKBBLUE}   -t           ${BYELLOW}Interatively ${BRED}deletes everything in ${DARKBBLUE}t${BRED}rash ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${DARKBBLUE}   -d           ${BYELLOW}Interatively ${BRED}deletes everything in ${DARKBBLUE}d${BRED}ownloads folder.${NORM}"
-    echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows ${DARKBBLUE}h${BYELLOW}elp (present output).${NORM}"
+    echo -e "${BBLUE}   -t           ${BYELLOW}Interatively ${BRED}deletes everything in ${BBLUE}t${BRED}rash ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${BBLUE}   -d           ${BYELLOW}Interatively ${BRED}deletes everything in ${BBLUE}d${BRED}ownloads folder.${NORM}"
+    echo -e "${BBLUE}   -h           ${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
 }
 
 
