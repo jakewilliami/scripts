@@ -65,7 +65,7 @@ def print_dirs(root, dirs):
             for child in dirs1:
                 print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
             for child in files1:
-                if child == '.DS_Store':
+                if child == '.DS_Store' or child == 'readme.md':
                     continue
                 print_file(child, 2)
 
