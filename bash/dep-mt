@@ -2,20 +2,20 @@
 # Script for modding time!
 
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
-JSON_FILE=FALSE
 
-# Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
-
-cleanup() {
-    if [[ JSON_FILE=TRUE ]]
+clean-exit() {
+    if [[ -f ${BASH_DIR}/textcolours.txt ]]
     then
         rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-    fi 
+    fi
+    exit $?
 }
 
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
 # changes directory
-cd ~/IntelliJProjects/Electrum || exit $?
+cd ~/IntelliJProjects/Electrum || clean-exit
 
 # define local variables
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -36,9 +36,11 @@ display_help() {
     echo -e "\033[1;38;5;26m   -b           \033[1;33mStays on current branch.\033[0;38m"
     echo -e "\033[1;38;5;26m   -h           \033[1;33mShows help (present output).\033[0;38m"
     # Clean up
-    cleanup && exit $?
+    clean-exit
 }
 
+
+# Help
 while getopts "h" OPTION; do
     case $OPTION in
         h)
@@ -47,14 +49,17 @@ while getopts "h" OPTION; do
     esac
 done
 
+
+# If dirty
 if [[ ! -z "$CLEANLINESS" ]]
 then
     echo -e "${DIRTY_BRANCH}" && \
     exec bash && \
-    cleanup && exit $?
+    clean-exit
 fi
 
 
+# Options
 while getopts ":ab" OPTION; do
         case $OPTION in
                 a)
@@ -83,11 +88,13 @@ while getopts ":ab" OPTION; do
                         git checkout "${DESIRED_BRANCH}" && \
                         echo -e "${OPT_ERR}"
                     fi
-                    cleanup && exit $?
+                    clean-exit
                     ;;
         esac
 done
 
+
+# Default option (if empty)
 if [[ -z $1 ]]
 then
     if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
@@ -101,4 +108,10 @@ then
     fi
 fi
 
-cleanup && exec bash
+
+#clean up
+if [[ -f ${BASH_DIR}/textcolours.txt ]]
+then
+    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+fi
+exec bash

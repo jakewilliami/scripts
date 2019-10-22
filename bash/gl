@@ -5,18 +5,21 @@
 #ensure you run `brew install yarn && yarn global add taskbook`
 
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
-JSON_FILE=FALSE
+
+
+# Clean up
+clean-exit() {
+    if [[ -f ${BASH_DIR}/textcolours.txt ]]
+    then
+        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    fi
+    exit $?
+}
+
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
 
-# Small Variabels
-LOGNUMBER=$([[ -z "$1" ]] && echo "10")
-COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-REPO_NAME=$(basename `git rev-parse --show-toplevel`)
-GHLING=$(github-linguist)
-HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
 
 # Help
 display_help() {
@@ -59,6 +62,8 @@ while getopts ":csilh" OPTION; do
                     ;;
                 c)
                     # Prints commit count
+                    COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
+                    BRANCH=$(git rev-parse --abbrev-ref HEAD)
                     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
                     ;;
                 i)
@@ -73,10 +78,18 @@ while getopts ":csilh" OPTION; do
                     display_help
                     ;;
                 \?)
+                    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
                     echo -e "${HELP}" && exit $?
                     ;;
         esac
 done
+
+
+#Variables
+COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+LOGNUMBER=$([[ -z "$1" ]] && echo "10")
+REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 
 
 if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
@@ -94,7 +107,4 @@ then # checks to see if my username is one of the usernames, and if so, prints i
 fi
 
 # Clean up
-if [[ JSON_FILE=TRUE ]]
-then
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-fi
+clean-exit

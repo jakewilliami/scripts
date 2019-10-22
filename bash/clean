@@ -2,13 +2,24 @@
 #Script for emptying * directories! 
 
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
-JSON_FILE=FALSE
+
+
+#Clean up
+clean-exit() {
+    if [[ -f ${BASH_DIR}/textcolours.txt ]]
+    then
+        rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    fi
+    exit $?
+}
+
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt && JSON_FILE=TRUE
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
 
+
+# Help
 HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
-
 display_help() {
     echo -e "\033[1;38mUsage: [sudo] empt [option...]${NORM}"
     echo
@@ -19,6 +30,8 @@ display_help() {
     echo -e "${DARKBBLUE}   -h           ${BYELLOW}Shows help (present output).${NORM}"
 }
 
+
+# Options
 while getopts ":tdh" OPTION; do
         case $OPTION in
                 t)
@@ -37,13 +50,13 @@ while getopts ":tdh" OPTION; do
         esac
 done
 
+
+# If no options
 if [[ -z $1 ]]
 then
     rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && rm -drf ~/.Trash* && rm -drf ~/Downloads/*
 fi
 
+
 # Clean up
-if [[ JSON_FILE=TRUE ]]
-then
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
-fi
+clean-exit
