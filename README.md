@@ -73,7 +73,7 @@ which will work for the most part.  However, this causes session errors when you
 ```
 exec bash
 ```
-at the end of the script that doesn't work as an alias, and it now works.  However, this is not the [best option](https://unix.stackexchange.com/a/278080/372726) (see comments by @G-Man).
+at the end of the script that doesn't work (see `bash/mt` and `bash/mymacros`) as an alias, and it now works.  However, this is not the [best option](https://unix.stackexchange.com/a/278080/372726) (see comments by @G-Man).
 
 
 ## A Note on `pdfsearch` in Terminal
