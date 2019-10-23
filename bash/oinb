@@ -21,7 +21,7 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 display_help() {
     echo -e "${BWHITE}Usage: oinb [option... | file name...]${BWHITE}"
     echo
-    echo -e "${ITBWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.${NORM}"
+    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.${NORM}"
     echo
     echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
     clean-exit

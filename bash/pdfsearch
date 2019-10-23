@@ -20,7 +20,7 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 display_help() {
     echo -e "${BWHITE}Usage: cd /dir/to/search/ && pdfsearch [\"search term(s)\"] [option...]${BWHITE}"
     echo
-    echo -e "${ITBWHITE}The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  ${BYELLOW}There is no current counter to tell how many times the search term was found.${NORM}"
+    echo -e "${ITWHITE}The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  ${ITYELLOW}There is no current counter to tell how many times the search term was found.${NORM}"
     echo
     echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
     clean-exit

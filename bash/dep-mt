@@ -4,7 +4,7 @@
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 
 clean-exit() {
-    [ -f ${BASH_DIR}/textcolours.txt ]] && \
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
     rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
     exit $?
 }
@@ -28,7 +28,7 @@ DIRTY_BRANCH="${BRED}Do something with untracked or uncommitted changes.${NORM}"
 display_help() {
     echo -e "${BWHITE}Usage: mt [option...]${NORM}"
     echo
-    echo -e "${ITBWHITE}The present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.${NORM}"
+    echo -e "${ITWHITE}The present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.${NORM}"
     echo
     echo -e "${BBLUE}\t -a \t${BYELLOW}Opens ${BBLUE}a${BYELLOW}pplication IntelliJ${NORM}"
     echo -e "${BBLUE}\t -b \t${BYELLOW}Stays on current ${BBLUE}b${BYELLOW}ranch.${NORM}"
