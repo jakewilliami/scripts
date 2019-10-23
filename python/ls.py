@@ -33,7 +33,9 @@ colourMap = {'.jl': colour_dict["JULIA"],
             '.c': colour_dict["C"],
             '.cpp': colour_dict["CPP"],
             '.R': colour_dict["R"],
-            '.json': colour_dict["JAVASCRIPT"]
+            '.json': colour_dict["JAVASCRIPT"],
+            '.md': colour_dict["MARKDOWN"],
+            '.txt': colour_dict["TEXT"]
             }
 
 
