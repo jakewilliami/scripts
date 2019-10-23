@@ -7,7 +7,7 @@
 
 While I am beginning to look into different sorts of programming, I want to have as much experience as possible.  Hence, I have created this repository as a kind of playground for various scripts I try to write.  Be warned that not everything in here may be functional.
 
-One of these directories is called `pdfsearches`, in which I play around in different languages in order to get a feel of their function and syntax, while trying to create a tool to iteratively search through PDFs in for a search term.
+The present repository is found on my computer in `~/bin/`.  Ensure you make this binary repository before cloning, and clone into it, as some commands will depend on this.  Change these according to your file structure.
 
 ## Contents
 
