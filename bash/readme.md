@@ -5,3 +5,8 @@ Scripts for Bash
 
 ## Description
 While I am playing around with programming languages, the one that got me started was Bash.  There is a lot you can do with Bash, and this is my directory for those scripts.
+
+I have added the following to my `~/.bashrc`:
+```
+alias scripts="source scripts"
+```
