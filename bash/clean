@@ -34,12 +34,28 @@ display_help() {
 while getopts ":tdh" OPTION; do
         case $OPTION in
                 t)
-                    rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
-                    rm -drf ~/.Trash*  
+                    while true; do
+                        read -p "${BRED}Are you sure you want to delete everything in your trash?${NORM}" yn
+                        case $yn in
+                            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
+                                    rm -drf ~/.Trash* 
+                                    break;;
+                            [Nn]* ) exit;;
+                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+                        esac
+                    done  
                     ;;
 
-                d)
-                    rm -drf ~/Downloads/*
+                d)  
+                    while true; do
+                        read -p "${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}" yn
+                        case $yn in
+                            [Yy]* ) rm -drf ~/Downloads/* 
+                                    break;;
+                            [Nn]* ) exit;;
+                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+                        esac
+                    done
                     ;;
                 h)
                     display_help
@@ -52,9 +68,20 @@ done
 
 
 # If no options
-[[ -z $1 ]] && \
-rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/* && \
-rm -drf ~/.Trash* && rm -drf ~/Downloads/*
+if [[ -z $1 ]]
+then
+    while true; do
+                        read -p "${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}" yn
+                        case $yn in
+                            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
+                                    rm -drf ~/.Trash*
+                                    rm -drf ~/Downloads/* 
+                                    break;;
+                            [Nn]* ) exit;;
+                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+                        esac
+                    done
+fi
 
 
 # Clean up
