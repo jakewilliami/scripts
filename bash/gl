@@ -20,18 +20,18 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 
 
 # Help
-display_help() {
+display_help() { #Displays help
     echo -e "${BWHITE}Usage: gl [option...]${BNORM}"
     echo
     echo -e "${ITWHITE}The present script will print a Git log of things that one may find useful or want to know.  See below for options.  By default, it will print the past ten commits to the current branch, not including merges.${NORM}"
     echo
-    echo -e "${BBLUE}\t -c \t${BYELLOW}Current ${BBLUE}c${BYELLOW}ommit count on working branch in the past 24 hours.${NORM}"
-    echo -e "${BBLUE}\t -s \t${BYELLOW}Prints current git ${BBLUE}s${BYELLOW}tatus minimally.${BNORM}"
-    echo -e "${BBLUE}\t -i \t${BYELLOW}Currently open ${BBLUE}i${BYELLOW}ssues in repository.${BNORM}"
-    echo -e "${BBLUE}\t -b \t${BYELLOW}Lists ${ULINEBYELLOW}local${NORM} ${BBLUE}b${BYELLOW}ranches of current repository, and highlights current branch.${BNORM}"
-    echo -e "${BBLUE}\t -t \t${BYELLOW}Lists this repository's issues' ${BBLUE}t${BYELLOW}ags/labels.  (Uses \`ghi\` command).${BNORM}" 
-    echo -e "${BBLUE}\t -l \t${BYELLOW}Prints ${BBLUE}l${BYELLOW}anguage breakdown in present repository.${BNORM}" | column -x
-    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${BNORM}" | column -x  # fold -w10
+    echo -e "${BBLUE}\t -c | --commit-count \t${BYELLOW}Current ${BBLUE}c${BYELLOW}ommit count on working branch in the past 24 hours.${NORM}"
+    echo -e "${BBLUE}\t -s | --status \t\t${BYELLOW}Prints current git ${BBLUE}s${BYELLOW}tatus minimally.${BNORM}"
+    echo -e "${BBLUE}\t -i | --issues \t\t${BYELLOW}Currently open ${BBLUE}i${BYELLOW}ssues in repository.${BNORM}"
+    echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Lists ${ULINEBYELLOW}local${NORM} ${BBLUE}b${BYELLOW}ranches of current repository, and highlights current branch.${BNORM}"
+    echo -e "${BBLUE}\t -t | --tags | --labels\t${BYELLOW}Lists this repository's issues' ${BBLUE}t${BYELLOW}ags/labels.  (Uses \`ghi\` command).${BNORM}" 
+    echo -e "${BBLUE}\t -l | --languages \t${BYELLOW}Prints ${BBLUE}l${BYELLOW}anguage breakdown in present repository.${BNORM}" | column -x
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${BNORM}" | column -x  # fold -w10
     exit $?
 }
 
@@ -44,7 +44,7 @@ languages() {  # languages | after `%` and white space | in uppercase | with spa
 }
 
 
-print_language_breakdown() {
+print_language_breakdown() { # Prints language breakdown
     LANGUAGE_BREAKDOWN_STR=$(github-linguist)
     for i in $(languages)  #"${array[@]}"  # from 0--|lowest used lang|
     do
@@ -55,41 +55,84 @@ print_language_breakdown() {
     done
 }
 
+
+opt_s() { # Prints what in repo has been altered since last commit + push
+    git status --short --branch
+}
+
+
+opt_c() { # Prints commit count
+    NOW=$(date +%s)
+    START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
+    COMMIT_NUMBER_TODAY=$(git rev-list --count --since=$START_TODAY --before=$NOW HEAD)
+    REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+    BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
+}
+
+
+opt_b() { #Prints working branch
+    git branch
+}
+
+
+opt_t() { #Prints tags/labels available for use
+    ghi label --list
+}
+
+
+opt_i() { # Prints open issues
+    ghi list
+}
+
+
+help() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}" && clean-exit
+}
+
+
 # Options
-while getopts ":scbtilh" OPTION; do
+while getopts ":-:scbtilh" OPTION
+do
         case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        status)  
+                            opt_s ;;
+                        commit-count)  
+                            opt_c ;;
+                        branch)  
+                            opt_b ;;
+                        tags) 
+                            opt_t ;;
+                        labels)
+                            opt_t ;;
+                        issues)  
+                            opt_i ;;
+                        languages)
+                            print_language_breakdown ;;
+                        help)
+                            display_help ;;
+                        *)
+                            help ;;
+                    esac ;;
                 s)
-                    # Prints what in repo has been altered since last commit + push
-                    git status --short --branch   
-                    ;;
+                    opt_s ;;
                 c)
-                    # Prints commit count
-                    NOW=$(date +%s)
-                    START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
-                    COMMIT_NUMBER_TODAY=$(git rev-list --count --since=$START_TODAY --before=$NOW HEAD)
-                    REPO_NAME=$(basename `git rev-parse --show-toplevel`)
-                    BRANCH=$(git rev-parse --abbrev-ref HEAD)
-                    echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH in the past 24 hours.\033[0;38m"
-                    ;;
-                b)  git branch
-                    ;;
-                t)  ghi label --list
-                    ;;
+                    opt_c ;;
+                b)  
+                    opt_b ;;
+                t)  
+                    opt_t ;;
                 i)
-                    # Prints open issues
-                    ghi list
-                    ;;
+                    opt_i ;;
                 l)
-                    # Prints language breakdown
-                    print_language_breakdown
-                    ;;
-                h)
-                    display_help
-                    ;;
-                \?)
-                    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
-                    echo -e "${HELP}" && exit $?
-                    ;;
+                    print_language_breakdown ;;
+                h)  
+                    display_help ;;
+                *)  
+                    help ;;
         esac
 done
 
@@ -114,6 +157,7 @@ then # checks to see if my username is one of the usernames, and if so, prints i
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
     } '
 fi
+
 
 # Clean up
 clean-exit
