@@ -1,5 +1,6 @@
 #! /bin/bash
-#Script for emptying * directories! 
+# Script for emptying * directories! 
+# Requires homebrew to be installed
 
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
 
@@ -22,8 +23,9 @@ display_help() {
     echo
     echo -e "${ITWHITE}The present script will help to clear deprecated files.  ${ITRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Interatively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BRED}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Interatively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
+    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BRED}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
+    echo -e "${BBLUE}\t -b | --brew \t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -77,6 +79,15 @@ opt_err() {
 }
 
 
+clean_brew() {  # https://superuser.com/a/975878/1100925
+    brew update # Update homebrew
+    brew upgrade  # Update outdated formula
+    brew cleanup  # Remove outdated formula
+    brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
+    clean-exit
+}
+
+
 # Options
 while getopts ":-:tdh" OPTION; do
         case $OPTION in
@@ -88,6 +99,8 @@ while getopts ":-:tdh" OPTION; do
                             clean_trash ;;
                         help)
                             display_help ;;
+                        brew)
+                            clean_brew ;;
                         *)
                             opt_err ;;
                     esac ;;
@@ -97,6 +110,8 @@ while getopts ":-:tdh" OPTION; do
                     clean_downloads ;;
                 h)
                     display_help ;;
+                b)
+                    clean_brew ;;
                 *)
                     opt_err ;;
         esac
