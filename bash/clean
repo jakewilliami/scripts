@@ -3,12 +3,15 @@
 # Requires homebrew to be installed
 
 BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+TRASH_SHARED_DIR="/Users/jakeireland/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
+TRASH_LOCAL_DIR="/Users/jakeireland/.Trash/"
+DOWNLOADS_DIR="/Users/jakeireland/Downloads/"
 
 
 #Clean up
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    rm ${BASH_DIR}/textcolours.txt
     exit $?
 }
 
@@ -31,50 +34,105 @@ display_help() {
 }
 
 
-clean_trash() {
+size_of_dir() { 
+#    du -ach | grep -E "^([0-9]+(\.[0-9]+)?)[BKMGT]\ttotal$"
+    NUM_REGEX="^([0-9]+(\.[0-9]+)?)"
+    SIZE=$(du -s "${1}" | grep -Eo "${NUM_REGEX}")
+    echo "${SIZE}"
+    }
+    
+    
+human_readable_bytes() {
+    if [[ $1 -ge 0 ]] && [[ $1 -lt 1000 ]]
+    then
+        SIZE="${1}"
+        TYPE="B"
+    elif [[ $1 -ge 1000 ]] && [[ $1 -lt 1000000 ]]
+    then
+        SIZE=$(echo "$((${1} / 1000))")
+        TYPE="KB"
+    elif [[ $1 -ge 1000000 ]] && [[ $1 -lt 1000000000 ]]
+    then
+        SIZE=$(echo "$((${1} / 1000000))")
+        TYPE="MB"
+    elif [[ $1 -ge 1000000000 ]] && [[ $1 -lt 1000000000000 ]]
+    then
+        SIZE=$(echo "$((${1} / 1000000000))")
+        TYPE="GB"
+    elif [[ $1 -gt 1000000000000 ]]
+    then
+        SIZE=$(echo "$((${1} / 1000000000000))")
+        TYPE="TB"
+    fi
+    echo "${SIZE} ${TYPE}"
+}
+
+
+deleted_t() {
+    SHARED_BYTES=$(size_of_dir "${TRASH_SHARED_DIR}")
+    LOCAL_BYTES=$(size_of_dir "${TRASH_LOCAL_DIR}")
+    SIZE_DIRS=$(echo "$((${SHARED_BYTES} + ${LOCAL_BYTES}))")
+    SIZE=$(human_readable_bytes ${SIZE_DIRS})
+    echo -e "${BGREEN}Deleted ${SIZE} from trash${NORM}"
+}
+
+
+deleted_d() {
+    SIZE_DIR=$(size_of_dir "${DOWNLOADS_DIR}")
+    SIZE=$(human_readable_bytes ${SIZE_DIR})
+    echo -e "${BGREEN}Deleted ${SIZE} from downloads.${NORM}"
+}
+
+
+deleted_all() {
+    SHARED_T_BYTES=$(size_of_dir "${TRASH_SHARED_DIR}")
+    LOCAL_T_BYTES=$(size_of_dir "${TRASH_LOCAL_DIR}")
+    D_BYTES=$(size_of_dir "${DOWNLOADS_DIR}")
+    SIZE_DIRS=$(echo "$((${SHARED_T_BYTES} + ${LOCAL_T_BYTES} + ${D_BYTES}))")
+    SIZE=$(human_readable_bytes ${SIZE_DIRS})
+    echo -e "${BGREEN}Deleted ${SIZE} from trash and downloads. ${NORM}"
+}
+
+
+clean_function() {
     while true; do
-        read -p "${BRED}Are you sure you want to delete everything in your trash?${NORM}" yn
+        read -p "${1}" yn
         case $yn in
-            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
-                    rm -drf ~/.Trash* 
-                    clean-exit;;
-            [Nn]* ) clean-exit;;
-            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+            [Yy]*) 
+                    $2 && return 0 ;;
+            [Nn]*) 
+                    clean-exit && return 1 ;;
+            *)     
+                    echo "${BYELLOW}Please answer yes or no.${BNORM}";;
         esac
-    done 
+    done
+}
+
+
+clean_trash() {
+    TO_BE_REMOVED=$(rm -drf ${TRASH_SHARED_DIR}/*; rm -drf ${TRASH_LOCAL_DIR}/*)
+    MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
+    clean_function "${MSG}" $TO_BE_REMOVED
 }
 
 
 clean_downloads() {
-    while true; do
-        read -p "${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}" yn
-        case $yn in
-            [Yy]* ) rm -drf ~/Downloads/* 
-                    clean-exit;;
-            [Nn]* ) clean-exit;;
-            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
-        esac
-    done
+    TO_BE_REMOVED=$(rm -drf ${DOWNLOADS_DIR}/*)
+    MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
+    clean_function "${MSG}" $TO_BE_REMOVED 
 }
 
 
+#Are you sure?
 clean_all() {
-    while true; do
-        read -p "${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}" yn
-        case $yn in
-            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
-                    rm -drf ~/.Trash*
-                    rm -drf ~/Downloads/* 
-                    clean-exit;;
-            [Nn]* ) clean-exit;;
-            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
-        esac
-    done
+    TO_BE_REMOVED=$(rm -drf ${TRASH_SHARED_DIR}/*; rm -drf ${TRASH_LOCAL_DIR}/*; rm -drf ${DOWNLOADS_DIR}/*)
+    MSG="${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}"
+    clean_function "${MSG}" $TO_BE_REMOVED
 }
 
 
 opt_err() {
-    HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
     echo -e "${HELP}"
 }
 
@@ -94,9 +152,9 @@ while getopts ":-:tdh" OPTION; do
                 -)
                     case $OPTARG in
                         downloads)
-                            clean_downloads ;;
+                            clean_downloads && deleted_d ;;
                         trash)
-                            clean_trash ;;
+                            clean_trash && deleted_t ;;
                         help)
                             display_help ;;
                         brew)
@@ -105,9 +163,9 @@ while getopts ":-:tdh" OPTION; do
                             opt_err ;;
                     esac ;;
                 t)
-                    clean_trash ;;
+                    clean_trash && deleted_t ;;
                 d)  
-                    clean_downloads ;;
+                    clean_downloads && deleted_d ;;
                 h)
                     display_help ;;
                 b)
@@ -119,7 +177,7 @@ done
 
 
 # If no options
-[[ -z $1 ]] && clean_all
+[[ -z $1 ]] && clean_all && deleted_all
 
 
 # Clean up
