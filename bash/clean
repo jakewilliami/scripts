@@ -19,7 +19,7 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: [sudo] empt [option...]${NORM}"
+    echo -e "${BWHITE}Usage: [sudo] clean [option...]${NORM}"
     echo
     echo -e "${ITWHITE}The present script will help to clear deprecated files.  ${ITRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
