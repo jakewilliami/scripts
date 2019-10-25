@@ -17,71 +17,94 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 
 
 # Help
-HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
 display_help() {
     echo -e "${BWHITE}Usage: [sudo] empt [option...]${NORM}"
     echo
     echo -e "${ITWHITE}The present script will help to clear deprecated files.  ${ITRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "${BBLUE}\t -t \t${BYELLOW}Interatively ${BRED}deletes everything in ${BBLUE}t${BRED}rash ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${BBLUE}\t -d \t${BYELLOW}Interatively ${BRED}deletes everything in ${BBLUE}d${BRED}ownloads folder.${NORM}"
-    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
+    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Interatively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BRED}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Interatively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
 
 
-# Options
-while getopts ":tdh" OPTION; do
-        case $OPTION in
-                t)
-                    while true; do
-                        read -p "${BRED}Are you sure you want to delete everything in your trash?${NORM}" yn
-                        case $yn in
-                            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
-                                    rm -drf ~/.Trash* 
-                                    break;;
-                            [Nn]* ) exit;;
-                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
-                        esac
-                    done  
-                    ;;
+clean_trash() {
+    while true; do
+        read -p "${BRED}Are you sure you want to delete everything in your trash?${NORM}" yn
+        case $yn in
+            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
+                    rm -drf ~/.Trash* 
+                    clean-exit;;
+            [Nn]* ) clean-exit;;
+            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+        esac
+    done 
+}
 
+
+clean_downloads() {
+    while true; do
+        read -p "${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}" yn
+        case $yn in
+            [Yy]* ) rm -drf ~/Downloads/* 
+                    clean-exit;;
+            [Nn]* ) clean-exit;;
+            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+        esac
+    done
+}
+
+
+clean_all() {
+    while true; do
+        read -p "${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}" yn
+        case $yn in
+            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
+                    rm -drf ~/.Trash*
+                    rm -drf ~/Downloads/* 
+                    clean-exit;;
+            [Nn]* ) clean-exit;;
+            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+        esac
+    done
+}
+
+
+opt_err() {
+    HELP="${BWHITE}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+}
+
+
+# Options
+while getopts ":-:tdh" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        downloads)
+                            clean_downloads ;;
+                        trash)
+                            clean_trash ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                t)
+                    clean_trash ;;
                 d)  
-                    while true; do
-                        read -p "${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}" yn
-                        case $yn in
-                            [Yy]* ) rm -drf ~/Downloads/* 
-                                    break;;
-                            [Nn]* ) exit;;
-                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
-                        esac
-                    done
-                    ;;
+                    clean_downloads ;;
                 h)
-                    display_help
-                    ;;
-                \?)
-                    echo -e "${HELP}"
-                    ;;
+                    display_help ;;
+                *)
+                    opt_err ;;
         esac
 done
 
 
 # If no options
-if [[ -z $1 ]]
-then
-    while true; do
-                        read -p "${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}" yn
-                        case $yn in
-                            [Yy]* ) rm -drf ~/Library/Mobile\ Documents/com\~apple\~CloudDocs/.Trash/*
-                                    rm -drf ~/.Trash*
-                                    rm -drf ~/Downloads/* 
-                                    break;;
-                            [Nn]* ) exit;;
-                            * )     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
-                        esac
-                    done
-fi
+[[ -z $1 ]] && clean_all
 
 
 # Clean up

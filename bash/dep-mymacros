@@ -23,16 +23,30 @@ display_help() {
     echo
     echo -e "${ITWHITE}The present script will cd the user to the local git repository called \"mymacros\" (located at \`~/Documents/my_macros\`).  It will also ensure that the templates in said repository are up to date with local templates which are connected to TeXStudio (found in \`~/.config/texstudio/templates/user\`)${NORM}"
     echo
-    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
     clean-exit
 }
 
 
-while getopts "h" OPTION; do
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}" && clean-exit
+}
+
+
+while getopts ":-:h" OPTION; do
     case $OPTION in
+        -)
+            case $OPTARG in
+                help)
+                    display_help ;;
+                *)
+                    opt_err ;;
+            esac ;;
         h)
-            display_help
-            ;; 
+            display_help ;;
+        *)
+            opt_err ;;
     esac
 done
 

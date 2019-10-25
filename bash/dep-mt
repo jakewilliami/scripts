@@ -30,22 +30,60 @@ display_help() {
     echo
     echo -e "${ITWHITE}The present script will, by default, check to see if the modding branch 1.14.4 is clean, and go to that branch.${NORM}"
     echo
-    echo -e "${BBLUE}\t -a \t${BYELLOW}Opens ${BBLUE}a${BYELLOW}pplication IntelliJ${NORM}"
-    echo -e "${BBLUE}\t -b \t${BYELLOW}Stays on current ${BBLUE}b${BYELLOW}ranch.${NORM}"
-    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows ${BBLUE}h${BYELLOW}elp (present output).${NORM}"
+    echo -e "${BBLUE}\t -a | --application \t${BYELLOW}Opens ${ULINE}${BBLUE}a${BYELLOW}pplication${NORM}${BYELLOW} IntelliJ.${NORM}"
+    echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Stays on current ${ULINE}${BBLUE}b${BYELLOW}ranch${NORM}${BYELLOW}.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
     # Clean up
     clean-exit
 }
 
 
 # Help
-while getopts "h" OPTION; do
+while getopts ":-:h" OPTION; do
     case $OPTION in
         h)
-            display_help
-            ;; 
+            display_help ;;
+        -)
+            case $OPTARG in
+                help)
+                    display_help ;;
+            esac ;; 
     esac
 done
+
+
+opt_a() {
+    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
+    then
+        git pull && \
+        open -a "${IDE_DIR}" && \
+        echo -e "${MT}"
+    else
+        git checkout "${DESIRED_BRANCH}" && \
+        git pull && \
+        open -a "${IDE_DIR}" && \
+        echo -e "${MT}"
+    fi
+}
+
+
+opt_b() {
+    git pull && \
+    open -a "${IDE_DIR}" && \
+    echo -e "${MT}"
+}
+
+
+opt_err() {
+    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
+    then
+       echo -e "${OPT_ERR}" 
+    else
+        git checkout "${DESIRED_BRANCH}" && \
+        echo -e "${OPT_ERR}"
+    fi
+    clean-exit
+}
 
 
 # If dirty
@@ -56,36 +94,21 @@ clean-exit
 
 
 # Options
-while getopts ":ab" OPTION; do
+while getopts ":-:ab" OPTION; do
         case $OPTION in
+                -)
+                    case $OPTARG in
+                        application)
+                            opt_a ;;
+                        branch)
+                            opt_b ;;
+                    esac ;;
                 a)
-                    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
-                    then
-                        git pull && \
-                        open -a "${IDE_DIR}" && \
-                        echo -e "${MT}"
-                    else
-                        git checkout "${DESIRED_BRANCH}" && \
-                        git pull && \
-                        open -a "${IDE_DIR}" && \
-                        echo -e "${MT}"
-                    fi
-                    ;;
+                    opt_a ;;
                 b)  
-                    git pull && \
-                    open -a "${IDE_DIR}" && \
-                    echo -e "${MT}"
-                    ;;
-                \?)
-                    if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
-                    then
-                       echo -e "${OPT_ERR}" 
-                    else
-                        git checkout "${DESIRED_BRANCH}" && \
-                        echo -e "${OPT_ERR}"
-                    fi
-                    clean-exit
-                    ;;
+                    opt_b ;;
+                *)
+                    opt_err ;;
         esac
 done
 
