@@ -133,6 +133,7 @@ clean_all() {
 opt_err() {
     HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
     echo -e "${HELP}"
+	clean-exit
 }
 
 
