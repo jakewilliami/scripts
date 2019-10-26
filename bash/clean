@@ -145,7 +145,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
 
 
 # Options
-while getopts ":-:tdh" OPTION; do
+while getopts ":-:tdhb" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
