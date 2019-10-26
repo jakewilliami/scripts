@@ -1,6 +1,6 @@
 #! /bin/bash
 
-TEMPLATES="/Users/jakeireland/.config/texstudio/templates/moderncv/"
+TEMPLATES="${HOME}/.config/texstudio/templates/moderncv/"
 
 template() {
 echo '

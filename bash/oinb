@@ -2,13 +2,13 @@
 # Script for opening in Brackets.app
 
 
-BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+BASH_DIR="${HOME}/bin/scripts/bash/"
 
 
 # Clean up
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    rm ${HOME}/bin/scripts/bash/textcolours.txt
     exit $?
 }
 

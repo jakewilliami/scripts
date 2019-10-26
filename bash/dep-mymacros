@@ -1,15 +1,15 @@
 #! /bin/bash
 
-GIT_LOCATION="/Users/jakeireland/Documents/my_macros/"
+GIT_LOCATION="${HOME}/Documents/my_macros/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"
-BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+BASH_DIR="${HOME}/bin/scripts/bash/"
 
 
 #Clean up
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    rm ${HOME}/bin/scripts/bash/textcolours.txt
     exit $?
 }
 
@@ -97,5 +97,5 @@ echo -e "${ALL_GOOD_JSON}"
 
 #clean up
 [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+rm ${HOME}/bin/scripts/bash/textcolours.txt
 exec bash

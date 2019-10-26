@@ -2,10 +2,10 @@
 # Script for emptying * directories! 
 # Requires homebrew to be installed
 
-BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
-TRASH_SHARED_DIR="/Users/jakeireland/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
-TRASH_LOCAL_DIR="/Users/jakeireland/.Trash/"
-DOWNLOADS_DIR="/Users/jakeireland/Downloads/"
+BASH_DIR="${HOME}/bin/scripts/bash/"
+TRASH_SHARED_DIR="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
+TRASH_LOCAL_DIR="${HOME}/.Trash/"
+DOWNLOADS_DIR="${HOME}/Downloads/"
 
 
 #Clean up

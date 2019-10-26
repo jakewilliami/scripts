@@ -1,11 +1,11 @@
 #! /bin/bash
 # Script for modding time!
 
-BASH_DIR="/Users/jakeireland/bin/scripts/bash/"
+BASH_DIR="${HOME}/bin/scripts/bash/"
 
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+    rm ${HOME}/bin/scripts/bash/textcolours.txt
     exit $?
 }
 
@@ -18,7 +18,7 @@ cd ~/IntelliJProjects/Electrum || clean-exit
 # define local variables
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CLEANLINESS=$(git status --porcelain)
-IDE_DIR="/Users/jakeireland/Applications/JetBrains Toolbox/IntelliJ IDEA Community Release.app"
+IDE_DIR="${HOME}/Applications/JetBrains Toolbox/IntelliJ IDEA Community Release.app"
 IDE="IntelliJ"
 DESIRED_BRANCH="1.14.4"
 MT="${BGREEN}Modding time!${NORM}"
@@ -130,5 +130,5 @@ fi
 
 #clean up
 [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-rm /Users/jakeireland/bin/scripts/bash/textcolours.txt
+rm ${HOME}/bin/scripts/bash/textcolours.txt
 exec bash
