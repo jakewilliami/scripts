@@ -35,10 +35,8 @@ display_help() {
 
 
 size_of_dir() { 
-#    du -ach | grep -E "^([0-9]+(\.[0-9]+)?)[BKMGT]\ttotal$"
-    NUM_REGEX="^([0-9]+(\.[0-9]+)?)"
-    SIZE=$(du -s "${1}" | grep -Eo "${NUM_REGEX}")
-    echo "${SIZE}"
+    DIR_SIZE=$(find $1 ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
+    echo "${DIR_SIZE}" 
     }
     
     
