@@ -1,8 +1,74 @@
 #! /bin/bash
 
 DIR="${HOME}/bin/scripts/"
+BASH_DIR="${DIR}/bash/"
+
+
+#Clean up
+clean-exit() {
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm ${BASH_DIR}/textcolours.txt
+    exit $?
+}
+
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+# Help
+display_help() {
+    echo -e "${BWHITE}Usage: scripts [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will take you to the scripts directory and by default list its content.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    clean-exit
+}
+
+
+opt_err() {
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+}
+
+
+opt_l() {
+    cd "${DIR}" || clean-exit
+}
+
+
+while getopts ":-:lh" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        listless)
+                            opt_l ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                l)
+                    opt_l ;;
+                h)  
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
 
 
 # List
-cd "${DIR}" || exit $?
-python3 "${DIR}"python/ls.py "${DIR}"
+if [[ -z $1 ]]
+then
+    cd "${DIR}" || clean-exit
+    python3 "${DIR}"python/ls.py "${DIR}"
+fi
+
+
+# Clean up
+[[ -f ${BASH_DIR}/textcolours.txt ]] && \
+rm ${HOME}/bin/scripts/bash/textcolours.txt
+exec bash
