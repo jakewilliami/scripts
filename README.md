@@ -16,6 +16,7 @@ The present repository is found on my computer in `~/bin/`.  Ensure you make thi
 - [Executing Commands](#executing-commands)
 - [Chromatic Echos](#chromatic-echos)
 - [In Case of Moving Files Around](#in-case-of-moving-files-around)
+- [In Case of Finding and Replacing Text Within Files](#in-case-of-finding-and-replacing-text-within-files)
 - [In Case of Issues](#in-case-of-issues)
 - [A Note on `cd` in Subshell](#a-note-on-cd-in-subshell)
 - [A Note on `pdfsearch` in Terminal](#a-note-on-pdfsearch-in-terminal)
@@ -52,7 +53,16 @@ See commit message `git show ef3086a148b7c3f129213e7b438b70d8ad53379a` for the o
 3. Once you are finished moving all of the files you need to move, push by using `git push -f origin master`.
 
 
-## In Case of Issues
+## In Case of Finding and Replacing Text Within Files
+
+I have had trouble replicating Unix-based `sed` solutions, so I have used perl:
+```
+perl -pi -e 's/<term to find>/<term to replace>/g' path/to/file(s)
+```
+It should be noted that you must escape any special characters with a `\`.
+
+
+## In Case of Issues Executing
 
 If bash rejects the `\r` characters they can be removed with `sed -i "" $'s/\r$//' /path/to/file`.
 
