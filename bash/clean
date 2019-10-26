@@ -28,7 +28,8 @@ display_help() {
     echo
     echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BRED}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
     echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
-    echo -e "${BBLUE}\t -b | --brew \t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
+    echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
+    echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -108,7 +109,7 @@ clean_function() {
 
 
 clean_trash() {
-    TO_BE_REMOVED=$(rm -drf ${TRASH_SHARED_DIR}/*; rm -drf ${TRASH_LOCAL_DIR}/*)
+    TO_BE_REMOVED=$(sudo rm -drf ${TRASH_SHARED_DIR}/*; sudo rm -drf ${TRASH_LOCAL_DIR}/*)
     MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
     clean_function "${MSG}" $TO_BE_REMOVED
 }
@@ -123,7 +124,7 @@ clean_downloads() {
 
 #Are you sure?
 clean_all() {
-    TO_BE_REMOVED=$(rm -drf ${TRASH_SHARED_DIR}/*; rm -drf ${TRASH_LOCAL_DIR}/*; rm -drf ${DOWNLOADS_DIR}/*)
+    TO_BE_REMOVED=$(sudo rm -drf ${TRASH_SHARED_DIR}/*; sudo rm -drf ${TRASH_LOCAL_DIR}/*; rm -drf ${DOWNLOADS_DIR}/*)
     MSG="${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}"
     clean_function "${MSG}" $TO_BE_REMOVED
 }
@@ -144,8 +145,15 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
 }
 
 
+clean_gems() {
+    sudo gem update  # https://stackoverflow.com/a/36150004/12069968
+    sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
+    clean-exit
+}
+
+
 # Options
-while getopts ":-:tdhb" OPTION; do
+while getopts ":-:tdhbr" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -157,6 +165,8 @@ while getopts ":-:tdhb" OPTION; do
                             display_help ;;
                         brew)
                             clean_brew ;;
+                        ruby)
+                            clean_gems ;;
                         *)
                             opt_err ;;
                     esac ;;
@@ -168,6 +178,8 @@ while getopts ":-:tdhb" OPTION; do
                     display_help ;;
                 b)
                     clean_brew ;;
+                r)
+                    clean_gems ;;
                 *)
                     opt_err ;;
         esac
