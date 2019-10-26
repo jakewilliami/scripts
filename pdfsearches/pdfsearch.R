@@ -20,8 +20,8 @@ grepped_text <- grep(args[1L], textified, ignore.case = TRUE)
 found <- any(grepped_text)
 match_count <- sum(lengths(grepped_text))
 
-if(found == "TRUE"){
-    cat(blue(paste("Found", "\"", args[1L], "\"",  match_count, "times in a PDF.")))
+if(found == TRUE){
+    cat(blue(paste("Fgound", "\"", args[1L], "\"",  match_count, "times in a PDF.")))
 }
 
 
