@@ -13,3 +13,16 @@ alias pdfsearch.py="python3 ~/bin/scripts/pdfsearches/pdfsearch.py"
 alias pdfsearch.pl="perl -X ~/bin/scripts/pdfsearches/pdfsearch.pl"
 alias pdfsearch.lisp="clisp ~/bin/scripts/pdfsearches/pdfsearch.lisp"
 ```
+
+## Contents
+- [A Note on `pdfsearch` in Terminal](#a-note-on-pdfsearch-in-terminal)
+
+---
+
+## A Note on `pdfsearch` in Terminal
+
+I have run
+```
+echo 'alias pdfsearch.<extension>="<program with which to run> ~/bin/scripts/pdfsearches/pdfsearch.<extension>"' >> ~/.bashrc && bash
+```
+For example, I ran `echo 'alias pdfsearch.rb="ruby ~/bin/scripts/pdfsearches/pdfsearch.rb"' >> ~/.bashrc && bash`, and now I can just run `pdfsearch.rb <search string>` in any directory.
