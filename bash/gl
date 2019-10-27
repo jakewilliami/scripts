@@ -95,8 +95,13 @@ opt_err() { #Invalid option (getopts already reported the illegal option)
 }
 
 
+opt_filtered_i() {
+    ghi list -N "speculative pdfsearch"
+}
+
+
 # Options
-while getopts ":-:scbtilh" OPTION
+while getopts ":-:scbtiflh" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
@@ -113,6 +118,8 @@ do
                             opt_t ;;
                         issues)  
                             opt_i ;;
+                        filtered-issues)
+                            opt_filtered_i ;;
                         languages)
                             print_language_breakdown ;;
                         help)
@@ -130,6 +137,8 @@ do
                     opt_t ;;
                 i)
                     opt_i ;;
+                f) 
+                    opt_filtered_i ;;
                 l)
                     print_language_breakdown ;;
                 h)  
