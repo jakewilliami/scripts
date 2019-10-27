@@ -10,7 +10,9 @@ BASH_DIR="${HOME}/bin/scripts/bash/"
 # Clean up
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/bin/scripts/bash/textcolours.txt
+    rm ${BASH_DIR}textcolours.txt
+    [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
+    rm ${BASH_DIR}/readme-hashes.txt
     exit $?
 }
 
@@ -30,9 +32,9 @@ display_help() { #Displays help
     echo -e "${BBLUE}\t -i | --issues \t\t${BYELLOW}Currently open ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} in repository.${BNORM}"
     echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Lists local ${ULINE}${BBLUE}b${BYELLOW}ranches${NORM}${BYELLOW} of current repository; highlights current branch.${BNORM}"
     echo -e "${BBLUE}\t -t | --tags | --labels\t${BYELLOW}Lists this repository's issues' ${ULINE}${BBLUE}t${BYELLOW}ags/labels${NORM}${BYELLOW}.${BNORM}" 
-    echo -e "${BBLUE}\t -l | --languages \t${BYELLOW}Prints ${ULINE}${BBLUE}l${BYELLOW}anguage breakdown${NORM}${BYELLOW} in present repository.${BNORM}" | column -x
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}" | column -x  # fold -w10
-    exit $?
+    echo -e "${BBLUE}\t -l | --languages \t${BYELLOW}Prints ${ULINE}${BBLUE}l${BYELLOW}anguage breakdown${NORM}${BYELLOW} in present repository.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
 }
 
 # Languages as string
@@ -89,7 +91,7 @@ opt_i() { # Prints open issues
 opt_err() { #Invalid option (getopts already reported the illegal option)
     HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
     echo -e "${HELP}"
-	clean-exit && clean-exit
+	clean-exit
 }
 
 
@@ -141,15 +143,15 @@ done
 #Variables
 COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
-LOGNUMBER=$([[ -z "$1" ]] && echo "10")
+LOGNUMBER=$(if [[ -z "$1" ]]; then echo "10"; else echo "${1}"; fi)
 REPO_NAME=$(basename `git rev-parse --show-toplevel`)
 
 
-if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
-then # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour
+# Pretty git log
+git_log() { # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour (so that others' commits are emphasised)
     git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
---abbrev-commit -$1$LOGNUMBER | perl -pe \
+--abbrev-commit -$LOGNUMBER | perl -pe \
     ' if (/<([^>]*)>/)
         {
         if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
@@ -157,6 +159,30 @@ then # checks to see if my username is one of the usernames, and if so, prints i
         else 
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
     } '
+}
+
+
+# find all hash codes of commits updating readme
+hashes_of_readme() {
+    git log --oneline -i --grep="Update readme.md" --abbrev-commit | sed -E 's/^(.{7}).*/\1/' >> ${BASH_DIR}/readme-hashes.txt
+}
+
+
+grepped_log() { # log without readme updates
+    git_log | grep -v -f ${BASH_DIR}/readme-hashes.txt
+}
+
+
+lines_grepped() {  # finds how many lines from original log were taken out (a function that was originally going to be used to adjust the $LOGNUMBER needed to print (so that, despite things being grepped, you still have 10 commits shown).  I'll have to think about this one)
+    git_log | grep -f ${BASH_DIR}/readme-hashes.txt | wc -l
+}
+
+
+# If option empty
+if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
+then 
+    hashes_of_readme && \
+    grepped_log
 fi
 
 
