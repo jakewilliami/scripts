@@ -1,0 +1,86 @@
+#! /bin/bash
+
+
+BASH_DIR="${HOME}/bin/scripts/bash/"
+
+
+# Clean up
+clean-exit() {
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm ${HOME}/bin/scripts/bash/textcolours.txt
+    exit $?
+}
+
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+# Help
+display_help() { #Displays help
+    echo -e "${BWHITE}Usage: add-issue [option...] [issue message] [label 1] ... [label n]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will create an issue and label/tag it with already-created labels.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -t | --make-tag \t${BYELLOW}Creates new ${ULINE}${BBLUE}t${BYELLOW}ags${NORM}${BYELLOW}/labels.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
+}
+
+
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+add_issue() {
+    REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+    GITHUB_USER_NAME=$(git config --list | grep -E "^github.user" | sed 's|github.user=||g')
+    NUM_REGEX="[0-9]{1,4}"
+    # Get issues | get top issue and header | Remove header
+    ghi open -m "${1}" && \
+    MOST_RECENT_ISSUE=$(ghi list | grep -A1 "# ${GITHUB_USER_NAME}/${REPO_NAME}" | grep -v "# ${GITHUB_USER_NAME}/${REPO_NAME}" | grep -Eo "${NUM_REGEX}") && \
+    ghi label $MOST_RECENT_ISSUE -a "${@:2}"  # First ag = message; second arg onwards = issue labels
+}
+
+
+make_tag() {
+    ghi label "${@}"
+}
+
+
+# Options
+while getopts ":-:th" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        make-tag)  
+                            make_tag ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                t)
+                    make_tag ;;
+                h)  
+                    display_help ;;
+                *)  
+                    opt_err ;;
+        esac
+done
+
+
+#if no options were passed                   
+if [ $OPTIND -eq 1 ]
+then 
+    add_issue "${1}" "${@:2}"
+    clean-exit
+fi
+
+
+# Clean up
+clean-exit
