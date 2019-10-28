@@ -1,0 +1,82 @@
+#! /bin/bash
+
+# Requires `brew install jq`
+
+BASH_DIR="${HOME}/bin/scripts/bash/"
+
+
+# Clean up
+clean-exit() {
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm ${BASH_DIR}textcolours.txt
+    [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
+    rm ${BASH_DIR}/readme-hashes.txt
+    exit $?
+}
+
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+# Help
+display_help() { #Displays help
+    echo -e "${BWHITE}Usage: geo_ip [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script prints geo-location information about an ip address.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -m | --my-ip \t\t${BYELLOW}Shows geo-location information based on  ${ULINE}${BBLUE}m${BYELLOW}y (current) ip address${NORM}${BYELLOW}.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
+}
+
+
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+ip_specs() {
+    output_type="${1}"  # Can interpret json, xml, and csv
+    curl -s "https://freegeoip.app/${output_type}/${2}" | jq .
+}
+
+
+my_ip() {
+    myip=$(curl -s http://checkip.dyndns.org/ | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
+    grepped_ip=${myip%$'\r'}  # Remove end of line character from ip address
+    ip_specs "json" "${grepped_ip}"
+}
+
+
+#other_ip() {
+#    echo "hello"   
+#}
+
+
+while getopts ":-:mh" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        my-ip)  
+                            my_ip ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                m)
+                    my_ip ;;
+                h)  
+                    display_help ;;
+                *)  
+                    opt_err ;;
+        esac
+done
+
+
+# Clean up
+clean-exit
