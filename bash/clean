@@ -36,7 +36,7 @@ display_help() {
 
 
 size_of_dir() { 
-    DIR_SIZE=$(find $1 ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
+    DIR_SIZE=$(find "${1}" ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
     echo "${DIR_SIZE}" 
     }
     
@@ -109,22 +109,22 @@ clean_function() {
 
 
 clean_trash() {
-    TO_BE_REMOVED=$(sudo rm -drf ${TRASH_SHARED_DIR}/*; sudo rm -drf ${TRASH_LOCAL_DIR}/*)
+    TO_BE_REMOVED=$(sudo rm -drf "${TRASH_SHARED_DIR}"/*; sudo rm -drf "${TRASH_LOCAL_DIR}"/*)
     MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
     clean_function "${MSG}" $TO_BE_REMOVED
 }
 
 
 clean_downloads() {
-    TO_BE_REMOVED=$(rm -drf ${DOWNLOADS_DIR}/*)
-    MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
+    TO_BE_REMOVED=$(rm -drf "${DOWNLOADS_DIR}"/*)
+    MSG="${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}"
     clean_function "${MSG}" $TO_BE_REMOVED 
 }
 
 
 #Are you sure?
 clean_all() {
-    TO_BE_REMOVED=$(sudo rm -drf ${TRASH_SHARED_DIR}/*; sudo rm -drf ${TRASH_LOCAL_DIR}/*; rm -drf ${DOWNLOADS_DIR}/*)
+    TO_BE_REMOVED=$(sudo rm -drf "${TRASH_SHARED_DIR}"/*; sudo rm -drf "${TRASH_LOCAL_DIR}"/*; rm -drf "${DOWNLOADS_DIR}"/*)
     MSG="${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}"
     clean_function "${MSG}" $TO_BE_REMOVED
 }
