@@ -146,6 +146,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     brew cask doctor
     brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
     clean-exit
+    #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
 }
 
 
