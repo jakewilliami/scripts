@@ -139,6 +139,7 @@ opt_err() {
 
 clean_brew() {  # https://superuser.com/a/975878/1100925
     brew update # Update homebrew
+    brew cask upgrade
     brew upgrade  # Update outdated formula
     brew cleanup  # Remove outdated formula
     brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
