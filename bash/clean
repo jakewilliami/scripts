@@ -30,6 +30,7 @@ display_help() {
     echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
     echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
+    echo -e "${BBLUE}\t -m | --mas \t\t${BYELLOW}Updates your ${ULINE}${BBLUE}m${BYELLOW}acOS App Store${NORM}${BYELLOW} applications.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -142,6 +143,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     brew cask upgrade
     brew upgrade  # Update outdated formula
     brew cleanup  # Remove outdated formula
+    brew cask doctor
     brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
     clean-exit
 }
@@ -155,7 +157,7 @@ clean_gems() {
 
 
 # Options
-while getopts ":-:tdhbr" OPTION; do
+while getopts ":-:tdhbmr" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -169,11 +171,15 @@ while getopts ":-:tdhbr" OPTION; do
                             clean_brew ;;
                         ruby)
                             clean_gems ;;
+                        mas)
+                            mas upgrade ;;
                         *)
                             opt_err ;;
                     esac ;;
                 t)
                     clean_trash && deleted_t ;;
+                m) 
+                    mas upgrade ;;
                 d)  
                     clean_downloads && deleted_d ;;
                 h)
