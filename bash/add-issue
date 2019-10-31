@@ -35,6 +35,13 @@ opt_err() { #Invalid option (getopts already reported the illegal option)
 }
 
 
+opt_err_none() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}You must have at least two arguments (message and tag(s)).  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
 add_issue() {
     REPO_NAME=$(basename `git rev-parse --show-toplevel`)
     GITHUB_USER_NAME=$(git config --list | grep -E "^github.user" | sed 's|github.user=||g')
@@ -72,6 +79,10 @@ do
                     opt_err ;;
         esac
 done
+
+
+#if no arguments
+[[ -z $1 ]] && opt_err_none && clean-exit
 
 
 #if no options were passed                   
