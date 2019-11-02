@@ -8,7 +8,7 @@ BASH_DIR="${DIR}/bash/"
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
     rm ${BASH_DIR}/textcolours.txt
-    exit $?
+    return $?
 }
 
 
