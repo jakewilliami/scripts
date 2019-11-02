@@ -6,7 +6,7 @@ BASH_DIR="${HOME}/bin/scripts/bash/"
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
     rm ${HOME}/bin/scripts/bash/textcolours.txt
-    exit $?
+    return $?
 }
 
 # Colours
