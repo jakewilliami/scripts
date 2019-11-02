@@ -16,6 +16,12 @@ clean-exit() {
 jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
 
 
+REPLACING1="${BYELLOW}Replacing outdated file in git repository from ~/.bashrc.${NORM}"
+COMPLETED1="${BGREEN}.bashrc transfer complete.${NORM}"
+REPLACING2="${BYELLOW}Replacing outdated file in git repository from ~/.bash_profile.${NORM}"
+COMPLETED2="${BGREEN}.bash_profile transfer complete.${NORM}"
+
+
 # Help
 display_help() {
     echo -e "${BWHITE}Usage: scripts [option...]${NORM}"
@@ -61,6 +67,12 @@ while getopts ":-:lh" OPTION; do
 done
 
 
+GIT_LOCATION="${HOME}/bin/scripts/"
+LOCAL_FILE1="${HOME}/.bashrc"
+LOCAL_FILE2="${HOME}/.bash_profile"
+GIT_DIR="${GIT_LOCATION}/system/"
+
+
 # List
 if [[ -z $1 ]]
 then
@@ -69,7 +81,27 @@ then
 fi
 
 
+# check if local bashrc matches git one
+if cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
+then
+    :
+else
+    echo -e "${REPLACING1}" && \
+    cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
+    echo -e "${COMPLETED1}"
+fi
+
+
+# check if local bash_profile matches git one
+if cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
+then
+    :
+else
+    echo -e "${REPLACING2}" && \
+    cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
+    echo -e "${COMPLETED2}"
+fi
+
+
 # Clean up
-[[ -f ${BASH_DIR}/textcolours.txt ]] && \
-rm ${HOME}/bin/scripts/bash/textcolours.txt
-exec bash
+clean-exit

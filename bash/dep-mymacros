@@ -97,6 +97,4 @@ echo -e "${ALL_GOOD_JSON}"
 
 
 #clean up
-[[ -f ${BASH_DIR}/textcolours.txt ]] && \
-rm ${HOME}/bin/scripts/bash/textcolours.txt
-exec bash
+clean-exit
