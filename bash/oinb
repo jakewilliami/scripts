@@ -36,13 +36,15 @@ while getopts "h" OPTION; do
     esac
 done
 
-
-if [[ -f $1 ]] # Checks to see if file exists in current working directory
-then
-    open -a "Brackets.app" $1
-else
-    open -a "Brackets.app" ~/bin/scripts/bash/$1
-fi
+for f in $@
+do
+    if [[ -f $f ]] # Checks to see if file exists in current working directory
+    then
+        open -a "Brackets.app" $f
+    else
+        open -a "Brackets.app" ~/bin/scripts/bash/$f
+    fi
+done
 
 
 clean-exit
