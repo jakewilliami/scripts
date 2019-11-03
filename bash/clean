@@ -73,7 +73,7 @@ deleted_t() {
     LOCAL_BYTES=$(size_of_dir "${TRASH_LOCAL_DIR}")
     SIZE_DIRS=$(echo "$((${SHARED_BYTES} + ${LOCAL_BYTES}))")
     SIZE=$(human_readable_bytes ${SIZE_DIRS})
-    echo -e "${BGREEN}Deleted ${SIZE} from trash${NORM}"
+    echo -e "${BGREEN}Deleted ${SIZE} from trash.${NORM}"
 }
 
 
