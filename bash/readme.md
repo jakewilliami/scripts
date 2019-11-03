@@ -17,6 +17,7 @@ alias scripts="source scripts"
 - [In Case of Issues](#in-case-of-issues)
 - [A Note on `cd` in Subshell](#a-note-on-cd-in-subshell)
 - [Chromatic Echos](#chromatic-echos)
+- [A Note on Executing `clean`](#a-note-on-executing-clean)
 
 
 ---
@@ -54,3 +55,11 @@ which will work for the most part.  However, this causes session errors when you
 ## Chromatic Echos
 
 (That sub-heading would be an awesome band name).  For reference future reference/interest, I use the terminal theme [Arthur](https://github.com/lysyi3m/macos-terminal-themes).  For information of `ls` colour output, see comments in `./python/ls.py`.
+
+## A Note on Executing `clean`
+
+In the root directory, there exists a trash folder: `/private/var/root/.Trash`.  This is tricky to access in a sub-shell (such as the one created when running `clean --trash`), so I have run the command
+```
+echo 'alias clean="sudo clean"' >> ~/.bashrc
+```
+Which allows the user to find and access the root trash directory.

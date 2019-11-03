@@ -5,6 +5,7 @@
 BASH_DIR="${HOME}/bin/scripts/bash/"
 TRASH_SHARED_DIR="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
 TRASH_LOCAL_DIR="${HOME}/.Trash/"
+TRASH_ROOT_DIR="/private/var/root/.Trash/"
 DOWNLOADS_DIR="${HOME}/Downloads/"
 
 
@@ -37,7 +38,7 @@ display_help() {
 
 
 size_of_dir() { 
-    DIR_SIZE=$(find "${1}" ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
+    DIR_SIZE=$(sudo find "${1}" ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
     echo "${DIR_SIZE}" 
     }
     
@@ -71,7 +72,8 @@ human_readable_bytes() {
 deleted_t() {
     SHARED_BYTES=$(size_of_dir "${TRASH_SHARED_DIR}")
     LOCAL_BYTES=$(size_of_dir "${TRASH_LOCAL_DIR}")
-    SIZE_DIRS=$(echo "$((${SHARED_BYTES} + ${LOCAL_BYTES}))")
+    ROOT_BYTES=$(size_of_dir "${TRASH_ROOT_DIR}")
+    SIZE_DIRS=$(echo "$((${SHARED_BYTES} + ${ROOT_BYTES} + ${LOCAL_BYTES}))")
     SIZE=$(human_readable_bytes ${SIZE_DIRS})
     echo -e "${BGREEN}Deleted ${SIZE} from trash.${NORM}"
 }
@@ -87,8 +89,9 @@ deleted_d() {
 deleted_all() {
     SHARED_T_BYTES=$(size_of_dir "${TRASH_SHARED_DIR}")
     LOCAL_T_BYTES=$(size_of_dir "${TRASH_LOCAL_DIR}")
+    ROOT_T_BYTES=$(size_of_dir "${TRASH_ROOT_DIR}")
     D_BYTES=$(size_of_dir "${DOWNLOADS_DIR}")
-    SIZE_DIRS=$(echo "$((${SHARED_T_BYTES} + ${LOCAL_T_BYTES} + ${D_BYTES}))")
+    SIZE_DIRS=$(echo "$((${SHARED_T_BYTES} + ${LOCAL_T_BYTES} + ${ROOT_T_BYTES} + ${D_BYTES}))")
     SIZE=$(human_readable_bytes ${SIZE_DIRS})
     echo -e "${BGREEN}Deleted ${SIZE} from trash and downloads. ${NORM}"
 }
@@ -113,8 +116,10 @@ clean_trash() {
     declare -r DELETED_T=$(deleted_t)  # Declare readonly variable
     MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
     clean_function "${MSG}" && \
-    sudo rm -drf "${TRASH_SHARED_DIR}"/* && \
+    sudo rm -drf "${TRASH_SHARED_DIR}"/*
     sudo rm -drf "${TRASH_LOCAL_DIR}"/*
+    sudo rm -drf "${TRASH_ROOT_DIR}"/*
+    sudo rm -drf "${TRASH_ROOT_DIR}"/.*
     echo $DELETED_T
 }
 
@@ -133,8 +138,10 @@ clean_all() {
     declare -r DELETED_ALL=$(deleted_all)  # Declare readonly variable
     MSG="${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}"
     clean_function "${MSG}" && \
-    sudo rm -drf "${TRASH_SHARED_DIR}"/* && \
-    sudo rm -drf "${TRASH_LOCAL_DIR}"/* && \
+    sudo rm -drf "${TRASH_SHARED_DIR}"/*
+    sudo rm -drf "${TRASH_LOCAL_DIR}"/*
+    sudo rm -drf "${TRASH_ROOT_DIR}"/*
+    sudo rm -drf "${TRASH_ROOT_DIR}"/.*
     rm -drf "${DOWNLOADS_DIR}"/*
     echo $DELETED_ALL
 }
