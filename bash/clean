@@ -43,25 +43,25 @@ size_of_dir() {
     
     
 human_readable_bytes() {
-    if [[ $1 -ge 0 ]] && [[ $1 -lt 1000 ]]
+    if [[ $1 -ge 0 ]] && [[ $1 -lt 1024 ]]
     then
         SIZE="${1}"
         TYPE="B"
-    elif [[ $1 -ge 1000 ]] && [[ $1 -lt 1000000 ]]
+    elif [[ $1 -ge 1024 ]] && [[ $1 -lt 1048576 ]]
     then
-        SIZE=$(echo "$((${1} / 1000))")
+        SIZE=$(echo "$((${1} / 1024))")
         TYPE="KB"
-    elif [[ $1 -ge 1000000 ]] && [[ $1 -lt 1000000000 ]]
+    elif [[ $1 -ge 1048576 ]] && [[ $1 -lt 1073741824 ]]
     then
-        SIZE=$(echo "$((${1} / 1000000))")
+        SIZE=$(echo "$((${1} / 1048576))")
         TYPE="MB"
-    elif [[ $1 -ge 1000000000 ]] && [[ $1 -lt 1000000000000 ]]
+    elif [[ $1 -ge 1073741824 ]] && [[ $1 -lt 1099511627776 ]]
     then
-        SIZE=$(echo "$((${1} / 1000000000))")
+        SIZE=$(echo "$((${1} / 1073741824))")
         TYPE="GB"
-    elif [[ $1 -gt 1000000000000 ]]
+    elif [[ $1 -gt 10995116277760 ]]
     then
-        SIZE=$(echo "$((${1} / 1000000000000))")
+        SIZE=$(echo "$((${1} / 1099511627776))")
         TYPE="TB"
     fi
     echo "${SIZE} ${TYPE}"
@@ -99,9 +99,9 @@ clean_function() {
         read -p "${1}" yn
         case $yn in
             [Yy]*) 
-                    $2 && return 0 ;;
+                    return 0 ;;
             [Nn]*) 
-                    clean-exit && return 1 ;;
+                    clean-exit ;;
             *)     
                     echo "${BYELLOW}Please answer yes or no.${BNORM}";;
         esac
@@ -110,24 +110,33 @@ clean_function() {
 
 
 clean_trash() {
-    TO_BE_REMOVED=$(sudo rm -drf "${TRASH_SHARED_DIR}"/*; sudo rm -drf "${TRASH_LOCAL_DIR}"/*)
+    declare -r DELETED_T=$(deleted_t)  # Declare readonly variable
     MSG="${BRED}Are you sure you want to delete everything in your trash?${NORM}"
-    clean_function "${MSG}" $TO_BE_REMOVED
+    clean_function "${MSG}" && \
+    sudo rm -drf "${TRASH_SHARED_DIR}"/* && \
+    sudo rm -drf "${TRASH_LOCAL_DIR}"/*
+    echo $DELETED_T
 }
 
 
 clean_downloads() {
-    TO_BE_REMOVED=$(rm -drf "${DOWNLOADS_DIR}"/*)
+    declare -r DELETED_D=$(deleted_d)  # Declare readonly variable
     MSG="${BRED}Are you sure you want to delete everything in your downloads folder?${NORM}"
-    clean_function "${MSG}" $TO_BE_REMOVED 
+    clean_function "${MSG}" && \
+    rm -drf "${DOWNLOADS_DIR}"/*
+    echo $DELETED_D
 }
 
 
 #Are you sure?
 clean_all() {
-    TO_BE_REMOVED=$(sudo rm -drf "${TRASH_SHARED_DIR}"/*; sudo rm -drf "${TRASH_LOCAL_DIR}"/*; rm -drf "${DOWNLOADS_DIR}"/*)
+    declare -r DELETED_ALL=$(deleted_all)  # Declare readonly variable
     MSG="${BRED}Are you sure you want to delete everything in your trash and downloads folder?${NORM}"
-    clean_function "${MSG}" $TO_BE_REMOVED
+    clean_function "${MSG}" && \
+    sudo rm -drf "${TRASH_SHARED_DIR}"/* && \
+    sudo rm -drf "${TRASH_LOCAL_DIR}"/* && \
+    rm -drf "${DOWNLOADS_DIR}"/*
+    echo $DELETED_ALL
 }
 
 
@@ -163,9 +172,9 @@ while getopts ":-:tdhbmr" OPTION; do
                 -)
                     case $OPTARG in
                         downloads)
-                            clean_downloads && deleted_d ;;
+                            clean_downloads ;;
                         trash)
-                            clean_trash && deleted_t ;;
+                            clean_trash ;;
                         help)
                             display_help ;;
                         brew)
@@ -178,11 +187,11 @@ while getopts ":-:tdhbmr" OPTION; do
                             opt_err ;;
                     esac ;;
                 t)
-                    clean_trash && deleted_t ;;
+                    clean_trash ;;
                 m) 
                     mas upgrade ;;
                 d)  
-                    clean_downloads && deleted_d ;;
+                    clean_downloads ;;
                 h)
                     display_help ;;
                 b)
@@ -196,7 +205,7 @@ done
 
 
 # If no options
-[[ -z $1 ]] && clean_all && deleted_all
+[[ -z $1 ]] && clean_all
 
 
 # Clean up
