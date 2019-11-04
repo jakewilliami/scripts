@@ -1,5 +1,22 @@
 #! /bin/bash
-#ensure you run `brew install pdfgrep` and `brew install coreutils`, and ensure you have python if you use the python method to calculate time
+
+
+# Check to see if homebrew is installed
+if ! which -s brew
+then
+    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
+fi
+
+
+# Ensure jq is installed
+if ! brew ls --versions jq > /dev/null
+then
+    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
+    brew install jq && \
+    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
+fi
 
 
 BASH_DIR="${HOME}/bin/scripts/bash/"
@@ -25,6 +42,32 @@ display_help() {
     echo -e "${BBLUE}\t -h | --help \t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
     clean-exit
 }
+
+
+# Brew Install function
+brew_install() {
+    BREWINSTALL=false
+    for i in ${@:2};
+    do
+        if ! brew ls --versions $i > /dev/null
+        then
+            BREWINSTALL=true
+            echo ${1}
+            brew install $i
+        fi
+    done
+    if [ "${BREWINSTALL}" = true ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+# Satisfy Dependencies
+brew_install "${BWHITE}Satisfying dependencies...${NORM}" coreutils pdfgrep && \
+echo -e "${BGREEN}Dependencies satisfied.${NORM}"
 
 
 opt_err() { #Invalid option (getopts already reported the illegal option)

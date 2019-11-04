@@ -1,5 +1,24 @@
 #! /bin/bash
 
+
+# Check to see if homebrew is installed
+if ! which -s brew
+then
+    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
+fi
+
+
+# Ensure jq is installed
+if ! brew ls --versions jq > /dev/null
+then
+    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
+    brew install jq && \
+    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
+fi
+
+
 GIT_LOCATION="${HOME}/Documents/my_macros/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"

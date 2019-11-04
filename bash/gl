@@ -1,8 +1,24 @@
 #! /bin/bash
-# Script for git log!  REQUIRES `perl`.
-# ensure you run `brew install cmake pkg-config icu4c && gem install github-linguist` for option `-l`
-# ensure you run `brew install jq`
-#ensure you run `brew install yarn && yarn global add taskbook`
+#Future: `brew install yarn && yarn global add taskbook`?
+
+
+# Check to see if homebrew is installed
+if ! which -s brew
+then
+    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
+fi
+
+
+# Ensure jq is installed
+if ! brew ls --versions jq > /dev/null
+then
+    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
+    brew install jq && \
+    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
+fi
+
 
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
@@ -19,6 +35,48 @@ clean-exit() {
 
 # Colours
 jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+# Brew Install function
+brew_install() {
+    BREWINSTALL=false
+    for i in ${@:2};
+    do
+        if ! brew ls --versions $i > /dev/null
+        then
+            BREWINSTALL=true
+            echo ${1}
+            brew install $i
+        fi
+    done
+    if [ "${BREWINSTALL}" = true ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+
+# Satisfy Dependencies
+brew_install "${BWHITE}Satisfying dependencies...${NORM}" perl git ghi cmake pkg-config icu4c ruby rbenv ruby-build && \
+echo -e "${BGREEN}Dependencies satisfied.${NORM}"
+
+
+# Gem Install function
+gem_install() {
+    # Check dependencies
+    if ! gem list --silent -i "^${1}$"
+    then
+        echo -e "${BYELLOW} Installing dependencies...${NORM}" && \
+        gem install ${1} && \
+        echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
+    fi
+}
+
+
+# Install dependencies
+gem_install github-linguist
 
 
 # Help

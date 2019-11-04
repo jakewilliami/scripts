@@ -1,5 +1,22 @@
 #! /bin/bash
-# Script for opening in Brackets.app
+
+
+# Check to see if homebrew is installed
+if ! which -s brew
+then
+    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
+    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
+fi
+
+
+# Ensure jq is installed
+if ! brew ls --versions jq > /dev/null
+then
+    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
+    brew install jq && \
+    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
+fi
 
 
 BASH_DIR="${HOME}/bin/scripts/bash/"
@@ -21,7 +38,7 @@ jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours
 display_help() {
     echo -e "${BWHITE}Usage: oinb [option... | file name...]${BWHITE}"
     echo
-    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.${NORM}"
+    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.  Need to manually run \`brew cask install brackets\`${NORM}"
     echo
     echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
     clean-exit
