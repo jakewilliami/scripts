@@ -1,41 +1,15 @@
 #! /bin/bash
 
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
-
-# Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
-
 GIT_LOCATION="${HOME}/Documents/my_macros/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
-
-#Clean up
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/bin/scripts/bash/textcolours.txt
-    return $?
-}
-
+# Ensure jq is installed
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
-
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
 display_help() {
     echo -e "${BWHITE}Usage: mymacros [option...]${BWHITE}"
@@ -43,14 +17,14 @@ display_help() {
     echo -e "${ITWHITE}The present script will cd the user to the local git repository called \"mymacros\" (located at \`~/Documents/my_macros\`).  It will also ensure that the templates in said repository are up to date with local templates which are connected to TeXStudio (found in \`~/.config/texstudio/templates/user\`)${NORM}"
     echo
     echo -e "${BBLUE}\t -h | --help \t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
-    clean-exit
+    clean-return
 }
 
 
 opt_err() { #Invalid option (getopts already reported the illegal option)
     HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
     echo -e "${HELP}"
-	clean-exit && clean-exit
+	clean-return && clean-return
 }
 
 
@@ -85,7 +59,7 @@ DIFFJ=false
 
 #Begin script
 
-cd "${GIT_LOCATION}" || clean-exit
+cd "${GIT_LOCATION}" || clean-return
 
 #check tex files
 for t in "${LOCAL_DIR}"/*.tex; do
@@ -116,4 +90,4 @@ echo -e "${ALL_GOOD_JSON}"
 
 
 #clean up
-clean-exit
+clean-return

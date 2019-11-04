@@ -1,83 +1,27 @@
 #! /bin/bash
 #Future: `brew install yarn && yarn global add taskbook`?
 
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
-
-# Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
-
+# Define bash directory
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
-
-# Clean up
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${BASH_DIR}textcolours.txt
-    [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
-    rm ${BASH_DIR}/readme-hashes.txt
-    exit $?
-}
-
+# Ensure jq is installed
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
-
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
 # Brew Install function
-brew_install() {
-    BREWINSTALL=false
-    for i in ${@:2};
-    do
-        if ! brew ls --versions $i > /dev/null
-        then
-            BREWINSTALL=true
-            echo ${1}
-            brew install $i
-        fi
-    done
-    if [ "${BREWINSTALL}" = true ]
-    then
-        return 0
-    else
-        return 1
-    fi
-}
-
+source ${BASH_DIR}/dependencies/brew-install-dep.sh
 
 # Satisfy Dependencies
-brew_install "${BWHITE}Satisfying dependencies...${NORM}" perl git ghi cmake pkg-config icu4c ruby rbenv ruby-build && \
-echo -e "${BGREEN}Dependencies satisfied.${NORM}"
-
+brew_install "${SATISFYING_DEPS}" perl ghi cmake pkg-config icu4c ruby rbenv ruby-build && \
+echo -e "${DEPS_SATISFIED}"
 
 # Gem Install function
-gem_install() {
-    # Check dependencies
-    if ! gem list --silent -i "^${1}$"
-    then
-        echo -e "${BYELLOW} Installing dependencies...${NORM}" && \
-        gem install ${1} && \
-        echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
-    fi
-}
-
+source ${BASH_DIR}/dependencies/gem-install-dep.sh
 
 # Install dependencies
 gem_install github-linguist
-
 
 # Help
 display_help() { #Displays help
@@ -95,6 +39,7 @@ display_help() { #Displays help
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
     clean-exit
 }
+
 
 # Languages as string
 languages() {  # languages | after `%` and white space | in uppercase | with spaces as underscores 
@@ -121,7 +66,6 @@ opt_s() { # Prints what in repo has been altered since last commit + push
     git status --short --branch
 }
 
-
 opt_c() { # Prints commit count
     NOW=$(date +%s)
     START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
@@ -130,7 +74,6 @@ opt_c() { # Prints commit count
     BRANCH=$(git rev-parse --abbrev-ref HEAD)
     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH today.\033[0;38m"
 }
-
 
 opt_b() { #Prints working branch
     git branch

@@ -1,45 +1,24 @@
 #! /bin/bash
 
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
+BASH_DIR="${HOME}/bin/scripts/bash/"
 
 # Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
-
-DIR="${HOME}/bin/scripts/"
-BASH_DIR="${DIR}/bash/"
-
-
-#Clean up
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${BASH_DIR}/textcolours.txt
-    return $?
-}
-
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
+# Brew Install function
+source ${BASH_DIR}/dependencies/brew-install-dep.sh
+
+# Satisfy Dependencies
+brew_install "${SATISFYING_DEPS}" python3 && \
+echo -e "${DEPS_SATISFIED}"
 
 REPLACING1="${BYELLOW}Replacing outdated file in git repository from ~/.bashrc.${NORM}"
 COMPLETED1="${BGREEN}.bashrc transfer complete.${NORM}"
 REPLACING2="${BYELLOW}Replacing outdated file in git repository from ~/.bash_profile.${NORM}"
 COMPLETED2="${BGREEN}.bash_profile transfer complete.${NORM}"
-
 
 # Help
 display_help() {
@@ -49,45 +28,19 @@ display_help() {
     echo
     echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
-    clean-exit
+    clean-return
 }
-
-
-# Brew Install function
-brew_install() {
-    BREWINSTALL=false
-    for i in ${@:2};
-    do
-        if ! brew ls --versions $i > /dev/null
-        then
-            BREWINSTALL=true
-            echo ${1}
-            brew install $i
-        fi
-    done
-    if [ "${BREWINSTALL}" = true ]
-    then
-        return 0
-    else
-        return 1
-    fi
-}
-
-
-# Satisfy Dependencies
-brew_install "${BWHITE}Satisfying dependencies...${NORM}" python && \
-echo -e "${BGREEN}Dependencies satisfied.${NORM}"
 
 
 opt_err() {
     HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
     echo -e "${HELP}"
-	clean-exit
+	clean-return
 }
 
 
 opt_l() {
-    cd "${DIR}" || clean-exit
+    cd "${DIR}" || clean-return
 }
 
 
@@ -121,7 +74,7 @@ GIT_DIR="${GIT_LOCATION}/system/"
 # List
 if [[ -z $1 ]]
 then
-    cd "${DIR}" || clean-exit
+    cd "${DIR}" || clean-return
     python3 "${DIR}"python/ls.py "${DIR}"
 fi
 
@@ -149,4 +102,4 @@ fi
 
 
 # Clean up
-clean-exit
+clean-return

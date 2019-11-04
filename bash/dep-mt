@@ -1,52 +1,20 @@
 #! /bin/bash
 
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
-
-# Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
-
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
-
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/bin/scripts/bash/textcolours.txt
-    return $?
-}
-
+# Ensure jq is installed
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
-
-
-# changes directory
-cd ~/IntelliJProjects/Electrum || clean-exit
-
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
 # define local variables
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-CLEANLINESS=$(git status --porcelain)
 IDE_DIR="${HOME}/Applications/JetBrains Toolbox/IntelliJ IDEA Community Release.app"
 IDE="IntelliJ"
 DESIRED_BRANCH="1.14.4"
 MT="${BGREEN}Modding time!${NORM}"
 OPT_ERR="${BYELLOW}$1 is not a valid option.  Use option -h for help.${NORM}"
 DIRTY_BRANCH="${BRED}Do something with untracked or uncommitted changes.${NORM}"
-
 
 display_help() {
     echo -e "${BWHITE}Usage: mt [option...]${NORM}"
@@ -57,34 +25,8 @@ display_help() {
     echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Stays on current ${ULINE}${BBLUE}b${BYELLOW}ranch${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
     # Clean up
-    clean-exit
+    clean-return
 }
-
-
-# Brew Install function
-brew_install() {
-    BREWINSTALL=false
-    for i in ${@:2};
-    do
-        if ! brew ls --versions $i > /dev/null
-        then
-            BREWINSTALL=true
-            echo ${1}
-            brew install $i
-        fi
-    done
-    if [ "${BREWINSTALL}" = true ]
-    then
-        return 0
-    else
-        return 1
-    fi
-}
-
-
-# Satisfy Dependencies
-brew_install "${BWHITE}Satisfying dependencies...${NORM}" git && \
-echo -e "${BGREEN}Dependencies satisfied.${NORM}"
 
 
 # Help
@@ -100,6 +42,13 @@ while getopts ":-:h" OPTION; do
     esac
 done
 
+
+# changes directory
+cd ~/IntelliJProjects/Electrum || clean-return
+
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+CLEANLINESS=$(git status --porcelain)
 
 opt_a() {
     if [ "$BRANCH" = "${DESIRED_BRANCH}" ]
@@ -131,7 +80,7 @@ opt_err() {
         git checkout "${DESIRED_BRANCH}" && \
         echo -e "${OPT_ERR}"
     fi
-    clean-exit
+    clean-return
 }
 
 
@@ -139,7 +88,7 @@ opt_err() {
 [[ ! -z "$CLEANLINESS" ]] && \
 echo -e "${DIRTY_BRANCH}" && \
 exec bash && \
-clean-exit
+clean-return
 
 
 # Options
@@ -178,4 +127,4 @@ fi
 
 
 #clean up
-clean-exit
+clean-return

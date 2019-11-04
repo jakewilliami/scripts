@@ -3,78 +3,24 @@
 
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
-
-#Clean up
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${BASH_DIR}/textcolours.txt
-    return $?
-}
-
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
-
 # Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
-
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
 # Brew Install function
-brew_install() {
-    BREWINSTALL=false
-    for i in ${@:2};
-    do
-        if ! brew ls --versions $i > /dev/null
-        then
-            BREWINSTALL=true
-            echo ${1}
-            brew install $i
-        fi
-    done
-    if [[ ! BREWINSTALL=true ]]
-    then
-        return 1
-    else
-        return 0
-    fi
-}
-
+source ${BASH_DIR}/dependencies/brew-install-dep.sh
 
 # Satisfy Dependencies
-brew_install "${BWHITE}Satisfying dependencies...${NORM}" ruby rbenv ruby-build && \
-echo -e "${BGREEN}Dependencies satisfied.${NORM}"
-
+brew_install "${SATISFYING_DEPS}" ruby rbenv ruby-build && \
+echo -e "${DEPS_SATISFIED}"
 
 # Gem Install function
-gem_install() {
-    # Check dependencies
-    if ! gem list --silent -i "^${1}$"
-    then
-        echo -e "${BYELLOW} Installing dependencies...${NORM}" && \
-        gem install ${1} && \
-        echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
-    fi
-}
-
+source ${BASH_DIR}/dependencies/gem-install-dep.sh
 
 # Install dependencies
 gem_install iStats
-
 
 # Help
 display_help() {
@@ -83,7 +29,7 @@ display_help() {
     echo -e "${ITWHITE}The present script will tell the user computer information given an option.${NORM}"
     echo
     echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
-    echo -e "${BBLUE}\t -g | --geo-ip \t\t${BYELLOW}Shows geo-location information based on  ${ULINE}${BBLUE}m${BYELLOW}y (current) ip address${NORM}${BYELLOW}.${BNORM}"
+    echo -e "${BBLUE}\t -g | --geo-ip \t\t${BYELLOW}Shows ${ULINE}${BBLUE}g${BYELLOW}eo-location${NORM}${BYELLOW} information based on  my (current) ip address.${BNORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }

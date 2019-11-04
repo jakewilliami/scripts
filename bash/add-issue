@@ -1,64 +1,20 @@
 #! /bin/bash
 
-
-# Check to see if homebrew is installed
-if ! which -s brew
-then
-    echo -e "\u001b[1;33mInstalling dependencies...\u001b[0;38m" && \
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" && \
-    echo -e "\u001b[1;38;5;2mHomebrew installed successfully\u001b[0;38m"
-fi
-
-
-# Ensure jq is installed
-if ! brew ls --versions jq > /dev/null
-then
-    echo -e "\001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    brew install jq && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m"
-fi
-
-
+# Define bash directory
 BASH_DIR="${HOME}/bin/scripts/bash/"
 
-
-# Clean up
-clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/bin/scripts/bash/textcolours.txt
-    exit $?
-}
-
+# Ensure jq is installed
+source ${BASH_DIR}/dependencies/jq-dep.sh
 
 # Colours
-jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
-
+source ${BASH_DIR}/colours/json-colour-parser.sh
 
 # Brew Install function
-brew_install() {
-    BREWINSTALL=false
-    for i in ${@:2};
-    do
-        if ! brew ls --versions $i > /dev/null
-        then
-            BREWINSTALL=true
-            echo ${1}
-            brew install $i
-        fi
-    done
-    if [ "${BREWINSTALL}" = true ]
-    then
-        return 0
-    else
-        return 1
-    fi
-}
-
+source ${BASH_DIR}/dependencies/brew-install-dep.sh
 
 # Satisfy Dependencies
-brew_install "${BWHITE}Satisfying dependencies...${NORM}" ghi && \
-echo -e "${BGREEN}Dependencies satisfied.${NORM}"
-
+brew_install "${SATISFYING_DEPS}" ghi && \
+echo -e "${DEPS_SATISFIED}"
 
 # Help
 display_help() { #Displays help
