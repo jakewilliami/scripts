@@ -40,6 +40,7 @@ display_help() {
     echo -e "${ITWHITE}The present script will tell the user computer information given an option.${NORM}"
     echo
     echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
+    echo -e "${BBLUE}\t -g | --geo-ip \t\t${BYELLOW}Shows geo-location information based on  ${ULINE}${BBLUE}m${BYELLOW}y (current) ip address${NORM}${BYELLOW}.${BNORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -65,10 +66,25 @@ cpu_utilisation() {
 }
 
 
-while getopts ":-:uh" OPTION; do
+ip_specs() {
+    output_type="${1}"  # Can interpret json, xml, and csv
+    curl -s "https://freegeoip.app/${output_type}/${2}" | jq .
+}
+
+
+my_ip() {
+    myip=$(curl -s http://checkip.dyndns.org/ | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
+    grepped_ip=${myip%$'\r'}  # Remove end of line character from ip address
+    ip_specs "json" "${grepped_ip}"
+}
+
+
+while getopts ":-:ugh" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        geo-ip)
+                            my_ip ;;
                         cpu-util)
                             cpu_utilisation ;;
                         help)
@@ -76,6 +92,8 @@ while getopts ":-:uh" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                g)
+                    my_ip ;;
                 u)
                     cpu_utilisation ;;
                 h)  
