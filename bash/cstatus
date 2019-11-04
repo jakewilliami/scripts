@@ -1,0 +1,96 @@
+#! /bin/bash
+
+
+# Requires `gem install iStats`
+
+# Check to see if homebrew is installed
+if ! which -s brew
+then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
+
+# Check dependencies
+if ! gem list --silent -i "^istats$"
+then
+    gem install iStats
+fi
+
+
+DIR="${HOME}/bin/scripts"
+BASH_DIR="${DIR}/bash/"
+
+
+#Clean up
+clean-exit() {
+    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
+    rm ${BASH_DIR}/textcolours.txt
+    return $?
+}
+
+
+# Colours
+jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/textcolours.json | sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+
+
+# Help
+display_help() {
+    echo -e "${BWHITE}Usage: cstatus [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will tell the user computer information given an option.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    clean-exit
+}
+
+
+opt_err() {
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+opt_err_none() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}You must have at least one arguments.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+cpu_utilisation() {
+    ps -A -o %cpu | \
+    awk '{s+=$1} END {print s "%"}'
+}
+
+
+while getopts ":-:uh" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        cpu-util)
+                            cpu_utilisation ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                u)
+                    cpu_utilisation ;;
+                h)  
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+if [[ -z $1 ]]
+then
+    opt_err_none
+fi
+
+
+# Clean up
+clean-exit
