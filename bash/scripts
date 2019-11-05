@@ -74,8 +74,8 @@ GIT_DIR="${GIT_LOCATION}/system/"
 # List
 if [[ -z $1 ]]
 then
-    cd "${DIR}" || clean-return
-    python3 "${DIR}"python/ls.py "${DIR}"
+    cd "${BASH_DIR}/.." || clean-return
+    python3 "${BASH_DIR}/../python/ls.py" "${BASH_DIR}/.."
 fi
 
 
