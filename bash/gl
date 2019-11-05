@@ -35,7 +35,7 @@ display_help() { #Displays help
     echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Lists local ${ULINE}${BBLUE}b${BYELLOW}ranches${NORM}${BYELLOW} of current repository; highlights current branch.${BNORM}"
     echo -e "${BBLUE}\t -t | --tags | --labels\t${BYELLOW}Lists this repository's issues' ${ULINE}${BBLUE}t${BYELLOW}ags/labels${NORM}${BYELLOW}.${BNORM}" 
     echo -e "${BBLUE}\t -l | --languages \t${BYELLOW}Prints ${ULINE}${BBLUE}l${BYELLOW}anguage breakdown${NORM}${BYELLOW} in present repository.${BNORM}"
-    echo -e "${BBLUE}\t -f | --filter-issues\t${BYELLOW}Prints ${ULINE}${BBLUE}f${BYELLOW}iltered issues${NORM}${BYELLOW} by tag.  By default, prints issues tagged with \"enhancement,\" \"bug,\" \"feature,\" and \"minor\".${BNORM}"
+    echo -e "${BBLUE}\t -f | --filter-issues\t${BYELLOW}Prints ${ULINE}${BBLUE}f${BYELLOW}iltered issues${NORM}${BYELLOW} by tag.  By default, prints issues tagged with \"enhancement.\"${BNORM}"
     echo -e "${BBLUE}\t -e | --exclude-issues\t${BYELLOW}Prints issues ${ULINE}${BBLUE}e${BYELLOW}xluding issues${NORM}${BYELLOW} that are tagged with \"speculative\" and \"pdfsearch\".${BNORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
     clean-exit
@@ -111,7 +111,7 @@ opt_filtered_not_i() {
 opt_filtered_i() {
     if [[ -z "$@" ]]
     then
-        ghi list -L "enhancement bug feature minor"
+        ghi list -L "enhancement"
     else
         ghi list -L $@
     fi
@@ -119,7 +119,7 @@ opt_filtered_i() {
 
 
 # Options
-while getopts ":-:scbtiflh" OPTION
+while getopts ":-:escbtiflh" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
