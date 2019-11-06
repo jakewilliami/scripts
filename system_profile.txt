@@ -1,0 +1,3127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>_SPCommandLineArguments</key>
+		<array>
+			<string>/usr/sbin/system_profiler</string>
+			<string>-nospawn</string>
+			<string>-xml</string>
+			<string>SPApplicationsDataType</string>
+			<string>-detailLevel</string>
+			<string>full</string>
+		</array>
+		<key>_SPCompletionInterval</key>
+		<real>1.3479399681091309</real>
+		<key>_SPResponseTime</key>
+		<real>1.4426529407501221</real>
+		<key>_dataType</key>
+		<string>SPApplicationsDataType</string>
+		<key>_detailLevel</key>
+		<integer>1</integer>
+		<key>_items</key>
+		<array>
+			<dict>
+				<key>_name</key>
+				<string>Microsoft Excel</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-30T03:27:12Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Microsoft Excel.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Microsoft Corporation (UBF8T346G9)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>16.30</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>CotEditor</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-22T12:40:04Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/CotEditor.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Mineko IMANISHI (HT3Z3A72WZ)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.8.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Atom</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-21T05:13:54Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Atom.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: GitHub (VEKTX9H2N7)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.41.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Calibration Assistant</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-25T13:21:31Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/PrivateFrameworks/AmbientDisplay.framework/Versions/A/Resources/Calibration Assistant.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>calibre</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>calibre, an E-book management application. Visit https://calibre-ebook.com for details.</string>
+				<key>lastModified</key>
+				<date>2019-10-18T03:29:06Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/calibre.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Kovid Goyal (NTY7FVCEKP)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.2.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Colloquy</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Colloquy 2.4.3; Copyright © 2003-2014, Colloquy Project</string>
+				<key>lastModified</key>
+				<date>2014-03-22T02:13:33Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/Colloquy.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>2.4.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>GIMP-2</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>2.10, © 2001-2018 The GIMP Team</string>
+				<key>lastModified</key>
+				<date>2019-10-30T14:04:31Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/GIMP-2.10.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: GNOME Foundation (T25BQ8HSJF)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Vanilla</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-10T21:31:35Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Vanilla.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Matthew Palmer (Z4JV2M65MH)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>IntelliJ IDEA CE</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>IntelliJ IDEA 2019.2.4, build IC-192.7142.36. Copyright JetBrains s.r.o., (c) 2000-2019</string>
+				<key>lastModified</key>
+				<date>2019-10-29T06:24:06Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/IntelliJ IDEA CE.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: JetBrains s.r.o. (2ZEFAR8TH3)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2019.2.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>PyCharm CE</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>PyCharm 2019.2.4, build PC-192.7142.42. Copyright JetBrains s.r.o., (c) 2000-2019</string>
+				<key>lastModified</key>
+				<date>2019-10-31T20:50:16Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/PyCharm CE.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: JetBrains s.r.o. (2ZEFAR8TH3)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2019.2.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Spotify</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-23T22:19:09Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Spotify.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Spotify (2FNC3A47ZF)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.1.18.611.g9cc9bdc9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>TeXShop</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>4.27, Copyright 2001-2019, Richard Koch</string>
+				<key>lastModified</key>
+				<date>2019-11-05T10:38:17Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/TeX/TeXShop.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Richard Koch (RBGCY5RJWM)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.27</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>BibDesk</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-05T10:38:17Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/TeX/BibDesk.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>BibDesk Signing Certificate</string>
+				</array>
+				<key>version</key>
+				<string>1.6.22</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>LaTeXiT</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-05T10:38:17Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/TeX/LaTeXiT.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>2.13.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>TeXShop</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>4.44, Copyright 2001-2019, Richard Koch</string>
+				<key>lastModified</key>
+				<date>2019-10-23T13:57:45Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/TeXShop.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Richard Koch (RBGCY5RJWM)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.44</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Brackets</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-26T17:08:59Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Brackets.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Systems, Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.14.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Safari</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>13.0.3, Copyright © 2003-2019 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-11-03T22:51:49Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Safari.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>13.0.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Installer</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-04T01:10:06Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Installer.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.2.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Alfred 4</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-15T10:44:35Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Alfred 4.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Running with Crayons Ltd (XZZXE9SED4)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.0.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Spectacle</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2016-12-22T14:11:25Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Spectacle.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Eric Czarny (P8TAT4Q25S)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Mail</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-27T05:05:34Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Mail.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>12.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Google Chrome</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-30T21:41:08Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Google Chrome.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Google, Inc. (EQHXZ8M8AV)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>78.0.3904.87</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Terminal</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-16T02:05:00Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Terminal.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.9.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>System Preferences</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-01T22:09:43Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/System Preferences.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>14.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>RStudio</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>RStudio 1.2.1335, © 2009-2018 RStudio, Inc.</string>
+				<key>lastModified</key>
+				<date>2019-03-28T07:25:56Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/RStudio.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: RStudio Inc. (FYF2F5GFX4)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2.1335</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>AppCleaner</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2018-11-18T13:48:05Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/AppCleaner.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Julien Ramseier (X85ZX835W9)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Notes</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-06T00:48:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Notes.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.6</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Git Gui</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Git Gui 0.21.0.43.gb524f © 2006-2007 Shawn Pearce, et. al.</string>
+				<key>lastModified</key>
+				<date>2019-11-04T05:07:08Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/git/2.24.0/share/git-gui/lib/Git Gui.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>0.21.0.43.gb524f</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>QtWebEngineProcess</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Created by Qt/QMake</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/lib/QtWebEngineCore.framework/Versions/5/Helpers/QtWebEngineProcess.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>qml</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Created by Qt/QMake</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/qml.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>qdbusviewer</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/qdbusviewer.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>pixeltool</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/pixeltool.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Linguist</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/Linguist.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Designer</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/Designer.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Assistant</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-28T12:14:03Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.13.2/libexec/Assistant.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>TextEdit</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:20:56Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/TextEdit.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>TeX Live Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-05T10:38:17Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/TeX/TeX Live Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>TeX Live Utility Signing Certificate</string>
+				</array>
+				<key>version</key>
+				<string>1.35</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Python Launcher 3</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.7.5, © 2001-2019 Python Software Foundation</string>
+				<key>lastModified</key>
+				<date>2019-10-14T23:08:55Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/python/3.7.5/Python Launcher 3.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>3.7.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Python</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.7.5, (c) 2001-2016 Python Software Foundation.</string>
+				<key>lastModified</key>
+				<date>2019-10-14T23:08:55Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/python/3.7.5/Frameworks/Python.framework/Versions/3.7/Resources/Python.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>3.7.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Numbers</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-29T03:27:13Z</date>
+				<key>obtained_from</key>
+				<string>mac_app_store</string>
+				<key>path</key>
+				<string>/Applications/Numbers.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Apple Mac OS Application Signing</string>
+					<string>Apple Worldwide Developer Relations Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Preview</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>10.1, Copyright 2002-2018 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T07:03:26Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Preview.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Screen Sharing</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:20:31Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Screen Sharing.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.7.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>FaceTime</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-05-06T01:18:33Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/FaceTime.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Dictionary</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:11:44Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Dictionary.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.3.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>R</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-03T23:18:31Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/R.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>R 3.6.1 GUI 1.70 El Capitan build</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>OmniDiskSweeper</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>OmniDiskSweeper 1.12, version 34.1.4, © 1997–2010, 2012-2013, 2017-2019 The Omni Group</string>
+				<key>lastModified</key>
+				<date>2019-10-06T22:04:14Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/OmniDiskSweeper.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: The Omni Group (34YW5XSRB7)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.12</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Microsoft AutoUpdate</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-03T23:17:56Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Library/Application Support/Microsoft/MAU2.0/Microsoft AutoUpdate.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Microsoft Corporation (UBF8T346G9)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.15</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>KekaDefaultApp</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2018-10-25T23:26:16Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Containers/com.aone.keka/Data/Library/Application Support/Keka/KekaDefaultApp.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Jorge Garcia Armero (4FG648TM2A)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Keka</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-22T09:27:27Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Keka.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Jorge Garcia Armero (4FG648TM2A)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.1.21</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>KekaDefaultApp</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2018-10-25T23:26:16Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/KekaDefaultApp.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Jorge Garcia Armero (4FG648TM2A)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Julia-1</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-08-20T02:04:13Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Julia-1.2.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Julia Computing LLC (A427R7F42H)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>iTerm</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.3.6</string>
+				<key>lastModified</key>
+				<date>2019-10-09T05:21:46Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/iTerm.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: GEORGE NACHMAN (H7V7XYVQ7D)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.3.6</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>GitKraken</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-14T18:06:01Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/GitKraken.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Axosoft, LLC (T7QVVUTZQ8)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.3.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Cakebrew</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2017-10-22T03:16:57Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Cakebrew.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Bruno P R Silva (R85D3K8ATT)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>MRT</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-03T22:48:31Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/MRT.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.50</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Books</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-19T01:49:25Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Books.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.19</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Calculator</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>10.14, Copyright © 2001-2018, Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:42:15Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Calculator.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Calendar</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-03T07:20:22Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Calendar.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>11.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Maps</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-03-20T17:24:12Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Maps.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Messages</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-09-19T06:18:31Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Messages.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>12.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Photos</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-24T03:16:00Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Photos.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>QuickTime Player</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>10.4, Copyright © 2009-2014 Apple Inc. All Rights Reserved.</string>
+				<key>lastModified</key>
+				<date>2019-06-24T05:20:38Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/QuickTime Player.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Reminders</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T07:00:22Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Reminders.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>AirPort Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>6.3.9, Copyright 2001 -2019 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:27:52Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/AirPort Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.3.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>ColorSync Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:10:57Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/ColorSync Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.14.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>System Information</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-05-21T05:05:04Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/System Information.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>VoiceOver Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-05-31T00:38:37Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/VoiceOver Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Voice Memos</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-10T00:12:49Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/VoiceMemos.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>iTunes</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>iTunes 12.9.5.5, © 2000–2019 Apple Inc. All rights reserved.</string>
+				<key>lastModified</key>
+				<date>2019-04-27T04:41:55Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/iTunes.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>12.9.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Pages</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-29T03:27:50Z</date>
+				<key>obtained_from</key>
+				<string>mac_app_store</string>
+				<key>path</key>
+				<string>/Applications/Pages.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Apple Mac OS Application Signing</string>
+					<string>Apple Worldwide Developer Relations Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>8.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Encrypto</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-30T00:50:13Z</date>
+				<key>obtained_from</key>
+				<string>mac_app_store</string>
+				<key>path</key>
+				<string>/Applications/Encrypto.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Apple Mac OS Application Signing</string>
+					<string>Apple Worldwide Developer Relations Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.3.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Microsoft Word</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-30T03:28:40Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Microsoft Word.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Microsoft Corporation (UBF8T346G9)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>16.30</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>StoryMill</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2011-10-26T13:41:50Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/StoryMill.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Mariner Software, Inc.</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.0.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Directory Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:53:30Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Directory Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Feedback Assistant</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-29T02:53:40Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Feedback Assistant.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.6</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>RAID Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>RAID Utility 3.0 (405), Copyright © 2007-2013 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-08-21T00:29:08Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/RAID Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>System Image Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-04T01:32:40Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/System Image Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Wireless Diagnostics</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:23:27Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Wireless Diagnostics.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Finder</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>macOS Finder 10.14.5</string>
+				<key>lastModified</key>
+				<date>2019-06-25T13:23:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>HelpViewer</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:11:46Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/HelpViewer.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Recents</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:33Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/Recents.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>iCloud Drive</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:11Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/iCloud Drive.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Computer</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:58Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/Computer.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Network</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:50Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/Network.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>AirDrop</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:41Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/AirDrop.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Recents</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-02T14:25:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Finder.app/Contents/Applications/All My Files.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Storage Management</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-24T11:57:00Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Storage Management.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Network Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.9.2, Copyright © 2000-2017 Apple Inc. All rights reserved.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:28:25Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Network Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.9.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Folder Actions Set-up</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:32:39Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Folder Actions Setup.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>DVD Player</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:54:38Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/DVD Player.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Archive Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-03-25T00:06:32Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Archive Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.11</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>About This Mac</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-24T11:56:55Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/About This Mac.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>BitLord</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>2.4.6 (c) 2018 House of Life, Inc. http://bitlord.com/</string>
+				<key>lastModified</key>
+				<date>2019-03-15T17:02:48Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/BitLord.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>2.4.6-348</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Minecraft</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-21T07:06:17Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Minecraft.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Mojang AB (HR992ZEAE6)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>495</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Trello</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-29T03:25:38Z</date>
+				<key>obtained_from</key>
+				<string>mac_app_store</string>
+				<key>path</key>
+				<string>/Applications/Trello.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Apple Mac OS Application Signing</string>
+					<string>Apple Worldwide Developer Relations Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.11.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Discord</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-03-07T23:34:48Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Discord.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Hammer &amp; Chisel Inc. (53Q6R32WPB)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>0.0.255</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Script Editor</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:38:31Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Script Editor.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.11</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Screenshot</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:12Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Screenshot.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Migration Assistant</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T08:10:57Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Migration Assistant.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Keychain Access</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-21T03:52:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Keychain Access.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Grapher</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-24T02:58:32Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Grapher.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.7</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Disk Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-04T01:10:25Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Disk Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>18.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Digital Colour Meter</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>5.13, © Copyright 2001-2018 Apple Inc. All Rights Reserved.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:21:13Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Digital Color Meter.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.13</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Console</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-01T22:16:06Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Console.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Boot Camp Assistant</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-07-10T03:35:21Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Boot Camp Assistant.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Bluetooth File Exchange</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>6.0.14, Copyright © 2002-2019 Apple Inc. All rights reserved.</string>
+				<key>lastModified</key>
+				<date>2019-06-24T03:29:43Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Bluetooth File Exchange.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.0.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Audio MIDI Setup</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.3, Copyright 2002-2017 Apple, Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:31:40Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Audio MIDI Setup.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Activity Monitor</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>10.14, Copyright © 2000-2018 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-06-24T11:48:14Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Activity Monitor.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Time Machine</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.3, Copyright 2007-2014 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:28Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Time Machine.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Stocks</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-23T02:35:09Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Stocks.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Stickies</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T05:20:48Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Stickies.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Siri</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.0, Copyright 2016 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:16Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Siri.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Photo Booth</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T07:57:26Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Photo Booth.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Mission Control</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.2, Copyright 2007-2014 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:26Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Mission Control.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Launchpad</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.0, Copyright 2010-2014 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:20Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Launchpad.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Image Capture</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:22:16Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Image Capture.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>8.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Home</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-05-20T01:14:52Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Home.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Font Book</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>9.0, Copyright © 2003–2018 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:23:10Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Font Book.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>9.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Dashboard</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1.8, Copyright 2006-2014 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T04:54:23Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Dashboard.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.8</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Contacts</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-01T22:44:40Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Contacts.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>12.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Chess</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.16, Copyright 2003-2017 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T08:00:21Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Chess.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.16</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Automator</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-02-23T06:21:57Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Automator.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>App Store</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-01T22:50:05Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/App Store.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>DeDRM</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2018-12-02T01:05:28Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Desktop/Study/Interest/!Misc/Books/DeDRM_tools_6.6.3/DeDRM_Macintosh_Application/DeDRM.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>6.6.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>ARDAgent</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-11-01T23:39:50Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/RemoteManagement/ARDAgent.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.9.8</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Drawful 2</string>
+				<key>has64BitIntelCode</key>
+				<string>no</string>
+				<key>info</key>
+				<string>1.0.0,</string>
+				<key>lastModified</key>
+				<date>2019-07-20T06:13:42Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Steam/steamapps/common/Drawful 2/Drawful 2.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>1.0.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>PyCharm CE</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>PyCharm 2019.2.3, build PC-192.6817.19. Copyright JetBrains s.r.o., (c) 2000-2019</string>
+				<key>lastModified</key>
+				<date>2019-09-28T07:33:40Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/JetBrains/Toolbox/apps/PyCharm-C/ch-0/192.6817.19/PyCharm CE.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: JetBrains s.r.o. (2ZEFAR8TH3)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2019.2.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>IntelliJ IDEA CE</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>IntelliJ IDEA 2019.2.3, build IC-192.6817.14. Copyright JetBrains s.r.o., (c) 2000-2019</string>
+				<key>lastModified</key>
+				<date>2019-09-29T03:47:17Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/JetBrains/Toolbox/apps/IDEA-C/ch-1/192.6817.14/IntelliJ IDEA CE.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: JetBrains s.r.o. (2ZEFAR8TH3)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>2019.2.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Amidst</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2018-12-31T01:55:26Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Archives/MC things/Amidst.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>4.3-beta4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Portacle</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2017-09-19T11:05:51Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/portacle-workspace/portacle/Portacle.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Roxio Restore</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-10-21T09:58:54Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Roxio/Roxio Restore.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Corel Inc. (QUP8U9U33C)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Acrobat Update Helper</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>1 . 0 . 16, ©2009-2015 Adobe Systems Incorporated. All rights reserved.</string>
+				<key>lastModified</key>
+				<date>2019-07-31T14:30:07Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Library/Application Support/Adobe/ARMDC/Application/Acrobat Update Helper.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Systems, Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1 . 0 . 16</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Steam Helper</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-07-20T06:07:25Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/Frameworks/Steam Helper.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Valve Corporation (MXGJJ98X76)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>31.0.1650.57</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Steam Helper EH</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-07-20T06:07:25Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/Frameworks/Steam Helper EH.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Valve Corporation (MXGJJ98X76)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>31.0.1650.57</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>HTML5App</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-07-20T06:07:25Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/Frameworks/HTML5App.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Valve Corporation (MXGJJ98X76)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0.0.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Crash Reporter</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-07-20T06:07:25Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/Frameworks/Breakpad.framework/Versions/A/Resources/crash_report_sender.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Python</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.7.3, (c) 2001-2016 Python Software Foundation.</string>
+				<key>lastModified</key>
+				<date>2019-06-17T08:12:12Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Library/Frameworks/Python.framework/Versions/3.7/Resources/Python.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>3.7.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>EndNote X9.2 Updater</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-15T09:16:38Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/EndNote/Updates/19.2.0.14655/EndNote X9.2 Update Installer/EndNote X9.2 Updater.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Thomson Reuters (Scientific) Inc. (2Y4P62NL52)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>EndNote X9.1.1 Updater</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-07T10:16:26Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Application Support/EndNote/Updates/19.1.1.14483/EndNote X9.1.1 Update Installer/EndNote X9.1.1 Updater.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Thomson Reuters (Scientific) Inc. (2Y4P62NL52)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>ENService</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>19.0.0 (Bld 13682).  Copyright © 2003-2018 Clarivate Analytics.  All Rights Reserved.</string>
+				<key>lastModified</key>
+				<date>2018-06-19T22:47:59Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Users/jakeireland/Library/Services/ENService.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Thomson Reuters (Scientific) Inc. (2Y4P62NL52)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>19.0.0.13682</string>
+			</dict>
+		</array>
+		<key>_parentDataType</key>
+		<string>SPSoftwareDataType</string>
+		<key>_properties</key>
+		<dict>
+			<key>_name</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>0</string>
+			</dict>
+			<key>has64BitIntelCode</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>40</string>
+			</dict>
+			<key>lastModified</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>20</string>
+			</dict>
+			<key>obtained_from</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>15</string>
+			</dict>
+			<key>path</key>
+			<dict>
+				<key>_order</key>
+				<string>90</string>
+			</dict>
+			<key>runtime_environment</key>
+			<dict>
+				<key>_order</key>
+				<string>30</string>
+			</dict>
+			<key>signed_by</key>
+			<dict>
+				<key>_order</key>
+				<string>60</string>
+			</dict>
+			<key>version</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>10</string>
+			</dict>
+			<key>volumes</key>
+			<dict>
+				<key>_detailLevel</key>
+				<string>0</string>
+			</dict>
+		</dict>
+		<key>_timeStamp</key>
+		<date>2019-11-06T07:26:26Z</date>
+		<key>_versionInfo</key>
+		<dict>
+			<key>com.apple.SystemProfiler.SPApplicationsReporter</key>
+			<string>915</string>
+		</dict>
+	</dict>
+</array>
+</plist>
