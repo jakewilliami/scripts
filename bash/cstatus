@@ -26,9 +26,11 @@ gem_install iStats
 display_help() {
     echo -e "${BWHITE}Usage: cstatus [option...]${NORM}"
     echo
-    echo -e "${ITWHITE}The present script will tell the user computer information given an option.${NORM}"
+    echo -e "${ITWHITE}The present script will tell the user computer status/information given an option.${NORM}"
     echo
-    echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
+    echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Prints total ${ULINE}${BBLUE}u${BYELLOW}tilisation${NORM}${BYELLOW} of the CPU in %.${NORM}"
+    echo -e "${BBLUE}\t -s | --cpu-stats \t${BYELLOW}Prints CPU ${ULINE}${BBLUE}s${BYELLOW}tatistic${NORM}${BYELLOW} information.${NORM}"
+    echo -e "${BBLUE}\t -e | --cpu-extended \t${BYELLOW}Prints ${ULINE}${BBLUE}e${BYELLOW}xtended${NORM}${BYELLOW} CPU information.${NORM}"
     echo -e "${BBLUE}\t -g | --geo-ip \t\t${BYELLOW}Shows ${ULINE}${BBLUE}g${BYELLOW}eo-location${NORM}${BYELLOW} information based on  my (current) ip address.${BNORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
@@ -51,7 +53,17 @@ opt_err_none() { #Invalid option (getopts already reported the illegal option)
 
 cpu_utilisation() {
     ps -A -o %cpu | \
-    awk '{s+=$1} END {print s "%"}'
+    awk '{s+=$1} END {print s "%"}'  # Adds up all processes using cpu
+}
+
+
+cpu_statistics() {
+    istats
+}
+
+
+cpu_extended() {
+    istats extra
 }
 
 
@@ -68,7 +80,7 @@ my_ip() {
 }
 
 
-while getopts ":-:ugh" OPTION; do
+while getopts ":-:ughse" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -76,6 +88,10 @@ while getopts ":-:ugh" OPTION; do
                             my_ip ;;
                         cpu-util)
                             cpu_utilisation ;;
+                        cpu-stats)
+                            cpu-statistics ;;
+                        cpu-extended)
+                            cpu_extended ;;
                         help)
                             display_help ;;
                         *)
@@ -85,6 +101,10 @@ while getopts ":-:ugh" OPTION; do
                     my_ip ;;
                 u)
                     cpu_utilisation ;;
+                s)
+                    cpu_statistics ;;
+                e)
+                    cpu_extended ;;
                 h)  
                     display_help ;;
                 *)
