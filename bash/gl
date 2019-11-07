@@ -99,21 +99,21 @@ opt_err() { #Invalid option (getopts already reported the illegal option)
 
 
 opt_filtered_not_i() {
-    if [[ -z "$@" ]]
+    if [[ -z "${@}" ]]
     then
         ghi list -N "depricated pdfsearch"
     else
-        ghi list -N $@
+        ghi list -N "${@}"
     fi
 }
 
 
 opt_filtered_i() {
-    if [[ -z "$@" ]]
+    if [[ -z "${@}" ]]
     then
         ghi list -L "enhancement"
     else
-        ghi list -L $@
+        ghi list -L "${@}"
     fi
 }
 
@@ -137,9 +137,9 @@ do
                         issues)  
                             opt_i ;;
                         exclude-issues)
-                            opt_filtered_not_i ${@:2} ;;
+                            opt_filtered_not_i "${@:2}" ;;
                         filter-issues)
-                            opt_filtered_i ${@:2} ;;
+                            opt_filtered_i "${@:2}" ;;
                         languages)
                             print_language_breakdown ;;
                         help)
@@ -158,9 +158,9 @@ do
                 i)
                     opt_i ;;
                 e) 
-                    opt_filtered_not_i ${@:2} ;;
+                    opt_filtered_not_i "${@:2}" ;;
                 f) 
-                    opt_filtered_i ${@:2} ;;
+                    opt_filtered_i "${@:2}" ;;
                 l)
                     print_language_breakdown ;;
                 h)  
