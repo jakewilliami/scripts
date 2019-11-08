@@ -3,7 +3,7 @@
 GIT_LOCATION="${HOME}/Documents/my_macros/"
 LOCAL_DIR="${GIT_LOCATION}../../.config/texstudio/templates/user/"
 GIT_DIR="${GIT_LOCATION}tea_templates/"
-BASH_DIR="${HOME}/bin/scripts/bash/"
+BASH_DIR="${HOME}/scripts/bash/"
 
 # Ensure jq is installed
 source ${BASH_DIR}/dependencies/jq-dep.sh

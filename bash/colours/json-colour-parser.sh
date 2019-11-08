@@ -16,7 +16,7 @@ clean-exit() {
 
 clean-return() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/bin/scripts/bash/textcolours.txt
+    rm ${HOME}/scripts/bash/textcolours.txt
     [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
     rm ${BASH_DIR}/readme-hashes.txt
     return $?

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/bin/scripts/bash/"
+BASH_DIR="${HOME}/scripts/bash/"
 
 # Ensure jq is installed
 source ${BASH_DIR}/dependencies/jq-dep.sh
@@ -65,9 +65,15 @@ while getopts ":-:lh" OPTION; do
 done
 
 
-GIT_LOCATION="${HOME}/bin/scripts/"
+GIT_LOCATION="${HOME}/scripts/"
 LOCAL_FILE1="${HOME}/.bashrc"
 LOCAL_FILE2="${HOME}/.bash_profile"
+if [[ -d ${GIT_LOCATION}/system/ ]]
+then
+    :
+else
+    mkdir ${HOME}/scripts/system
+fi
 GIT_DIR="${GIT_LOCATION}/system/"
 
 

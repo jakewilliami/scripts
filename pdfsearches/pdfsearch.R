@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-#Run using `Rscript ~/bin/scripts/pdfsearches/pdfsearch.R`
+#Run using `Rscript ~/scripts/pdfsearches/pdfsearch.R`
 
 #print("Hello World!", quote = FALSE)
 

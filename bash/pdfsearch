@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/bin/scripts/bash/"
+BASH_DIR="${HOME}/scripts/bash/"
 
 # Ensure jq is installed
 source ${BASH_DIR}/dependencies/jq-dep.sh

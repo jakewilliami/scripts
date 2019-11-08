@@ -30,7 +30,7 @@ brew install ruby openssl && \curl -sSL https://get.rvm.io | bash -s stable && s
 ```
 Running `gl -c` on my 2008 iMac required me to have `brew install ghi`, as well as the above.
 
-At present (24.10.2019) I have plans to compile the scripts so that they can be used without these prerequisites (`cd ~/bin/scripts && ghi show 34`).
+At present (24.10.2019) I have plans to compile the scripts so that they can be used without these prerequisites (`cd ~/scripts && ghi show 34`).
 
 
 ## In Case of Issues Executing

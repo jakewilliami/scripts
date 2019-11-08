@@ -1,4 +1,4 @@
-//run using cd /Users/jakeireland/bin/scripts/rust/rusty_ls/ && cargo run /Users/jakeireland/bin/scripts/
+//run using cd /Users/jakeireland/scripts/rust/rusty_ls/ && cargo run /Users/jakeireland/scripts/
 
 //#[macro_use]
 extern crate structopt;
@@ -39,7 +39,7 @@ fn run(dir: &PathBuf) -> Result<(), Box<dyn Error>> {
 	Ok(())
 }
 
-//cd ~/bin/scripts/rust/ && \
+//cd ~/scripts/rust/ && \
 //rustc ls.rs && \
 //./ls && \
 //cd ./../

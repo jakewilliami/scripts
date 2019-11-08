@@ -17,7 +17,7 @@ my $home = File::HomeDir::home();
 
 ### Gets standard output from system profiler and write it to a $filename
 my $sys_profile = `system_profiler -xml SPApplicationsDataType`;
-my $filename1 = "${home}/bin/scripts/perl/system_profile.txt";
+my $filename1 = "${home}/scripts/perl/system_profile.txt";
 open(FH, '>', $filename1) or die $!;
     print FH $sys_profile;
 close(FH);
@@ -25,7 +25,7 @@ close(FH);
 
 ### Gets standard output from brew cask install
 my $casks = `brew cask list`;
-my $filename2 = "${home}/bin/scripts/perl/casks.txt";
+my $filename2 = "${home}/scripts/perl/casks.txt";
 open(FH, '>', $filename2) or die $!;
     print FH $casks;
 close(FH);
@@ -47,7 +47,7 @@ sub dataApps {
 }
 
 ### Write dataApps to file
-#my $filename3 = "${home}/bin/scripts/perl/dataApps.txt";
+#my $filename3 = "${home}/scripts/perl/dataApps.txt";
 #open(FH, '>', $filename3) or die $!;
 #    dataApps();
 #close(FH);

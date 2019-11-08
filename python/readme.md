@@ -16,5 +16,5 @@ This is a directory in which to play around with what I see as a reasonably mall
 
 I have added the following to my `~/.bashrc`:
 ```
-alias ls.py="python3 ~/bin/scripts/python/ls.py"
+alias ls.py="python3 ~/scripts/python/ls.py"
 ```

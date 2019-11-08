@@ -15,7 +15,7 @@ parser.add_argument('dir', help="Your desired directory.")
 args = parser.parse_args()
 
 
-with open("/Users/jakeireland/bin/scripts/bash/textcolours.json") as textcolours:
+with open("/Users/jakeireland/scripts/bash/textcolours.json") as textcolours:
     colour_dict = json.load(textcolours)
 
     

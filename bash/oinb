@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/bin/scripts/bash/"
+BASH_DIR="${HOME}/scripts/bash/"
 
 # Ensure jq is installed
 source ${BASH_DIR}/dependencies/jq-dep.sh
@@ -11,7 +11,7 @@ source ${BASH_DIR}/colours/json-colour-parser.sh
 display_help() {
     echo -e "${BWHITE}Usage: oinb [option... | file name...]${BWHITE}"
     echo
-    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/bin/scripts/bash\`.  Need to manually run \`brew cask install brackets\`${NORM}"
+    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/scripts/bash\`.  Need to manually run \`brew cask install brackets\`${NORM}"
     echo
     echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
     clean-exit
@@ -32,7 +32,7 @@ do
     then
         open -a "Brackets.app" $f
     else
-        open -a "Brackets.app" ~/bin/scripts/bash/$f
+        open -a "Brackets.app" ~/scripts/bash/$f
     fi
 done
 

@@ -8,10 +8,10 @@ In my coding adventures, I am trialling out different languages and getting a fe
 
 I have added the following to my `~/.bashrc`:
 ```
-alias pdfsearch.rb="ruby ~/bin/scripts/pdfsearches/pdfsearch.rb"
-alias pdfsearch.py="python3 ~/bin/scripts/pdfsearches/pdfsearch.py"
-alias pdfsearch.pl="perl -X ~/bin/scripts/pdfsearches/pdfsearch.pl"
-alias pdfsearch.lisp="clisp ~/bin/scripts/pdfsearches/pdfsearch.lisp"
+alias pdfsearch.rb="ruby ~/scripts/pdfsearches/pdfsearch.rb"
+alias pdfsearch.py="python3 ~/scripts/pdfsearches/pdfsearch.py"
+alias pdfsearch.pl="perl -X ~/scripts/pdfsearches/pdfsearch.pl"
+alias pdfsearch.lisp="clisp ~/scripts/pdfsearches/pdfsearch.lisp"
 ```
 
 ## Contents
@@ -23,6 +23,6 @@ alias pdfsearch.lisp="clisp ~/bin/scripts/pdfsearches/pdfsearch.lisp"
 
 I have run
 ```
-echo 'alias pdfsearch.<extension>="<program with which to run> ~/bin/scripts/pdfsearches/pdfsearch.<extension>"' >> ~/.bashrc && bash
+echo 'alias pdfsearch.<extension>="<program with which to run> ~/scripts/pdfsearches/pdfsearch.<extension>"' >> ~/.bashrc && bash
 ```
-For example, I ran `echo 'alias pdfsearch.rb="ruby ~/bin/scripts/pdfsearches/pdfsearch.rb"' >> ~/.bashrc && bash`, and now I can just run `pdfsearch.rb <search string>` in any directory.
+For example, I ran `echo 'alias pdfsearch.rb="ruby ~/scripts/pdfsearches/pdfsearch.rb"' >> ~/.bashrc && bash`, and now I can just run `pdfsearch.rb <search string>` in any directory.
