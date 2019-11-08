@@ -13,11 +13,18 @@ The present repository is found on my computer in `~/bin/`.  Ensure you make thi
 
 - [Description](#description)
 - [Contents](#contents)
+- [Installation](#installation)
 - [Executing Commands](#executing-commands)
 - [In Case of Moving Files Around](#in-case-of-moving-files-around)
 - [In Case of Finding and Replacing Text Within Files](#in-case-of-finding-and-replacing-text-within-files)
 
 ---
+
+## Installation
+Simply run
+```
+cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git
+```
 
 ## Executing commands
 
