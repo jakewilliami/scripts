@@ -25,103 +25,63 @@ close(FH);
 my $dom = XML::LibXML->load_xml(location => $filename);
 my %dom;
 
-### The $dom variable now contains an object representing all the elements of the XML document arranged in a tree structure known as a Document Object Model
-### The findnodes() method is called to search the DOM for the elements we’re interested in and a foreach loop is used to iterate through the matching elements
-### The findnodes() method takes one argument: an XPath expression. This is a string describing the location and characteristics of the elements we want to find.  The findnodes() method then returns a list of objects from the DOM that match the XPath expression.
-### Obtains each key name for corresponding values
-my @datVals = $dom -> findnodes('/plist/array/dict/array/dict/string');
 
-foreach my $value (@datVals) {
-        say $value -> to_literal();
+my @names = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "_name"][1]/following-sibling::*[1])');
+
+my @obtained_froms = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
+
+for my $name (@names) {
+    say $name;
+}
+
+#my @datKeys = $dom -> findnodes('/plist/array/dict/array/dict/key') -> to_literal();
+
+#say $name;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Bad practice parsing XML using regex
+my @dataXml = split(/\n/, $dom);
+
+
+sub nameXml {
+    my $type = @_;
+    for my $idx (0..$#dataXml) {
+        if ($dataXml[$idx] =~ /<key>_name<\/key>/) {
+            for my $ii ($idx..($idx + 1)) {
+                unless ($dataXml[$ii] =~ /<key>_name<\/key>/ || $dataXml[$ii] =~ /<dict>/) {
+                    say $dataXml[$ii];
+                }
+            }
+        }
     }
+}
 
-### Obtains each value for corresponding keys
-my @datKeys = $dom -> findnodes('/plist/array/dict/array/dict/key');
-     
-foreach my $key (@datKeys) {
-        say $key -> to_literal();
+
+sub obtainedFromXml {
+    my $type = @_;
+    for my $idx (0..$#dataXml) {
+        if ($dataXml[$idx] =~ /<key>obtained_from<\/key>/) {
+            for my $ii ($idx..($idx + 1)) {
+                unless ($dataXml[$ii] =~ /<key>obtained_from<\/key>/ || $dataXml[$ii] =~ /<dict>/) {
+                    say $dataXml[$ii];
+                }
+            }
+        }
     }
+}
 
-
-### Construct hash of keys = values
-#use List::MoreUtils qw/zip/;
-#my %hash = zip @datKeys, @datVals;
-
-#my %hash;
-#@hash{@datKeys} = @datVals;
-
-#print Dumper(\@datKeys);
-
-
-#foreach my $i (\@datVals) {
-#    say "$i";
-#}
-
-#print Dumper(\@datKeys);
-
-#my $values = $dom -> findnodes('/plist/array/dict/array/dict/string') -> to_literal();
-#
-#say $values;
-
-#my $data_array = join '\n', map {
-#        $_ -> to_literal();
-#    } $dom -> findnodes('/plist/array/dict/array/dict/string') -> to_literal();
-#    
-#print $data_array
-
-
-
-
-#my %hash = map {
-#    foreach my $name ($dom -> findnodes('/plist/array/dict/array/dict/string')) {
-#        say $name -> to_literal();
-#    },
-#    foreach my $name ($dom -> findnodes('/plist/array/dict/array/dict/key')) {
-#        say $name -> to_literal();
-#    }
-#}
-
-#foreach my $sys_data ($dom -> findnodes('/plist/array/dict/array/dict')) {
-#    say 'KEY:   ', $sys_data -> findvalue('./key');
-#}
-
-#foreach my $sys_data ($dom -> findnodes('/plist/array/dict/array/dict')) {
-##    say 'KEY:   ', $sys_data -> findvalue('./key');
-##    say 'VALUE: ', $sys_data -> findvalue('./string');
-##    
-##    my $data_array = join '\n', map {
-##        $_ -> to_literal();
-##    } $sys_data -> findnodes('./key');
-##    say $data_array;
-##    say "";
-#    
-#    
-#}
-
-
-#foreach my $movie ($dom->findnodes('//movie')) {
-#    say 'Title:    ', $movie->findvalue('./title');
-#    say 'Director: ', $movie->findvalue('./director');
-#    say 'Rating:   ', $movie->findvalue('./mpaa-rating');
-#    say 'Duration: ', $movie->findvalue('./running-time'), " minutes";
-#    my $cast = join ', ', map {
-#        $_->to_literal();
-#    } $movie->findnodes('./cast/person/@name');
-#    say 'Starring: ', $cast;
-#    say "";
-#}
-
-
-#Title:    Apollo 13
-#Director: Ron Howard
-#Rating:   PG
-#Duration: 140 minutes
-#Starring: Tom Hanks, Bill Paxton, Kevin Bacon, Gary Sinise, Ed Harris
-#
-#Title:    Solaris
-#Director: Steven Soderbergh
-#Rating:   PG-13
-#Duration: 99 minutes
-#Starring: George Clooney, Natascha McElhone, Ulrich Tukur
 
 
