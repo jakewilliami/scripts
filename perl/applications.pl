@@ -22,21 +22,20 @@ print FH $sys_profile;
 close(FH);
 
 ### The load_xml() class method is called to parse the XML file and return a document object
-my $dom = XML::LibXML->load_xml(location => $filename);
+my $dom = XML::LibXML -> load_xml(location => $filename);
 my %dom;
 
 
-my @names = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "_name"][1]/following-sibling::*[1])');
+#my @names = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "_name"][1]/following-sibling::*[1])');
+#
+#my @obtained_froms = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
 
-my @obtained_froms = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
 
-for my $name (@names) {
-    say $name;
-}
-
-#my @datKeys = $dom -> findnodes('/plist/array/dict/array/dict/key') -> to_literal();
-
-#say $name;
+    for my $node ($dom -> findnodes('//key[text() = "_name"]/following-sibling::string[1]') -> get_nodelist()) {
+        my $key   =  $node -> textContent;
+        my $value = $node -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
+        say $key, ': ', $value;
+    }
 
 
 
