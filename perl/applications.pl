@@ -4,18 +4,13 @@
 
 # for defining to use a specific version of Perl
 use v5.30;
-
-# install using `cpanm lib::rary`
-# INSTALLING IS CASE SENSITIVE
 use warnings;
 use strict;
 
 use XML::LibXML;
-use Data::Dumper;
-use String::Approx 'amatch';
-use Text::Fuzzy;
-use File::HomeDir;
-use File::Copy qw(move);
+use String::Approx 'amatch';  # Used to approximate matches
+use Text::Fuzzy;  # Used to approximate matches
+use File::HomeDir;  # Used to get home directory
 
 ### Specify home directory
 my $home = File::HomeDir::home();
@@ -37,16 +32,6 @@ close(FH);
 
 
 ### Gets standard output from mac app store
-#my $mas = `mas list`;
-#my $filename3 = "${home}/bin/scripts/perl/mas.txt";
-#open(FH, '>', $filename3) or die $!;
-#    for my $line ( <$mas> ) {
-#        if ($line =~ /(^\d+)/) {
-#            my $match = $1;
-#            print FH $match;
-#        }
-#    }
-#close(FH);
 my $mas = `mas list`;
 my $filename3 = "${home}/bin/scripts/perl/mas.txt";
 my $outfile = "${home}/bin/scripts/perl/mas-out.txt";
@@ -69,24 +54,19 @@ close(FH);
 my $dom = XML::LibXML -> load_xml(location => $filename1);
 my %dom;
 
-
-#my @names = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "_name"][1]/following-sibling::*[1])');
-#
-#my @obtained_froms = $dom -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
-
 sub dataApps {
     for my $node ($dom -> findnodes('//key[text() = "_name"]/following-sibling::string[1]') -> get_nodelist()) {
         my $key   =  $node -> textContent;
         my $value = $node -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
-        say $key, ': ', $value;
+        print FH $key, ': ', $value, "\n";
     }
 }
 
-
-
-
-
-
+### Write dataApps to file
+my $filename4 = "${home}/bin/scripts/perl/dataApps.txt";
+open(FH, '>', $filename4) or die $!;
+    dataApps();
+close(FH);
 
 
 
