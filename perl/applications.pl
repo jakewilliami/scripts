@@ -42,15 +42,21 @@ sub dataApps {
         my $value =  $node -> findvalue('./following::key[text() = "obtained_from"][1]/following-sibling::string[1]');
         next if ($value =~ /apple/);
         next if ($value =~ /mac_app_store/);
-        print FH $key, ': ', $value, "\n";
+        print $key, ': ', $value, "\n";
     }
 }
 
 ### Write dataApps to file
-my $filename3 = "${home}/bin/scripts/perl/dataApps.txt";
-open(FH, '>', $filename3) or die $!;
-    dataApps();
-close(FH);
+#my $filename3 = "${home}/bin/scripts/perl/dataApps.txt";
+#open(FH, '>', $filename3) or die $!;
+#    dataApps();
+#close(FH);
+
+print if amatch("foobar");
+ 
+my @matches = amatch("xyzzy", dataApps());
+ 
+my @catches = amatch("plugh", ['2'], dataApps());
 
 
 #dataApps();
