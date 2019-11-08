@@ -31,24 +31,6 @@ open(FH, '>', $filename2) or die $!;
 close(FH);
 
 
-### Gets standard output from mac app store
-my $mas = `mas list`;
-my $filename3 = "${home}/bin/scripts/perl/mas.txt";
-my $outfile = "${home}/bin/scripts/perl/mas-out.txt";
-open(FH, '>', $filename3) or die $!;
-    print FH $mas;
-close(FH);
-open(FH, '<', $filename3) or die $!;
-    my @lines = <FH>;
-open(FHOUT, '>', $filename3) or die $!;
-    for (@lines) {
-        s/(\d+)//g;
-        s/(\(.*\))//g;
-        print FHOUT $_;
-    }
-close(FH);
-
-
 
 ### The load_xml() class method is called to parse the XML file and return a document object
 my $dom = XML::LibXML -> load_xml(location => $filename1);
@@ -57,19 +39,21 @@ my %dom;
 sub dataApps {
     for my $node ($dom -> findnodes('//key[text() = "_name"]/following-sibling::string[1]') -> get_nodelist()) {
         my $key   =  $node -> textContent;
-        my $value = $node -> findvalue('string(/plist/array/dict/array/dict/key[. = "obtained_from"][1]/following-sibling::*[1])');
+        my $value =  $node -> findvalue('./following::key[text() = "obtained_from"][1]/following-sibling::string[1]');
+        next if ($value =~ /apple/);
+        next if ($value =~ /mac_app_store/);
         print FH $key, ': ', $value, "\n";
     }
 }
 
 ### Write dataApps to file
-my $filename4 = "${home}/bin/scripts/perl/dataApps.txt";
-open(FH, '>', $filename4) or die $!;
+my $filename3 = "${home}/bin/scripts/perl/dataApps.txt";
+open(FH, '>', $filename3) or die $!;
     dataApps();
 close(FH);
 
 
-
+#dataApps();
 
 
 
