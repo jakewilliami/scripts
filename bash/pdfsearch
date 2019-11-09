@@ -2,18 +2,27 @@
 
 BASH_DIR="${HOME}/scripts/bash/"
 
-# Ensure jq is installed
-source ${BASH_DIR}/dependencies/jq-dep.sh
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh
+fi
 
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-# Brew Install function
-source ${BASH_DIR}/dependencies/brew-install-dep.sh
-
-# Satisfy Dependencies
-brew_install "${SATISFYING_DEPS}" coreutils pdfgrep && \
-echo -e "${DEPS_SATISFIED}"
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Brew Install function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" coreutils pdfgrep && \
+    echo -e "${DEPS_SATISFIED}"
+fi
 
 display_help() {
     echo -e "${BWHITE}Usage: cd /dir/to/search/ && pdfsearch [\"search term(s)\"] [option...]${BWHITE}"

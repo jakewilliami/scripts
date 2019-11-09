@@ -4,17 +4,26 @@
 BASH_DIR="${HOME}/scripts/bash/"
 
 # Ensure jq is installed
-source ${BASH_DIR}/dependencies/jq-dep.sh
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    source ${BASH_DIR}/dependencies/jq-dep.sh
+fi
 
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-# Brew Install function
-source ${BASH_DIR}/dependencies/brew-install-dep.sh
-
-# Satisfy Dependencies
-brew_install "${SATISFYING_DEPS}" ghi && \
-echo -e "${DEPS_SATISFIED}"
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Brew Install function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" ghi && \
+    echo -e "${DEPS_SATISFIED}"
+fi
 
 # Help
 display_help() { #Displays help

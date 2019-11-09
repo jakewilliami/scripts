@@ -2,18 +2,27 @@
 
 BASH_DIR="${HOME}/scripts/bash/"
 
-# Ensure jq is installed
-source ${BASH_DIR}/dependencies/jq-dep.sh
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh
+fi
 
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-# Brew Install function
-source ${BASH_DIR}/dependencies/brew-install-dep.sh
-
-# Satisfy Dependencies
-brew_install "${SATISFYING_DEPS}" python3 && \
-echo -e "${DEPS_SATISFIED}"
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Brew Install function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" python3 && \
+    echo -e "${DEPS_SATISFIED}"
+fi
 
 REPLACING1="${BYELLOW}Replacing outdated file in git repository from ~/.bashrc.${NORM}"
 COMPLETED1="${BGREEN}.bashrc transfer complete.${NORM}"

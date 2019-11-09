@@ -6,19 +6,27 @@ TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"
 DOWNLOADS_DIR="${HOME}/Downloads/"
 
-# Ensure jq is installed
-source ${BASH_DIR}/dependencies/jq-dep.sh
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh
+fi
 
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-# Brew Install function
-source ${BASH_DIR}/dependencies/brew-install-dep.sh
-
-
-# Satisfy Dependencies
-brew_install "${SATISFYING_DEPS}" ruby rbenv ruby-build && \
-echo -e "${DEPS_SATISFIED}"
+if [[ $USER = "jakeireland" ]]
+then
+    :
+else
+    # Brew Install function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" ruby rbenv ruby-build && \
+    echo -e "${DEPS_SATISFIED}"
+fi
 
 # Help
 display_help() {
