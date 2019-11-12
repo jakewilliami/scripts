@@ -9,6 +9,7 @@ Due to [Rust](https://www.wikiwand.com/en/Rust_(programming_language)) being a l
 To create a new Rust project, you should run
 ```
 cd ~/scripts/rust && \
-cargo init --bin <name of project>
-cargo run <name of project>/src/main.rs
+cargo init --bin <name of project> && \
+cargo run <name of project>/src/main.rs && \
+echo 'rust/<name of project>/target/' >> ~/scripts/.gitignore
 ```

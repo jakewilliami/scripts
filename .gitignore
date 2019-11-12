@@ -1,6 +1,7 @@
 ./**/.DS_Store
 bash/textcolours.txt
 rust/rusty_ls/target/
+rust/applications/target/
 rust/Cargo.*
 rust/bin/
 rust/registry/
