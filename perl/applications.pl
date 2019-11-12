@@ -94,9 +94,9 @@ close (APPS1);
         $line_counter++;
     #  chomp ($line);
 #        print unless ;
-    #  if (defined $file_1_hash{$line}){
-    #    print "Got a match: \"$line\"
-    #in line #$line_counter in casks.txt and line #$file_1_hash{$line} at dataApps.txt\n";
+      if (defined $file_1_hash{$line}){
+        print "Got a match: \"$line\"
+    in line #$line_counter in casks.txt and line #$file_1_hash{$line} at dataApps.txt\n";
     #  }
     }
 close (FILE2);
