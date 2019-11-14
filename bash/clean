@@ -39,6 +39,7 @@ display_help() {
     echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -m | --mas \t\t${BYELLOW}Updates your ${ULINE}${BBLUE}m${BYELLOW}acOS App Store${NORM}${BYELLOW} applications.${NORM}"
+    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BRED}ll${NORM} ${BYELLOW} options.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -182,10 +183,16 @@ clean_gems() {
 
 
 # Options
-while getopts ":-:tdhbmr" OPTION; do
+while getopts ":-:tdhbmra" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        all)
+#                            clean_downloads; \ 
+                            clean_trash
+                            clean_brew
+                            clean_gems
+                            mas upgrade ;;
                         downloads)
                             clean_downloads ;;
                         trash)
@@ -201,6 +208,12 @@ while getopts ":-:tdhbmr" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                a)
+                    clean_downloads; \ 
+                    clean_trash; \
+                    clean_brew; \
+                    clean_gems; \
+                    mas upgrade ;;
                 t)
                     clean_trash ;;
                 m) 
