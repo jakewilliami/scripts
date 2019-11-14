@@ -19,5 +19,6 @@ clean-return() {
     rm ${HOME}/scripts/bash/textcolours.txt
     [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
     rm ${BASH_DIR}/readme-hashes.txt
+#    kill -INT $$
     return $?
 }

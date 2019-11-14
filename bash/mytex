@@ -1,6 +1,7 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/scripts/bash/"
+DIR="${HOME}/tex-macros"
+BASH_DIR="${HOME}/scripts/bash"
 
 if [[ $USER = "jakeireland" ]]
 then
@@ -24,16 +25,11 @@ else
     echo -e "${DEPS_SATISFIED}"
 fi
 
-REPLACING1="${BYELLOW}Replacing outdated file in git repository from ~/.bashrc.${NORM}"
-COMPLETED1="${BGREEN}.bashrc transfer complete.${NORM}"
-REPLACING2="${BYELLOW}Replacing outdated file in git repository from ~/.bash_profile.${NORM}"
-COMPLETED2="${BGREEN}.bash_profile transfer complete.${NORM}"
-
 # Help
 display_help() {
     echo -e "${BWHITE}Usage: scripts [option...]${NORM}"
     echo
-    echo -e "${ITWHITE}The present script will take you to the scripts directory and by default list its content.${NORM}"
+    echo -e "${ITWHITE}The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.${NORM}"
     echo
     echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
@@ -49,7 +45,7 @@ opt_err() {
 
 
 opt_l() {
-    cd "${BASH_DIR}/.."
+    cd "${DIR}"
     clean-return
 }
 
@@ -75,45 +71,11 @@ while getopts ":-:lh" OPTION; do
 done
 
 
-GIT_LOCATION="${HOME}/scripts/"
-LOCAL_FILE1="${HOME}/.bashrc"
-LOCAL_FILE2="${HOME}/.bash_profile"
-if [[ -d ${GIT_LOCATION}/system/ ]]
-then
-    :
-else
-    mkdir ${HOME}/scripts/system
-fi
-GIT_DIR="${GIT_LOCATION}/system/"
-
-
 # List
 if [[ -z $1 ]]
 then
-    cd "${BASH_DIR}/.." || clean-return
-    python3 "${BASH_DIR}/../python/ls.py" "${BASH_DIR}/.."
-fi
-
-
-# check if local bashrc matches git one
-if cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
-then
-    :
-else
-    echo -e "${REPLACING1}" && \
-    cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
-    echo -e "${COMPLETED1}"
-fi
-
-
-# check if local bash_profile matches git one
-if cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
-then
-    :
-else
-    echo -e "${REPLACING2}" && \
-    cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
-    echo -e "${COMPLETED2}"
+    cd "${DIR}" || clean-return
+    python3 "${BASH_DIR}/../python/ls.py" "${DIR}"
 fi
 
 

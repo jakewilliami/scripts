@@ -67,14 +67,14 @@ def print_dirs(root, dirs):
             for child in dirs1:
                 print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
             for child in files1:
-                if child == '.DS_Store' or child == 'readme.md' or child.startswith('dep-') or child == 'textcolours.txt':
+                if child == '.DS_Store' or child == 'readme.md' or child.startswith('dep-') or child == 'textcolours.txt' or child == '.gitignore' or child == 'init_notes.md':
                     continue
                 print_file(child, 2)
 
 
 def print_files(root, files):
     for file in files:
-        if file == 'README.md' or file == '.gitignore' or file == '.DS_Store' or file.startswith('dev-') or file == 'textcolours.txt':
+        if file == 'README.md' or file == '.gitignore' or file == '.DS_Store' or file.startswith('dev-') or file == 'textcolours.txt' or file == 'init_notes.md':
             continue
         print_file(file, 1)
 
