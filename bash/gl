@@ -198,6 +198,9 @@ git_log() { # checks to see if my username is one of the usernames, and if so, p
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
     } '
 }
+# prints line length to 40 characters
+# awk 'length > 40{$0 = substr($0, 1, 40) "..."} {printf "%-43s\n", $0}'
+# COLS=$(tput cols) or in bash $COLUMNS
 
 
 # find all hash codes of commits updating readme
