@@ -50,6 +50,8 @@ opt_l() {
 }
 
 
+### Sourcing the script will make getopts to re-execute in the same shell many times.  It starts to misbehave the second time, because getopts remembers where it left off the first time. Resetting variable OPTIND to 1 will force it to rescan arguments.
+OPTIND=1
 while getopts ":-:lh" OPTION; do
         case $OPTION in
                 -)
