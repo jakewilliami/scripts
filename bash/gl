@@ -144,9 +144,9 @@ do
                         issues)  
                             opt_i ;;
                         exclude-issues)
-                            opt_filtered_not_i "${@:2}" ;;
+                            opt_filtered_not_i "${@:1}" ;;
                         filter-issues)
-                            opt_filtered_i "${@:2}" ;;
+                            opt_filtered_i "${@:1}" ;;
                         languages)
                             print_language_breakdown ;;
                         help)
@@ -165,9 +165,9 @@ do
                 i)
                     opt_i ;;
                 e) 
-                    opt_filtered_not_i "${@:2}" ;;
+                    opt_filtered_not_i "${@:1}" ;;
                 f) 
-                    opt_filtered_i "${@:2}" ;;
+                    opt_filtered_i "${@:1}" ;;
                 l)
                     print_language_breakdown ;;
                 h)  
