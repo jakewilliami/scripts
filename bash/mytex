@@ -70,7 +70,7 @@ while getopts ":-:ilh" OPTION; do
                 -)
                     case $OPTARG in
                         issues)
-                            issues "${@:1}" ;;
+                            issues "${@:2}" ;;
                         listless)
                             opt_l ;;
                         help)
@@ -79,7 +79,7 @@ while getopts ":-:ilh" OPTION; do
                             opt_err ;;
                     esac ;;
                 i)
-                    issues "${@:1}" ;;
+                    issues "${@:2}" ;;
                 l)
                     opt_l ;;
                 h)  
