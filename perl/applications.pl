@@ -97,7 +97,7 @@ close (APPS1);
       if (defined $file_1_hash{$line}){
         print "Got a match: \"$line\"
     in line #$line_counter in casks.txt and line #$file_1_hash{$line} at dataApps.txt\n";
-    #  }
+      }
     }
 close (FILE2);
 
