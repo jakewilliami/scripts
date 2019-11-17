@@ -15,9 +15,9 @@ else
     for f in ${!osInfo[@]}
     do
         if [[ -f $f ]];then
-            $PACMAN=${osInfo[$f]}
+            PACMAN=${osInfo[$f]}
         else
-            $PACMAN='sudo apt install'
+            PACMAN='sudo apt install'
         fi
     done
 fi
