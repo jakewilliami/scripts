@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Check if brew; if not, which package manager
-if [[ ! -z $(which brew) ]]
+if ! which brew > /dev/null 2>&1
 then
     PACMAN='brew install'
 else
