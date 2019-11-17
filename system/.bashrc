@@ -81,6 +81,13 @@ running-apps() {
 }
 
 
+# Function
+git-add-all() {
+git add *; git add .; git commit -am ${1}; git push
+}
+
+
+
 # Aliases to change cd not in subshell
 alias pdfsearch.rb="ruby ~/scripts/pdfsearches/pdfsearch.rb"
 alias pdfsearch.py="python3 ~/scripts/pdfsearches/pdfsearch.py"
