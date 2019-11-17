@@ -16,8 +16,6 @@ else
     do
         if [[ -f $f ]];then
             PACMAN=${osInfo[$f]}
-        else
-            PACMAN='sudo apt install'
         fi
     done
 fi
