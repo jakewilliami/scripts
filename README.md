@@ -21,7 +21,7 @@ While I am beginning to look into different sorts of programming, I want to have
 ## Installation
 Simply run
 ```
-cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bin; bash
+cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bash; source ~/.bash_profile
 ```
 
 ## Executing commands
@@ -55,4 +55,7 @@ I have had trouble replicating Unix-based `sed` solutions, so I have used perl:
 ```
 perl -pi -e 's/<term to find>/<term to replace>/g' path/to/file(s)
 ```
-It should be noted that you must escape any special characters with a `\`.
+It should be noted that you must escape any special characters with a `\`.  For example, replacing `if [[ $USER = "jakeireland" ]]`, you want to type
+```
+perl -pi -e 's/if \[\[ \$USER = \"jakeireland\" ]]/if \[\[ \$\(hostname) == \"jake\-mbp2017\.local\" ]] && \[\[ \$\(whoami) == \"jakeireland\" ]]/g' bash/*
+```
