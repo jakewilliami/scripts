@@ -4,14 +4,13 @@ BASH_DIR="${HOME}/scripts/bash/"
 
 if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
-    :
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
 else
     # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
 fi
-
-# Colours
-source ${BASH_DIR}/colours/json-colour-parser.sh
 
 display_help() {
     echo -e "${BWHITE}Usage: oinb [option... | file name...]${BWHITE}"

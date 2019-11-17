@@ -3,16 +3,15 @@
 # Define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-# Ensure jq is installed
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
-    :
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
 else
-    source ${BASH_DIR}/dependencies/jq-dep.sh
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
 fi
-
-# Colours
-source ${BASH_DIR}/colours/json-colour-parser.sh
 
 if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
 then
