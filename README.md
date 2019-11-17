@@ -21,7 +21,7 @@ While I am beginning to look into different sorts of programming, I want to have
 ## Installation
 Simply run
 ```
-cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bash; source ~/.bash_profile
+cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bash && source ~/.bash_profile && scripts
 ```
 
 ## Executing commands
