@@ -10,7 +10,7 @@ home = str(Path.home())
 
 
 # Make text files of app data
-os.system("system_profiler -xml SPApplicationsDataType > ${HOME}/scripts/python/sysApps.txt")
+os.system("` > ${HOME}/scripts/python/sysApps.txt")
 os.system("brew cask list > ${HOME}/scripts/python/casks.txt")
     
 

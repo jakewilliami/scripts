@@ -212,7 +212,7 @@ while getopts ":-:tdhbmra" OPTION; do
                     clean_downloads
                     clean_trash
                     clean_brew
-                    clean_gems
+                    clean_gemsg
                     mas upgrade ;;
                 t)
                     clean_trash ;;

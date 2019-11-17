@@ -1,20 +1,25 @@
 #! /bin/bash
 
+# Get package manager
+source bash/dependencies/package-man.sh
+
 SATISFYING_DEPS="${BWHITE}Satisfying dependencies...${NORM}"
 DEPS_SATISFIED="${BGREEN}Dependencies satisfied.${NORM}"
 
+
+
 brew_install() {
-    BREWINSTALL=false
+    PACINSTALL=false
     for i in ${@:2};
     do
-        if ! brew ls --versions $i > /dev/null
+        if [[ -z $(which ${i}) ]]
         then
-            BREWINSTALL=true
+            PACINSTALL=true
             echo -e ${1}
-            brew install $i
+            $PACMAN $i
         fi
     done
-    if [ "${BREWINSTALL}" = true ]
+    if [ "${PACINSTALL}" = true ]
     then
         return 0
     else
