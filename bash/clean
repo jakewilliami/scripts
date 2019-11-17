@@ -188,7 +188,7 @@ while getopts ":-:tdhbmra" OPTION; do
                 -)
                     case $OPTARG in
                         all)
-#                            clean_downloads; \ 
+#                           clean_downloads
                             clean_trash
                             clean_brew
                             clean_gems
@@ -209,10 +209,10 @@ while getopts ":-:tdhbmra" OPTION; do
                             opt_err ;;
                     esac ;;
                 a)
-                    clean_downloads; \ 
-                    clean_trash; \
-                    clean_brew; \
-                    clean_gems; \
+                    clean_downloads
+                    clean_trash
+                    clean_brew
+                    clean_gems
                     mas upgrade ;;
                 t)
                     clean_trash ;;
