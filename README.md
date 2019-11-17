@@ -5,9 +5,7 @@
 
 ## Description
 
-While I am beginning to look into different sorts of programming, I want to have as much experience as possible.  Hence, I have created this repository as a kind of playground for various scripts I try to write.  Be warned that not everything in here may be functional.
-
-The present repository is found on my computer in `~/bin/`.  Ensure you make this binary repository before cloning, and clone into it, as some commands will depend on this.  Change these according to your file structure.
+While I am beginning to look into different sorts of programming, I want to have as much experience as possible.  Hence, I have created this repository as a kind of playground for various scripts I try to write.  Be warned that not everything in here may be functional.  I have prefixed depricated files with `dep-<filename>`, and development (i.e., in development) files as `dev-<filename>`.
 
 ## Contents
 
@@ -23,12 +21,12 @@ The present repository is found on my computer in `~/bin/`.  Ensure you make thi
 ## Installation
 Simply run
 ```
-cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git
+cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bin; bash
 ```
 
 ## Executing commands
 
-Once the scripts have been written, you will need to add the script location to your path, and then make it exacutable.  The former can be done by:
+Once the scripts have been written, you will need to add the script location to your path, and then make it exacutable  (although, these are done in the installation process).  The former can be done by:
 ```
 echo 'export PATH=$PATH:/path/to/dir' >> ~/.bash_profile
 ```
