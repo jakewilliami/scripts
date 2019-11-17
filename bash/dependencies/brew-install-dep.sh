@@ -12,7 +12,7 @@ brew_install() {
     PACINSTALL=false
     for i in ${@:2};
     do
-        if ! which ${i} > /dev/null 2>&1
+        if which ${i} > /dev/null 2>&1
         then
             PACINSTALL=true
             echo -e ${1}
