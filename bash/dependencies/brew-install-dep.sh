@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Get package manager
-source bash/dependencies/package-man.sh
+source ${HOME}/scripts/bash/dependencies/package-man.sh
 
 SATISFYING_DEPS="${BWHITE}Satisfying dependencies...${NORM}"
 DEPS_SATISFIED="${BGREEN}Dependencies satisfied.${NORM}"
