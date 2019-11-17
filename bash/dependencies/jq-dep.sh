@@ -4,7 +4,7 @@
 source ${HOME}/scripts/bash/dependencies/package-man.sh
 
 # Download jq
-if [[ -z $(which jq) ]]
+if ! which brew > /dev/null 2>&1
 then
     echo -e "\u001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
     $PACMAN jq && \
