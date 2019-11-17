@@ -97,13 +97,6 @@ done
 GIT_LOCATION="${HOME}/scripts/"
 LOCAL_FILE1="${HOME}/.bashrc"
 LOCAL_FILE2="${HOME}/.bash_profile"
-if [[ -d ${GIT_LOCATION}/system/ ]]
-then
-    :
-else
-    mkdir ${HOME}/scripts/system
-fi
-GIT_DIR="${GIT_LOCATION}/system/"
 
 
 # List
@@ -114,25 +107,29 @@ then
 fi
 
 
-# check if local bashrc matches git one
-if cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
+# make sure bash system info is up to date if i'm me
+if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
 then
-    :
-else
-    echo -e "${REPLACING1}" && \
-    cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
-    echo -e "${COMPLETED1}"
-fi
-
-
-# check if local bash_profile matches git one
-if cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
-then
-    :
-else
-    echo -e "${REPLACING2}" && \
-    cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
-    echo -e "${COMPLETED2}"
+    # make system dir if it doesn't exist
+    if [[ ! -d ${GIT_LOCATION}/system/ ]]
+    then
+        mkdir ${HOME}/scripts/system
+    fi
+    GIT_DIR="${GIT_LOCATION}/system/"
+    # check if local bashrc matches git one
+    if ! cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
+    then
+        echo -e "${REPLACING1}" && \
+        cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
+        echo -e "${COMPLETED1}"
+    fi
+    # check if local bash_profile matches git one
+    if ! cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
+    then
+        echo -e "${REPLACING2}" && \
+        cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
+        echo -e "${COMPLETED2}"
+    fi
 fi
 
 
