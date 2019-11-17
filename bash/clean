@@ -6,7 +6,7 @@ TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"
 DOWNLOADS_DIR="${HOME}/Downloads/"
 
-if [[ $USER = "jakeireland" ]]
+if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
 then
     :
 else
@@ -17,7 +17,7 @@ fi
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-if [[ $USER = "jakeireland" ]]
+if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
 then
     :
 else

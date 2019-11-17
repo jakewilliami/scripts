@@ -17,8 +17,8 @@ os.system("brew cask list > ${HOME}/scripts/python/casks.txt")
 
 
 with open(home + "/scripts/python/sysApps.txt", 'rb') as f:
-    pl = load(f)
-#    print(pl)
+    pl = plistlib.load(f)
+    print(pl)
 #print(pl["_name"])
     
 #appname = pl['_name']

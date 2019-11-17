@@ -2,7 +2,7 @@
 
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $USER = "jakeireland" ]]
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
     :
 else

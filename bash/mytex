@@ -3,7 +3,7 @@
 DIR="${HOME}/tex-macros"
 BASH_DIR="${HOME}/scripts/bash"
 
-if [[ $USER = "jakeireland" ]]
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
     :
 else
@@ -14,7 +14,7 @@ fi
 # Colours
 source ${BASH_DIR}/colours/json-colour-parser.sh
 
-if [[ $USER = "jakeireland" ]]
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
     :
 else
