@@ -8,6 +8,9 @@ import sys
 
 from os import listdir
 from os.path import isfile, isdir, join
+from pathlib import Path  # for home dir
+
+home = str(Path.home())
 
 
 parser = argparse.ArgumentParser(description='Please enter a file directory')
@@ -15,7 +18,7 @@ parser.add_argument('dir', help="Your desired directory.")
 args = parser.parse_args()
 
 
-with open("/Users/jakeireland/scripts/bash/textcolours.json") as textcolours:
+with open(home + "/scripts/bash/textcolours.json") as textcolours:
     colour_dict = json.load(textcolours)
 
     
