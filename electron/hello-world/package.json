@@ -1,0 +1,19 @@
+{
+  "name": "electron-hello-world",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/jakewilliami/scripts/electron/hello-world",
+  "keywords": [
+    "Electron",
+    "hello-world"
+  ],
+  "author": "Jake William Ireland",
+  "license": "None",
+  "devDependencies": {
+    "electron": "^7.1.1"
+  }
+}

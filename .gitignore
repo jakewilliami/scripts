@@ -1,4 +1,4 @@
-./**/.DS_Store
+**/.DS_Store
 bash/textcolours.txt
 rust/rusty_ls/target/
 rust/applications/target/
@@ -23,3 +23,4 @@ ruby/pdfsearch/Gemfile
 ruby/pdfsearch/Gemfile.lock
 perl/*.txt
 python/*.txt
+electron/**/node_modules/
