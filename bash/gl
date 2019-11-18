@@ -14,7 +14,7 @@ else
     source ${BASH_DIR}/colours/json-colour-parser.sh
 fi
 
-if [[ ${USER} = "jakeireland" ]]
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then
     :
 else
