@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/jakewilliami/scripts/electron/hello-world",
+  "repository": "https://github.com/jakewilliami/scripts/tree/master/electron/hello-world",
   "keywords": [
     "Electron",
     "hello-world"
