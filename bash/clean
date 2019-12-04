@@ -22,8 +22,9 @@ then
 else
     # Brew Install function
     source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
     # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" ruby rbenv ruby-build && \
+    brew_install "${SATISFYING_DEPS}" perl ruby rbenv ruby-build && \
     echo -e "${DEPS_SATISFIED}"
 fi
 
@@ -34,11 +35,12 @@ display_help() {
     echo -e "${ITWHITE}The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
     echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BYELLOW}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BYELLOW}ownloads${NORM}${BRED} folder.${NORM}"
+    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BYELLOW}ownloads${NORM}${BYELLOW} folder.${NORM}"
     echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
+    echo -e "${BBLUE}\t -p | --perl \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}p${BYELLOW}erl${NORM}${BYELLOW} CPAN packages.${NORM}"
     echo -e "${BBLUE}\t -m | --mas \t\t${BYELLOW}Updates your ${ULINE}${BBLUE}m${BYELLOW}acOS App Store${NORM}${BYELLOW} applications.${NORM}"
-    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BYELLOW}ll${NORM} ${BYELLOW} options.${NORM}"
+    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BYELLOW}ll${NORM} ${BYELLOW}options.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -178,6 +180,10 @@ clean_gems() {
     sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
 }
 
+clean_perl() {
+    perl -MCPAN -e "upgrade /(.\*)/"
+}
+
 
 big_clean() {
     BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
@@ -197,13 +203,17 @@ big_clean() {
     clean_gems
     echo
     echo -e "${BGREEN}${BIG_LINE}${NORM}"
+    echo -e "${BYELLOW}CLEANING CPANM PACKAGES${NORM}"
+    clean_perl
+    echo
+    echo -e "${BGREEN}${BIG_LINE}${NORM}"
     echo -e "${BYELLOW}CLEANING APPS FROM THE APPLE APP STORE${NORM}"
     mas upgrade 
 }
 
 
 # Options
-while getopts ":-:tdhbmra" OPTION; do
+while getopts ":-:tdhpbmra" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -220,6 +230,9 @@ while getopts ":-:tdhbmra" OPTION; do
                             display_help ;;
                         brew)
                             clean_brew 
+                            clean-exit ;;
+                        perl)
+                            clean_perl 
                             clean-exit ;;
                         ruby)
                             clean_gems 
@@ -246,6 +259,9 @@ while getopts ":-:tdhbmra" OPTION; do
                     display_help ;;
                 b)
                     clean_brew 
+                    clean-exit ;;
+                p) 
+                    clean_perl 
                     clean-exit ;;
                 r)
                     clean_gems 
