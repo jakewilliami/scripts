@@ -169,7 +169,6 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     brew cask doctor
     brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
     rm -rf $(brew --cache)
-    clean-exit
     #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
 }
 
@@ -177,7 +176,29 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
 clean_gems() {
     sudo gem update  # https://stackoverflow.com/a/36150004/12069968
     sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
-    clean-exit
+}
+
+
+big_clean() {
+    BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
+    echo -e "${BYELLOW}CLEANING DOWNLOADS${NORM}"
+    clean_downloads
+    echo
+    echo -e "${BGREEN}${BIG_LINE}${NORM}"
+    echo -e "${BYELLOW}CLEANING TRASH${NORM}"
+    clean_trash
+    echo
+    echo -e "${BGREEN}${BIG_LINE}${NORM}"
+    echo -e "${BYELLOW}CLEANING HOMEBREW${NORM}"
+    clean_brew
+    echo
+    echo -e "${BGREEN}${BIG_LINE}${NORM}"
+    echo -e "${BYELLOW}CLEANING RUBY${NORM}"
+    clean_gems
+    echo
+    echo -e "${BGREEN}${BIG_LINE}${NORM}"
+    echo -e "${BYELLOW}CLEANING APPS FROM THE APPLE APP STORE${NORM}"
+    mas upgrade 
 }
 
 
@@ -187,57 +208,48 @@ while getopts ":-:tdhbmra" OPTION; do
                 -)
                     case $OPTARG in
                         all)
-                            echo -e "${BYELLOW}CLEANING DOWNLOADS${NORM}"
-                            clean_downloads
-                            echo
-                            echo
-                            echo -e "${BYELLOW}CLEANING TRASH${NORM}"
-                            clean_trash
-                            echo
-                            echo
-                            echo -e "${BYELLOW}CLEANING HOMEBREW${NORM}"
-                            clean_brew
-                            echo
-                            echo
-                            echo -e "${BYELLOW}CLEANING RUBY${NORM}"
-                            clean_gems
-                            echo
-                            echo
-                            echo -e "${BYELLOW}CLEANING APPS FROM THE APPLE APP STORE${NORM}"
-                            mas upgrade ;;
+                            big_clean
+                            clean-exit ;;
                         downloads)
-                            clean_downloads ;;
+                            clean_downloads 
+                            clean-exit ;;
                         trash)
-                            clean_trash ;;
+                            clean_trash 
+                            clean-exit ;;
                         help)
                             display_help ;;
                         brew)
-                            clean_brew ;;
+                            clean_brew 
+                            clean-exit ;;
                         ruby)
-                            clean_gems ;;
+                            clean_gems 
+                            clean-exit ;;
                         mas)
-                            mas upgrade ;;
+                            mas upgrade 
+                            clean-exit ;;
                         *)
                             opt_err ;;
                     esac ;;
                 a)
-                    clean_downloads
-                    clean_trash
-                    clean_brew
-                    clean_gemsg
-                    mas upgrade ;;
+                    big_clean 
+                    clean-exit ;;
                 t)
-                    clean_trash ;;
+                    clean_trash 
+                    clean-exit ;;
                 m) 
-                    mas upgrade ;;
+                    mas upgrade 
+                    clean-exit ;;
                 d)  
-                    clean_downloads ;;
+                    clean_downloads 
+                    clean-exit ;;
                 h)
                     display_help ;;
                 b)
-                    clean_brew ;;
+                    clean_brew 
+                    clean-exit ;;
                 r)
-                    clean_gems ;;
+                    clean_gems 
+                    clean-exit ;;
                 *)
                     opt_err ;;
         esac
