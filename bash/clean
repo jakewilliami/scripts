@@ -31,14 +31,14 @@ fi
 display_help() {
     echo -e "${BWHITE}Usage: [sudo] clean [option...]${NORM}"
     echo
-    echo -e "${ITWHITE}The present script will help to clear deprecated files.  ${ITRED}Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
+    echo -e "${ITWHITE}The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
     echo
-    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BRED}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BRED}ownloads${NORM}${BRED} folder.${NORM}"
+    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BYELLOW}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
+    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BYELLOW}ownloads${NORM}${BRED} folder.${NORM}"
     echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
     echo -e "${BBLUE}\t -m | --mas \t\t${BYELLOW}Updates your ${ULINE}${BBLUE}m${BYELLOW}acOS App Store${NORM}${BYELLOW} applications.${NORM}"
-    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BRED}ll${NORM} ${BYELLOW} options.${NORM}"
+    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BYELLOW}ll${NORM} ${BYELLOW} options.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -187,10 +187,23 @@ while getopts ":-:tdhbmra" OPTION; do
                 -)
                     case $OPTARG in
                         all)
-#                           clean_downloads
+                            echo -e "${BYELLOW}CLEANING DOWNLOADS${NORM}"
+                            clean_downloads
+                            echo
+                            echo
+                            echo -e "${BYELLOW}CLEANING TRASH${NORM}"
                             clean_trash
+                            echo
+                            echo
+                            echo -e "${BYELLOW}CLEANING HOMEBREW${NORM}"
                             clean_brew
+                            echo
+                            echo
+                            echo -e "${BYELLOW}CLEANING RUBY${NORM}"
                             clean_gems
+                            echo
+                            echo
+                            echo -e "${BYELLOW}CLEANING APPS FROM THE APPLE APP STORE${NORM}"
                             mas upgrade ;;
                         downloads)
                             clean_downloads ;;
