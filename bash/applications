@@ -1,0 +1,72 @@
+#! /bin/bash
+
+# Define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+fi
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    :
+else
+    # Brew Install Function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" perl && \
+    echo -e "${DEPS_SATISFIED}"
+fi
+
+# Help
+display_help() { #Displays help
+    echo -e "${BWHITE}Usage: applications [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will create system information in \`~/scripts/perl\` regarding applications and use them to find the applications which are not managed by the Mac App Store or Homebrew.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -c | --compile \t\t${BYELLOW}${ULINE}${BBLUE}C${BYELLOW}ompiles${NORM}${BYELLOW} data from applications and saves as text in \`~/scripts/perl\`.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
+}
+
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+# Compile .txt files for casks, applications, and process system_profiler -xml
+perl_compile() {
+perl -X ${HOME}/scripts/perl/applications.pl || exit $?
+}
+
+
+# Options
+while getopts ":-:ch" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        compile)
+                            perl_compile && \
+                    echo -e "${BGREEN}Successfully compiled application data in \`~/scripts/perl\`.${NORM}";;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                c)
+                    perl_compile && \
+                    echo -e "${BGREEN}Successfully compiled Homebrew casks in \`~/scripts/perl/casks.txt\` and application data (minus app store and Apple data) in \`~/scripts/perl/dataApps.txt\`.${NORM}";;
+                h)  
+                    display_help ;;
+                *)  
+                    opt_err ;;
+        esac
+done
