@@ -30,8 +30,10 @@ display_help() { #Displays help
     echo
     echo -e "${ITWHITE}The present script will create system information in \`~/scripts/perl\` regarding applications and use them to find the applications which are not managed by the Mac App Store or Homebrew.${NORM}"
     echo
-    echo -e "${BBLUE}\t -c | --compile \t\t${BYELLOW}${ULINE}${BBLUE}C${BYELLOW}ompiles${NORM}${BYELLOW} data from applications and saves as text in \`~/scripts/perl\`.${BNORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    echo -e "${BBLUE}\t -a | --list-applications ${BYELLOW}Lists ${ULINE}${BBLUE}a${BYELLOW}pplications${NORM}${BYELLOW} that are not from the app store or made by Apple.${BNORM}"
+    echo -e "${BBLUE}\t -b | --list-brew \t  ${BYELLOW}${ULINE}Lists ${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW} casks.${BNORM}"
+    echo -e "${BBLUE}\t -c | --compile \t  ${BYELLOW}${ULINE}${BBLUE}C${BYELLOW}ompiles${NORM}${BYELLOW} data from applications and saves as text in \`~/scripts/perl\`.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t  ${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
     clean-exit
 }
 
@@ -43,16 +45,30 @@ opt_err() { #Invalid option (getopts already reported the illegal option)
 
 # Compile .txt files for casks, applications, and process system_profiler -xml
 perl_compile() {
-perl -X ${HOME}/scripts/perl/applications.pl || exit $?
+    perl -X ${HOME}/scripts/perl/applications.pl || exit $?
+}
+
+list_applications() {
+    cat ${HOME}/scripts/perl/dataApps.txt
+}
+
+list_casks() {
+    cat ${HOME}/scripts/perl/casks.txt
 }
 
 
 # Options
-while getopts ":-:ch" OPTION
+while getopts ":-:abch" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
+                        list-applications)
+                            perl_compile && \
+                            list_applications ;;
+                        list-brew)
+                            perl_compile && \
+                            list_casks ;;
                         help)
                             display_help ;;
                         compile)
@@ -61,6 +77,12 @@ do
                         *)
                             opt_err ;;
                     esac ;;
+                a)
+                    perl_compile && \
+                    list_applications ;;
+                b)
+                    perl_compile && \
+                    list_casks ;;
                 c)
                     perl_compile && \
                     echo -e "${BGREEN}Successfully compiled Homebrew casks in \`~/scripts/perl/casks.txt\` and application data (minus app store and Apple data) in \`~/scripts/perl/dataApps.txt\`.${NORM}";;
