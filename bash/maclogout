@@ -1,0 +1,72 @@
+#! /bin/bash
+
+# Define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+fi
+
+# Help
+display_help() { #Displays help
+    echo -e "${BWHITE}Usage: gl [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will log out of the current user.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
+}
+
+
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+
+
+# Options
+while getopts ":-:h" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)  
+                    display_help ;;
+                *)  
+                    opt_err ;;
+        esac
+done
+
+
+my_logout() {
+    USER_INFO=$(ps -Ajc | grep loginwindow | sed 's/[ \t]*\([0-9]\{1,\}\).*/\1/')
+    USER_PID=$(echo $USER_INFO | sed 's/[^0-9]//g')
+    USERNAME=$(echo $USER_INFO | sed 's/[^a-zA-Z]//g')
+    echo -e "${BYELLOW}Logging out of user ${NORM}${BWHITE}${USERNAME}${NORM}${BYELLOW}.${NORM}"
+    sudo kill ${USER_PID}
+}
+
+
+# If option empty
+if [[ -z $1 ]]
+then 
+    my_logout
+fi
+
+
+# Clean up
+clean-exit
