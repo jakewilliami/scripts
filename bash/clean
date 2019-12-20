@@ -164,12 +164,29 @@ opt_err() {
 
 
 clean_brew() {  # https://superuser.com/a/975878/1100925
+    BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
+    echo -e "${ITYELLOW}Updating Homebrew Core${NORM}"
     brew update # Update homebrew
+    echo
+    echo -e "${BWHITE}${BIG_LINE}${NORM}"
+    echo -e "${ITYELLOW}Updating Homebrew Casks${NORM}"
     brew cask upgrade
+    echo
+    echo -e "${BWHITE}${BIG_LINE}${NORM}"
+    echo -e "${ITYELLOW}Updating Homebrew Formulae${NORM}"
     brew upgrade  # Update outdated formula
+    echo
+    echo -e "${BWHITE}${BIG_LINE}${NORM}"
+    echo -e "${ITYELLOW}Removing Outdated Formula${NORM}"
     brew cleanup -s  # Remove outdated formula
+    echo
+    echo -e "${BWHITE}${BIG_LINE}${NORM}"
+    echo -e "${ITYELLOW}Running Homebrew Doctor for potential problems${NORM}"
     brew cask doctor
     brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
+    echo
+    echo -e "${BWHITE}${BIG_LINE}${NORM}"
+    echo -e "${ITYELLOW}Clearing Homebrew Cache${NORM}"
     rm -rf $(brew --cache)
     #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
 }
