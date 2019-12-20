@@ -187,6 +187,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
     echo -e "${ITYELLOW}Clearing Homebrew Cache${NORM}"
+    ls $(brew --cache)
     rm -rf $(brew --cache)
     #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
 }
