@@ -44,6 +44,7 @@ opt_err_none() { #Invalid option (getopts already reported the illegal option)
 
 entries() {
     LINES_IN_LIB=$(cat ${LIBRARY_FILE} | wc -l | awk '{$1=$1;print}')
+    
     echo -e "${BWHITE}Your library consists of ${LINES_IN_LIB} books!${NORM}"
     clean-exit
 }
@@ -52,7 +53,8 @@ entries() {
 TERM_SEARCHED_FOR="${2}"
 how-many-terms() {
     [[ -z "${TERM_SEARCHED_FOR}" ]] && echo -e "${BYELLOW}You must have at least one argument using this option (a search term).${norm}" && clean-exit
-    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${1} | wc -l | awk '{$1=$1;print}' )
+    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${TERM_SEARCHED_FOR} | wc -l | awk '{$1=$1;print}' )
+    
     echo -e "${BWHITE}Your library contains ${TERMS_COUNT} books matching your term \"${TERM_SEARCHED_FOR}\"!${NORM}"
 }
 
