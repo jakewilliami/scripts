@@ -21,7 +21,8 @@ display_help() { #Displays help
     echo
     echo -e "${ITWHITE}The present script will parse and analyse a csv file of my library.${NORM}"
     echo
-    echo -e "${BBLUE}\t -e | --entries \t\t${BYELLOW}Prints number of ${ULINE}${BBLUE}e${BYELLOW}ntries${NORM}${BYELLOW} in library.${BNORM}"
+    echo -e "${BBLUE}\t -e | --entries \t${BYELLOW}Prints number of ${ULINE}${BBLUE}e${BYELLOW}ntries${NORM}${BYELLOW} in library.${BNORM}"
+    echo -e "${BBLUE}\t -t | --term-search \t${BYELLOW}Prints number of books found with some search ${ULINE}${BBLUE}t${BYELLOW}erm${NORM}${BYELLOW}.${BNORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
     clean-exit
 }
@@ -34,6 +35,13 @@ opt_err() { #Invalid option (getopts already reported the illegal option)
 }
 
 
+opt_err_none() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}You must have at least one option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
 entries() {
     LINES_IN_LIB=$(cat ${LIBRARY_FILE} | wc -l | awk '{$1=$1;print}')
     echo -e "${BWHITE}Your library consists of ${LINES_IN_LIB} books!${NORM}"
@@ -41,12 +49,21 @@ entries() {
 }
 
 
+how-many-terms() {
+    [[ -z $2 ]] && echo -e "${BYELLOW}You must have at least one argument using this option (a search term).${norm}" && clean-exit
+    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${1} | wc -l)
+    echo -e "${BWHITE}Your library contains ${TERMS_COUNT} books matching your term \"${1}\"!${NORM}"
+}
+
+
 # Options
-while getopts ":-:eh" OPTION
+while getopts ":-:eth" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
+                        term-search)
+                            how-many-terms $1 ;;
                         entries)
                             entires ;;
                         help)
@@ -56,6 +73,8 @@ do
                     esac ;;
                 e)
                     entries ;;
+                t)
+                    how-many-terms $1 ;;
                 h)  
                     display_help ;;
                 *)  
@@ -64,11 +83,8 @@ do
 done
 
 
-# If option empty
-if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
-then 
-    clean-exit
-fi
+#if no arguments
+[[ -z $1 ]] && opt_err_none && clean-exit
 
 
 # Clean up
