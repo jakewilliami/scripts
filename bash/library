@@ -49,10 +49,11 @@ entries() {
 }
 
 
+TERM_SEARCHED_FOR="${2}"
 how-many-terms() {
-    [[ -z $2 ]] && echo -e "${BYELLOW}You must have at least one argument using this option (a search term).${norm}" && clean-exit
-    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${1} | wc -l)
-    echo -e "${BWHITE}Your library contains ${TERMS_COUNT} books matching your term \"${1}\"!${NORM}"
+    [[ -z "${TERM_SEARCHED_FOR}" ]] && echo -e "${BYELLOW}You must have at least one argument using this option (a search term).${norm}" && clean-exit
+    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${1} | wc -l | awk '{$1=$1;print}' )
+    echo -e "${BWHITE}Your library contains ${TERMS_COUNT} books matching your term \"${TERM_SEARCHED_FOR}\"!${NORM}"
 }
 
 
@@ -63,7 +64,7 @@ do
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
                         term-search)
-                            how-many-terms $1 ;;
+                            how-many-terms 1 ;;
                         entries)
                             entires ;;
                         help)
@@ -74,7 +75,7 @@ do
                 e)
                     entries ;;
                 t)
-                    how-many-terms $1 ;;
+                    how-many-terms 1 ;;
                 h)  
                     display_help ;;
                 *)  
