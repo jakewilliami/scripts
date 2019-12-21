@@ -1,0 +1,75 @@
+#! /bin/bash
+#Future: `brew install yarn && yarn global add taskbook`?
+
+# Define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+LIBRARY_FILE="${HOME}/Desktop/library.csv"
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+fi
+
+# Help
+display_help() { #Displays help
+    echo -e "${BWHITE}Usage: gl [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will parse and analyse a csv file of my library.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -e | --entries \t\t${BYELLOW}Prints number of ${ULINE}${BBLUE}e${BYELLOW}ntries${NORM}${BYELLOW} in library.${BNORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    clean-exit
+}
+
+
+opt_err() { #Invalid option (getopts already reported the illegal option)
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+entries() {
+    LINES_IN_LIB=$(cat ${LIBRARY_FILE} | wc -l | awk '{$1=$1;print}')
+    echo -e "${BWHITE}Your library consists of ${LINES_IN_LIB} books!${NORM}"
+    clean-exit
+}
+
+
+# Options
+while getopts ":-:eh" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        entries)
+                            entires ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                e)
+                    entries ;;
+                h)  
+                    display_help ;;
+                *)  
+                    opt_err ;;
+        esac
+done
+
+
+# If option empty
+if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
+then 
+    clean-exit
+fi
+
+
+# Clean up
+clean-exit
