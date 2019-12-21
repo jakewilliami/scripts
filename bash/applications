@@ -49,11 +49,11 @@ perl_compile() {
 }
 
 list_applications() {
-    cat ${HOME}/scripts/perl/dataApps.txt
+    cat ${HOME}/scripts/perl/dataApps.txt | cut -f1 -d":" | sed 's/[0-9]*$//' | sed 's/-$//' | awk '{$1=$1;print}'
 }
 
 list_casks() {
-    cat ${HOME}/scripts/perl/casks.txt
+    cat ${HOME}/scripts/perl/casks.txt | awk '{ gsub ("-", " ", $0); print}'
 }
 
 
