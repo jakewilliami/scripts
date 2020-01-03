@@ -15,7 +15,7 @@ fi
 
 # Help
 display_help() { #Displays help
-    echo -e "${BWHITE}Usage: gl [option...]${NORM}"
+    echo -e "${BWHITE}Usage: maclogout [option...]${NORM}"
     echo
     echo -e "${ITWHITE}The present script will log out of the current user.${NORM}"
     echo
