@@ -30,8 +30,9 @@ display_help() {
     echo
     echo -e "${ITWHITE}The present script will download a list of all redditors for you to scrape and search through.${NORM}"
     echo
-    echo -e "${BBLUE}\t -d | --download \t\t${BYELLOW}${ULINE}${BBLUE}D${BYELLOW}ownload${NORM}${BYELLOW}s, extracts, and writes to text a list of all Redditors.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    echo -e "${BBLUE}\t -d | --download \t${BYELLOW}${ULINE}${BBLUE}D${BYELLOW}ownload${NORM}${BYELLOW}s, extracts, and writes to text a list of all Redditors.${NORM}"
+    echo -e "${BBLUE}\t -f | --find \t\t${BYELLOW}${ULINE}${BBLUE}F${BYELLOW}ind${NORM}${BYELLOW} Redditors from csv.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${BYELLOW}${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
     clean-exit
 }
 
@@ -44,23 +45,32 @@ download_redditors() {
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
     echo -e "${ITYELLOW}Extracting the Redditors CSV${NORM}"
-    7z e 69M_reddit_accounts.csv.gz
+    7z e -o${HOME}/Desktop ${HOME}/Downloads/69M_reddit_accounts.csv.gz
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Simplifying CSV to plain text${NORM}"
-    while read -r line; do echo ${line} | awk -F[,] '{print $2}'; done < ./69M_reddit_accounts.csv > ${HOME}/Desktop/reddit-accounts.txt
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}File of all Redditors written to a text file on your desktop${NORM}"
+    echo -e "${ITYELLOW}File of all Redditors written to a CSV file on your desktop${NORM}"
+    clean-exit
+}
+
+option_two=$2
+find_redditor() {
+    if [[ -z $option_two ]]
+    then
+        echo -e "${BYELLOW}Must parse a search term using this option${NORM}"
+        clean-exit
+    else
+         while read -r line; do grep -Ei "${option_two}" | awk -F[,] '{print $2}'; done < ${HOME}/Desktop/69M_reddit_accounts.csv
+    fi
 }
 
 
-
 # Options
-while getopts ":-:hd" OPTION; do
+while getopts ":-:fhd" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        find)
+                            find_redditor 1 ;;
                         download)
                             download_redditors ;;
                         help)
@@ -68,6 +78,8 @@ while getopts ":-:hd" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                f)
+                    find_redditor 1 ;;
                 d)
                     download_redditors ;;
                 h)
