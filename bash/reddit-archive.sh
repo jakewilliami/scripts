@@ -55,7 +55,9 @@ make_tex() {
     #Change Title of file
     perl -pi -e 's/%enter title here/tile!/g' test.tex  
     #Change Author
-    perl -pi -e 's/Jake W. Ireland/author :)/g' test.tex 
+    perl -pi -e 's/Jake W. Ireland/author :)/g' test.tex
+    #Date
+    perl -pi -e 's/%\\tableofcontent/date :)/g' test.tex
 }
 
 
