@@ -31,48 +31,36 @@ submission = reddit.submission(id='9fbxri')
 bold_lines = bcolours.BWHITE + '=' * term_cols + bcolours.NORM
 
 
-#Print post author
-print(bold_lines)
-print(bcolours.BBLUE + 'Author' + bcolours.NORM)
-print(submission.author)
+#reddit_author = submission.author
+#reddit_sub = submission.subreddit
+#reddit_title = submission.title
+#reddit_body = submission.selftext
+#reddit_upvotes = submission.score
+#reddit_comments = submission.num_comments
+#
+#reddit_link = submission.url
 
 
-#Print post subreddit
-print(bold_lines)
-print(bcolours.BBLUE + 'Subreddit' + bcolours.NORM)
-print(submission.subreddit)
+##Print top comment
+#for top_level_comment in submission.comments:
+#    print(top_level_comment.body)
 
-#Print post title
-print(bold_lines)
-print(bcolours.BBLUE + 'Title' + bcolours.NORM)
-print(submission.title)
+data_array = []
 
+data_array = [submission.author,
+              submission.subreddit,
+              submission.title,
+              submission.selftext,
+              submission.score,
+              submission.num_comments,
+              submission.url]
 
-#Prints post body
-print(bold_lines)
-print(bcolours.BBLUE + 'Post Body' + bcolours.NORM)
-print(submission.selftext)
+delim = '==='
 
-#Print number of upvotes
-print(bold_lines)
-print(bcolours.BBLUE + 'Number of Upvotes' + bcolours.NORM)
-print(submission.score)
+print(data_array)
 
-#Print number of comments
-print(bold_lines)
-print(bcolours.BBLUE + 'Number of Comments' + bcolours.NORM)
-print(submission.num_comments)
-
-#Print top comment
-print(bold_lines)
-print(bcolours.BBLUE + 'Top Comment' + bcolours.NORM)
-for top_level_comment in submission.comments:
-    print(top_level_comment.body)
-		
-#Post URL
-print(bold_lines)
-print(bcolours.BBLUE + 'Post URL' + bcolours.NORM)
-print(submission.url)
+#str = delim.join(data_array)
+#print(data_array)
 
 
 
