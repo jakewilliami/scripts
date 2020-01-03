@@ -30,10 +30,12 @@ display_help() {
     echo
     echo -e "${ITWHITE}The present script will download a list of all redditors for you to scrape and search through.${NORM}"
     echo
-    echo -e "${BBLUE}\t -e | --extended-find \t${BYELLOW}${ULINE}${BBLUE}e${BYELLOW}xtends${NORM}${BYELLOW} the search complexity using regex (use option 1 then 2).${NORM}"
+    echo -e "${BBLUE}\t -e | --extended-find \t${BYELLOW}${ULINE}${BBLUE}E${BYELLOW}xtends${NORM}${BYELLOW} the search complexity using regex.\*${NORM}"
     echo -e "${BBLUE}\t -d | --download \t${BYELLOW}${ULINE}${BBLUE}D${BYELLOW}ownload${NORM}${BYELLOW}s, extracts, and writes to text a list of all Redditors.${NORM}"
     echo -e "${BBLUE}\t -f | --find \t\t${BYELLOW}${ULINE}${BBLUE}F${BYELLOW}ind${NORM}${BYELLOW} Redditors from csv.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${BYELLOW}${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
+    echo
+    echo -e "${ITWHITE}\*The extended regex option should be used as follows: ${NORM}${BWHITE}get-redditors.sh -e [search_term] [search_term_with_regex]${ITWHITE}.  For example,${NORM}${BWHITE} get-redditors.sh -e moose ^moose${NORM}${ITWHITE} will find all usernames starting with the term moose.${NORM}"
     clean-exit
 }
 
