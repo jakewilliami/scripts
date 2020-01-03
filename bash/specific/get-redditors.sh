@@ -26,7 +26,7 @@ fi
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: [sudo] clean [option...]${NORM}"
+    echo -e "${BWHITE}Usage: get-redditors.sh [option...]${NORM}"
     echo
     echo -e "${ITWHITE}The present script will download a list of all redditors for you to scrape and search through.${NORM}"
     echo
