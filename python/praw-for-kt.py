@@ -33,45 +33,45 @@ bold_lines = bcolours.BWHITE + '=' * term_cols + bcolours.NORM
 
 #Print post author
 print(bold_lines)
-print(bcolours.BBLUE + 'POST BY' + bcolours.NORM)
+print(bcolours.BBLUE + 'Author' + bcolours.NORM)
 print(submission.author)
 
 
 #Print post subreddit
 print(bold_lines)
-print(bcolours.BBLUE + 'IN SUBREDDIT' + bcolours.NORM)
+print(bcolours.BBLUE + 'Subreddit' + bcolours.NORM)
 print(submission.subreddit)
 
 #Print post title
 print(bold_lines)
-print(bcolours.BBLUE + 'TITLED' + bcolours.NORM)
+print(bcolours.BBLUE + 'Title' + bcolours.NORM)
 print(submission.title)
 
 
 #Prints post body
 print(bold_lines)
-print(bcolours.BBLUE + 'POST BODY AS FOLLOWS' + bcolours.NORM)
+print(bcolours.BBLUE + 'Post Body' + bcolours.NORM)
 print(submission.selftext)
 
 #Print number of upvotes
 print(bold_lines)
-print(bcolours.BBLUE + 'NUMBER OF UPVOTES' + bcolours.NORM)
+print(bcolours.BBLUE + 'Number of Upvotes' + bcolours.NORM)
 print(submission.score)
 
 #Print number of comments
 print(bold_lines)
-print(bcolours.BBLUE + 'NUMBER OF COMMENTS' + bcolours.NORM)
+print(bcolours.BBLUE + 'Number of Comments' + bcolours.NORM)
 print(submission.num_comments)
 
 #Print top comment
 print(bold_lines)
-print(bcolours.BBLUE + 'TOP COMMENT' + bcolours.NORM)
+print(bcolours.BBLUE + 'Top Comment' + bcolours.NORM)
 for top_level_comment in submission.comments:
     print(top_level_comment.body)
 		
 #Post URL
 print(bold_lines)
-print(bcolours.BBLUE + 'NUMBER OF COMMENTS' + bcolours.NORM)
+print(bcolours.BBLUE + 'Post URL' + bcolours.NORM)
 print(submission.url)
 
 

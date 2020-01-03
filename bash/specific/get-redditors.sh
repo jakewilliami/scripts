@@ -24,6 +24,14 @@ else
     echo -e "${DEPS_SATISFIED}"
 fi
 
+# Invalid Option
+opt_err() {
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
 # Help
 display_help() {
     echo -e "${BWHITE}Usage: get-redditors.sh [option...]${NORM}"
