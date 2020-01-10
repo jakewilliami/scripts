@@ -48,7 +48,7 @@ function parse_git_dirty {
 }
 
 # make prompt pretty
-PS1="\n\[\033[0;31m\]\342\224\214\342\224\200\$()[\[\033[1;38;5;2m\]\u: \[\033[1;34m\]\W\[\033[1;33m\]\[\033[0;31m\]]\[\033[0;32m\] \[\033[1;33m\]\`parse_git_branch\`\[\033[0;31m\]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0;1m\]\$\[\033[0;38m\] "
+PS1="\n\[\033[0;31m\]\342\224\214\342\224\200\$()[\[\033[1;38;5;2m\]\u\[\033[0;1m\]@\033[1;33m\]\h: \[\033[1;34m\]\W\[\033[1;33m\]\[\033[0;31m\]]\[\033[0;32m\] \[\033[1;33m\]\`parse_git_branch\`\[\033[0;31m\]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0;1m\]\$\[\033[0;38m\] "
 export PS1
 
 
@@ -97,3 +97,5 @@ alias ls.py="python3 ~/scripts/python/ls.py"
 alias please="sudo"
 alias scripts="source scripts"
 alias mytex="source mytex"
+alias sherlock="python3 ${HOME}/sherlock/sherlock.py"
+alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSweeper"

@@ -44,3 +44,5 @@ export PATH=$PATH:/Users/jakeireland/scripts/pdfsearches
 export PATH="/usr/local/sbin:$PATH"
 export PATH=$PATH:${HOME}/tex-macros
 export PATH=$PATH:${HOME}/Desktop/Assorted\ Personal\ Documents/Work
+export PATH=$PATH:${HOME}/pfetch/
+export PATH=$PATH:${HOME}/sherlock/
