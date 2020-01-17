@@ -1,0 +1,66 @@
+#! /bin/bash
+
+#! /bin/bash
+
+BASH_DIR="${HOME}/scripts/bash/"
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+fi
+
+# Help
+display_help() {
+    echo -e "${BWHITE}Usage: tex-wc [option...] file_name${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will (mostly accurately) tell you the word count of a PDF.${NORM}"
+    echo
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    clean-exit
+}
+
+
+opt_err() {
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+FIRST_PARAM=${1}
+word-count-function() {
+    pdftotext "${FIRST_PARAM}.pdf" - | \
+    egrep -e '\w\w\w+' | \
+    iconv -f ISO-8859-15 -t UTF-8 | \
+    wc -w
+}
+
+
+# Options
+while getopts ":-:h" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+# If no options
+[[ $OPTIND -eq 1 ]] && word-count-function
+
+
+# Clean up
+clean-exit

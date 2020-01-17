@@ -100,3 +100,9 @@ alias mytex="source mytex"
 alias sherlock="python3 ${HOME}/sherlock/sherlock.py"
 alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSweeper"
 alias get-ip="ipconfig getifaddr en0"
+
+# Get latex word count
+function tex-wc() { 
+	pdftotext "${1}.pdf" - | egrep -e '\w\w\w+' | iconv -f ISO-8859-15 -t UTF-8 | wc -w 
+}
+
