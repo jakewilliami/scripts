@@ -106,3 +106,7 @@ function tex-wc() {
 	pdftotext "${1}.pdf" - | egrep -e '\w\w\w+' | iconv -f ISO-8859-15 -t UTF-8 | wc -w 
 }
 
+
+eval "$(thefuck --alias)"
+# You can use whatever you want as an alias, like for Mondays:
+eval $(thefuck --alias FUCK)
