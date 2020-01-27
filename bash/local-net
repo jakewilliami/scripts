@@ -1,0 +1,112 @@
+#! /bin/bash
+
+BASH_DIR="${HOME}/scripts/bash/"
+
+if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
+then
+    # Colours
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+else
+    # Ensure jq is installed
+    source ${BASH_DIR}/dependencies/jq-dep.sh && \
+    source ${BASH_DIR}/colours/json-colour-parser.sh
+fi
+
+if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
+then
+    :
+else
+    # Brew Install function
+    source ${BASH_DIR}/dependencies/brew-install-dep.sh
+    # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
+    # Satisfy Dependencies
+    brew_install "${SATISFYING_DEPS}" npam arp-scan && \
+    echo -e "${DEPS_SATISFIED}"
+fi
+
+# Help
+display_help() {
+    echo -e "${BWHITE}Usage: [sudo] clean [option...]${NORM}"
+    echo
+    echo -e "${ITWHITE}The present script will ping local machines using different tools (see options).${NORM}"
+    echo
+    echo -e "${BBLUE}\t -a | --arp \t\t${BYELLOW}Prints ${ULINE}${BBLUE}a${BYELLOW}rp${NORM} ${BYELLOW}results.${NORM}"
+    echo -e "${BBLUE}\t -n | --nmap \t\t${BYELLOW}Prints ${ULINE}${BBLUE}n${BYELLOW}map${NORM} ${BYELLOW} results.${NORM}"
+    echo -e "${BBLUE}\t -p | --ping \t\t${BYELLOW}Prints ${ULINE}${BBLUE}p${BYELLOW}ing${NORM}${BYELLOW}ed results.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    clean-exit
+}
+
+
+ping_function() {
+    TARGETNETWORK=192.168.1
+    for i in $(seq 1 254); do
+        (ping -c 1 $TARGETNETWORK.$i | grep "bytes from" &) #& at end makes it run parallel
+    done
+    sleep 1
+}
+
+
+arp_function() {
+    sudo arp-scan -l   
+}
+
+
+nmap_function() {
+#    IP=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+    IP=$(curl ipinfo.io/ip)
+    SUBNET=$(echo `ifconfig  | grep 'Mask:'| grep -v '127.0.0.1' | cut -d: -f4 | awk '{print $1}' | grep -o 255 | wc -l`*8 | bc)
+    #fping -a -g $IP/$SUBNET
+    nmap -sP $IP/$SUBNET
+}
+
+
+opt_err() {
+    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
+    echo -e "${HELP}"
+	clean-exit
+}
+
+
+# Options
+while getopts ":-:anph" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        arp)
+                            arp_function
+                            clean-exit ;;
+                        nmap)
+                            nmap_function
+                            clean-exit ;;
+                        ping)
+                            ping_function
+                            clean-exit ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                a)
+                    arp_function 
+                    clean-exit ;;
+                n)
+                    nmap_function
+                    clean-exit ;;
+                p)
+                    ping_function
+                    clean-exit ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+# If no options
+[[ -z $1 ]] && echo -e "${BYELLOW}Please specify an option.  Use option -h for help.${NORM}"
+
+
+# Clean up
+clean-exit
