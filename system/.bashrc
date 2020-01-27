@@ -100,12 +100,16 @@ alias mytex="source mytex"
 alias sherlock="python3 ${HOME}/sherlock/sherlock.py"
 alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSweeper"
 alias get-ip="ipconfig getifaddr en0"
+alias get-public-ip="curl ipinfo.io/ip"
 
-# Get latex word count
-function tex-wc() { 
-	pdftotext "${1}.pdf" - | egrep -e '\w\w\w+' | iconv -f ISO-8859-15 -t UTF-8 | wc -w 
+
+function clean-all-docker() {
+	docker rm docker rm $(docker ps -aq); docker system prune --all
 }
 
+function clean-docker() {
+	docker rm `docker ps -aq -f status=exited`
+}
 
 eval "$(thefuck --alias)"
 # You can use whatever you want as an alias, like for Mondays:
