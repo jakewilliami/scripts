@@ -101,7 +101,7 @@ alias sherlock="python3 ${HOME}/sherlock/sherlock.py"
 alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSweeper"
 alias get-ip="ipconfig getifaddr en0"
 alias get-public-ip="curl ipinfo.io/ip"
-
+alias system-data="system_profiler SPSoftwareDataType"
 
 function clean-all-docker() {
 	docker rm docker rm $(docker ps -aq); docker system prune --all
@@ -109,6 +109,10 @@ function clean-all-docker() {
 
 function clean-docker() {
 	docker rm `docker ps -aq -f status=exited`
+}
+
+function get-version() {
+	defaults read /Applications/"${1}.app"/Contents/Info CFBundleShortVersionString
 }
 
 eval "$(thefuck --alias)"

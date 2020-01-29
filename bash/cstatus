@@ -74,9 +74,8 @@ ip_specs() {
 
 
 my_ip() {
-    myip=$(curl -s http://checkip.dyndns.org/ | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
-    grepped_ip=${myip%$'\r'}  # Remove end of line character from ip address
-    ip_specs "json" "${grepped_ip}"
+    myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
+    ip_specs "json" "${myip}"
 }
 
 bits() {
