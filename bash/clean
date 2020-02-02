@@ -170,7 +170,8 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
     echo -e "${ITYELLOW}Updating Homebrew Casks${NORM}"
-    brew cask upgrade
+#    brew cask upgrade
+    brew cask upgrade --greedy
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
     echo -e "${ITYELLOW}Updating Homebrew Formulae${NORM}"
