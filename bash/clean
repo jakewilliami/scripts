@@ -177,7 +177,8 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
         ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
         case $yn in
             [Yy]*) 
-                    brew cask upgrade --greedy  ;;
+                    brew cask upgrade --greedy
+                    break   ;;
             [Nn]*) 
                     break  ;;
             *)     
