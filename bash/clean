@@ -169,9 +169,21 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     brew update # Update homebrew
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Updating Homebrew Casks${NORM}"
-#    brew cask upgrade
-    brew cask upgrade --greedy
+    echo -e "${ITYELLOW}About to update Homebrew Casks (applications)${NORM}"
+#    brew cask upgrade --greedy --dry-run
+    while true; do
+        read -p "${BWHITE}`brew cask upgrade --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+        `echo`
+        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
+        case $yn in
+            [Yy]*) 
+                    brew cask upgrade --greedy  ;;
+            [Nn]*) 
+                    break  ;;
+            *)     
+                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+        esac
+    done
     echo
     echo -e "${BWHITE}${BIG_LINE}${NORM}"
     echo -e "${ITYELLOW}Updating Homebrew Formulae${NORM}"
