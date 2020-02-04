@@ -30,15 +30,15 @@ display_help() { #Displays help
     echo
     echo -e "${ITWHITE}The present script will create system information in \`~/scripts/perl\` regarding applications and use them to find the applications which are not managed by the Mac App Store or Homebrew.${NORM}"
     echo
-    echo -e "${BBLUE}\t -a | --list-applications ${BYELLOW}Lists ${ULINE}${BBLUE}a${BYELLOW}pplications${NORM}${BYELLOW} that are not from the app store or made by Apple.${BNORM}"
-    echo -e "${BBLUE}\t -b | --list-brew \t  ${BYELLOW}${ULINE}Lists ${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW} casks.${BNORM}"
-    echo -e "${BBLUE}\t -c | --compile \t  ${BYELLOW}${ULINE}${BBLUE}C${BYELLOW}ompiles${NORM}${BYELLOW} data from applications and saves as text in \`~/scripts/perl\`.${BNORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t  ${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    echo -e "${BBLUE}\t -a | --list-applications ${BYELLOW}Lists ${ULINE}${BBLUE}a${BYELLOW}pplications${NORM}${BYELLOW} that are not from the app store or made by Apple.${NORM}"
+    echo -e "${BBLUE}\t -b | --list-brew \t  ${BYELLOW}${ULINE}Lists ${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW} casks.${NORM}"
+    echo -e "${BBLUE}\t -c | --compile \t  ${BYELLOW}${ULINE}${BBLUE}C${BYELLOW}ompiles${NORM}${BYELLOW} data from applications and saves as text in \`~/scripts/perl\`.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t  ${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"  # fold -w10
     clean-exit
 }
 
 opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
     echo -e "${HELP}"
 	clean-exit
 }

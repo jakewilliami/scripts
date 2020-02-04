@@ -30,21 +30,21 @@ display_help() { #Displays help
     echo
     echo -e "${ITWHITE}The present script will create an issue and label/tag it with already-created labels.${NORM}"
     echo
-    echo -e "${BBLUE}\t -t | --make-tag \t${BYELLOW}Creates new ${ULINE}${BBLUE}t${BYELLOW}ags${NORM}${BYELLOW}/labels.${BNORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${BNORM}"  # fold -w10
+    echo -e "${BBLUE}\t -t | --make-tag \t${BYELLOW}Creates new ${ULINE}${BBLUE}t${BYELLOW}ags${NORM}${BYELLOW}/labels.${NORM}"
+    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"  # fold -w10
     clean-exit
 }
 
 
 opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${BNORM}"
+    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
     echo -e "${HELP}"
 	clean-exit
 }
 
 
 opt_err_none() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}You must have at least two arguments (message and tag(s)).  Use -h for help.${BNORM}"
+    HELP="${BYELLOW}You must have at least two arguments (message and tag(s)).  Use -h for help.${NORM}"
     echo -e "${HELP}"
 	clean-exit
 }

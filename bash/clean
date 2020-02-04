@@ -115,7 +115,7 @@ clean_function() {
             [Nn]*) 
                     clean-exit ;;
             *)     
-                    echo "${BYELLOW}Please answer yes or no.${BNORM}";;
+                    echo "${BYELLOW}Please answer yes or no.${NORM}";;
         esac
     done
 }

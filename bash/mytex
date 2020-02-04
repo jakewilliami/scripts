@@ -31,7 +31,7 @@ display_help() {
     echo -e "${ITWHITE}The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.${NORM}"
     echo
     echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
-    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} currently open.${BNORM}"
+    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} currently open.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-return
 }

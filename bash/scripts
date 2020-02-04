@@ -35,7 +35,7 @@ display_help() {
     echo -e "${ITWHITE}The present script will take you to the scripts directory and by default list its content.${NORM}"
     echo
     echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
-    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} that are tagged with \"depricated\" and \"pdfsearch\" unless stated otherwise.${BNORM}"
+    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} that are tagged with \"depricated\" and \"pdfsearch\" unless stated otherwise.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-return
 }
