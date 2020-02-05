@@ -115,6 +115,11 @@ function get-version() {
 	defaults read /Applications/"${1}.app"/Contents/Info CFBundleShortVersionString
 }
 
+function view-md() {
+	pandoc "${1}" | lynx -stdin
+}
+
+
 eval "$(thefuck --alias)"
 # You can use whatever you want as an alias, like for Mondays:
 eval $(thefuck --alias FUCK)

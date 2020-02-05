@@ -49,3 +49,4 @@ export PATH=$PATH:${HOME}/sherlock/
 export PATH=$PATH:${HOME}/.npm/
 export PATH=$PATH:/usr/local/lib/node_modules/
 export PATH=$PATH:/Users/jakeireland/Desktop/Study/Victoria\ University/2019/Trimester\ 3/SCIE306b/306/Alia-Laura-research/curse-of-knowing/
+export PATH="/usr/local/opt/openjdk/bin:$PATH"
