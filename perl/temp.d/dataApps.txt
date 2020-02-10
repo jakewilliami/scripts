@@ -1,0 +1,102 @@
+Discord: identified_developer
+AppCleaner: identified_developer
+OpenEmu: unknown
+Bitwarden: identified_developer
+VeraCrypt: identified_developer
+TeXShop: identified_developer
+Spectacle: identified_developer
+Alfred 4: identified_developer
+Google Chrome: identified_developer
+DeDRM: unknown
+calibre: identified_developer
+Wine Stable: unknown
+Electron: unknown
+The Unarchiver: identified_developer
+Spotify: identified_developer
+GIMP-2: identified_developer
+Keka: identified_developer
+Steam Helper: identified_developer
+Steam: identified_developer
+Python Launcher 3: unknown
+Python: unknown
+OxygenNotIncluded: identified_developer
+Twitch: identified_developer
+Brackets: identified_developer
+Elmedia Player: identified_developer
+Plex: identified_developer
+OmniDiskSweeper: identified_developer
+Tor Browser: identified_developer
+Snagit 2019: identified_developer
+IntelliJ IDEA CE: identified_developer
+PyCharm CE: identified_developer
+Atom: identified_developer
+Julia-1: identified_developer
+eDEX-UI: unknown
+Microsoft Excel: identified_developer
+VNC Viewer: identified_developer
+Uninstaller: identified_developer
+qBittorrent: unknown
+Minecraft: identified_developer
+QtWebEngineProcess: unknown
+qml: unknown
+qdbusviewer: unknown
+pixeltool: unknown
+Linguist: unknown
+Designer: unknown
+Assistant: unknown
+Table Tool: identified_developer
+Amidst: unknown
+Paradox Launcher: unknown
+Plants vs. Zombies: unknown
+Paste: identified_developer
+EPSON Scanner: identified_developer
+Docker Quickstart Terminal: unknown
+iTerm: identified_developer
+R: unknown
+Microsoft AutoUpdate: identified_developer
+Fax Receive Monitor: identified_developer
+FAX Utility: identified_developer
+EPFaxAutoSetupTool: identified_developer
+rastertoepfax: identified_developer
+commandFilter: identified_developer
+epsonfax: identified_developer
+Cocoa-AppleScript Applet: unknown
+Canon IJScanner2: identified_developer
+Canon IJScanner6: identified_developer
+Canon IJScanner4: identified_developer
+Kitematic: identified_developer
+Microsoft PowerPoint: identified_developer
+Microsoft Word: identified_developer
+LaTeXiT: unknown
+Electron API Demos: unknown
+RStudio: identified_developer
+SciHubEVA: unknown
+KekaDefaultApp: identified_developer
+Paradox Launcher: unknown
+dontstarve_steam: identified_developer
+Steam Helper EH: identified_developer
+HTML5App: unknown
+CEFProcess: unknown
+hoi4: unknown
+CrashReporter: unknown
+Adobe Digital Editions 4: identified_developer
+Git Gui: unknown
+VirtualBox: identified_developer
+Cakebrew: identified_developer
+TeX Live Utility: unknown
+StoryMill: identified_developer
+Electron: unknown
+BibDesk: unknown
+Colloquy: unknown
+KekaDefaultApp: identified_developer
+GitKraken: identified_developer
+Drawful 2: unknown
+PyCharm CE: identified_developer
+IntelliJ IDEA CE: identified_developer
+Roxio Restore: identified_developer
+Acrobat Update Helper: identified_developer
+Crash Reporter: unknown
+Python: unknown
+EndNote X9.2 Updater: identified_developer
+EndNote X9.1.1 Updater: identified_developer
+ENService: identified_developer

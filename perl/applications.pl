@@ -19,7 +19,7 @@ my $home = File::HomeDir::home();
 
 ### Gets standard output from system profiler and write it to a $filename
 my $sys_profile = `system_profiler -xml SPApplicationsDataType`;
-my $filesysProf = "${home}/scripts/perl/system_profile.txt";
+my $filesysProf = "${home}/scripts/perl/temp.d/system_profile.txt";
 open(FH, '>', $filesysProf) or die $!;
     print FH $sys_profile;
 close(FH);
@@ -27,7 +27,7 @@ close(FH);
 
 ### Gets standard output from brew cask install
 my $casks = `brew cask list`;
-my $filecasks = "${home}/scripts/perl/casks.txt";
+my $filecasks = "${home}/scripts/perl/temp.d/casks.txt";
 open(FH, '>', $filecasks) or die $!;
     print FH $casks;
 close(FH);
@@ -49,7 +49,7 @@ sub dataApps {
 }
 
 ### Write dataApps to file
-my $filedataApps = "${home}/scripts/perl/dataApps.txt";
+my $filedataApps = "${home}/scripts/perl/temp.d/dataApps.txt";
 open(FH, '>', $filedataApps) or die $!;
     dataApps();
 close(FH);
@@ -72,7 +72,7 @@ use Text::Fuzzy::PP;
 my $tf = Text::Fuzzy::PP->new ('boboon');
 
 
-open (APPS1, "<${home}/scripts/perl/dataApps.txt") or die $!;
+open (APPS1, "<${home}/scripts/perl/temp.d/dataApps.txt") or die $!;
     my %file_1_hash;
     my $line;
     my $line_counter = 0;
@@ -88,7 +88,7 @@ open (APPS1, "<${home}/scripts/perl/dataApps.txt") or die $!;
 close (APPS1);
 
     #read and compare the second file
-    open(APPS2, "<${home}/scripts/perl/casks.txt") or die $!;
+    open(APPS2, "<${home}/scripts/perl/temp.d/casks.txt") or die $!;
     $line_counter = 0;
     while ($line=<APPS2>){
         $line_counter++;
