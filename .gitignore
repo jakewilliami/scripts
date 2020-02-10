@@ -23,4 +23,5 @@ ruby/pdfsearch/Gemfile
 ruby/pdfsearch/Gemfile.lock
 perl/*.txt
 python/*.txt
+python/**/*.txt
 electron/**/node_modules/
