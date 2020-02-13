@@ -35,7 +35,6 @@ display_help() {
     echo
     echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Prints total ${ULINE}${BBLUE}u${BYELLOW}tilisation${NORM}${BYELLOW} of the CPU in %.${NORM}"
     echo -e "${BBLUE}\t -s | --cpu-stats \t${BYELLOW}Prints CPU ${ULINE}${BBLUE}s${BYELLOW}tatistic${NORM}${BYELLOW} information.${NORM}"
-    echo -e "${BBLUE}\t -g | --geo-ip \t\t${BYELLOW}Shows ${ULINE}${BBLUE}g${BYELLOW}eo-location${NORM}${BYELLOW} information based on  my (current) ip address.${NORM}"
     echo -e "${BBLUE}\t -a | --arch \t\t${BYELLOW}Prints the ${ULINE}${BBLUE}a${BYELLOW}rchitecture${NORM}${BYELLOW} on which the present computer runs.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
@@ -73,22 +72,15 @@ ip_specs() {
 }
 
 
-my_ip() {
-    myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
-    ip_specs "json" "${myip}"
-}
-
 bits() {
     echo -e "${BGREEN}This computer is running on a $(getconf LONG_BIT)-bit architecture.${NORM}"
 }
 
 
-while getopts ":-:aughs" OPTION; do
+while getopts ":-:auhs" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
-                        geo-ip)
-                            my_ip ;;
                         cpu-util)
                             cpu_utilisation ;;
                         cpu-stats)
@@ -100,8 +92,6 @@ while getopts ":-:aughs" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
-                g)
-                    my_ip ;;
                 u)
                     cpu_utilisation ;;
                 s)

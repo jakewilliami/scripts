@@ -31,9 +31,12 @@ display_help() {
     echo -e "${ITWHITE}The present script will ping local machines using different tools (see options).${NORM}"
     echo
     echo -e "${BBLUE}\t -a | --arp \t\t${BYELLOW}Prints ${ULINE}${BBLUE}a${BYELLOW}rp${NORM} ${BYELLOW}results.${NORM}"
+    echo -e "${BBLUE}\t -g | --geo-location \t${BYELLOW}Shows ${ULINE}${BBLUE}g${BYELLOW}eo-location${NORM}${BYELLOW} information based on  one's (public) IP address.${NORM}"
     echo -e "${BBLUE}\t -H | --Hostnames \t${BYELLOW}Finds ${ULINE}${BBLUE}H${BYELLOW}ostnames${NORM}${BYELLOW} within the local network.${NORM}"
+    echo -e "${BBLUE}\t -l | --local \t\t${BYELLOW}Returns ${ULINE}${BBLUE}l${BYELLOW}ocal${NORM}${BYELLOW} IP address.${NORM}"
     echo -e "${BBLUE}\t -n | --nmap \t\t${BYELLOW}Prints ${ULINE}${BBLUE}n${BYELLOW}map${NORM} ${BYELLOW} results.${NORM}"
     echo -e "${BBLUE}\t -p | --ping \t\t${BYELLOW}Prints ${ULINE}${BBLUE}p${BYELLOW}ing${NORM}${BYELLOW}ed results.${NORM}"
+    echo -e "${BBLUE}\t -P | --Public \t\t${BYELLOW}Returns ${ULINE}${BBLUE}P${BYELLOW}ublic${NORM}${BYELLOW} IP address.${NORM}"
     echo -e "${BBLUE}\t -s | --sniff \t\t${BYELLOW}${ULINE}${BBLUE}S${BYELLOW}niff${NORM}${BYELLOW}s packages exchange through the local network.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
@@ -64,13 +67,30 @@ nmap_function() {
 
 
 sniff_function() {
-    DEVICE='en0'
-    sudo sniffglue $DEVICE
+    WIRELESS_DEVICE='en0'
+    sudo sniffglue $WIRELESS_DEVICE
 }
 
 
 dhcp_function() {
     sudo dhcpdump -i en0 | grep -B2 'Host name'
+}
+
+
+local_ip() {
+    WIRELES_DEVICE="echo en0"
+    ipconfig getifaddr $(eval "${WIRELES_DEVICE}")
+}
+
+
+public_ip() {
+    curl ipinfo.io/ip
+}
+
+
+geo_ip_public() {
+    myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
+    ip_specs "json" "${myip}"
 }
 
 
@@ -82,7 +102,7 @@ opt_err() {
 
 
 # Options
-while getopts ":-:anph" OPTION; do
+while getopts ":-:anphlHPsg" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -100,6 +120,15 @@ while getopts ":-:anph" OPTION; do
                             clean-exit ;;
                         Hostnames)
                             dhcp_function
+                            clean-exit ;;
+                        local)
+                            local_ip
+                            clean-exit ;;
+                        Public)
+                            public_ip
+                            clean-exit ;;
+                        geo-location)
+                            geo_ip_public
                             clean-exit ;;
                         help)
                             display_help ;;
@@ -120,6 +149,15 @@ while getopts ":-:anph" OPTION; do
                     clean-exit ;;
                 H)
                     dhcp_function
+                    clean-exit ;;
+                l)
+                    local_ip
+                    clean-exit ;;
+                P)
+                    public_ip
+                    clean-exit ;;
+                g)
+                    geo_ip_public
                     clean-exit ;;
                 h)
                     display_help ;;
