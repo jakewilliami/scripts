@@ -20,7 +20,7 @@ else
     source ${BASH_DIR}/dependencies/brew-install-dep.sh
     # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
     # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" npam arp-scan && \
+    brew_install "${SATISFYING_DEPS}" npam arp-scan sniffglue dhcpdump && \
     echo -e "${DEPS_SATISFIED}"
 fi
 
@@ -31,8 +31,10 @@ display_help() {
     echo -e "${ITWHITE}The present script will ping local machines using different tools (see options).${NORM}"
     echo
     echo -e "${BBLUE}\t -a | --arp \t\t${BYELLOW}Prints ${ULINE}${BBLUE}a${BYELLOW}rp${NORM} ${BYELLOW}results.${NORM}"
+    echo -e "${BBLUE}\t -H | --Hostnames \t${BYELLOW}Finds ${ULINE}${BBLUE}H${BYELLOW}ostnames${NORM}${BYELLOW} within the local network.${NORM}"
     echo -e "${BBLUE}\t -n | --nmap \t\t${BYELLOW}Prints ${ULINE}${BBLUE}n${BYELLOW}map${NORM} ${BYELLOW} results.${NORM}"
     echo -e "${BBLUE}\t -p | --ping \t\t${BYELLOW}Prints ${ULINE}${BBLUE}p${BYELLOW}ing${NORM}${BYELLOW}ed results.${NORM}"
+    echo -e "${BBLUE}\t -s | --sniff \t\t${BYELLOW}${ULINE}${BBLUE}S${BYELLOW}niff${NORM}${BYELLOW}s packages exchange through the local network.${NORM}"
     echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
     clean-exit
 }
@@ -61,6 +63,17 @@ nmap_function() {
 }
 
 
+sniff_function() {
+    DEVICE='en0'
+    sudo sniffglue $DEVICE
+}
+
+
+dhcp_function() {
+    sudo dhcpdump -i en0 | grep -B2 'Host name'
+}
+
+
 opt_err() {
     HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
     echo -e "${HELP}"
@@ -82,6 +95,12 @@ while getopts ":-:anph" OPTION; do
                         ping)
                             ping_function
                             clean-exit ;;
+                        sniff)
+                            sniff_function
+                            clean-exit ;;
+                        Hostnames)
+                            dhcp_function
+                            clean-exit ;;
                         help)
                             display_help ;;
                         *)
@@ -95,6 +114,12 @@ while getopts ":-:anph" OPTION; do
                     clean-exit ;;
                 p)
                     ping_function
+                    clean-exit ;;
+                s)
+                    sniff_function
+                    clean-exit ;;
+                H)
+                    dhcp_function
                     clean-exit ;;
                 h)
                     display_help ;;

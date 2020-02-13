@@ -1,26 +1,12 @@
 #! /bin/bash
 
 
-DIRECTORY_ARCHIVE="${HOME}/Archives/Misc.\ Archival/archived-reddit/"
-
-
-BASH_DIR="${HOME}/scripts/bash/"
-TEMPLATES_DIR="${HOME}/tex-macros/tea_templates/"
-BEAMER_DIR="${TEMPLATES_DIR}/beamer/"
-
-
-#Ensure that tex-macros dir exists and the mktex does as well
-if [[ $USER != "jakeireland" ]]
-then
-    # Ensure jq is installed and directories for mktex script is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh
-    cd ${HOME}/
-    git clone https://github.com/jakewilliami/tex-macros
-fi
+DIRECTORY_ARCHIVE="${HOME}/Archives/archived-reddit/"
+SCRIPTS_DIR="${HOME}/scripts/"
 
 
 # Colours
-source ${BASH_DIR}/colours/json-colour-parser.sh
+source ${SCRIPTS_DIR}/bash/colours/json-colour-parser.sh
 
 # Invalid Option
 opt_err() {
@@ -45,7 +31,7 @@ ARCHIVE_NEW_NO=$(echo "$(($ARCHIVE_OLD_NO + 1))")
 IMMUT_OLD_NO=$(echo ${ARCHIVE_OLD_NO})
 IMMUT_NEW_NO=$(echo ${ARCHIVE_NEW_NO})
 URL_INPUT=$3
-REDDIT_ARCHIVE_TEXT_FILE="${HOME}/scripts/python/reddit-archive-to-be-read.txt"
+REDDIT_ARCHIVE_TEXT_FILE="${SCRIPTS_DIR}/python/reddit-archive-to-be-read.txt"
 
 
 #Make new archive directory
@@ -67,27 +53,6 @@ make_archive_text() {
     else
         python3 ~/scripts/python/praw-for-kt.py $URL_INPUT
     fi
-}
-
-
-#def latex creating option function
-make_tex() {
-    #Get script dir
-    SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-    Make tex file
-    cd ${DIRECTORY_ARCHIVE}/
-    mktex --general ./ archive-${A}
-    cat archive-1.tex | sed 's///g' > archive-1.tex
-}
-
-
-alter_tex() {
-    #Change Title of file
-    perl -pi -e 's/%enter title here/tile!/g' test.tex  
-    #Change Author
-    perl -pi -e 's/Jake W. Ireland/author :)/g' test.tex
-    #Date
-    perl -pi -e 's/%\\tableofcontent/date :)/g' test.tex
 }
 
 
