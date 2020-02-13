@@ -66,12 +66,6 @@ cpu_statistics() {
 }
 
 
-ip_specs() {
-    output_type="${1}"  # Can interpret json, xml, and csv
-    curl -s "https://freegeoip.app/${output_type}/${2}" | jq .
-}
-
-
 bits() {
     echo -e "${BGREEN}This computer is running on a $(getconf LONG_BIT)-bit architecture.${NORM}"
 }

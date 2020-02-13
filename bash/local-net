@@ -88,6 +88,12 @@ public_ip() {
 }
 
 
+ip_specs() {
+    output_type="${1}"  # Can interpret json, xml, and csv
+    curl -s "https://freegeoip.app/${output_type}/${2}" | jq .
+}
+
+
 geo_ip_public() {
     myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
     ip_specs "json" "${myip}"
