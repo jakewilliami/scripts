@@ -68,7 +68,7 @@ nmap_function() {
 
 sniff_function() {
     WIRELESS_DEVICE='en0'
-    sudo sniffglue $WIRELESS_DEVICE
+    sudo sniffglue -vv $WIRELESS_DEVICE
 }
 
 
