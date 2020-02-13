@@ -1,9 +1,8 @@
 library(pacman)
-pacman::p_load(tidyjson,dplyr,tidyverse,jsonlite,rjson,dummies,tibble)
+pacman::p_load(tidyjson,dplyr,tidyverse,jsonlite,rjson,dummies,tibble,Rmisc)
 
 # import dataset (untouched) as 'originalDataset' and dataset grepped using command line as 'testResponses'
 originalDataset <- readr::read_csv(file = "kfc_stimulusResponses.csv", col_names = TRUE)
-# testResponses <- readr::read_csv(file = "testResponses.csv", col_names = TRUE)
 
 # get index of user_ids that finished the questionnaire
 greppedByThanks <- originalDataset[grepl("Thanks for helping", originalDataset$data_string),]
@@ -34,14 +33,23 @@ named <- testResponses %>%
 
 
 correct <- named[14]
-song_type <- named[7]
 song_type_str <- named[8]
 
 
 testResponses["correctness"] <- correct
-testResponses["song_type"] <- song_type
 testResponses["song_type_str"] <- song_type_str
 
-print(testResponses)
+
+# summarise correctness for song type (grouped by user id) and return proportion
+df_test <- 
+testResponses %>%
+  group_by(., user_id, song_type_str) %>%
+  dplyr::summarise(., n = n(),
+               trues  = sum(as.logical(correctness))) %>%
+  mutate(prop = (trues / n) * 100) 
+
+# "quick and dirty" average across participants (within song type)
+Rmisc::summarySEwithin(df_test, measurevar = "prop", withinvars = "song_type_str",
+                       idvar = "user_id")
 
 
