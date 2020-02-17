@@ -24,6 +24,7 @@ display_help() { #Displays help
     help_commands '-f' '--filtered-issues' '1' 'Prints' 'f' 'iltered issues' 'by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.'
     help_commands '-e' '--exclude-issues' '1' 'Prints issues' 'e' 'xcluding issues' 'that are tagged with "depricated" and "pdfsearch" unless stated otherwise.'
     help_help '2'
+    help_examples 'If you run into issues installing `github-linguist` for the `-l` option, see `https://github.com/github/linguist/issues/4484`.'
     clean-exit
 }
 
