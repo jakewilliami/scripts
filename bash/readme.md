@@ -10,7 +10,7 @@ I have added the following to my `~/.bashrc`:
 ```
 alias scripts="source scripts"
 ```
-
+It should be noted that the scripts in the subdirectory `specific` are *probably not portable*, as I made them for one specific task on one specific computer.
 
 ## Contents
 - [Notes on Uncompiled Scripts](#notes-on-uncompiled-scripts)
