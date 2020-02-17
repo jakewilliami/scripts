@@ -31,5 +31,5 @@
     "BATCHFILE": "\u001b[1;38;5;154m",
     "TEX": "\u001b[1;38;5;22m",
     "TEXT": "\u001b[0;38m",
-    "MARKDOWN": "\u001b[0;38m"
+    "MARKDOWN": "\u001b[1;38;5;249m"
 }
