@@ -6,35 +6,16 @@ TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"
 DOWNLOADS_DIR="${HOME}/Downloads/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" youtube-dl && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install youtube-dl
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: pokemon.sh [option...] [season number] [path/to/downloaded/html]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present scrip requires you to have downloaded the web html. ${NORM}"
-    echo
-    echo -e "${BBLUE}\t -o | --open \t\t${BYELLOW}${ULINE}${BBLUE}O${BYELLOW}pens${NORM} ${BYELLOW}the webpage given a season number.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'pokemon.sh [option... | season number] [path/to/downloaded/html]' 'The present scrip requires you to have downloaded the web html.'
+    help_commands '-o' '--open' '2' '\b' 'O' 'pens' 'the webpage given a season number.'
     echo
     echo -e "${BBLUE}Example:${NORM}"
     echo -e "\`pokemon.sh -o 21\`"

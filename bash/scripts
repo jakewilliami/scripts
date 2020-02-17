@@ -1,28 +1,19 @@
 #! /bin/bash
 
+#IMPORTANT NOTE:
+#There exists an alias in ~/.bashrc that looks like
+#alias scripts="source scripts"
+
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" python3 && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install python3
 
+#define messages
 REPLACING1="${BYELLOW}Replacing outdated file in git repository from ~/.bashrc.${NORM}"
 COMPLETED1="${BGREEN}.bashrc transfer complete.${NORM}"
 REPLACING2="${BYELLOW}Replacing outdated file in git repository from ~/.bash_profile.${NORM}"
@@ -30,21 +21,11 @@ COMPLETED2="${BGREEN}.bash_profile transfer complete.${NORM}"
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: scripts [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will take you to the scripts directory and by default list its content.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
-    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} that are tagged with \"depricated\" and \"pdfsearch\" unless stated otherwise.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'scripts [option...]' 'The present script will take you to the scripts directory and by default list its content.  See `~/scripts/python/ls.py`.'
+    help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
+    help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
+    help_help '2'
     clean-return
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-return
 }
 
 

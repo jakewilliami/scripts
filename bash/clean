@@ -6,42 +6,23 @@ TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"
 DOWNLOADS_DIR="${HOME}/Downloads/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" perl ruby rbenv ruby-build && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install perl ruby rbenv ruby-build
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: [sudo] clean [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -t | --trash \t\t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}t${BYELLOW}rash${NORM} ${BYELLOW}(shared and local).${NORM}"
-    echo -e "${BBLUE}\t -d | --downloads \t${BYELLOW}Iteratively ${BRED}deletes everything in ${ULINE}${BBLUE}d${BYELLOW}ownloads${NORM}${BYELLOW} folder.${NORM}"
-    echo -e "${BBLUE}\t -b | --brew \t\t${BYELLOW}Updates and then cleans up home${ULINE}${BBLUE}b${BYELLOW}rew${NORM}${BYELLOW}.${NORM}"
-    echo -e "${BBLUE}\t -r | --ruby \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}r${BYELLOW}uby gems${NORM}${BYELLOW}.${NORM}"
-    echo -e "${BBLUE}\t -p | --perl \t\t${BYELLOW}Updates and then cleans up ${ULINE}${BBLUE}p${BYELLOW}erl${NORM}${BYELLOW} CPAN packages.${NORM}"
-    echo -e "${BBLUE}\t -m | --mas \t\t${BYELLOW}Updates your ${ULINE}${BBLUE}m${BYELLOW}acOS App Store${NORM}${BYELLOW} applications.${NORM}"
-    echo -e "${BBLUE}\t -a | --all \t\t${BYELLOW}Cleans using ${ULINE}${BBLUE}a${BYELLOW}ll${NORM} ${BYELLOW}options.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start '[sudo] clean [option...]' 'The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.'
+    help_commands '-t' '--trash' '2' 'Iteratively deletes everything in' 't' 'rash' '(shared and local).'
+    help_commands '-d' '--downloads' '1' 'Iteratively deletes everything in the' 'd' 'ownloads' 'folder'
+    help_commands '-b' '--brew' '2' 'Updates and then cleans up home' '\bb' 'rew' ''
+    help_commands '-r' '--ruby' '2' 'Updates and then cleans up' 'r' 'uby' 'gems.'
+    help_commands '-p' '--perl' '2' '[OPTION IN DEVELOPMENT] Updates and then cleans up' 'p' 'erl' 'CPAN packages.'
+    help_commands '-m' '--mas' '2' 'Updates your' 'm' 'acOS App Store (mas)' 'applications.'
+    help_commands '-a' '--all' '2' 'Cleans using' 'a' 'll' 'aforementioned options.'
+    help_help '2'
     clean-exit
 }
 
@@ -153,13 +134,6 @@ clean_all() {
     sudo rm -drf "${TRASH_ROOT_DIR}"/.*
     rm -drf "${DOWNLOADS_DIR}"/*
     echo $DELETED_ALL
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 

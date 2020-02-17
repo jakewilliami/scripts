@@ -1,44 +1,22 @@
 #! /bin/bash
-#Future: `brew install yarn && yarn global add taskbook`?
 
 # Define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 LIBRARY_FILE="${HOME}/Desktop/library.csv"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # Help
 display_help() { #Displays help
-    echo -e "${BWHITE}Usage: gl [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will parse and analyse a csv file of my library.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -e | --entries \t${BYELLOW}Prints number of ${ULINE}${BBLUE}e${BYELLOW}ntries${NORM}${BYELLOW} in library.${NORM}"
-    echo -e "${BBLUE}\t -t | --term-search \t${BYELLOW}Prints number of books found with some search ${ULINE}${BBLUE}t${BYELLOW}erm${NORM}${BYELLOW}.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"  # fold -w10
+    help_start 'gl [option...]' 'The present script will parse and analyse a csv file of my library.'
+    help_commands '-e' '--entries' '2' 'Prints number of' 'e' 'ntries' 'in library.'
+    help_commands '-t' '--term-serch' '1' 'Prints number of books found with some search' 't' 'erm' '\b.'
+    help_help '2'
     clean-exit
-}
-
-
-opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
-}
-
-
-opt_err_none() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}You must have at least one option.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 

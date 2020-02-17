@@ -1,49 +1,29 @@
 #! /bin/bash
 #Future: `brew install yarn && yarn global add taskbook`?
 
-# Define bash directory
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    :
-else
-    # Brew Install Function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" perl ghi cmake pkg-config icu4c ruby rbenv ruby-build && \
-    echo -e "${DEPS_SATISFIED}"
-    # Gem Install function
-    source ${BASH_DIR}/dependencies/gem-install-dep.sh
-    # Install dependencies
-    gem_install github-linguist
-fi
+# get script dependencies
+is-command-then-install perl ghi cmake pkg-config ruby rbenv ruby-build
+is-library-then-install icu4c
+gem_install github-linguist
 
 # Help
 display_help() { #Displays help
-    echo -e "${BWHITE}Usage: gl [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will print a Git log of things that one may find useful or want to know.  See below for options.  By default, it will print the past ten commits to the current branch, not including merges.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -c | --commit-count \t${BYELLOW}Current ${ULINE}${BBLUE}c${BYELLOW}ommit count${NORM}${BYELLOW} on working branch in the past 24 hours.${NORM}"
-    echo -e "${BBLUE}\t -s | --status \t\t${BYELLOW}Prints current git ${ULINE}${BBLUE}s${BYELLOW}tatus${NORM}${BYELLOW} minimally.${NORM}"
-    echo -e "${BBLUE}\t -i | --issues \t\t${BYELLOW}Currently open ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} in repository.${NORM}"
-    echo -e "${BBLUE}\t -b | --branch \t\t${BYELLOW}Lists local ${ULINE}${BBLUE}b${BYELLOW}ranches${NORM}${BYELLOW} of current repository; highlights current branch.${NORM}"
-    echo -e "${BBLUE}\t -t | --tags | --labels\t${BYELLOW}Lists this repository's issues' ${ULINE}${BBLUE}t${BYELLOW}ags/labels${NORM}${BYELLOW}.${NORM}" 
-    echo -e "${BBLUE}\t -l | --languages \t${BYELLOW}Prints ${ULINE}${BBLUE}l${BYELLOW}anguage breakdown${NORM}${BYELLOW} in present repository.${NORM}"
-    echo -e "${BBLUE}\t -f | --filter-issues\t${BYELLOW}Prints ${ULINE}${BBLUE}f${BYELLOW}iltered issues${NORM}${BYELLOW} by tag.  By default, prints issues tagged with \"enhancement\" unless stated otherwise.${NORM}"
-    echo -e "${BBLUE}\t -e | --exclude-issues\t${BYELLOW}Prints issues ${ULINE}${BBLUE}e${BYELLOW}xluding issues${NORM}${BYELLOW} that are tagged with \"depricated\" and \"pdfsearch\" unless stated otherwise.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"  # fold -w10
+    help_start 'gl [option...]' 'The present script will print a Git log of things that one may find useful or want to know.  See below for options.  By default, it will print the past ten commits to the current branch, not including merges.'
+    help_commands '-c' '--commit-count' '1' 'Prints the current' 'c' 'commit count' 'on working branch in the past 24 hours'
+    help_commands '-s' '--status' '2' 'Prints current git' 's' 'tatus' 'minimally.'
+    help_commands '-i' '--issues' '2' 'Prints currently open' 'i' 'ssues' 'in present repository.'
+    help_commands '-b' '--branch' '2' 'Lists local' 'b' 'ranches' 'of current repository; highlights current branch.'
+    help_commands '-t' '--tags | --labels' '1' 'Lists this repository\x27s issues\x27' 't' 'ags/labels' '.' 
+    help_commands '-l' '--languages' '1' 'Prints' 'l' 'anguage' 'breakdown in present repository.'
+    help_commands '-f' '--filtered-issues' '1' 'Prints' 'f' 'iltered issues' 'by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.'
+    help_commands '-e' '--exclude-issues' '1' 'Prints issues' 'e' 'xcluding issues' 'that are tagged with "depricated" and "pdfsearch" unless stated otherwise.'
+    help_help '2'
     clean-exit
 }
 
@@ -94,13 +74,6 @@ opt_t() { #Prints tags/labels available for use
 
 opt_i() { # Prints open issues
     ghi list
-}
-
-
-opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 

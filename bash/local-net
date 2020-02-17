@@ -1,44 +1,26 @@
 #! /bin/bash
 
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" npam arp-scan sniffglue dhcpdump && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install nmap arp-scan sniffglue dhcpdump
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: local-net [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will ping local machines using different tools (see options).${NORM}"
-    echo
-    echo -e "${BBLUE}\t -a | --arp \t\t${BYELLOW}Prints ${ULINE}${BBLUE}a${BYELLOW}rp${NORM} ${BYELLOW}results.${NORM}"
-    echo -e "${BBLUE}\t -g | --geo-location \t${BYELLOW}Shows ${ULINE}${BBLUE}g${BYELLOW}eo-location${NORM}${BYELLOW} information based on  one's (public) IP address.${NORM}"
-    echo -e "${BBLUE}\t -H | --Hostnames \t${BYELLOW}Finds ${ULINE}${BBLUE}H${BYELLOW}ostnames${NORM}${BYELLOW} within the local network.${NORM}"
-    echo -e "${BBLUE}\t -l | --local \t\t${BYELLOW}Returns ${ULINE}${BBLUE}l${BYELLOW}ocal${NORM}${BYELLOW} IP address.${NORM}"
-    echo -e "${BBLUE}\t -n | --nmap \t\t${BYELLOW}Prints ${ULINE}${BBLUE}n${BYELLOW}map${NORM} ${BYELLOW} results.${NORM}"
-    echo -e "${BBLUE}\t -p | --ping \t\t${BYELLOW}Prints ${ULINE}${BBLUE}p${BYELLOW}ing${NORM}${BYELLOW}ed results.${NORM}"
-    echo -e "${BBLUE}\t -P | --Public \t\t${BYELLOW}Returns ${ULINE}${BBLUE}P${BYELLOW}ublic${NORM}${BYELLOW} IP address.${NORM}"
-    echo -e "${BBLUE}\t -s | --sniff \t\t${BYELLOW}${ULINE}${BBLUE}S${BYELLOW}niff${NORM}${BYELLOW}s packages exchange through the local network.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).'
+    help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
+    help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
+    help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
+    help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
+    help_commands '-n' '--nmap' '2' 'Prints' 'n' 'map' 'results.'
+    help_commands '-p' '--ping' '2' 'Prints' 'p' 'ing' '\bed results.'
+    help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
+    help_commands '-s' '--sniff' '2' '\b' 'S' 'niff' '\bs packages exchanged through the local network (with verbosity 2 out of 4).'
+    help_help '2'
     clean-exit
 }
 
@@ -97,13 +79,6 @@ ip_specs() {
 geo_ip_public() {
     myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
     ip_specs "json" "${myip}"
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 

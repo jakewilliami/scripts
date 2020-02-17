@@ -1,57 +1,23 @@
 #! /bin/bash
 
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" ruby rbenv ruby-build && \
-    echo -e "${DEPS_SATISFIED}"
-    # Gem Install function
-    source ${BASH_DIR}/dependencies/gem-install-dep.sh
-    # Install dependencies
-    gem_install iStats
-fi
+# get script dependencies
+is-command-then-install ruby rbenv ruby-build
+gem_install iStats
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: cstatus [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will tell the user computer status/information given an option.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -u | --cpu-util \t${BYELLOW}Prints total ${ULINE}${BBLUE}u${BYELLOW}tilisation${NORM}${BYELLOW} of the CPU in %.${NORM}"
-    echo -e "${BBLUE}\t -s | --cpu-stats \t${BYELLOW}Prints CPU ${ULINE}${BBLUE}s${BYELLOW}tatistic${NORM}${BYELLOW} information.${NORM}"
-    echo -e "${BBLUE}\t -a | --arch \t\t${BYELLOW}Prints the ${ULINE}${BBLUE}a${BYELLOW}rchitecture${NORM}${BYELLOW} on which the present computer runs.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'cstatus [option...]' 'The present script will tell the user computer status/information given an option.'
+    help_commands '-u' '--cpu-util' '1' 'Prints total' 'u' 'tilisation' 'of the CPU as a percentage.'
+    help_commands '-s' '--cup-stats' '1' 'Prints CPU' 's' 'tatistic' 'information.'
+    help_commands '-a' '--arch' '2' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
+    help_help '2'
     clean-exit
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
-}
-
-
-opt_err_none() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}You must have at least one arguments.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 

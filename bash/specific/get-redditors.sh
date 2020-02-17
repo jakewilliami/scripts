@@ -1,49 +1,23 @@
 #! /bin/bash
 
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Get perl update https://stackoverflow.com/questions/3727795/how-do-i-update-all-my-cpan-modules-to-their-latest-versions
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" p7zip && \
-    echo -e "${DEPS_SATISFIED}"
-fi
-
-# Invalid Option
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
-}
+# get script dependencies
+is-library-then-install p7zip
 
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: get-redditors.sh [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will download a list of all redditors for you to scrape and search through.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -e | --extended-find \t${BYELLOW}${ULINE}${BBLUE}E${BYELLOW}xtends${NORM}${BYELLOW} the search complexity using regex.*${NORM}"
-    echo -e "${BBLUE}\t -d | --download \t${BYELLOW}${ULINE}${BBLUE}D${BYELLOW}ownload${NORM}${BYELLOW}s, extracts, and writes to text a list of all Redditors.${NORM}"
-    echo -e "${BBLUE}\t -f | --find \t\t${BYELLOW}${ULINE}${BBLUE}F${BYELLOW}ind${NORM}${BYELLOW} Redditors from csv.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${BYELLOW}${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
-    echo
-    echo -e "${ITWHITE}*The extended regex option should be used as follows: ${NORM}${BWHITE}get-redditors.sh -e [search_term] [search_term_with_regex]${ITWHITE}.  For example,${NORM}${BWHITE} get-redditors.sh -e moose ^moose${NORM}${ITWHITE} will find all usernames starting with the term moose.${NORM}"
+    help_start 'get-redditors.sh [option...]' 'The present script will download a list of all redditors for you to scrape and search through.'
+    help_commands '-e' '--extended-find' '1' '\b' 'E' 'xtends' 'the search complexity using regex (see example).'
+    help_commands '-d' '--download' '1' '\b' 'D' 'ownload' '\bs, extracts, and writes to text a list of all Redditors\x27 usernames.'
+    help_commands '-f' '--find' '2' '\b' 'F' 'ind' 'Redditors from CSV.'
+    help_help '2'
+    help_examples 'The extended regex option should be used as follows: `get-redditors.sh -e [search_term] [search_term_with_regex]`.  For example, `get-redditors.sh -e moose ^moose` will find all usernames starting with the term moose.'
     clean-exit
 }
 

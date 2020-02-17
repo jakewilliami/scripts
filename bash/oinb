@@ -1,32 +1,31 @@
 #! /bin/bash
 
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 display_help() {
-    echo -e "${BWHITE}Usage: oinb [option... | file name...]${BWHITE}"
-    echo
-    echo -e "${ITWHITE}The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in \`~/scripts/bash\`.  Need to manually run \`brew cask install brackets\`${NORM}"
-    echo
-    echo -e "${BBLUE}\t -h \t${BYELLOW}Shows help (present output).${NORM}"
+    help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.  Need to manually run `brew cask install brackets`.'
+    help_help '2'
     clean-exit
 }
 
 
-while getopts "h" OPTION; do
+while getopts ":-:h" OPTION; do
     case $OPTION in
+        -)
+            case $OPTARG in
+                help)
+                    display_help ;;
+                *)
+                    opt_err ;;
+            esac ;;
         h)
-            display_help
-            ;; 
+            display_help ;; 
+        *)
+          opt_err ;;  
     esac
 done
 

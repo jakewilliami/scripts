@@ -5,23 +5,16 @@ DIRECTORY_ARCHIVE="${HOME}/Archives/archived-reddit/"
 SCRIPTS_DIR="${HOME}/scripts/"
 
 
-# Colours
-source ${SCRIPTS_DIR}/bash/colours/json-colour-parser.sh
+# define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
 
-# Invalid Option
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
-}
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: mktex [option] [dir] [file name]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will help to make a new LaTeX file using predefined templates and .${NORM}"
-    echo
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'reddit-archive.sh [option...]' '[SCRIPT IN DEVELOPMENT] The present script will help to create a reddit archive from url.  See also praw in ~/scripts/python.'
+    help_help '2'
     clean-exit
 }
 
@@ -57,9 +50,9 @@ make_archive_text() {
 
 
 #Puts it all together!
-compile_pdf() {
-
-}
+#compile_pdf() {
+#
+#}
 
 
 

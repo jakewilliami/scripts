@@ -1,38 +1,24 @@
 #! /bin/bash
 
+#IMPORTANT NOTE:
+#There exists an alias in ~/.bashrc that looks like
+#alias mytex="source mytex"
+
 DIR="${HOME}/tex-macros"
 BASH_DIR="${HOME}/scripts/bash"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" python3 && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install python3
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: scripts [option...]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -l | --listless \t${BYELLOW}Supresses ${ULINE}${BBLUE}l${BYELLOW}isting${NORM}${BYELLOW} directory content${NORM}"
-    echo -e "${BBLUE}\t -i | --issues\t\t${BYELLOW}Prints ${ULINE}${BBLUE}i${BYELLOW}ssues${NORM}${BYELLOW} currently open.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'mytex [option...]' 'The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.'
+    help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
+    help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
+    help_help '2'
     clean-return
 }
 
@@ -46,13 +32,6 @@ issues() {
         ghi list -N "${@}"
     fi
     clean-return
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-return
 }
 
 

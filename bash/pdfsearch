@@ -1,42 +1,19 @@
 #! /bin/bash
 
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" coreutils pdfgrep && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-library-then-install coreutils pdfgrep
 
+#display help
 display_help() {
-    echo -e "${BWHITE}Usage: cd /dir/to/search/ && pdfsearch [\"search term(s)\"] [option...]${BWHITE}"
-    echo
-    echo -e "${ITWHITE}The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  ${ITYELLOW}There is no current counter to tell how many times the search term was found.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -h | --help \t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"
+    help_start 'cd /dir/to/search/ && pdfsearch [option... | "search term(s)"]' 'The present script will search PDFs in current directory and subdirectories for a search term, print the pdfs for which said term is found, and then print how many pdfs the search term was found in.  There is no current counter to tell how many times the search term was found.'
+    help_help '2'
     clean-exit
-}
-
-
-opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit 
 }
 
 

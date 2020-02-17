@@ -1,34 +1,16 @@
 #! /bin/bash
 
-#! /bin/bash
-
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # Help
 display_help() {
-    echo -e "${BWHITE}Usage: tex-wc [option...] file_name${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will (mostly accurately) tell you the word count of a PDF.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM} ${BYELLOW}(present output).${NORM}"
+    help_start 'tex-count [option... | /path/to/file]' 'The present script will (mostly accurately) tell you the word count of a PDF.'
+    help_help '2'
     clean-exit
-}
-
-
-opt_err() {
-    HELP="${BYELLOW}Invalid option.  Use option -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 FIRST_PARAM=${1}

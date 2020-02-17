@@ -1,52 +1,20 @@
 #! /bin/bash
 
-# Define bash directory
+# define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
-if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
-then
-    # Colours
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-else
-    # Ensure jq is installed
-    source ${BASH_DIR}/dependencies/jq-dep.sh && \
-    source ${BASH_DIR}/colours/json-colour-parser.sh
-fi
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    :
-else
-    # Brew Install function
-    source ${BASH_DIR}/dependencies/brew-install-dep.sh
-    # Satisfy Dependencies
-    brew_install "${SATISFYING_DEPS}" ghi && \
-    echo -e "${DEPS_SATISFIED}"
-fi
+# get script dependencies
+is-command-then-install ghi
 
 # Help
 display_help() { #Displays help
-    echo -e "${BWHITE}Usage: add-issue [option...] [issue message] [label 1] ... [label n]${NORM}"
-    echo
-    echo -e "${ITWHITE}The present script will create an issue and label/tag it with already-created labels.${NORM}"
-    echo
-    echo -e "${BBLUE}\t -t | --make-tag \t${BYELLOW}Creates new ${ULINE}${BBLUE}t${BYELLOW}ags${NORM}${BYELLOW}/labels.${NORM}"
-    echo -e "${BBLUE}\t -h | --help \t\t${BYELLOW}Shows ${ULINE}${BBLUE}h${BYELLOW}elp${NORM}${BYELLOW} (present output).${NORM}"  # fold -w10
+    help_start 'add-issue [option...] [issue message] [label 1] ... [label n]' 'The present script will create an issue and label/tag it with already-created labels.'
+    help_commands '-t' '--make-tag' '1' 'Creates new' 't' 'ags' '/labels.'
+    help_help '2'
     clean-exit
-}
-
-
-opt_err() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}Not a valid option.  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
-}
-
-
-opt_err_none() { #Invalid option (getopts already reported the illegal option)
-    HELP="${BYELLOW}You must have at least two arguments (message and tag(s)).  Use -h for help.${NORM}"
-    echo -e "${HELP}"
-	clean-exit
 }
 
 
@@ -93,7 +61,7 @@ done
 [[ -z $1 ]] && opt_err_none && clean-exit
 
 
-#if no options were passed                   
+#if no options were passed   
 if [ $OPTIND -eq 1 ]
 then 
     add_issue "${1}" "${@:2}"
