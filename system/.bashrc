@@ -102,6 +102,7 @@ alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSw
 alias get-ip="ipconfig getifaddr en0"
 alias get-public-ip="curl ipinfo.io/ip"
 alias system-data="system_profiler SPSoftwareDataType"
+alias open-dir-dl='wget --recursive --no-parent --reject "index.html*"'
 
 function clean-all-docker() {
 	docker rm docker rm $(docker ps -aq); docker system prune --all

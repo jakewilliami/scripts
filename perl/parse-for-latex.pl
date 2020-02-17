@@ -3,6 +3,9 @@
 
 # Run using perl -X perl/parse-for-latex.pl
 
+#see this for unicode characters:
+#https://tex.stackexchange.com/questions/34604/entering-unicode-characters-in-latex
+
 
 use v5.30; # for defining to use a specific version of Perl
 use warnings;

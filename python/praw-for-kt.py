@@ -9,6 +9,12 @@ import argparse # for parsing arguments on command line
 """
 <username>'s saved comments:
     https://www.reddit.com/user/<username>/saved/
+    
+TO DO
+    * Consider the post body with a link:
+        https://i.redd.it/0t84tibp1qg41.jpg
+    * Consider how to compile with unocode characters (try out XeTeX)
+    * Consider how markdown formatting will affect LaTeX-ablility
 """
 
 
@@ -106,7 +112,7 @@ def comment_data(url_param):
 archive_file = open(home + "/scripts/python/temp.d/reddit-archive-to-be-read.txt", "w")
 # write submission to file
 # archive_file.write(submission_data(args.search_url))
-archive_file.write(comment_data(args.search_url))
+archive_file.write(submission_data(args.search_url))
 # stop writing to file
 archive_file.close()
 
