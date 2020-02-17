@@ -7,7 +7,7 @@ export PATH
 [[ -e ~/.bashrc ]] && source ~/.bashrc
 
 #if using arch, ensure package manager is colourised
-[[ -f /etc/arch-release ]] && sudo sed '/^#Color$/s/^#//' /etc/pacman.conf
+[[ -f /etc/arch-release ]] && sudo sed '/Color/s/^#//g' /etc/pacman.conf
 
 # Colourise `ls` output
 export CLICOLOR=YES
