@@ -6,6 +6,11 @@
 
 # define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
+OTHER_DIR="${HOME}/macOS-config/"
+GIT_LOCATION="${HOME}/scripts/"
+GIT_LOCATION_ALT="${OTHER_DIR}"
+LOCAL_FILE1="${HOME}/.bashrc"
+LOCAL_FILE2="${HOME}/.bash_profile"
 
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
@@ -22,10 +27,40 @@ COMPLETED2="${BGREEN}.bash_profile transfer complete.${NORM}"
 # Help
 display_help() {
     help_start 'scripts [option...]' 'The present script will take you to the scripts directory and by default list its content.  See `~/scripts/python/ls.py`.'
+    help_commands '-d' '--directory' '1' 'Changes working' 'd' 'irectory' 'to a specified directory (separate to `~/scripts/`)/'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
     help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
     help_help '2'
     clean-return
+}
+
+
+update_sys() {
+# make sure bash system info is up to date if i'm me
+if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
+then
+    LOCATION="${1}"
+    # make system dir if it doesn't exist
+    if [[ ! -d ${LOCATION}/system/ ]]
+    then
+        mkdir ${LOCATION}/system
+    fi
+    GIT_DIR="${LOCATION}/system/"
+    # check if local bashrc matches git one
+    if ! cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
+    then
+        echo -e "${REPLACING1}" && \
+        cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
+        echo -e "${COMPLETED1}"
+    fi
+    # check if local bash_profile matches git one
+    if ! cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
+    then
+        echo -e "${REPLACING2}" && \
+        cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
+        echo -e "${COMPLETED2}"
+    fi
+fi
 }
 
 
@@ -47,21 +82,39 @@ opt_l() {
 }
 
 
+OPTION_PARAM=$2
+opt_d() {
+    if [[ -z ${OPTION_PARAM} ]]
+    then
+        cd "${OTHER_DIR}" || clean-return
+        python3 "${GIT_LOCATION}/python/ls.py" "${OTHER_DIR}/"
+        update_sys ${GIT_LOCATION_ALT}
+    else
+        cd "${OPTION_PARAM}" || clean-return
+        python3 "${GIT_LOCATION}/python/ls.py" "${OPTION_PARAM}/"
+    fi
+}
+
+
 ### Sourcing the script will make getopts to re-execute in the same shell many times.  It starts to misbehave the second time, because getopts remembers where it left off the first time. Resetting variable OPTIND to 1 will force it to rescan arguments.
 OPTIND=1
-while getopts ":-:ilh" OPTION; do
+while getopts ":-:ilhd" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        directory)
+                            opt_d ;;
                         issues)
                             issues "${@:2}" ;;
                         listless)
-                            opt_l ;;
+                            opt_l 1 ;;
                         help)
                             display_help ;;
                         *)
                             opt_err ;;
                     esac ;;
+                d)
+                    opt_d 1 ;;
                 i)
                     issues "${@:2}" ;;
                 l)
@@ -74,43 +127,15 @@ while getopts ":-:ilh" OPTION; do
 done
 
 
-GIT_LOCATION="${HOME}/scripts/"
-LOCAL_FILE1="${HOME}/.bashrc"
-LOCAL_FILE2="${HOME}/.bash_profile"
-
-
-# List
+# List if no options parsed
 if [[ -z $1 ]]
 then
-    cd "${BASH_DIR}/.." || clean-return
-    python3 "${BASH_DIR}/../python/ls.py" "${BASH_DIR}/.."
+    cd "${GIT_LOCATION}/" || clean-return
+    python3 "${GIT_LOCATION}/python/ls.py" "${GIT_LOCATION}/"
 fi
 
 
-# make sure bash system info is up to date if i'm me
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
-then
-    # make system dir if it doesn't exist
-    if [[ ! -d ${GIT_LOCATION}/system/ ]]
-    then
-        mkdir ${HOME}/scripts/system
-    fi
-    GIT_DIR="${GIT_LOCATION}/system/"
-    # check if local bashrc matches git one
-    if ! cmp -s ${LOCAL_FILE1} ${GIT_DIR}/.bashrc
-    then
-        echo -e "${REPLACING1}" && \
-        cp "${LOCAL_FILE1}" "${GIT_DIR}" && \
-        echo -e "${COMPLETED1}"
-    fi
-    # check if local bash_profile matches git one
-    if ! cmp -s ${LOCAL_FILE2} ${GIT_DIR}/.bash_profile
-    then
-        echo -e "${REPLACING2}" && \
-        cp "${LOCAL_FILE2}" "${GIT_DIR}" && \
-        echo -e "${COMPLETED2}"
-    fi
-fi
+update_sys ${GIT_LOCATION}
 
 
 # Clean up
