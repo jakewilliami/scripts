@@ -198,6 +198,17 @@ clean_perl() {
 }
 
 
+mas_upgrade() {
+    if [[ $(uname -s) == "Darwin" ]]
+    then
+        mas upgrade
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        echo -e "${BYELLOW}This option is not supported for Linux, as it pertains to the Mac App Store.${NORM}"
+    fi
+}
+
+
 big_clean() {
     BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
     echo -e "${BYELLOW}CLEANING DOWNLOADS${NORM}"
@@ -251,7 +262,7 @@ while getopts ":-:tdhpbmra" OPTION; do
                             clean_gems 
                             clean-exit ;;
                         mas)
-                            mas upgrade 
+                            mas_upgrade 
                             clean-exit ;;
                         *)
                             opt_err ;;
@@ -263,7 +274,7 @@ while getopts ":-:tdhpbmra" OPTION; do
                     clean_trash 
                     clean-exit ;;
                 m) 
-                    mas upgrade 
+                    mas_upgrade 
                     clean-exit ;;
                 d)  
                     clean_downloads 
