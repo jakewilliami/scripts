@@ -29,6 +29,12 @@ HWINFO='hwinfo'
 INXI='inxi'
 PYDF='pydf'
 LMSENSORS='lm-sensors'
+NETSTAT='ifstat'
+NETSTAT_ALT='tcpstat'
+POWERSTAT='upower'
+SYSSTAT='sysstat'
+IPTSTATE='iptstate'
+IPTABLES='iptables'
 
 
 case $OS in
@@ -39,8 +45,10 @@ case $OS in
         RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
         INXI='inxi' #https://aur.archlinux.org/packages/inxi/
         LMSENSORS='i2c-tools'
+        NETSTAT='vnstat'
         ;;
     debian)
         FD="fd-find" #command is fdfind
+        POWERSTAT='powerstat'
         ;;
 esac
