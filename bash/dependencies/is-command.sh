@@ -26,7 +26,7 @@ is-command-then-install() {
         brew_install "${i}" && DEPS_DOWNLOADED=true
     done
     #echo deps satisfied if needed
-    $DEPS_DOWNLOADED && \
+    [[ $DEPS_DOWNLOADED ]] && \
     echo -e "${DEPS_SATISFIED}" || \
     echo -e "${ERROR_OCCURRED}" 
 }
