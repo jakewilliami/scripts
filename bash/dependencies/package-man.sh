@@ -11,14 +11,14 @@ else
     osInfo[/etc/arch-release]='sudo pacman -S --noconfirm'
     osInfo[/etc/gentoo-release]='sudo emerge'
     osInfo[/etc/SuSE-release]='sudo zypper in'
-    osInfo[/etc/debian_version]='sudo apt install -y'
+    osInfo[/etc/debian_version]='sudo apt-get install -y'
     
     declare -A osSearch;
     osSearch[/etc/redhat-release]='yum list installed'
     osSearch[/etc/arch-release]='sudo pacman -Q'
     osSearch[/etc/gentoo-release]="cd /var/db/pkg/ && ls -d */*| sed 's/\/$//'"
     osSearch[/etc/SuSE-release]='rpm -qa'
-    osSearch[/etc/debian_version]='apt list --installed'
+    osSearch[/etc/debian_version]='apt-get list --installed'
     
     for f in "${!osInfo[@]}"
     do
