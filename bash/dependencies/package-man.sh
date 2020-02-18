@@ -8,7 +8,7 @@ then
 else
     declare -A osInfo;
     osInfo[/etc/redhat-release]='sudo yum install'
-    osInfo[/etc/arch-release]='sudo pacman -S --no-confirm'
+    osInfo[/etc/arch-release]='sudo pacman -S --noconfirm'
     osInfo[/etc/gentoo-release]='sudo emerge'
     osInfo[/etc/SuSE-release]='sudo zypper in'
     osInfo[/etc/debian_version]='sudo apt install -y'
