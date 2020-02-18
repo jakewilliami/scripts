@@ -14,9 +14,8 @@ brew_install() {
     do
         if ! command -v "${i}" > /dev/null 2>&1
         then
-            PACINSTALL=true
             echo -e "${ITWHITE}Installing ${1}${NORM}"
-            $PACMAN "${i}"
+            $PACMAN "${i}" && PACINSTALL=true
         fi
     done
     if [ "${PACINSTALL}" = true ]
