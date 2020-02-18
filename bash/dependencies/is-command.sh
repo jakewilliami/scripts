@@ -26,12 +26,15 @@ is-command-then-install() {
         brew_install "${i}" && DEPS_DOWNLOADED=true
     done
     #echo deps satisfied if they are
-    if [[ $DEPS_DOWNLOADED == "true" ]]
-    then
-        echo -e "${DEPS_SATISFIED}"
-    else
-        echo -e "${ERROR_OCCURRED}" 
-    fi
+    $DEPS_DOWNLOADED && \
+    echo -e "${DEPS_SATISFIED}" || \
+    echo -e "${ERROR_OCCURRED}" 
+#    if [[ $DEPS_DOWNLOADED == "true" ]]
+#    then
+#        echo -e "${DEPS_SATISFIED}"
+#    else
+#        echo -e "${ERROR_OCCURRED}" 
+#    fi
 }
 
 is-library-then-install() {
