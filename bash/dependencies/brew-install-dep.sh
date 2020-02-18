@@ -30,10 +30,10 @@ lib_install() {
     PACINSTALL=false
     for i in "${@}"; #previously @:2
     do
-        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1
+        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1 && PACINSTALL=true
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
-            $PACMAN "${i}" || PACINSTALL=true
+            $PACMAN "${i}" 
         fi
     done
     if [ "${PACINSTALL}" = true ]
