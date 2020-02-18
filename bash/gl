@@ -2,13 +2,13 @@
 #Future: `brew install yarn && yarn global add taskbook`?
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="${HOME}"/scripts/bash/
 
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${PERL}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}"
+is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}"
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && is-library-then-install "${ICU}"
 [[ $OS == "arch" ]] && is-library-then-install "${ICU}"
