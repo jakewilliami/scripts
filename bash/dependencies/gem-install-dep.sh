@@ -7,7 +7,12 @@ gem_install() {
         echo -e "${BYELLOW} Installing dependencies...${NORM}" && \
         for i in "${@}"
         do
-            gem install "${i}" 
+            if [[ $OS == "arch" ]]
+            then
+                gem install "${i}" 
+            else
+                sudo gem install "${i}" 
+            fi
         done && \
         echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
     fi
