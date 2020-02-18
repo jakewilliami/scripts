@@ -11,7 +11,9 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 is-library-then-install "${ICU}"
 is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}"
-gem_install github-linguist
+[[ $OS == "macos" || $OS == "arch" ]] && gem_install "${GHLINGUIST}"
+[[ $OS == "debian" ]] && is-command-then-install "${GHLINGUIST}"
+
 
 # Help
 display_help() { #Displays help
