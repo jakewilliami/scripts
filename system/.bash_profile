@@ -14,7 +14,13 @@ export PATH
 [[ -f /etc/arch-release ]] && sudo sed -n '/Color/s/^#//g' /etc/pacman.conf
 
 # colourise nano
-echo 'include /usr/local/Cellar/nano/**/share/nano/*.nanorc' > ${HOME}/.nanorc
+if [[ $(uname -s) == "Linux" ]]
+then
+	echo '/usr/share/nano/*.nanorc' > ${HOME}/.nanorc
+elif [[ $(uname -s) == "Darwin" ]]
+then
+	echo 'include /usr/local/Cellar/nano/**/share/nano/*.nanorc' > ${HOME}/.nanorc
+fi
 
 # Switch to using brew-installed bash as default shell
 if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
