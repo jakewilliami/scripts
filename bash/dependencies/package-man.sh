@@ -18,7 +18,7 @@ else
     osSearch[/etc/arch-release]='sudo pacman -Q'
     osSearch[/etc/gentoo-release]="cd /var/db/pkg/ && ls -d */*| sed 's/\/$//'"
     osSearch[/etc/SuSE-release]='rpm -qa'
-    osSearch[/etc/debian_version]='apt list --installed'
+    osSearch[/etc/debian_version]='dpkg -l' # previously 'apt list --installed'
     
     for f in "${!osInfo[@]}"
     do
