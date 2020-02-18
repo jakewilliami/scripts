@@ -12,7 +12,7 @@ is-command-then-install "${NETSTAT}"
 [[ $OS == "macos" ]] && gem_install iStats
 [[ $OS == "arch" ]] && is-command-then-install "${HWINFO}"
 [[ $OS == "debian" ]] && is-command-then-install "${NETSTAT_ALT}"
-[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}"
+[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}" "${DSTAT}"
 [[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
 
 # Help
@@ -176,7 +176,7 @@ power() {
 pid_stat() {
     if [[ $OS == "macos" ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+        ps aux
     elif [[ $(uname -s) == "Linux" ]]
     then
         pidstat
@@ -185,15 +185,12 @@ pid_stat() {
 
 
 live_overview() {
-    if [[ $OS == "debian" ]]
+    if [[ $(uname -s) == "Linux" ]]
     then
         dstat
-    elif [[ $OS == "arch" ]]
-    then
-        echo -e "${BYELLOW}This option is not currently supported for Arch.${NORM}"
     elif [[ $OS == "macos" ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+        top -o cpu
     fi
 }
 

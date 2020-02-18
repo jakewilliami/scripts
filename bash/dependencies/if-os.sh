@@ -35,6 +35,7 @@ POWERSTAT='upower'
 SYSSTAT='sysstat'
 IPTSTATE='iptstate'
 IPTABLES='iptables'
+DSTAT='dstat'
 
 
 case $OS in
