@@ -8,9 +8,10 @@ BASH_DIR="${HOME}"/scripts/bash/
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}" "${ICU}" "${RUBY_BUILD}"
+is-library-then-install "${ICU}"
+is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}"
-gem_install github-linguist git-linguist
+gem_install github-linguist
 
 # Help
 display_help() { #Displays help
