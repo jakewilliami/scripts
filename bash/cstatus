@@ -9,8 +9,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # get script dependencies
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && gem_install iStats
-[[ $(uname -s) == "Linux" ]] && is-command-then-install "${HWINFO}" "${INXI}" "${PYDF}"
-[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}"
+[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}"
+[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}" "${HWINFO}"
 
 # Help
 display_help() {
