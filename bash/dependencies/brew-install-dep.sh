@@ -33,7 +33,7 @@ lib_install() {
         if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
-            $PACMAN "${i}" && PACINSTALL=true
+            $PACMAN "${i}" || PACINSTALL=true
         fi
     done
     if [ "${PACINSTALL}" = true ]
