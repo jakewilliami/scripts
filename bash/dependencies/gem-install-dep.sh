@@ -7,7 +7,7 @@ gem_install() {
         echo -e "${BYELLOW} Installing dependencies...${NORM}" && \
         for i in "${@}"
         do
-            sudo gem install "${i}" 
+            gem install "${i}" 
         done && \
         echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
     fi
