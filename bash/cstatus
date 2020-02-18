@@ -7,14 +7,14 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install ruby rbenv ruby-build
+is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 gem_install iStats
 
 # Help
 display_help() {
     help_start 'cstatus [option...]' 'The present script will tell the user computer status/information given an option.'
     help_commands '-u' '--cpu-util' '1' 'Prints total' 'u' 'tilisation' 'of the CPU as a percentage.'
-    help_commands '-s' '--cup-stats' '1' 'Prints CPU' 's' 'tatistic' 'information.'
+    help_commands '-s' '--cpu-stats' '1' 'Prints CPU' 's' 'tatistic' 'information.'
     help_commands '-a' '--arch' '2' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
     help_help '2'
     clean-exit
@@ -44,7 +44,7 @@ while getopts ":-:auhs" OPTION; do
                         cpu-util)
                             cpu_utilisation ;;
                         cpu-stats)
-                            cpu-statistics ;;
+                            cpu_statistics ;;
                         arch)
                             bits ;;
                         help)
