@@ -7,23 +7,29 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
+is-command-then-install "${NETSTAT}"
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && gem_install iStats
 [[ $OS == "arch" ]] && is-command-then-install "${HWINFO}"
-[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}"
-[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}"
+[[ $OS == "debian" ]] && is-command-then-install "${NETSTAT_ALT}"
+[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}"
+[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
 
 # Help
 display_help() {
     help_start 'cstatus [option...]' 'The present script will tell the user computer status/information given an option.'
     help_commands '-a' '--arch' '3' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
-    help_commands '-d' '--devices' '3' 'Prints the current devices' 'n' 'etwork devices' '\b.'
-    help_commands '-D' '--extended-devices' '1' 'Prints an overview of the current computer\x27s' 'N' 'etwork devices (extended)' '\b.'
+    help_commands '-d' '--devices' '3' 'Prints the current network' 'd' 'evices' '\b.'
+    help_commands '-D' '--extended-devices' '1' 'Prints an overview of the current computer\x27s network' 'D' 'evices (extended)' '\b.'
+    help_commands '-n' '--network' '3' 'Prints' 'n' 'etwork' 'byte-transfer information.'
+    help_commands '-N' '--network-alt' '2' 'Prints' 'n' 'etwork' 'byte-transfer information using alternative tools to the `-n` option.'
+    help_commands '-p' '--power' '3' 'Prints' 'p' 'ower' 'supply information.'
     help_commands '-o' '--overview' '2' 'Prints a device' 'o' 'verview' 'of network interfaces, cpu information, and disk space.'
     help_commands '-R' '--RAM' '3' 'Prints amount of' 'R' 'AM' 'in use in the present computer.'
     help_commands '-s' '--cpu-stats' '2' 'Prints CPU' 's' 'tatistic' 'information.'
     help_commands '-S' '--Space' '3' 'Prints total' 'S' 'pace' 'left on currently available drives'
     help_commands '-u' '--cpu-util' '2' 'Prints total' 'u' 'tilisation' 'of the CPU as a percentage.'
+    help_commands '-U' '--cpu-util-extended' '1' 'Prints' 'u' 'tilisation' 'of the CPU with extended information.'
     help_help '3'
     clean-exit
 }
@@ -43,6 +49,20 @@ space() {
 cpu_utilisation() {
     ps -A -o %cpu | \
     awk '{s+=$1} END {print s "%"}'  # Adds up all processes using cpu
+    if [[ $(uname -s) == "Linux" ]]
+    then
+        mpstat -u -o JSON | jq
+    fi
+}
+
+
+cpu_utilisation_extended() {
+    if [[ $(uname -s) == "Linux" ]]
+    then
+        iostat -cdhx -o JSON | jq
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Debian.${NORM}"
+    fi
 }
 
 
@@ -105,7 +125,7 @@ overview() {
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
     elif [[ $(uname -s) == "Linux" ]]
     then
-        if command -v inxi #use lshw because inxi has to be installed from the AUR
+        if command -v inxi > /dev/null 2>&1 #use lshw because inxi has to be installed from the AUR
         then
             inxi -Fx
         else
@@ -115,15 +135,91 @@ overview() {
 }
 
 
+network_stats() {
+    if [[ $OS == "debian" || $OS == "macos" ]]
+    then
+        ifstat
+    else
+        vnstat --live
+    fi
+}
+
+
+
+network_stats_alt() {
+    if [[ $OS == "debian" ]]
+    then
+        sudo tcpstat
+    elif [[ $OS == "arch" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Arch.${NORM}"
+    elif [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
+}
+
+
+
+power() {
+    if [[ $OS == "debian" ]]
+    then
+        powerstat -Hz
+    elif [[ $OS == "arch" ]]
+    then
+        upower --dump 
+        upower --monitor-detail
+    elif [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
+}
+
+
+pid_stat() {
+    if [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        pidstat
+    fi
+}
+
+
+live_overview() {
+    if [[ $OS == "debian" ]]
+    then
+        dstat
+    elif [[ $OS == "arch" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Arch.${NORM}"
+    elif [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
+}
+
+
 bits() {
     echo -e "${BGREEN}This computer is running on a $(getconf LONG_BIT)-bit architecture.${NORM}"
 }
 
 
-while getopts ":-:auhsSdDRo" OPTION; do
+while getopts ":-:auhsSdDRonNpUl" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        cpu-util-extended)
+                            cpu_utilisation_extended ;;
+                        pid)
+                            pid_stat ;;
+                        live-overview)
+                            live_overview ;;
+                        network)
+                            network_stats ;;
+                        network-alt)
+                            network_stats_alt ;;
                         overview)
                             overview ;;
                         RAM)
@@ -145,6 +241,16 @@ while getopts ":-:auhsSdDRo" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                p)
+                    pid_stat ;;
+                l)
+                    live_overview ;;
+                n)
+                    network_stats ;;
+                N)
+                    network_stats_alt ;;
+                p)
+                    power ;;
                 o)
                     overview ;;
                 R)
