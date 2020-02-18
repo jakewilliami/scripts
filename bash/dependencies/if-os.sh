@@ -21,18 +21,18 @@ fi
 
 case $OS in
     macos)
-        GHI="ghi"
-        FD="fd"
-        PERL="perl"
+        GHI='ghi'
+        FD='fd'
+        PERL_PACKAGE='perl'
         ;;
     arch)
-        GHI="ghi"
-        FD="fd"
-        PERL="perl"
+        GHI='ghi'
+        FD='fd'
+        PERL_PACKAGE='perl'
         ;;
     debian)
-        GHI="ghi"
+        GHI='ghi'
         FD="fd-find" #command is fdfind
-        PERL="perl"
+        PERL_PACKAGE='perl'
         ;;
 esac
