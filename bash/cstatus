@@ -24,6 +24,7 @@ display_help() {
     help_commands '-n' '--network' '3' 'Prints' 'n' 'etwork' 'byte-transfer information.'
     help_commands '-N' '--network-alt' '2' 'Prints' 'n' 'etwork' 'byte-transfer information using alternative tools to the `-n` option.'
     help_commands '-p' '--power' '3' 'Prints' 'p' 'ower' 'supply information.'
+    help_commands '-P' '--PID' '3' 'Lists' 'P' 'ID' '\bs and associated information.'
     help_commands '-o' '--overview' '2' 'Prints a device' 'o' 'verview' 'of network interfaces, cpu information, and disk space.'
     help_commands '-R' '--RAM' '3' 'Prints amount of' 'R' 'AM' 'in use in the present computer.'
     help_commands '-s' '--cpu-stats' '2' 'Prints CPU' 's' 'tatistic' 'information.'
@@ -150,12 +151,8 @@ network_stats_alt() {
     if [[ $OS == "debian" ]]
     then
         sudo tcpstat
-    elif [[ $OS == "arch" ]]
-    then
-        echo -e "${BYELLOW}This option is not currently supported for Arch.${NORM}"
-    elif [[ $OS == "macos" ]]
-    then
-        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
     fi
 }
 
@@ -206,7 +203,7 @@ bits() {
 }
 
 
-while getopts ":-:auhsSdDRonNpUl" OPTION; do
+while getopts ":-:auhsSdDRonNpUlP" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -241,7 +238,9 @@ while getopts ":-:auhsSdDRonNpUl" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
-                p)
+                U)
+                    cpu_utilisation_extended ;;
+                P)
                     pid_stat ;;
                 l)
                     live_overview ;;
