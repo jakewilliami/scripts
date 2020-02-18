@@ -20,7 +20,6 @@ display_help() {
     help_commands '-d' '--devices' '3' 'Prints the current devices' 'n' 'etwork devices' '\b.'
     help_commands '-D' '--extended-devices' '1' 'Prints an overview of the current computer\x27s' 'N' 'etwork devices (extended)' '\b.'
     help_commands '-o' '--overview' '2' 'Prints a device' 'o' 'verview' 'of network interfaces, cpu information, and disk space.'
-    help_commands '-p' '--processor' '2' 'Prints' 'p' 'rocessor' 'information.'
     help_commands '-R' '--RAM' '3' 'Prints amount of' 'R' 'AM' 'in use in the present computer.'
     help_commands '-s' '--cpu-stats' '2' 'Prints CPU' 's' 'tatistic' 'information.'
     help_commands '-S' '--Space' '3' 'Prints total' 'S' 'pace' 'left on currently available drives'
@@ -53,7 +52,6 @@ cpu_statistics() {
         istats
     elif [[ $(uname -s) == "Linux" ]]
     then
-        inxi -Fx
         sudo sensors-detect
     fi
 }
@@ -65,7 +63,6 @@ extended_devices() {
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
     elif [[ $OS == "arch" ]]
     then
-        sudo lshw -short
         hwinfo --short
     fi
 }
@@ -93,8 +90,6 @@ ram_used() {
 
 
 network_devices() {
-    ifconfig
-    ip address show
     if [[ $(uname -s) == "Darwin" ]]
     then
         ifconfig
@@ -104,25 +99,18 @@ network_devices() {
     fi
 }
 
-
-processor_info() {
-    if [[ $OS == "macos" ]]
-    then
-        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
-    elif [[ $OS == "arch" ]]
-    then
-        sensors-detect
-    fi
-}
-
-
 overview() {
     if [[ $OS == "macos" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
     elif [[ $(uname -s) == "Linux" ]]
     then
-        inxi -Fx
+        if command -v inxi #use lshw because inxi has to be installed from the AUR
+        then
+            inxi -Fx
+        else
+            sudo lshw -short
+        fi
     fi
 }
 
@@ -132,7 +120,7 @@ bits() {
 }
 
 
-while getopts ":-:auhsSpdDRo" OPTION; do
+while getopts ":-:auhsSdDRo" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -144,8 +132,6 @@ while getopts ":-:auhsSpdDRo" OPTION; do
                             network_devices_extended ;;
                         devices)
                             network_devices ;;
-                        processor)
-                            processor_info ;;
                         Space)
                             space ;;
                         cpu-util)
@@ -167,8 +153,6 @@ while getopts ":-:auhsSpdDRo" OPTION; do
                     network_devices_extended ;;
                 d)
                     network_devices ;;
-                p)
-                    processor_info ;;
                 S)
                     space ;;
                 u)
