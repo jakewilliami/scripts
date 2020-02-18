@@ -97,6 +97,14 @@ ram_used() {
 
 network_devices() {
     ifconfig
+    ip address show
+    if [[ $(uname -s) == "Darwin" ]]
+    then
+        ifconfig
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        ip address show
+    fi
 }
 
 
