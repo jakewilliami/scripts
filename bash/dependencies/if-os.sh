@@ -19,17 +19,20 @@ else
 fi
 
 
-GHI="ghi"
-FD="fd"
-PERL="perl"
-
-
 case $OS in
     macos)
+        GHI="ghi"
+        FD="fd"
+        PERL="perl"
         ;;
     arch)
+        GHI="ghi"
+        FD="fd"
+        PERL="perl"
         ;;
     debian)
+        GHI="ghi"
         FD="fd-find" #command is fdfind
+        PERL="perl"
         ;;
 esac
