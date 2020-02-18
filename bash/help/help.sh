@@ -2,10 +2,6 @@
 
 BASH_DIR="${HOME}/scripts/bash/"
 
-
-#get clean-exit command
-source ${BASH_DIR}/colours/json-colour-parser.sh
-
 help_start() {
     echo -e "${BWHITE}Usage: ${1}${NORM}"
     echo
