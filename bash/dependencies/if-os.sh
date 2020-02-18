@@ -18,17 +18,18 @@ else
     exit 1
 fi
 
+
+GHI="ghi"
+FD="fd"
+PERL="perl"
+
+
 case $OS in
     macos)
-        GHI="ghi"
-        FD="fd"
         ;;
     arch)
-        GHI="ghi"
-        FD="fd"
         ;;
     debian)
-        GHI="ghi"
         FD="fd-find" #command is fdfind
         ;;
 esac
