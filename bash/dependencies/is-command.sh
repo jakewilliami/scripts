@@ -12,7 +12,7 @@ is-command-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! command -v "${i}" > /dev/null 2>&1
+        if ! command -v "${i}" > /dev/null 2>&1 # if can't find command $i then we have missing
         then
             MISSING_DEPENDENCIES=true
         fi
@@ -23,12 +23,20 @@ is-command-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        brew_install "${i}" && DEPS_DOWNLOADED=true
+        if [[ $MISSING_DEPENDENCIES = true ]]
+        then
+            brew_install "${i}" && \
+            DEPS_DOWNLOADED=true
+        fi
     done
     #echo deps satisfied if they are
-    $MISSING_DEPENDENCIES && \
-    echo -e "${ERROR_OCCURRED}" || \
-    echo -e "${DEPS_SATISFIED}" 
+    if [[ $DEPS_DOWNLOADED = true ]]
+    then
+        echo -e "${DEPS_SATISFIED}"
+    else
+        [[ $MISSING_DEPENDENCIES = true ]] && \
+        echo -e "${ERROR_OCCURRED}"
+    fi 
 }
 
 is-library-then-install() {
@@ -49,10 +57,16 @@ is-library-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        lib_install "${i}" && DEPS_DOWNLOADED=true
+        if [[ $MISSING_DEPENDENCIES = true ]]
+        then
+            lib_install "${i}" && DEPS_DOWNLOADED=true
+        fi
     done
     #echo libs satisfied if needed
-    $MISSING_DEPENDENCIES && \
-    echo -e "${ERROR_OCCURRED}" || \
-    echo -e "${LIBS_SATISFIED}" 
+    if [[ $DEPS_DOWNLOADED = true ]]
+    then
+        echo -e "${LIBS_SATISFIED}"
+    else
+        [[ $MISSING_DEPENDENCIES = true ]] && \
+        echo -e "${ERROR_OCCURRED}" 
 }
