@@ -10,8 +10,6 @@ ${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
 clean-exit() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
     rm ${BASH_DIR}/textcolours.txt
-    [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
-    rm ${BASH_DIR}/readme-hashes.txt
     exit $?
 }
 
@@ -19,8 +17,6 @@ clean-exit() {
 clean-return() {
     [[ -f ${BASH_DIR}/textcolours.txt ]] && \
     rm ${HOME}/scripts/bash/textcolours.txt
-    [[ -f ${BASH_DIR}/readme-hashes.txt ]] && \
-    rm ${BASH_DIR}/readme-hashes.txt
 #    kill -INT $$
     return $?
 }

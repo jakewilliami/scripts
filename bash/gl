@@ -160,13 +160,6 @@ do
 done
 
 
-#Variables
-COMMIT_NUMBER_TODAY=$(git rev-list --count --since=yesterday --before=today HEAD)
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-LOGNUMBER=$(if [[ -z "$1" ]]; then echo "10"; else echo "${1}"; fi)
-REPO_NAME=$(basename `git rev-parse --show-toplevel`)
-
-
 # Pretty git log
 git_log() { # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour (so that others' commits are emphasised)
     git log --color --no-merges --pretty=format:\
@@ -180,33 +173,6 @@ git_log() { # checks to see if my username is one of the usernames, and if so, p
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
     } '
 }
-# prints line length to 40 characters
-# awk 'length > 40{$0 = substr($0, 1, 40) "..."} {printf "%-43s\n", $0}'
-# COLS=$(tput cols) or in bash $COLUMNS
-
-
-# find all hash codes of commits updating readme
-hashes_of_readme() {
-    git log --oneline -i --grep="Update readme.md" --abbrev-commit | sed -E 's/^(.{7}).*/\1/' >> ${BASH_DIR}/readme-hashes.txt
-}
-
-
-grepped_log() { # log without readme updates
-    git_log | grep -v -f ${BASH_DIR}/readme-hashes.txt
-}
-
-
-lines_grepped() {  # finds how many lines from original log were taken out (a function that was originally going to be used to adjust the $LOGNUMBER needed to print (so that, despite things being grepped, you still have 10 commits shown).  I'll have to think about this one)
-    git_log | grep -f ${BASH_DIR}/readme-hashes.txt | wc -l
-}
-
-
-# If option empty
-if [[ -z $1 ]] || [[ $1 =~ ^[-+]?[0-9]+$ ]]  # if first arg is empty or a positive integer
-then 
-    hashes_of_readme && \
-    grepped_log
-fi
 
 
 # Clean up
