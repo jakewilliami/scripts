@@ -35,9 +35,9 @@ case $OS in
     macos)
         ;;
     arch)
-        RUBY_VERSION='https://aur.archlinux.org/packages/rbenv/'
-        RUBY_BUILD='https://aur.archlinux.org/packages/ruby-build/'
-        INXI='https://aur.archlinux.org/packages/inxi/'
+        RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
+        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
+        INXI='inxi' #https://aur.archlinux.org/packages/inxi/
         LMSENSORS='i2c-tools'
         ;;
     debian)
