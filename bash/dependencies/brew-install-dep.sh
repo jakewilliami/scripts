@@ -1,8 +1,5 @@
 #! /bin/bash
 
-# Get package manager
-source "${HOME}"/scripts/bash/dependencies/package-man.sh
-
 SATISFYING_DEPS="${BWHITE}Satisfying dependencies...${NORM}"
 DEPS_SATISFIED="${BGREEN}Dependencies satisfied.${NORM}"
 SATISFYING_LIBS="${BWHITE}Satisfying uninstalled but required libraries...${NORM}"
