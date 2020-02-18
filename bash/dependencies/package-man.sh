@@ -1,14 +1,14 @@
 #! /bin/bash
 
 # Check if brew exists; if not, which package manager
-if which brew > /dev/null 2>&1
+if command -v brew > /dev/null 2>&1
 then
     PACMAN='brew install'
     PACSEARCH='brew list'
 else
     declare -A osInfo;
     osInfo[/etc/redhat-release]='sudo yum install'
-    osInfo[/etc/arch-release]='sudo pacman -S --noconfirm'
+    osInfo[/etc/arch-release]='sudo pacman -S'
     osInfo[/etc/gentoo-release]='sudo emerge'
     osInfo[/etc/SuSE-release]='sudo zypper in'
     osInfo[/etc/debian_version]='sudo apt install -y'
@@ -20,17 +20,17 @@ else
     osSearch[/etc/SuSE-release]='rpm -qa'
     osSearch[/etc/debian_version]='apt list --installed'
     
-    for f in ${!osInfo[@]}
+    for f in "${!osInfo[@]}"
     do
         if [[ -f $f ]];then
-            PACMAN=${osInfo[$f]}  
+            PACMAN="${osInfo[$f]}"  
         fi
     done
     
-    for s in ${!osSearch[@]}
+    for s in "${!osSearch[@]}"
     do
         if [[ -f $s ]];then
-            PACSEARCH=${osSearch[$s]}  
+            PACSEARCH="${osSearch[$s]}"  
         fi
     done
 fi

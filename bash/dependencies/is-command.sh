@@ -1,9 +1,9 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="${HOME}"/scripts/bash/
 
 #dependencies/package-man.sh is sourced in brew-install-dep
-source ${BASH_DIR}/dependencies/brew-install-dep.sh
+source "${BASH_DIR}"/dependencies/brew-install-dep.sh
 
 is-command-then-install() {
     #boolean for checking if we need to install commands
@@ -11,7 +11,7 @@ is-command-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! which "${i}" > /dev/null 2>&1
+        if ! command -v "${i}" > /dev/null 2>&1
         then
             HAVE_DEPENDENCIES=true
         fi

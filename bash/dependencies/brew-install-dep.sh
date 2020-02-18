@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # Get package manager
-source ${HOME}/scripts/bash/dependencies/package-man.sh
+source "${HOME}"/scripts/bash/dependencies/package-man.sh
 
 SATISFYING_DEPS="${BWHITE}Satisfying dependencies...${NORM}"
 DEPS_SATISFIED="${BGREEN}Dependencies satisfied.${NORM}"
@@ -14,7 +14,7 @@ brew_install() {
     PACINSTALL=false
     for i in "${@}"; #previously @:2
     do
-        if ! which "${i}" > /dev/null 2>&1
+        if ! command -v "${i}" > /dev/null 2>&1
         then
             PACINSTALL=true
             echo -e "${ITWHITE}Installing ${1}${NORM}"

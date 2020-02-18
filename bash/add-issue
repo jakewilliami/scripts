@@ -1,13 +1,13 @@
 #! /bin/bash
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="${HOME}"/scripts/bash/
 
 # source required scripts
-source ${BASH_DIR}/dependencies/source-dependencies.sh
+source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install $GHI
+is-command-then-install "${GHI}"
 
 # Help
 display_help() { #Displays help
@@ -19,13 +19,13 @@ display_help() { #Displays help
 
 
 add_issue() {
-    REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+    REPO_NAME=$(basename "$(git rev-parse --show-toplevel)")
     GITHUB_USER_NAME=$(git config --list | grep -E "^github.user" | sed 's|github.user=||g')
     NUM_REGEX="[0-9]{1,4}"
     # Get issues | get top issue and header | Remove header
     ghi open -m "${1}" && \
     MOST_RECENT_ISSUE=$(ghi list | grep -A1 "# ${GITHUB_USER_NAME}/${REPO_NAME}" | grep -v "# ${GITHUB_USER_NAME}/${REPO_NAME}" | grep -Eo "${NUM_REGEX}") && \
-    ghi label $MOST_RECENT_ISSUE -a "${@:2}"  # First ag = message; second arg onwards = issue labels
+    ghi label "${MOST_RECENT_ISSUE}" -a "${@:2}"  # First ag = message; second arg onwards = issue labels
 }
 
 
