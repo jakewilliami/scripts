@@ -7,7 +7,7 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install perl
+is-command-then-install "${PERL}"
 
 # Help
 display_help() { #Displays help
