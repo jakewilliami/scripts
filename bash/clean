@@ -10,7 +10,8 @@ DOWNLOADS_DIR="${HOME}/Downloads/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${PERL_PACKAGE}" "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+is-command-then-install "${PERL_PACKAGE}"
+[[ $OS == "macos" ]] && is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 
 # Help
 display_help() {
@@ -182,8 +183,14 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
 
 
 clean_gems() {
-    sudo gem update  # https://stackoverflow.com/a/36150004/12069968
-    sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
+    if [[ $(uname -s) == "Darwin" ]]
+    then
+        sudo gem update  # https://stackoverflow.com/a/36150004/12069968
+        sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Linux.${NORM}"
+    fi
 }
 
 clean_perl() {
