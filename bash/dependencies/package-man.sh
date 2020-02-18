@@ -14,8 +14,8 @@ else
     osInfo[/etc/debian_version]='sudo apt install -y'
     
     declare -A osSearch;
-    osInfo[/etc/redhat-release]='yum list installed'
-    osInfo[/etc/arch-release]='sudo pacman -Q'
+    osSearch[/etc/redhat-release]='yum list installed'
+    osSearch[/etc/arch-release]='sudo pacman -Q'
     osSearch[/etc/gentoo-release]="cd /var/db/pkg/ && ls -d */*| sed 's/\/$//'"
     osSearch[/etc/SuSE-release]='rpm -qa'
     osSearch[/etc/debian_version]='apt list --installed'
