@@ -39,6 +39,7 @@ DSTAT='dstat'
 CMAKE='cmake'
 PKG_CONFIG='pkg-config'
 ICU='icu'
+GHLINGUIST='github-linguist'
 
 
 case $OS in
@@ -55,5 +56,6 @@ case $OS in
         FD="fd-find" #command is fdfind
         POWERSTAT='powerstat'
         ICU='icu-devtools'
+        GHLINGUIST='ruby-github-linguist'
         ;;
 esac
