@@ -12,13 +12,13 @@ is-library-then-install "${ICU}"
 is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}"
 [[ $OS == "macos" || $OS == "arch" ]] && gem_install "${GHLINGUIST}"
-[[ $OS == "debian" ]] && is-command-then-install "${GHLINGUIST}"
+[[ $OS == "debian" ]] && is-library-then-install "${GHLINGUIST}"
 
 
 # Help
 display_help() { #Displays help
     help_start 'gl [option...]' 'The present script will print a Git log of things that one may find useful or want to know.  See below for options.  By default, it will print the past ten commits to the current branch, not including merges.'
-    help_commands '-c' '--commit-count' '1' 'Prints the current' 'c' 'commit count' 'on working branch in the past 24 hours'
+    help_commands '-c' '--commit-count' '1' 'Prints the current' 'c' 'ommit count' 'on working branch in the past 24 hours'
     help_commands '-s' '--status' '2' 'Prints current git' 's' 'tatus' 'minimally.'
     help_commands '-i' '--issues' '2' 'Prints currently open' 'i' 'ssues' 'in present repository.'
     help_commands '-b' '--branch' '2' 'Lists local' 'b' 'ranches' 'of current repository; highlights current branch.'
