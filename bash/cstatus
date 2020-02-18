@@ -8,7 +8,9 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
 is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-gem_install iStats
+[[ $(uname -s) == "Linux" ]] && is-command-then-install "${HWINFO}" "${INXI}" "${PYDF}"
+[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}"
+[[ $OS == "macos" ]] && gem_install iStats
 
 # Help
 display_help() {
@@ -28,7 +30,19 @@ cpu_utilisation() {
 
 
 cpu_statistics() {
-    istats
+    if [[ $OS == "macos" ]]
+    then
+        istats
+    elif [[ $OS == "arch" ]]
+    then
+        lscpu
+        sudo lshw -short
+        hwinfo --short
+        inxi -Fx
+        pydf
+        free -mh
+        sensors-detect
+    fi
 }
 
 
