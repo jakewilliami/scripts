@@ -20,12 +20,15 @@ fi
 
 case $OS in
     macos)
-        GHI=ghi
+        GHI="ghi"
+        FD="fd"
         ;;
     arch)
-        GHI=ghi
+        GHI="ghi"
+        FD="fd"
         ;;
     debian)
-        GHI=ghi
+        GHI="ghi"
+        FD="fd-find" #command is fdfind
         ;;
 esac
