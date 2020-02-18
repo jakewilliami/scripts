@@ -20,12 +20,12 @@ fi
 
 case $OS in
     macos)
-        GHI="ghi"
+        GHI=ghi
         ;;
     arch)
-        GHI="ghi"
+        GHI=ghi
         ;;
     debian)
-        GHI="ghi"
+        GHI=ghi
         ;;
 esac
