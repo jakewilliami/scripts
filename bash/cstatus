@@ -51,7 +51,7 @@ cpu_statistics() {
     if [[ $OS == "macos" ]]
     then
         istats
-    elif [[ $OS == "arch" ]]
+    elif [[ $(uname -s) == "Linux" ]]
     then
         inxi -Fx
         sudo sensors-detect
@@ -67,9 +67,6 @@ extended_devices() {
     then
         sudo lshw -short
         hwinfo --short
-        inxi -Fx
-        free -mh
-        sensors-detect
     fi
 }
 
