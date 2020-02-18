@@ -26,9 +26,9 @@ is-command-then-install() {
         brew_install "${i}" && DEPS_DOWNLOADED=true
     done
     #echo deps satisfied if they are
-    $DEPS_DOWNLOADED && \
-    echo -e "${DEPS_SATISFIED}" || \
-    echo -e "${ERROR_OCCURRED}" 
+    $MISSING_DEPENDENCIES && \
+    echo -e "${ERROR_OCCURRED}" || \
+    echo -e "${DEPS_SATISFIED}" 
 }
 
 is-library-then-install() {
@@ -52,7 +52,7 @@ is-library-then-install() {
         lib_install "${i}" && DEPS_DOWNLOADED=true
     done
     #echo libs satisfied if needed
-    $DEPS_DOWNLOADED && \
-    echo -e "${LIBS_SATISFIED}" || \
-    echo -e "${ERROR_OCCURRED}" 
+    $MISSING_DEPENDENCIES && \
+    echo -e "${ERROR_OCCURRED}" || \
+    echo -e "${LIBS_SATISFIED}" 
 }
