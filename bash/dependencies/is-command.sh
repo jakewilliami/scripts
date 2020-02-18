@@ -4,7 +4,6 @@ BASH_DIR="${HOME}/scripts/bash/"
 
 #dependencies/package-man.sh is sourced in brew-install-dep
 source ${BASH_DIR}/dependencies/brew-install-dep.sh
-source ${BASH_DIR}/dependencies/if-os.sh
 
 is-command-then-install() {
     #boolean for checking if we need to install commands
