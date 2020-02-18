@@ -1,3 +1,7 @@
+#! /bin/bash
+
+# located in ${HOME}/
+
 # Setting PATH for Python 3.7
 # The original version is saved in .bash_profile.pysave
 PATH="/Library/Frameworks/Python.framework/Versions/3.7/bin:${PATH}"
@@ -8,6 +12,16 @@ export PATH
 
 #if using arch, ensure package manager is colourised
 [[ -f /etc/arch-release ]] && sudo sed -n '/Color/s/^#//g' /etc/pacman.conf
+
+# colourise nano
+echo 'include /usr/local/Cellar/nano/**/share/nano/*.nanorc' > ${HOME}/.nanorc
+
+# Switch to using brew-installed bash as default shell
+if ! fgrep -q '/usr/local/bin/bash' /etc/shells; then
+  echo '/usr/local/bin/bash' | sudo tee -a /etc/shells;
+  chsh -s /usr/local/bin/bash;
+fi;
+
 
 # Colourise `ls` output
 export CLICOLOR=YES

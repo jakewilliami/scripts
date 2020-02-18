@@ -6,6 +6,9 @@ BASH_DIR="${HOME}/scripts/bash/"
 #get is-command function
 source ${BASH_DIR}/dependencies/is-command.sh
 
+#decide on packages
+source ${BASH_DIR}/dependencies/if-os.sh
+
 #get jq if not installed and dejsonify colours for bash (jq-dep.sh sources colours/json-colour-parser.sh which does the actual dejsonifying of the colours)
 source ${BASH_DIR}/dependencies/jq-dep.sh
 

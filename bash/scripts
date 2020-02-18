@@ -37,7 +37,7 @@ display_help() {
 
 update_sys() {
 # make sure bash system info is up to date if i'm me
-if [[ $(hostname) == 'jake-mbp2017.local' ]] && [[ $(whoami) == 'jakeireland' ]]
+if [[ $(whoami) == 'jakeireland' ]]
 then
     LOCATION="${1}"
     # make system dir if it doesn't exist
@@ -132,10 +132,8 @@ if [[ -z $1 ]]
 then
     cd "${GIT_LOCATION}/" || clean-return
     python3 "${GIT_LOCATION}/python/ls.py" "${GIT_LOCATION}/"
+    update_sys ${GIT_LOCATION}
 fi
-
-
-update_sys ${GIT_LOCATION}
 
 
 # Clean up

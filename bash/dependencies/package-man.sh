@@ -8,10 +8,10 @@ then
 else
     declare -A osInfo;
     osInfo[/etc/redhat-release]='sudo yum install'
-    osInfo[/etc/arch-release]='sudo pacman -S'
+    osInfo[/etc/arch-release]='sudo pacman -Scc'
     osInfo[/etc/gentoo-release]='sudo emerge'
     osInfo[/etc/SuSE-release]='sudo zypper in'
-    osInfo[/etc/debian_version]='sudo apt install'
+    osInfo[/etc/debian_version]='sudo apt install -y'
     
     declare -A osSearch;
     osInfo[/etc/redhat-release]='yum list installed'
