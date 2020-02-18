@@ -12,7 +12,7 @@ is-command-then-install "${PERL}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PA
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && is-library-then-install icu4c
 [[ $OS == "arch" ]] && is-library-then-install icu
-#[[ $OS == "debian" ]] && is-library-then-install icu-devtools
+[[ $OS == "debian" ]] && is-library-then-install "${ICU}"
 gem_install github-linguist
 
 # Help
