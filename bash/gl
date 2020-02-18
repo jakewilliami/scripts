@@ -58,8 +58,14 @@ opt_s() { # Prints what in repo has been altered since last commit + push
 }
 
 opt_c() { # Prints commit count
+    if [[ $(uname -s) == "Darwin" ]]
+    then
+        START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        START_TODAY=$(date -d"$(date +%D)" +%s)
+    fi
     NOW=$(date +%s)
-    START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
     COMMIT_NUMBER_TODAY=$(git rev-list --count --since=$START_TODAY --before=$NOW HEAD)
     REPO_NAME=$(basename `git rev-parse --show-toplevel`)
     BRANCH=$(git rev-parse --abbrev-ref HEAD)
