@@ -54,7 +54,7 @@ cpu_statistics() {
     elif [[ $OS == "arch" ]]
     then
         inxi -Fx
-        sensors-detect
+        sudo sensors-detect
     fi
 }
 
