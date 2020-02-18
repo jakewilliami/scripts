@@ -4,6 +4,7 @@ SATISFYING_DEPS="${BWHITE}Satisfying dependencies...${NORM}"
 DEPS_SATISFIED="${BGREEN}Dependencies satisfied.${NORM}"
 SATISFYING_LIBS="${BWHITE}Satisfying uninstalled but required libraries...${NORM}"
 LIBS_SATISFIED="${BGREEN}Dependent libraries installed.${NORM}"
+ERROR_OCCURRED="${BRED}It seems an error has occurred in the satiation of your dependencies.${NORM}"
 
 
 
