@@ -16,8 +16,6 @@ brew_install() {
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
             $PACMAN "${i}" && PACINSTALL=true
-        else
-            PACINSTALL=true
         fi
     done
     if [ "${PACINSTALL}" = true ]
@@ -36,8 +34,6 @@ lib_install() {
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
             $PACMAN "${i}" && PACINSTALL=true
-        else
-            PACINSTALL=true
         fi
     done
     if [ "${PACINSTALL}" = true ]
