@@ -17,8 +17,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 display_help() {
     help_start 'cstatus [option...]' 'The present script will tell the user computer status/information given an option.'
     help_commands '-a' '--arch' '3' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
-    help_commands '-n' '--devices' '3' 'Prints the current devices' 'n' 'etwork devices' '\b.'
-    help_commands '-N' '--extended-devices' '1' 'Prints an overview of the current computer\x27s' 'N' 'etwork devices (extended)' '\b.'
+    help_commands '-d' '--devices' '3' 'Prints the current devices' 'n' 'etwork devices' '\b.'
+    help_commands '-D' '--extended-devices' '1' 'Prints an overview of the current computer\x27s' 'N' 'etwork devices (extended)' '\b.'
     help_commands '-o' '--overview' '2' 'Prints a device' 'o' 'verview' 'of network interfaces, cpu information, and disk space.'
     help_commands '-p' '--processor' '2' 'Prints' 'p' 'rocessor' 'information.'
     help_commands '-R' '--RAM' '3' 'Prints amount of' 'R' 'AM' 'in use in the present computer.'
@@ -127,7 +127,7 @@ bits() {
 }
 
 
-while getopts ":-:auhsSpnNRo" OPTION; do
+while getopts ":-:auhsSpdDRo" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -158,9 +158,9 @@ while getopts ":-:auhsSpnNRo" OPTION; do
                     overview ;;
                 R)
                     ram_used ;;
-                N)
+                D)
                     network_devices_extended ;;
-                n)
+                d)
                     network_devices ;;
                 p)
                     processor_info ;;
