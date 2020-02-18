@@ -10,8 +10,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # get script dependencies
 is-command-then-install "${PERL}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}"
 [[ $OS == "macos" ]] && is-command-then-install "${RUBY_VERSION}" "${RUBY_BUILD}"
-[[ $OS == "macos" ]] && is-library-then-install icu4c
-[[ $OS == "arch" ]] && is-library-then-install icu
+[[ $OS == "macos" ]] && is-library-then-install "${ICU}"
+[[ $OS == "arch" ]] && is-library-then-install "${ICU}"
 [[ $OS == "debian" ]] && is-library-then-install "${ICU}"
 gem_install github-linguist
 
