@@ -23,10 +23,10 @@ is-command-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        brew_install "${i}" && DEPS_DOWNLOADED=true
+        brew_install "${i}" || DEPS_DOWNLOADED=true
     done
     #echo deps satisfied if needed
-    [[ $DEPS_DOWNLOADED ]] && \
+    $DEPS_DOWNLOADED && \
     echo -e "${DEPS_SATISFIED}" || \
     echo -e "${ERROR_OCCURRED}" 
 }
