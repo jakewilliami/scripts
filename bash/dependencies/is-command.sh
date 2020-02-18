@@ -7,28 +7,31 @@ source "${BASH_DIR}"/dependencies/brew-install-dep.sh
 
 is-command-then-install() {
     #boolean for checking if we need to install commands
-    HAVE_DEPENDENCIES=false
+    MISSING_DEPENDENCIES=false
     DEPS_DOWNLOADED=false
     #echo satifying deps if needed
     for i in "${@}"
     do
         if ! command -v "${i}" > /dev/null 2>&1
         then
-            HAVE_DEPENDENCIES=true
+            MISSING_DEPENDENCIES=true
         fi
     done
     #echo satisfying deps if needed
-    $HAVE_DEPENDENCIES && \
+    $MISSING_DEPENDENCIES && \
     echo -e "${SATISFYING_DEPS}"
     #install deps if command is not found
     for i in "${@}"
     do
-        brew_install "${i}" || DEPS_DOWNLOADED=true
+        brew_install "${i}" && DEPS_DOWNLOADED=true
     done
-    #echo deps satisfied if needed
-    $DEPS_DOWNLOADED && \
-    echo -e "${DEPS_SATISFIED}" || \
-    echo -e "${ERROR_OCCURRED}" 
+    #echo deps satisfied if they are
+    if [[ $DEPS_DOWNLOADED == "true" ]]
+    then
+        echo -e "${DEPS_SATISFIED}"
+    else
+        echo -e "${ERROR_OCCURRED}" 
+    fi
 }
 
 is-library-then-install() {
