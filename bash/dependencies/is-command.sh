@@ -41,6 +41,7 @@ is-command-then-install() {
 
 is-library-then-install() {
     #boolean for checking if we need to install commands
+    DEPENDENCIES="${#}"; echo "${DEPENDENCIES}"
     MISSING_DEPENDENCIES=false
     DEPS_DOWNLOADED=false
     #echo satifying deps if needed
