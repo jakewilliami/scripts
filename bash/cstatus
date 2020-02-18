@@ -7,19 +7,36 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+[[ $OS == "macos" ]] && is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+[[ $OS == "macos" ]] && gem_install iStats
 [[ $(uname -s) == "Linux" ]] && is-command-then-install "${HWINFO}" "${INXI}" "${PYDF}"
 [[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}"
-[[ $OS == "macos" ]] && gem_install iStats
 
 # Help
 display_help() {
     help_start 'cstatus [option...]' 'The present script will tell the user computer status/information given an option.'
-    help_commands '-u' '--cpu-util' '1' 'Prints total' 'u' 'tilisation' 'of the CPU as a percentage.'
-    help_commands '-s' '--cpu-stats' '1' 'Prints CPU' 's' 'tatistic' 'information.'
-    help_commands '-a' '--arch' '2' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
-    help_help '2'
+    help_commands '-a' '--arch' '3' 'Prints the' 'a' 'rchitecture' 'on which the present computer runs.'
+    help_commands '-n' '--devices' '3' 'Prints the current devices' 'n' 'etwork devices' '\b.'
+    help_commands '-N' '--extended-devices' '1' 'Prints an overview of the current computer\x27s' 'N' 'etwork devices (extended)' '\b.'
+    help_commands '-o' '--overview' '2' 'Prints a device' 'o' 'verview' 'of network interfaces, cpu information, and disk space.'
+    help_commands '-p' '--processor' '2' 'Prints' 'p' 'rocessor' 'information.'
+    help_commands '-R' '--RAM' '3' 'Prints amount of' 'R' 'AM' 'in use in the present computer.'
+    help_commands '-s' '--cpu-stats' '2' 'Prints CPU' 's' 'tatistic' 'information.'
+    help_commands '-S' '--Space' '3' 'Prints total' 'S' 'pace' 'left on currently available drives'
+    help_commands '-u' '--cpu-util' '2' 'Prints total' 'u' 'tilisation' 'of the CPU as a percentage.'
+    help_help '3'
     clean-exit
+}
+
+
+space() {
+    if [[ $OS == "macos" ]]
+    then
+        df -mh
+    elif [[ $OS == "arch" ]]
+    then
+        pydf
+    fi
 }
 
 
@@ -35,13 +52,71 @@ cpu_statistics() {
         istats
     elif [[ $OS == "arch" ]]
     then
-        lscpu
+        inxi -Fx
+        sensors-detect
+    fi
+}
+
+
+extended_devices() {
+    if [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    elif [[ $OS == "arch" ]]
+    then
         sudo lshw -short
         hwinfo --short
         inxi -Fx
-        pydf
         free -mh
         sensors-detect
+    fi
+}
+
+
+network_devices_extended() {
+    if [[ $OS == "arch" ]]
+    then
+        hwinfo --short
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Debian.${NORM}"
+    fi
+}
+
+
+ram_used() {
+    if [[ $(uname -s) == "Linux" ]]
+    then
+        free -mh
+    elif [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
+}
+
+
+network_devices() {
+    ifconfig
+}
+
+
+processor_info() {
+    if [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    elif [[ $OS == "arch" ]]
+    then
+        sensors-detect
+    fi
+}
+
+
+overview() {
+    if [[ $OS == "macos" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    elif [[ $(uname -s) == "Linux" ]]
+    then
+        inxi -Fx
     fi
 }
 
@@ -51,10 +126,22 @@ bits() {
 }
 
 
-while getopts ":-:auhs" OPTION; do
+while getopts ":-:auhsSpnNRo" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        overview)
+                            overview ;;
+                        RAM)
+                            ram_used ;;
+                        extended-devices)
+                            network_devices_extended ;;
+                        devices)
+                            network_devices ;;
+                        processor)
+                            processor_info ;;
+                        Space)
+                            space ;;
                         cpu-util)
                             cpu_utilisation ;;
                         cpu-stats)
@@ -66,6 +153,18 @@ while getopts ":-:auhs" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                o)
+                    overview ;;
+                R)
+                    ram_used ;;
+                N)
+                    network_devices_extended ;;
+                n)
+                    network_devices ;;
+                p)
+                    processor_info ;;
+                S)
+                    space ;;
                 u)
                     cpu_utilisation ;;
                 s)
