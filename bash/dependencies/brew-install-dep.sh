@@ -16,6 +16,8 @@ brew_install() {
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
             $PACMAN "${i}" && PACINSTALL=true
+        else
+            PACINSTALL=true
         fi
     done
     if [ "${PACINSTALL}" = true ]
@@ -30,11 +32,10 @@ lib_install() {
     PACINSTALL=false
     for i in "${@}"; #previously @:2
     do
-        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1 # if can't find $i installed then install $i
+        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1 
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
-            $PACMAN "${i}" && \
-            PACINSTALL=true
+            $PACMAN "${i}" && PACINSTALL=true
         else
             PACINSTALL=true
         fi
