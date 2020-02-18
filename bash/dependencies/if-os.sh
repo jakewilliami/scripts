@@ -23,10 +23,10 @@ GHI='ghi'
 FD='fd'
 PERL_PACKAGE='perl'
 RUBY_PACKAGE='ruby'
-RUBY_VERSION='rbenv'
-RUBY_BUILD='ruby-build'
+RUBY_VERSION='rbenv'#https://aur.archlinux.org/packages/rbenv/
+RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
 HWINFO='hwinfo'
-INXI='inxi'
+INXI='inxi' #https://aur.archlinux.org/packages/inxi/
 PYDF='pydf'
 LMSENSORS='lm-sensors'
 NETSTAT='ifstat'
@@ -36,20 +36,22 @@ SYSSTAT='sysstat'
 IPTSTATE='iptstate'
 IPTABLES='iptables'
 DSTAT='dstat'
+CMAKE='cmake'
+PKG_CONFIG='pkg-config'
+ICU='icu'
 
 
 case $OS in
     macos)
+        ICU='icu4c'
         ;;
     arch)
-        RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
-        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
-        INXI='inxi' #https://aur.archlinux.org/packages/inxi/
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
         ;;
     debian)
         FD="fd-find" #command is fdfind
         POWERSTAT='powerstat'
+        ICU='icu-devtools'
         ;;
 esac
