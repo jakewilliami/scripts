@@ -69,4 +69,5 @@ is-library-then-install() {
     else
         [[ $MISSING_DEPENDENCIES = true ]] && \
         echo -e "${ERROR_OCCURRED}" 
+    fi
 }
