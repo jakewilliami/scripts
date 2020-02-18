@@ -19,20 +19,22 @@ else
 fi
 
 
+GHI='ghi'
+FD='fd'
+PERL_PACKAGE='perl'
+RUBY_PACKAGE='ruby'
+RUBY_VERSION='rbenv'
+RUBY_BUILD='ruby-build'
+
+
 case $OS in
     macos)
-        GHI='ghi'
-        FD='fd'
-        PERL_PACKAGE='perl'
         ;;
     arch)
-        GHI='ghi'
-        FD='fd'
-        PERL_PACKAGE='perl'
+        RUBY_VERSION='https://aur.archlinux.org/packages/rbenv/'
+        RUBY_BUILD='https://aur.archlinux.org/packages/ruby-build/'
         ;;
     debian)
-        GHI='ghi'
         FD="fd-find" #command is fdfind
-        PERL_PACKAGE='perl'
         ;;
 esac
