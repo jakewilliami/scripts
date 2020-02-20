@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Rub using `python3 ${HOME}/scripts/python/applications.py`
+# Run using `python3 ${HOME}/scripts/python/applications.py`
 
 import plistlib  # for parsing the plist files
 import os  # for running the commands to generate lists
