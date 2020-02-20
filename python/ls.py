@@ -86,8 +86,8 @@ def print_files(root, files):
 
 def list_files(start_path):
     for root, dirs, files in walk_level(start_path, 0):
-        print_dirs(root, dirs)
-        print_files(root, files)
+            print_dirs(root, dirs)
+            print_files(root, files)
 
 
 list_files(args.dir)
