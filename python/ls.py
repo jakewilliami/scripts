@@ -63,32 +63,30 @@ def print_file(file, level):
     print('{}{}{}{}'.format('\t' * level, colour_dict["SHELL"], file, colour_dict["NORM"]))
 
 
+def print_files(root, files):
+    for file in files:
+        if file == 'README.md' or file == '.gitignore' or file == '.DS_Store' or file.startswith('dev-') or file == 'textcolours.txt' or file == 'init_notes.md':
+            continue
+        print_file(file, 1)
+
+
 def print_dirs(root, dirs):
     for dir in dirs:
         if dir.startswith('.'):
             continue
         print('\t{}{}{}/'.format(colour_dict["BBLUE"], dir, colour_dict["NORM"]))
         for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
-            for child in dirs1:
-                print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
-                for dir1 in dirs1:
-                    for root2, dirs2, files2 in walk_level(os.path.join(root, dir, dir1), 0):
-                        for child in dirs2:
-                            print('\t\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
-                        for child in files2:
-                            print_file(child, 3)
-            for child in files1:
-                if child == '.DS_Store' or child == 'readme.md' or child.startswith('dep-') or child == 'textcolours.txt' or child == '.gitignore' or child == 'init_notes.md':
+            for dir1 in dirs1:
+                print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], dir1, colour_dict["NORM"]))
+                for root2, dirs2, files2 in walk_level(os.path.join(root, dir, dir1), 0):
+                    for dir2 in dirs2:
+                        print('\t\t\t{}{}{}/'.format(colour_dict["BBLUE"], dir2, colour_dict["NORM"]))
+                    for file2 in files2:
+                        print_file(file2, 3)
+            for file1 in files1:
+                if file1 == '.DS_Store' or file1 == 'readme.md' or file1.startswith('dep-') or file1 == 'textcolours.txt' or file1 == '.gitignore' or file1 == 'init_notes.md':
                     continue
-                print_file(child, 2)
-
-
-
-def print_files(root, files):
-    for file in files:
-        if file == 'README.md' or file == '.gitignore' or file == '.DS_Store' or file.startswith('dev-') or file == 'textcolours.txt' or file == 'init_notes.md':
-            continue
-        print_file(file, 1)
+                print_file(file1, 2)
 
 
 def list_files(start_path):
