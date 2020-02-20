@@ -40,6 +40,8 @@ CMAKE='cmake'
 PKG_CONFIG='pkg-config'
 ICU='icu'
 GHLINGUIST='github-linguist'
+DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
+SNIFF='sniffglue'
 
 
 case $OS in
@@ -47,8 +49,6 @@ case $OS in
         ICU='icu4c'
         ;;
     arch)
-        RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
-        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
         ;;

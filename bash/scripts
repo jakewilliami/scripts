@@ -132,7 +132,6 @@ if [[ -z $1 ]]
 then
     cd "${GIT_LOCATION}/" || clean-return
     python3 "${GIT_LOCATION}/python/ls.py" "${GIT_LOCATION}/"
-    update_sys ${GIT_LOCATION}
 fi
 
 
