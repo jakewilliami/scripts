@@ -71,10 +71,17 @@ def print_dirs(root, dirs):
         for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
             for child in dirs1:
                 print('\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
+                for dir1 in dirs1:
+                    for root2, dirs2, files2 in walk_level(os.path.join(root, dir, dir1), 0):
+                        for child in dirs2:
+                            print('\t\t\t{}{}{}/'.format(colour_dict["BBLUE"], child, colour_dict["NORM"]))
+                        for child in files2:
+                            print_file(child, 3)
             for child in files1:
                 if child == '.DS_Store' or child == 'readme.md' or child.startswith('dep-') or child == 'textcolours.txt' or child == '.gitignore' or child == 'init_notes.md':
                     continue
                 print_file(child, 2)
+
 
 
 def print_files(root, files):
@@ -86,8 +93,8 @@ def print_files(root, files):
 
 def list_files(start_path):
     for root, dirs, files in walk_level(start_path, 0):
-            print_dirs(root, dirs)
-            print_files(root, files)
+        print_dirs(root, dirs)
+        print_files(root, files)
 
 
 list_files(args.dir)
