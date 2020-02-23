@@ -58,10 +58,10 @@ opt_s() { # Prints what in repo has been altered since last commit + push
 }
 
 opt_c() { # Prints commit count
-    if [[ $(uname -s) == "Darwin" ]]
+    if [[ ${KERNEL} == "Darwin" ]]
     then
         START_TODAY=$(date -v 0H -v 0M -v 0S +%s)
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         START_TODAY=$(date -d"$(date +%D)" +%s)
     fi
