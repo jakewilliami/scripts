@@ -41,16 +41,21 @@ PKG_CONFIG='pkg-config'
 ICU='icu'
 GHLINGUIST='github-linguist'
 DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
-SNIFF='sniffglue'
+DHCPING='dhcping'
+ROOTKITHUNT='rkhunter'
+ARPSCAN='arp-scan'
+NMAP='nmap'
 
 
 case $OS in
     macos)
         ICU='icu4c'
+        SNIFF='sniffglue'
         ;;
     arch)
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
+        SNIFF='sniffglue'
         ;;
     debian)
         FD="fd-find" #command is fdfind
