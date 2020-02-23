@@ -7,13 +7,17 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${NMAP}" "${DHCPING}" "${ROOTKITHUNT}"
-is-library-then-install "${SNIFF}" "${DHCP}" "${ARPSCAN}"
+is-command-then-install "${NMAP}" "${DHCPING}"
+[[ $KERNEL == "Linux" ]] && is-command-then-install "${ROOTKITHUNT}"
+[[ $OS == "debian" ]] && is-command-then-install "${TSHARK}"
+[[ ! $OS == "debian" ]] && is-command-then-install "${SNIFF}"
+is-library-then-install "${DHCP}" "${ARPSCAN}"
 
 # Help
 display_help() {
     help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).'
     help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
+    help_commands '-A' '--alternate-sniff' '1' '\b' 'S' 'niff' '\bs using alternate method.  See also options `-s` and `-S`.'
     help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
     help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
     help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
@@ -21,7 +25,7 @@ display_help() {
     help_commands '-n' '--nmap' '2' 'Prints' 'n' 'map' 'results.'
     help_commands '-p' '--ping' '2' 'Prints' 'p' 'ing' '\bed results.'
     help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
-    help_commands '-1' '--query-server' '2' '\b' 'Q' 'uery server' '\bs on the local network.'
+    help_commands '-q' '--query-server' '1' '\b' 'Q' 'uery server' '\bs on the local network.'
     help_commands '-s' '--sniff' '2' '\b' 'S' 'niff' '\bs packages exchanged through the local network.'
     help_commands '-S' '--verbose-sniff' '1' '\b' 'V' 'erbosely sniff' '\bs packages exchanged through the local network.'
     help_help '2'
@@ -30,13 +34,14 @@ display_help() {
 
 
 #Get wireless interface
-if [[ $(hostname) == 'jake-imac2008' ]]
+HOSTNAME=$(hostname)
+if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
 then
     WIRELESS_DEVICE='wls4'
-elif [[ $(hostname) == 'jake-macbook2007' ]]
+elif [[ ${HOSTNAME%%.*} == 'jake-macbook2007' ]]
 then
     WIRELESS_DEVICE='eth0'
-elif [[ $(hostname) == 'jake-mbp2017' ]]
+elif [[ ${HOSTNAME%%.*} == 'jake-mbp2017' ]]
 then
     WIRELESS_DEVICE='en0'
 fi
@@ -52,19 +57,36 @@ ping_function() {
 
 
 rootkits() {
-    sudo rkhunter -c
+    if [[ $KERNEL == "Darwin" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    else
+        sudo rkhunter --check
+    fi
 }
 
 
 query_server() {
-    for i in $(seq 1 254); do
+    sudo dhcping -s 192.168.1.1
+    for i in $(seq 2 254); do
         (sudo dhcping -s 192.168.1.${i} > /dev/null 2>&1 && echo "Response from 192.168.1.${i}" &)
-    done
+    done 
 }
 
 
 arp_function() {
     sudo arp-scan -l   
+}
+
+
+
+sniff_alternative() {
+    if [[ $OS == "debian" ]]
+    then
+        sudo tshark
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
+    fi
 }
 
 
@@ -80,7 +102,7 @@ nmap_function() {
 sniff_function() {
     if [[ $OS == "debian" ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported forDebian.${NORM}"
+        echo -e "${BYELLOW}This option is not currently supported for Debian.${NORM}"
     else
         sudo sniffglue -vv "${WIRELESS_DEVICE}"
     fi
@@ -126,7 +148,7 @@ geo_ip_public() {
 
 
 # Options
-while getopts ":-:anphlHPsgVmq" OPTION; do
+while getopts ":-:anphlHPsSgVmq" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -150,6 +172,9 @@ while getopts ":-:anphlHPsgVmq" OPTION; do
                             clean-exit ;;
                         verbose-sniff)
                             verbose_sniff
+                            clean-exit ;;
+                        alternate-sniff)
+                            sniff_alternative
                             clean-exit ;;
                         Hostnames)
                             dhcp_function
@@ -176,6 +201,9 @@ while getopts ":-:anphlHPsgVmq" OPTION; do
                     clean-exit ;;
                 a)
                     arp_function 
+                    clean-exit ;;
+                A)
+                    sniff_alternative
                     clean-exit ;;
                 n)
                     nmap_function

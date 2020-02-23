@@ -42,28 +42,28 @@ CMAKE='cmake'
 PKG_CONFIG='pkg-config'
 ICU='icu'
 GHLINGUIST='github-linguist'
+SNIFF='sniffglue'
 DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
 DHCPING='dhcping'
 ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
 NMAP='nmap'
+TSHARK='tshark'
 
 
 case $OS in
     macos)
         ICU='icu4c'
-        SNIFF='sniffglue'
         ;;
     arch)
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
-        SNIFF='sniffglue'
         ;;
     debian)
         FD="fd-find" #command is fdfind
         POWERSTAT='powerstat'
         ICU='icu-devtools'
-        #RUBY_BUILD='ruby-charlock-holmes ruby-escape-utils ruby-rugged'
+        RUBY_BUILD='ruby-charlock-holmes ruby-escape-utils ruby-rugged'
         GHLINGUIST='ruby-github-linguist'
         ;;
 esac
