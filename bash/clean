@@ -149,12 +149,26 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
     while true; do
         read -p "${BWHITE}`brew cask upgrade --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
         `echo`
-        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
+        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
         case $yn in
             [Yy]*) 
                     brew cask upgrade --greedy
                     break   ;;
             [Nn]*) 
+                    while true; do
+                        read -p "${BWHITE}`brew cask upgrade --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+                        `echo`
+                        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
+                        case $yn in
+                            [Yy]*) 
+                                    brew cask upgrade
+                                    break   ;;
+                            [Nn]*) 
+                                    break  ;;
+                            *)     
+                                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+                            esac
+                        done
                     break  ;;
             *)     
                     echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
@@ -253,7 +267,7 @@ while getopts ":-:tdhpbmra" OPTION; do
                         help)
                             display_help ;;
                         brew)
-                            clean_brew 
+                            clean_brew
                             clean-exit ;;
                         perl)
                             clean_perl 
@@ -268,7 +282,7 @@ while getopts ":-:tdhpbmra" OPTION; do
                             opt_err ;;
                     esac ;;
                 a)
-                    big_clean 
+                    big_clean
                     clean-exit ;;
                 t)
                     clean_trash 
@@ -282,7 +296,7 @@ while getopts ":-:tdhpbmra" OPTION; do
                 h)
                     display_help ;;
                 b)
-                    clean_brew 
+                    clean_brew
                     clean-exit ;;
                 p) 
                     clean_perl 
