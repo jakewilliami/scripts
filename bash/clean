@@ -197,11 +197,11 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
 
 
 clean_gems() {
-    if [[ $(uname -s) == "Darwin" ]]
+    if [[ ${KERNEL} == "Darwin" ]]
     then
         sudo gem update  # https://stackoverflow.com/a/36150004/12069968
         sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for Linux.${NORM}"
     fi
@@ -213,10 +213,10 @@ clean_perl() {
 
 
 mas_upgrade() {
-    if [[ $(uname -s) == "Darwin" ]]
+    if [[ ${KERNEL} == "Darwin" ]]
     then
         mas upgrade
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         echo -e "${BYELLOW}This option is not supported for Linux, as it pertains to the Mac App Store.${NORM}"
     fi

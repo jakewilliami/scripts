@@ -12,8 +12,8 @@ is-command-then-install "${NETSTAT}"
 [[ $OS == "macos" ]] && gem_install iStats
 [[ $OS == "arch" ]] && is-command-then-install "${HWINFO}"
 [[ $OS == "debian" ]] && is-command-then-install "${NETSTAT_ALT}"
-[[ $(uname -s) == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}" "${DSTAT}"
-[[ $(uname -s) == "Linux" ]] && is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
+[[ ${KERNEL} == "Linux" ]] && is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}" "${DSTAT}"
+[[ ${KERNEL} == "Linux" ]] && is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
 
 # Help
 display_help() {
@@ -51,7 +51,7 @@ space() {
 cpu_utilisation() {
     ps -A -o %cpu | \
     awk '{s+=$1} END {print s "%"}'  # Adds up all processes using cpu
-    if [[ $(uname -s) == "Linux" ]]
+    if [[ ${KERNEL} == "Linux" ]]
     then
         mpstat -u -o JSON | jq
     fi
@@ -59,7 +59,7 @@ cpu_utilisation() {
 
 
 cpu_utilisation_extended() {
-    if [[ $(uname -s) == "Linux" ]]
+    if [[ ${KERNEL} == "Linux" ]]
     then
         iostat -cdhx -o JSON | jq
     else
@@ -72,7 +72,7 @@ cpu_statistics() {
     if [[ $OS == "macos" ]]
     then
         istats
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         sudo sensors-detect
     fi
@@ -101,7 +101,7 @@ network_devices_extended() {
 
 
 ram_used() {
-    if [[ $(uname -s) == "Linux" ]]
+    if [[ ${KERNEL} == "Linux" ]]
     then
         free -mh
     elif [[ $OS == "macos" ]]
@@ -112,10 +112,10 @@ ram_used() {
 
 
 network_devices() {
-    if [[ $(uname -s) == "Darwin" ]]
+    if [[ ${KERNEL} == "Darwin" ]]
     then
         ifconfig
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         ip address show
     fi
@@ -125,7 +125,7 @@ overview() {
     if [[ $OS == "macos" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         if command -v inxi > /dev/null 2>&1 #use lshw because inxi has to be installed from the AUR
         then
@@ -178,7 +178,7 @@ pid_stat() {
     if [[ $OS == "macos" ]]
     then
         ps aux
-    elif [[ $(uname -s) == "Linux" ]]
+    elif [[ ${KERNEL} == "Linux" ]]
     then
         pidstat
     fi
@@ -186,7 +186,7 @@ pid_stat() {
 
 
 live_overview() {
-    if [[ $(uname -s) == "Linux" ]]
+    if [[ ${KERNEL} == "Linux" ]]
     then
         dstat
     elif [[ $OS == "macos" ]]

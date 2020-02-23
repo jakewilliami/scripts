@@ -7,8 +7,8 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${NMAP}" "${ARPSCAN}" "${DHCPING}" "${ROOTKITHUNT}"
-is-library-then-install "${SNIFF}" "${DHCP}"
+is-command-then-install "${NMAP}" "${DHCPING}" "${ROOTKITHUNT}"
+is-library-then-install "${SNIFF}" "${DHCP}" "${ARPSCAN}"
 
 # Help
 display_help() {
@@ -88,7 +88,7 @@ sniff_function() {
 
 
 verbose_sniff() {
-    if [[ $(uname -s) == "Linux" ]]
+    if [[ ${KERNEL} == "Linux" ]]
     then
         sudo netsniff-ng
     else

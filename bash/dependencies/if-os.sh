@@ -4,9 +4,11 @@
 # get os
 if [[ $(uname -s) == "Darwin" ]]
 then
+    KERNEL="Darwin"
     OS="macos"
 elif [[ $(uname -s) == "Linux" ]]
 then
+    KERNEL="LINUX"
     if [[ -f /etc/arch-release ]]
     then
         OS="arch"
