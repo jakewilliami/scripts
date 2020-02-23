@@ -22,6 +22,7 @@ display_help() {
     help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
     help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
     help_commands '-m' '--malware' '2' 'Check the present computer for' 'm' 'alware' '(in the form of rootkits).'
+    help_commands '-M' '--minimal-arp' '1' 'Prints a' 'M' 'inimal arp' 'output.'
     help_commands '-n' '--nmap' '2' 'Prints' 'n' 'map' 'results.'
     help_commands '-p' '--ping' '2' 'Prints' 'p' 'ing' '\bed results.'
     help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
@@ -147,8 +148,13 @@ geo_ip_public() {
 }
 
 
+minimal_arp() {
+    arp -a
+}
+
+
 # Options
-while getopts ":-:anphlHPsSgVmq" OPTION; do
+while getopts ":-:aMnphlHPsSgVmqA" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -160,6 +166,9 @@ while getopts ":-:anphlHPsSgVmq" OPTION; do
                             clean-exit ;;
                         arp)
                             arp_function
+                            clean-exit ;;
+                        minimal-arp)
+                            minimal_arp
                             clean-exit ;;
                         nmap)
                             nmap_function
@@ -195,6 +204,9 @@ while getopts ":-:anphlHPsSgVmq" OPTION; do
                     esac ;;
                 m)
                     rootkits
+                    clean-exit ;;
+                M)
+                    minimal_arp
                     clean-exit ;;
                 q)
                     query_server
