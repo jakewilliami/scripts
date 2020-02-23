@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Run using perl -X perl/applications.pl
+# Run using perl -X ${HOME}/scripts/perl/applications.pl
 
 # for defining to use a specific version of Perl
 use v5.30;
@@ -77,7 +77,7 @@ open (APPS1, "<${home}/scripts/perl/temp.d/dataApps.txt") or die $!;
     my $line;
     my $line_counter = 0;
 
-    #read the 1st file into a hash 
+    #read the 1st file into a hash
     while ($line=<APPS1>){
     #  chomp ($line); #-only if you want to get rid of 'endl' sign
         $line_counter++;
@@ -135,11 +135,10 @@ close (FILE2);
 
 
 #print if amatch("foobar");
-# 
+#
 #my @matches = amatch("xyzzy", dataApps());
-# 
+#
 #my @catches = amatch("plugh", ['2'], dataApps());
 #
 #
 ##dataApps();
-
