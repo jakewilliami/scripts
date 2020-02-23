@@ -7,7 +7,7 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install nmap arp-scan sniffglue dhcpdump
+is-command-then-install nmap arp-scan "${SNIFF}" "${DHCP}"
 
 # Help
 display_help() {
@@ -49,7 +49,16 @@ nmap_function() {
 
 
 sniff_function() {
-    WIRELESS_DEVICE='en0'
+    if [[ $(hostname) == 'jake-imac2008' ]]
+    then
+        WIRELESS_DEVICE='ens5'
+    elif [[ $(hostname) == 'jake-macbook2007' ]]
+    then
+        WIRELESS_DEVICE='eth0'
+    elif [[ $(hostname) == 'jake-mbp2017' ]]
+    then
+        WIRELESS_DEVICE='en0'
+    fi
     sudo sniffglue -vv $WIRELESS_DEVICE
 }
 
