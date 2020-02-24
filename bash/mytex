@@ -14,6 +14,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 is-library-then-install "${PYTHON3}"
 [[ $KERNEL == "Linux" ]] && \
     is-library-then-install "${PIP3}"
+[[ $KERNEL == "Darwin" ]] && \
+    is-command-then-install "${PIP3}"
 
 # Help
 display_help() {
