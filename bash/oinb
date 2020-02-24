@@ -6,6 +6,40 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
+
+# Installing Atom for macOS
+[[ $KERNEL == "Darwin" ]] && \
+    is-library-then-install "${BREWCASK}"
+[[ $KERNEL == "Darwin" ]] && \
+    is-app-then-install "${ATOM}"
+# Installing Atom for Linux
+if [[ $(getconf LONG_BIT) == "64" ]]
+then
+    if [[ $OS == "debian"  ]]
+    then
+        cd "${HOME}/Downloads/"
+        wget http://download.brackets.io/file.cfm?platform=LINUX64&build=41
+        sudo dpkg -i brackets-sprint-38*
+        cd - > /dev/null
+    fi
+    if [[ $OS == "arch" ]]
+    then
+        aur_install "${BRACKETS}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz'
+    fi
+elif [[ $(getconf LONG_BIT) == "32" ]]
+then
+    if [[ $OS == "debian" ]]
+    then
+        cd "${HOME}/Downloads/"
+        wget http://download.brackets.io/file.cfm?platform=LINUX32&build=41
+        sudo dpkg -i brackets-sprint-38*
+        cd - > /dev/null
+    else
+        echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
+        clean-exit
+    fi
+fi
+
 display_help() {
     help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.  Need to manually run `brew cask install brackets`.'
     help_help '2'

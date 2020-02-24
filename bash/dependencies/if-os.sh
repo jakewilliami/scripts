@@ -52,7 +52,8 @@ TSHARK='tshark'
 PYTHON3='python3'
 PIP3='python3-pip'
 BREWCASK='cask'
-ATOM='atom' 
+ATOM='atom'
+BRACKETS='brackets'
 
 
 case $OS in
@@ -67,6 +68,7 @@ case $OS in
         RUBY_BUILD='ruby-build' #https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz
         INXI='inxi' #https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz
         DHCP='dhcpdump' #https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz
+        BRACKETS='brackets' #https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz
         ;;
     debian)
         FD="fd-find" #command is fdfind
