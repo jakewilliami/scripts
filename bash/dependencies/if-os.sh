@@ -26,7 +26,7 @@ FD='fd'
 PERL_PACKAGE='perl'
 RUBY_PACKAGE='ruby'
 RUBY_VERSION='rbenv'
-RUBY_BUILD='ruby-build'
+RUBY_BUILD='ruby-build' #see, for example, bash/clean for example on debian ruby build packages
 HWINFO='hwinfo'
 INXI='inxi'
 PYDF='pydf'
@@ -72,7 +72,6 @@ case $OS in
         FD="fd-find" #command is fdfind
         POWERSTAT='powerstat'
         ICU='icu-devtools'
-        RUBY_BUILD='ruby-charlock-holmes ruby-escape-utils ruby-rugged'
         GHLINGUIST='ruby-github-linguist'
         ;;
 esac

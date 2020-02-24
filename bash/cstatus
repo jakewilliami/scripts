@@ -12,12 +12,20 @@ is-command-then-install "${NETSTAT}"
     is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && \
     gem_install iStats
-[[ $OS == "debian" ]] && \
-    is-command-then-install "${NETSTAT_ALT}"
 [[ ${KERNEL} == "Linux" ]] && \
     is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}" "${DSTAT}"
 [[ ${KERNEL} == "Linux" ]] && \
     is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
+if [[ $OS == "debian" ]]
+then
+    is-command-then-install "${NETSTAT_ALT}"
+    declare -a debian_ruby_array=()
+    debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+    for i in "${debian_ruby_array[@]}"
+    do
+        is-library-then-install "${i}" 
+    done
+fi
 if [[ $OS == "arch" ]]
 then
     is-command-then-install "${HWINFO}"
