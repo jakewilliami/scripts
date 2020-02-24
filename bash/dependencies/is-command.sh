@@ -93,7 +93,7 @@ is-app-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1 # if can't find $i installed then we have missing
+        if ! $PACAPPSEARCH | grep "${i}" > /dev/null 2>&1 # if can't find $i installed then we have missing
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))

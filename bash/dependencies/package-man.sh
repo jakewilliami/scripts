@@ -5,6 +5,7 @@ if command -v brew > /dev/null 2>&1
 then
     PACMAN='brew install'
     PACSEARCH='brew list'
+    PACAPPSEARCH='brew cask list'
     PACAPP='brew cask install'
 else
     declare -A osInfo;
@@ -32,7 +33,8 @@ else
     for s in "${!osSearch[@]}"
     do
         if [[ -f $s ]];then
-            PACSEARCH="${osSearch[$s]}"  
+            PACSEARCH="${osSearch[$s]}"
+            PACAPPSEARCH="${osSearch[$s]}"
         fi
     done
 fi
