@@ -54,6 +54,7 @@ PIP3='python3-pip'
 BREWCASK='cask'
 ATOM='atom'
 BRACKETS='brackets'
+PDFGREP='pdfgrep'
 
 
 case $OS in
