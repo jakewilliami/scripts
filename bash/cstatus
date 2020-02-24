@@ -279,10 +279,7 @@ while getopts ":-:auhsSdDRonNpUlP" OPTION; do
 done
 
 
-if [[ -z $1 ]]
-then
-    opt_err_none
-fi
+[[ -z $1 ]] && opt_err_none
 
 
 # Clean up

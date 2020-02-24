@@ -8,7 +8,7 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 [[ $KERNEL == "Darwin" ]] && \
     is-library-then-install "${BREWCASK}"
-[[ $KERNEL == "Darwin" ]] && \  
+[[ $KERNEL == "Darwin" ]] && \
     is-app-then-install "${ATOM}"
 [[ $OS == "debian"  ]] && \
     cd "${HOME}"/Downloads/ && \
@@ -38,13 +38,26 @@ while getopts ":-:h" OPTION; do
     esac
 done
 
+
+# Open file(s)
 for f in $@
 do
-    if [[ -f $f ]] # Checks to see if file exists in current working directory
+    if [[ $KERNEL == "Linux" ]]
     then
-        open -a "Atom.app" $f
-    else
-        open -a "Atom.app" ~/scripts/bash/$f
+        if [[ -f $f ]] # Checks to see if file exists in current working directory
+        then
+            ${OPEN_COMMAND} $f
+        else
+            atom "${HOME}/scripts/bash/${f}"
+        fi
+    elif [[ $KERNEL == "Darwin" ]]
+    then
+        if [[ -f $f ]] # Checks to see if file exists in current working directory
+        then
+            ${OPEN_COMMAND} $f
+        else
+            open -a Atom.app "${HOME}/scripts/bash/${f}"
+        fi
     fi
 done
 

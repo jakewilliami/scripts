@@ -65,7 +65,7 @@ done
 
 
 #if no arguments
-[[ -z $1 ]] && opt_err_none && clean-exit
+[[ -z $1 ]] && opt_err_none
 
 
 # Clean up
