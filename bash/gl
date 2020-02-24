@@ -11,7 +11,7 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 is-library-then-install "${ICU}"
 is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" 
 [[ $OS == "macos" || $OS == "debian" ]] && \
-    is-command-then-install "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
+    is-library-then-install "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
 [[ $OS == "macos" ]] && \
     is-command-then-install "${RUBY_VERSION}"
 [[ $OS == "macos" || $OS == "arch" ]] && \
