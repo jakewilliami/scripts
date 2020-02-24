@@ -6,14 +6,27 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
+# Installing Atom for macOS
 [[ $KERNEL == "Darwin" ]] && \
     is-library-then-install "${BREWCASK}"
 [[ $KERNEL == "Darwin" ]] && \
     is-app-then-install "${ATOM}"
-[[ $OS == "debian"  ]] && \
-    cd "${HOME}"/Downloads/ && \
-    wget https://atom.io/download/deb -O atom.deb && \
-    sudo dpkg -i atom.deb
+# Installing Atom for Linux
+if [[ $(getconf LONG_BIT) == "64" ]]
+then
+    [[ $OS == "debian"  ]] && \
+        cd "${HOME}"/Downloads/ && \
+        wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add - && \
+        sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list' && \
+        sudo apt-get update && \
+        sudo apt-get install atom
+elif [[ $(getconf LONG_BIT) == "32" ]]
+then
+    [[ $OS == "debian" ]] && \
+        sudo add-apt-repository ppa:webupd8team/atom && \
+        sudo apt-get update && \
+        sudo apt-get install atom 
+fi
 
 display_help() {
     help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Atom.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.'
