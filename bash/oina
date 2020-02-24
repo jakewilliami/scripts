@@ -24,7 +24,7 @@ then
     fi
     if [[ $OS == "arch" ]]
     then
-        aur_install 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
+        aur_install "${ATOM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
     fi
 elif [[ $(getconf LONG_BIT) == "32" ]]
 then
