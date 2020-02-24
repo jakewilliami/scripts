@@ -138,6 +138,7 @@ local_ip() {
         LOCAL_IP=${LOCAL_IP/uid*}
         [[ -z "${LOCAL_IP}" ]] && LOCAL_IP="$(/sbin/ifconfig -a | awk '/broadcast/ {print $2; exit}')"
     fi
+    echo "${LOCAL_IP}"
 }
 
 
