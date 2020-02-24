@@ -5,7 +5,7 @@ aur_install() {
     if ! $PACSEARCH | grep "${1}" > /dev/null 2>&1
     then
         cd "${HOME}"/Downloads/
-        curl "${URL}"
+        wget "${URL}"
         DOWNLOADED_FILE="${URL##*/}"
         tar xvzf "${DOWNLOADED_FILE}"
         EXTRACTED_DIR="${DOWNLOADED_FILE%%.*}"
