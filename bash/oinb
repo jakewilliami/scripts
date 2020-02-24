@@ -18,8 +18,8 @@ then
     if [[ $OS == "debian"  ]]
     then
         cd "${HOME}/Downloads/"
-        wget http://download.brackets.io/file.cfm?platform=LINUX64&build=41
-        sudo dpkg -i brackets-sprint-38*
+        wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
+        sudo dpkg -i Brackets.Release.*
         cd - > /dev/null
     fi
     if [[ $OS == "arch" ]]
@@ -31,8 +31,8 @@ then
     if [[ $OS == "debian" ]]
     then
         cd "${HOME}/Downloads/"
-        wget http://download.brackets.io/file.cfm?platform=LINUX32&build=41
-        sudo dpkg -i brackets-sprint-38*
+        wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
+        sudo dpkg -i Brackets.Release.*
         cd - > /dev/null
     else
         echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
