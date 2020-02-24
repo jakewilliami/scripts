@@ -7,7 +7,7 @@ BASH_DIR="${HOME}/scripts/bash/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${DHCPING}" 
+is-library-then-install "${DHCPING}" 
 [[ $OS == "debian" ]] && \
     is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
 [[ $OS == "macos" || $OS == "arch" ]] && \
