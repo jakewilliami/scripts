@@ -18,24 +18,18 @@ then
     then
         cd "${HOME}"/Downloads/
         wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
-        sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list' && \
+        sudo sh -c 'echo "deb [arch=i368] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list' && \
         sudo apt-get update && \
         sudo apt-get install atom
     fi
+    if [[ $OS == "arch" ]]
+    then
+        aur_install 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
+    fi
 elif [[ $(getconf LONG_BIT) == "32" ]]
 then
-    if [[ $OS == "debian" ]]
-    then
-        sudo add-apt-repository ppa:webupd8team/atom
-        sudo apt-get update
-        sudo apt-get install atom 
-    elif [[ $OS == "macos" ]]
-    then
-        echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit Apple systems.${NORM}"
-    elif [[ $OS == "arch" ]]
-    then
-        echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit Arch systems.${NORM}"
-    fi
+    echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
+    clean-exit
 fi
 
 display_help() {

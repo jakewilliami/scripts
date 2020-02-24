@@ -12,6 +12,9 @@ source "${BASH_DIR}"/dependencies/jq-dep.sh
 #get is-command function
 source "${BASH_DIR}"/dependencies/is-command.sh
 
+#get aur_install command
+source "${BASH_DIR}"/dependencies/aur.sh
+
 # get the Gem Install function (for installing ruby gems)
 source "${BASH_DIR}"/dependencies/gem-install-dep.sh
 
