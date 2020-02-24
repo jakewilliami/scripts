@@ -34,7 +34,7 @@ display_help() {
 
 
 # Get public IP
-PUBLIC_IP=$(curl ipinfo.io/ip)
+PUBLIC_IP=$(curl -s ipinfo.io/ip)
 # set wireless interfaces to save script time when needing to check
 HOSTNAME=$(hostname)
 if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
