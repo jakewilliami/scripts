@@ -51,7 +51,7 @@ remove_old() {
         sudo apt-get autoremove
     elif [[ $OS == "arch" ]]
     then
-        sudo pacman -R $(pacman -Qtd)
+        sudo pacman -R $(pacman -Qqdt)
     elif [[ $KERNEL == "Darwin" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
