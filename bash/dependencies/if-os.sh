@@ -49,7 +49,7 @@ ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
 NMAP='nmap'
 TSHARK='tshark'
-PYTHON3='python3'
+PYTHON3='python3' # Includes pip3 on macOS
 PIP3='python3-pip'
 BREWCASK='cask'
 ATOM='atom'
@@ -71,6 +71,7 @@ case $OS in
         INXI='inxi' #https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz
         DHCP='dhcpdump' #https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz
         BRACKETS='brackets' #https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz
+        PIP3='python-pip'
         ;;
     debian)
         FD="fd-find" #command is fdfind
