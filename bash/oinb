@@ -15,30 +15,33 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # Installing Atom for Linux
 [[ $OS == "debian" ]] && \
     is-library-then-install "${GDEBI}"
-if [[ $(getconf LONG_BIT) == "64" ]]
+if ! command -v brackets
 then
-    if [[ $OS == "debian"  ]]
+    if [[ $(getconf LONG_BIT) == "64" ]]
     then
-        cd "${HOME}/Downloads/"
-        wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
-        sudo gdebi Brackets.Release.*
-        cd - > /dev/null
-    fi
-    if [[ $OS == "arch" ]]
+        if [[ $OS == "debian"  ]]
+        then
+            cd "${HOME}/Downloads/"
+            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
+            sudo gdebi Brackets.Release.* || echo -e "${BRED}There have been issues with the libcurl3 dependency.  Until this is fixed, follow the instructions here: \`https://github.com/adobe/brackets/issues/14171#issuecomment-389584065\`.${NORM}"
+            cd - > /dev/null
+        fi
+        if [[ $OS == "arch" ]]
+        then
+            aur_install "${BRACKETS}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz'
+        fi
+    elif [[ $(getconf LONG_BIT) == "32" ]]
     then
-        aur_install "${BRACKETS}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz'
-    fi
-elif [[ $(getconf LONG_BIT) == "32" ]]
-then
-    if [[ $OS == "debian" ]]
-    then
-        cd "${HOME}/Downloads/"
-        wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
-        sudo gdebi Brackets.Release.*
-        cd - > /dev/null
-    else
-        echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
-        clean-exit
+        if [[ $OS == "debian" ]]
+        then
+            cd "${HOME}/Downloads/"
+            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
+            sudo gdebi Brackets.Release.*
+            cd - > /dev/null
+        else
+            echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
+            clean-exit
+        fi
     fi
 fi
 
