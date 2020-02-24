@@ -8,7 +8,7 @@ then
     OS="macos"
 elif [[ $(uname -s) == "Linux" ]]
 then
-    KERNEL="LINUX"
+    KERNEL="Linux"
     if [[ -f /etc/arch-release ]]
     then
         OS="arch"
