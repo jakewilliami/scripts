@@ -25,10 +25,10 @@ GHI='ghi'
 FD='fd'
 PERL_PACKAGE='perl'
 RUBY_PACKAGE='ruby'
-RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
-RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
+RUBY_VERSION='rbenv'
+RUBY_BUILD='ruby-build'
 HWINFO='hwinfo'
-INXI='inxi' #https://aur.archlinux.org/packages/inxi/
+INXI='inxi'
 PYDF='pydf'
 LMSENSORS='lm-sensors'
 NETSTAT='ifstat'
@@ -43,7 +43,7 @@ PKG_CONFIG='pkg-config'
 ICU='icu'
 GHLINGUIST='github-linguist'
 SNIFF='sniffglue'
-DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
+DHCP='dhcpdump'
 DHCPING='dhcping'
 ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
@@ -63,6 +63,10 @@ case $OS in
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
         ATOM='atom-editor-git' #https://aur.archlinux.org/packages/atom-editor-git/
+        RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
+        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
+        INXI='inxi' #https://aur.archlinux.org/packages/inxi/
+        DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
         ;;
     debian)
         FD="fd-find" #command is fdfind

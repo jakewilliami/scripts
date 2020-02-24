@@ -12,14 +12,17 @@ is-command-then-install "${NETSTAT}"
     is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 [[ $OS == "macos" ]] && \
     gem_install iStats
-[[ $OS == "arch" ]] && \
-    is-command-then-install "${HWINFO}"
 [[ $OS == "debian" ]] && \
     is-command-then-install "${NETSTAT_ALT}"
 [[ ${KERNEL} == "Linux" ]] && \
     is-command-then-install "${INXI}" "${PYDF}" "${POWERSTAT}" "${DSTAT}"
 [[ ${KERNEL} == "Linux" ]] && \
     is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
+if [[ $OS == "arch" ]]
+then
+    is-command-then-install "${HWINFO}"
+    aur_install "${INXI}" 'https://aur.archlinux.org/packages/inxi'
+fi
 
 # Help
 display_help() {
