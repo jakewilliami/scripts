@@ -10,9 +10,13 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 is-command-then-install "${DHCPING}" 
 [[ $OS == "debian" ]] && \
     is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
-[[ ! $OS == "debian" ]] && \
+[[ $OS == "macos" || $OS == "arch" ]] && \
     is-command-then-install "${SNIFF}" "${NMAP}"
-is-library-then-install "${DHCP}" "${ARPSCAN}"
+[[ $OS == "macos" || $OS == "debian"]] && \
+    is-library-then-install "${DHCP}"
+is-library-then-install "${ARPSCAN}"
+[[ $OS == "arch" ]] && \
+    aur_install "${DHCP}" 'https://aur.archlinux.org/packages/dhcpdump'
 
 # Help
 display_help() {

@@ -17,6 +17,7 @@ display_help() { #Displays help
 if [[ ! $KERNEL == "Darwin" ]]
 then
     echo -e "${BYELLOW}This command is only works on macOS.${NORM}"
+    clean-exit
 fi
 
 

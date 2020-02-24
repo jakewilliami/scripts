@@ -9,13 +9,21 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
 is-library-then-install "${ICU}"
-is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
+is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" 
+[[ $OS == "macos" || $OS == "debian" ]] && \
+    is-command-then-install "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
 [[ $OS == "macos" ]] && \
     is-command-then-install "${RUBY_VERSION}"
 [[ $OS == "macos" || $OS == "arch" ]] && \
     gem_install "${GHLINGUIST}"
 [[ $OS == "debian" ]] && \
     is-library-then-install "${GHLINGUIST}"
+if [[ $OS == "arch" ]]
+then
+    aur_install "${RUBY_PACKAGE}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
+    aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/packages/rbenv'
+    aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/packages/ruby-build'
+fi
 
 
 # Help
