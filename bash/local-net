@@ -8,9 +8,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
 is-command-then-install "${NMAP}" "${DHCPING}"
-[[ $KERNEL == "Linux" ]] && is-command-then-install "${ROOTKITHUNT}"
-[[ $OS == "debian" ]] && is-command-then-install "${TSHARK}"
-[[ ! $OS == "debian" ]] && is-command-then-install "${SNIFF}"
+[[ $OS == "debian" ]] && is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
+[[ ! $OS == "debian" ]] && is-command-then-install "${SNIFF}" 
 is-library-then-install "${DHCP}" "${ARPSCAN}"
 
 # Help
@@ -34,7 +33,7 @@ display_help() {
 }
 
 
-#Get wireless interface
+# set wireless interfaces to save script time when needing to check
 HOSTNAME=$(hostname)
 if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
 then
@@ -58,9 +57,9 @@ ping_function() {
 
 
 rootkits() {
-    if [[ $KERNEL == "Darwin" ]]
+    if [[ $KERNEL == "Darwin" || $OS == "arch" ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
     else
         sudo rkhunter --check
     fi
@@ -68,7 +67,7 @@ rootkits() {
 
 
 query_server() {
-    sudo dhcping -s 192.168.1.1
+    sudo dhcping -s 192.168.1.1 #ask this separately to avoid getting asked for password 254 times
     for i in $(seq 2 254); do
         (sudo dhcping -s 192.168.1.${i} > /dev/null 2>&1 && echo "Response from 192.168.1.${i}" &)
     done 
@@ -128,11 +127,16 @@ dhcp_function() {
 local_ip() {
     if [[ $KERNEL == "Darwin" ]]
     then
-        DEVICE="echo ${WIRELESS_DEVICE}"
-        ipconfig getifaddr $(eval "${DEVICE}")
+        #DEVICE="echo ${WIRELESS_DEVICE}"
+        #LOCAL_IP=$(ipconfig getifaddr $(eval "${DEVICE}"))
+        LOCAL_IP="$(ipconfig getifaddr en0)"
+        [[ -z "${LOCAL_IP}" ]] && LOCAL_IP="$(ipconfig getifaddr en1)"
     elif [[ $KERNEL == "Linux" ]]
     then
-        ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'
+        #ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'
+        LOCAL_IP=$(ip route get 1 | awk -F'src' '{print $2; exit}')
+        LOCAL_IP=${LOCAL_IP/uid*}
+        [[ -z "${LOCAL_IP}" ]] && LOCAL_IP="$(/sbin/ifconfig -a | awk '/broadcast/ {print $2; exit}')"
     fi
 }
 
