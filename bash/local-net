@@ -16,7 +16,7 @@ is-library-then-install "${DHCPING}"
     is-library-then-install "${DHCP}"
 is-library-then-install "${ARPSCAN}"
 [[ $OS == "arch" ]] && \
-    aur_install "${DHCP}" 'https://aur.archlinux.org/packages/dhcpdump'
+    aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
 
 # Help
 display_help() {

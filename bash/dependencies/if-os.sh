@@ -63,10 +63,10 @@ case $OS in
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
         ATOM='atom-editor-git' #https://aur.archlinux.org/packages/atom-editor-git/
-        RUBY_VERSION='rbenv' #https://aur.archlinux.org/packages/rbenv/
-        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/packages/ruby-build/
-        INXI='inxi' #https://aur.archlinux.org/packages/inxi/
-        DHCP='dhcpdump' #https://aur.archlinux.org/packages/dhcpdump/
+        RUBY_VERSION='rbenv' #https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz
+        RUBY_BUILD='ruby-build' #https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz
+        INXI='inxi' #https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz
+        DHCP='dhcpdump' #https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz
         ;;
     debian)
         FD="fd-find" #command is fdfind

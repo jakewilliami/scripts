@@ -28,8 +28,8 @@ fi
 if [[ $OS == "arch" ]]
 then
     aur_install "${RUBY_PACKAGE}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
-    aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/packages/rbenv'
-    aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/packages/ruby-build'
+    aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
+    aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
 fi
 
 

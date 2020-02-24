@@ -29,7 +29,7 @@ fi
 if [[ $OS == "arch" ]]
 then
     is-command-then-install "${HWINFO}"
-    aur_install "${INXI}" 'https://aur.archlinux.org/packages/inxi'
+    aur_install "${INXI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz'
 fi
 
 # Help
