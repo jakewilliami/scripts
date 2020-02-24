@@ -13,13 +13,15 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 [[ $KERNEL == "Darwin" ]] && \
     is-app-then-install "${ATOM}"
 # Installing Atom for Linux
+[[ $OS == "debian" ]] && \
+    is-library-then-install "${GDEBI}"
 if [[ $(getconf LONG_BIT) == "64" ]]
 then
     if [[ $OS == "debian"  ]]
     then
         cd "${HOME}/Downloads/"
         wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
-        sudo dpkg -i Brackets.Release.*
+        sudo gdebi Brackets.Release.*
         cd - > /dev/null
     fi
     if [[ $OS == "arch" ]]
@@ -32,8 +34,7 @@ then
     then
         cd "${HOME}/Downloads/"
         wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
-        sudo dpkg -i Brackets.Release.*
-        sudo apt install ./Brackets.Release.*
+        sudo gdebi Brackets.Release.*
         cd - > /dev/null
     else
         echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \

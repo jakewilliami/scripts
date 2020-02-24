@@ -55,6 +55,7 @@ BREWCASK='cask'
 ATOM='atom'
 BRACKETS='brackets'
 PDFGREP='pdfgrep'
+GDEBI='gdebi-core'
 
 
 case $OS in
