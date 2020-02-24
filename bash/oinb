@@ -15,7 +15,7 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # Installing Atom for Linux
 [[ $OS == "debian" ]] && \
     is-library-then-install "${GDEBI}"
-if ! command -v brackets
+if ! command -v brackets > /dev/null 2>&1
 then
     if [[ $(getconf LONG_BIT) == "64" ]]
     then
