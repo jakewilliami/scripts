@@ -33,6 +33,8 @@ display_help() {
 }
 
 
+# Get public IP
+PUBLIC_IP=$(curl ipinfo.io/ip)
 # set wireless interfaces to save script time when needing to check
 HOSTNAME=$(hostname)
 if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
@@ -92,10 +94,14 @@ sniff_alternative() {
 
 nmap_function() {
 #    IP=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
-    IP=$(curl ipinfo.io/ip)
-    SUBNET=$(echo `ifconfig  | grep 'Mask:'| grep -v '127.0.0.1' | cut -d: -f4 | awk '{print $1}' | grep -o 255 | wc -l`*8 | bc)
-    #fping -a -g $IP/$SUBNET
-    nmap -sP $IP/$SUBNET
+    if [[ $OS == "debian" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Debian.${NORM}"
+    else
+        SUBNET=$(echo `ifconfig  | grep 'Mask:'| grep -v '127.0.0.1' | cut -d: -f4 | awk '{print $1}' | grep -o 255 | wc -l`*8 | bc)
+        #fping -a -g $IP/$SUBNET
+        nmap -sP $IP/$SUBNET
+    fi
 }
 
 
@@ -143,7 +149,7 @@ local_ip() {
 
 
 public_ip() {
-    curl ipinfo.io/ip
+    echo "${PUBLIC_IP}"
 }
 
 
