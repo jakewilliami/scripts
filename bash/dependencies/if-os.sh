@@ -52,7 +52,7 @@ TSHARK='tshark'
 PYTHON3='python3'
 PIP3='python3-pip'
 BREWCASK='cask'
-ATOM='atom' #https://aur.archlinux.org/packages/atom-editor-git/
+ATOM='atom' 
 
 
 case $OS in
@@ -62,6 +62,7 @@ case $OS in
     arch)
         LMSENSORS='i2c-tools'
         NETSTAT='vnstat'
+        ATOM='atom-editor-git' #https://aur.archlinux.org/packages/atom-editor-git/
         ;;
     debian)
         FD="fd-find" #command is fdfind
