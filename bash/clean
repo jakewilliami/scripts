@@ -11,7 +11,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
 is-command-then-install "${PERL_PACKAGE}"
-[[ $OS == "macos" ]] && is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+[[ $OS == "macos" ]] && \
+    is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
 
 # Help
 display_help() {

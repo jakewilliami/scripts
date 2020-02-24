@@ -49,6 +49,10 @@ ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
 NMAP='nmap'
 TSHARK='tshark'
+PYTHON3='python3'
+PIP3='python3-pip'
+BREWCASK='cask'
+ATOM='atom' #https://aur.archlinux.org/packages/atom-editor-git/
 
 
 case $OS in

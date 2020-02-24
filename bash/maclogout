@@ -8,10 +8,16 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # Help
 display_help() { #Displays help
-    help_start 'maclogout [option...]' 'The present script will log out of the current user.'
+    help_start 'maclogout [option...]' 'The present script will log out of the current user on a mac computer.'
     help_help '2'
     clean-exit
 }
+
+
+if [[ ! $KERNEL == "Darwin" ]]
+then
+    echo -e "${BYELLOW}This command is only works on macOS.${NORM}"
+fi
 
 
 # Options

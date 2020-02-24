@@ -6,8 +6,17 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
+[[ $KERNEL == "Darwin" ]] && \
+    is-library-then-install "${BREWCASK}"
+[[ $KERNEL == "Darwin" ]] && \  
+    is-app-then-install "${ATOM}"
+[[ $OS == "debian"  ]] && \
+    cd "${HOME}"/Downloads/ && \
+    wget https://atom.io/download/deb -O atom.deb && \
+    sudo dpkg -i atom.deb
+
 display_help() {
-    help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Atom.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.  Need to manually run `brew cask install atom`.'
+    help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Atom.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.'
     help_help '2'
     clean-exit
 }
