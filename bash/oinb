@@ -32,7 +32,8 @@ then
     then
         cd "${HOME}/Downloads/"
         wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
-        sudo dpkg -i Brackets.Release.*
+        sudo apt install ./Brackets.Release.*
+        #sudo dpkg -i Brackets.Release.*
         cd - > /dev/null
     else
         echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
