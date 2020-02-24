@@ -11,13 +11,14 @@ BASH_DIR="${HOME}/scripts/bash"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install python3
+is-library-then-install "${PYTHON3}"
+[[ $KERNEL == "Linux" ]] && \
+    is-library-then-install "${PIP3}"
 
 # Help
 display_help() {
     help_start 'mytex [option...]' 'The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
-    help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
     help_help '2'
     clean-return
 }

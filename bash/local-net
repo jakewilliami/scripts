@@ -8,8 +8,10 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
 is-command-then-install "${DHCPING}" 
-[[ $OS == "debian" ]] && is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
-[[ ! $OS == "debian" ]] && is-command-then-install "${SNIFF}" "${NMAP}"
+[[ $OS == "debian" ]] && \
+    is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
+[[ ! $OS == "debian" ]] && \
+    is-command-then-install "${SNIFF}" "${NMAP}"
 is-library-then-install "${DHCP}" "${ARPSCAN}"
 
 # Help
