@@ -9,10 +9,14 @@ aur_install() {
         DOWNLOADED_FILE="${URL##*/}"
         tar xvzf "${DOWNLOADED_FILE}"
         EXTRACTED_DIR="${DOWNLOADED_FILE%%.*}"
+        cd - > /dev/null
+        cd "${HOME}"/Downloads/
         cd "${EXTRACTED_DIR}"
         makepkg -sicCfL
-        cd ..
+        cd - > /dev/null
+        cd "${HOME}"/Downloads/
         rm "${DOWNLOADED_FILE}"
         rm -rf "${EXTRACTED_DIR}"
+        cd - > /dev/null
     fi
 }
