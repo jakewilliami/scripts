@@ -12,7 +12,7 @@ GIT_LOCATION="${HOME}/scripts/"
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get script dependencies
-is-command-then-install "${PYTHON3}"
+is-library-then-install "${PYTHON3}"
 [[ $KERNEL == "Linux" ]] && \
     is-library-then-install "${PIP3}"
 [[ $KERNEL == "Darwin" ]] && \

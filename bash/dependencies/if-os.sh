@@ -71,6 +71,7 @@ case $OS in
         INXI='inxi' #https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz
         DHCP='dhcpdump' #https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz
         BRACKETS='brackets' #https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz
+        PYTHON3='python'
         PIP3='python-pip'
         ;;
     debian)
