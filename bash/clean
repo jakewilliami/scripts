@@ -32,15 +32,30 @@ fi
 # Help
 display_help() {
     help_start '[sudo] clean [option...]' 'The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.'
-    help_commands '-t' '--trash' '2' 'Iteratively deletes everything in' 't' 'rash' '(shared and local).'
-    help_commands '-d' '--downloads' '1' 'Iteratively deletes everything in the' 'd' 'ownloads' 'folder'
-    help_commands '-b' '--brew' '2' 'Updates and then cleans up home' '\bb' 'rew' ''
-    help_commands '-r' '--ruby' '2' 'Updates and then cleans up' 'r' 'uby' 'gems.'
-    help_commands '-p' '--perl' '2' '[OPTION IN DEVELOPMENT] Updates and then cleans up' 'p' 'erl' 'CPAN packages.'
-    help_commands '-m' '--mas' '2' 'Updates your' 'm' 'acOS App Store (mas)' 'applications.'
     help_commands '-a' '--all' '2' 'Cleans using' 'a' 'll' 'aforementioned options.'
+    help_commands '-b' '--brew' '2' 'Updates and then cleans up home' '\bb' 'rew' ' \b'
+    help_commands '-d' '--downloads' '1' 'Iteratively deletes everything in the' 'd' 'ownloads' 'folder'
+    help_commands '-m' '--mas' '2' 'Updates your' 'm' 'acOS App Store (mas)' 'applications.'
+    help_commands '-o' '--old' '2' 'Cleans up' 'o' 'ld' 'packages that were installed automatically but are no longer needed.'
+    help_commands '-p' '--perl' '2' '[OPTION IN DEVELOPMENT] Updates and then cleans up' 'p' 'erl' 'CPAN packages.'
+    help_commands '-r' '--ruby' '2' 'Updates and then cleans up' 'r' 'uby' 'gems.'
+    help_commands '-t' '--trash' '2' 'Iteratively deletes everything in' 't' 'rash' '(shared and local).'
     help_help '2'
     clean-exit
+}
+
+
+remove_old() {
+    if [[ $OS == "debian" ]]
+    then
+        sudo apt-get autoremove
+    elif [[ $OS == "arch" ]]
+    then
+        sudo pacman -R $(pacman -Qtd)
+    elif [[ $KERNEL == "Darwin" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
 }
 
 
@@ -267,10 +282,13 @@ big_clean() {
 
 
 # Options
-while getopts ":-:tdhpbmra" OPTION; do
+while getopts ":-:tdhpbmrao" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        old)
+                            remove_old
+                            clean-exit ;;
                         all)
                             big_clean
                             clean-exit ;;
@@ -297,6 +315,9 @@ while getopts ":-:tdhpbmra" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+                o)
+                    remove_old
+                    clean-exit ;;
                 a)
                     big_clean
                     clean-exit ;;
