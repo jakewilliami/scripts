@@ -13,6 +13,15 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 is-command-then-install "${PERL_PACKAGE}"
 [[ $OS == "macos" ]] && \
     is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+if [[ $OS == "debian" ]]
+then
+    declare -a debian_ruby_array=()
+    debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+    for i in "${debian_ruby_array[@]}"
+    do
+        is-library-then-install "${i}" 
+    done
+fi
 if [[ $OS == "arch" ]]
 then
     aur_install "${RUBY_PACKAGE}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
