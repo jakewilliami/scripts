@@ -1,7 +1,7 @@
 #! /bin/bash
 
-URL="https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz"
 aur_install() {
+    URL="${2}"
     if ! $PACSEARCH | grep "${1}" > /dev/null 2>&1
     then
         cd "${HOME}"/Downloads/
