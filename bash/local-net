@@ -14,7 +14,7 @@ is-library-then-install "${DHCP}" "${ARPSCAN}"
 
 # Help
 display_help() {
-    help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).'
+    help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).  Also see the command `cstatus`.'
     help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
     help_commands '-A' '--alternate-sniff' '1' '\b' 'S' 'niff' '\bs using alternate method.  See also options `-s` and `-S`.'
     help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
@@ -28,6 +28,7 @@ display_help() {
     help_commands '-q' '--query-server' '1' '\b' 'Q' 'uery server' '\bs on the local network.'
     help_commands '-s' '--sniff' '2' '\b' 'S' 'niff' '\bs packages exchanged through the local network.'
     help_commands '-S' '--verbose-sniff' '1' '\b' 'V' 'erbosely sniff' '\bs packages exchanged through the local network.'
+    help_commands '-x' '--arp-poisoning' '1' '\b' 'DO NOT USE.' ' \b' 'Begins ARP-poisoning the local network.'
     help_help '2'
     clean-exit
 }
@@ -130,6 +131,27 @@ dhcp_function() {
 }
 
 
+arp_poisoning() {
+    if [[ $OS == "arch" ]]
+    then
+        while true; do
+        read -p "${BRED}Are you sure you want to begin ARP-Poisoning the local network? https://doubleoctopus.com/security-wiki/threats-and-tools/address-resolution-protocol-poisoning/${NORM}" yn
+        case $yn in
+            [Yy]*) 
+                    sudo ettercap -T -M arp:oneway /192.168.1.1//
+                    break   ;;
+            [Nn]*) 
+                    break  ;;
+            *)     
+                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+        esac
+    done
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Debian.${NORM}"
+    fi
+}
+
+
 local_ip() {
     if [[ $KERNEL == "Darwin" ]]
     then
@@ -171,10 +193,13 @@ minimal_arp() {
 
 
 # Options
-while getopts ":-:aMnphlHPsSgVmqA" OPTION; do
+while getopts ":-:aMnphlHPsSgVmqAx" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+                        arp-poisoning)
+                            arp_poisoning
+                            clean-exit ;;
                         malware)
                             rootkits
                             clean-exit ;;
@@ -257,6 +282,9 @@ while getopts ":-:aMnphlHPsSgVmqA" OPTION; do
                     clean-exit ;;
                 g)
                     geo_ip_public
+                    clean-exit ;;
+                x)
+                    arp_poisoning
                     clean-exit ;;
                 h)
                     display_help ;;

@@ -152,6 +152,7 @@ network_stats_alt() {
     if [[ $OS == "debian" ]]
     then
         sudo tcpstat
+        # sudo tcptrack -i eth0
     else
         echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
     fi
