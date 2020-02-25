@@ -49,7 +49,7 @@ ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
 NMAP='nmap'
 TSHARK='tshark'
-PYTHON3='python3' # Includes pip3 on macOS
+PYTHON3='python3'
 PIP3='python3-pip'
 BREWCASK='cask'
 ATOM='atom'
@@ -61,6 +61,7 @@ GDEBI='gdebi-core'
 case $OS in
     macos)
         ICU='icu4c'
+        PYTHON3='python' # Includes pip3 on macOS
         ;;
     arch)
         LMSENSORS='i2c-tools'
