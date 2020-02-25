@@ -179,10 +179,16 @@ done
 
 
 # Pretty git log
+if [[ -z "${1}" ]]
+then
+    LOGNUMBER="10"
+else
+    LOGNUMBER="${1}"
+fi
 git_log() { # checks to see if my username is one of the usernames, and if so, prints it in a kind of sky blue colour (so that others' commits are emphasised)
     git log --color --no-merges --pretty=format:\
 "%C(bold yellow)%h%Creset -%C(bold green)%d%Creset %s %C(bold red)(%cr)%Creset %C(bold blue)<%an>%Creset" \
---abbrev-commit -$LOGNUMBER | perl -pe \
+--abbrev-commit -${LOGNUMBER} | perl -pe \
     ' if (/<([^>]*)>/)
         {
         if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
@@ -191,6 +197,12 @@ git_log() { # checks to see if my username is one of the usernames, and if so, p
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
     } '
 }
+
+if [ $OPTIND -eq 1 ]
+then
+    git_log
+fi
+shift $((OPTIND-1))
 
 
 # Clean up
