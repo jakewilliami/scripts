@@ -25,3 +25,7 @@ perl/*.txt
 python/*.txt
 python/**/*.txt
 electron/**/node_modules/
+**/temp.d/*
+**/*.synctex.gz
+**/*.log
+**/*.aux
