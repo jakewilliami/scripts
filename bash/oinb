@@ -69,13 +69,13 @@ while getopts ":-:h" OPTION; do
     esac
 done
 
-for f in $@
+for f in "${@}"
 do
-    if [[ -f $f ]] # Checks to see if file exists in current working directory
+    if [[ -f "${f}" ]] # Checks to see if file exists in current working directory
     then
-        open -a "Brackets.app" $f
+        open -a "Brackets.app" "${f}"
     else
-        open -a "Brackets.app" ~/scripts/bash/$f
+        open -a "Brackets.app" ~/scripts/bash/"${f}"
     fi
 done
 
