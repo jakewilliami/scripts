@@ -2,21 +2,21 @@
 
 # Parse json colours to bash
 jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/colours/textcolours.json | \
-sed -e 's/=\([^" >][^ >]*\)/="\1"/g' >> \
-${BASH_DIR}/textcolours.txt && source ${BASH_DIR}/textcolours.txt
+sed -e 's/=\([^" >][^ >]*\)/="\1"/g' > \
+${BASH_DIR}/temp.d/textcolours && source ${BASH_DIR}/temp.d/textcolours
 
 
 # Clean up
 clean-exit() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${BASH_DIR}/textcolours.txt
+    [[ -f ${BASH_DIR}/temp.d/textcolours ]] && \
+    rm ${BASH_DIR}/temp.d/textcolours
     exit $?
 }
 
 
 clean-return() {
-    [[ -f ${BASH_DIR}/textcolours.txt ]] && \
-    rm ${HOME}/scripts/bash/textcolours.txt
+    [[ -f ${BASH_DIR}/temp.d/textcolours ]] && \
+    rm ${BASH_DIR}/temp.d/textcolours
 #    kill -INT $$
     return $?
 }
