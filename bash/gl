@@ -85,7 +85,7 @@ opt_c() { # Prints commit count
     fi
     NOW=$(date +%s)
     COMMIT_NUMBER_TODAY=$(git rev-list --count --since=$START_TODAY --before=$NOW HEAD)
-    REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+    REPO_NAME=$(basename $(git rev-parse --show-toplevel))
     BRANCH=$(git rev-parse --abbrev-ref HEAD)
     echo -e "\033[1;38;5;2mYou have made $COMMIT_NUMBER_TODAY commits to $REPO_NAME/$BRANCH today.\033[0;38m"
 }

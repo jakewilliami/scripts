@@ -56,6 +56,7 @@ ATOM='atom'
 BRACKETS='brackets'
 PDFGREP='pdfgrep'
 GDEBI='gdebi-core'
+GREP='grep'
 
 
 case $OS in
