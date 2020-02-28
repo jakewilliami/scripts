@@ -6,31 +6,37 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
+# get kernel-specific dependencies
+case $KERNEL in
+    Dawrin)
+        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+        gem_install "${GHLINGUIST}"
+        gem_install iStats
+        ;;
+    Linux)
+        is-command-then-install "${PYDF}" "${POWERSTAT}" "${DSTAT}"
+        is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
+        ;;
+esac
+# get os-specific dependencies
+case $OS in
+    debian)
+        is-command-then-install "${NETSTAT_ALT}" "${INXI}"
+        declare -a debian_ruby_array=()
+        debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+        for i in "${debian_ruby_array[@]}"
+        do
+            is-library-then-install "${i}" 
+        done
+        ;;
+    arch)
+        is-command-then-install "${HWINFO}"
+        aur_install "${INXI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz'
+        ;;
+esac
+# get dependencies regardless of kernel and os
 is-command-then-install "${NETSTAT}"
-[[ $OS == "macos" ]] && \
-    is-command-then-install "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-[[ $OS == "macos" ]] && \
-    gem_install iStats
-[[ ${KERNEL} == "Linux" ]] && \
-    is-command-then-install "${PYDF}" "${POWERSTAT}" "${DSTAT}"
-[[ ${KERNEL} == "Linux" ]] && \
-    is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
-if [[ $OS == "debian" ]]
-then
-    is-command-then-install "${NETSTAT_ALT}" "${INXI}"
-    declare -a debian_ruby_array=()
-    debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-    for i in "${debian_ruby_array[@]}"
-    do
-        is-library-then-install "${i}" 
-    done
-fi
-if [[ $OS == "arch" ]]
-then
-    is-command-then-install "${HWINFO}"
-    aur_install "${INXI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz'
-fi
+
 
 # Help
 display_help() {

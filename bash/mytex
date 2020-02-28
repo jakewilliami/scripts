@@ -10,11 +10,15 @@ BASH_DIR="${HOME}/scripts/bash"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
-[[ $KERNEL == "Darwin" ]] && \
-    is-library-then-install "${PYTHON3}"
-[[ $KERNEL == "Linux" ]] && \
-    is-library-then-install "${PYTHON3}" "${PIP3}"
+# get kernel-specific dependencies
+case $KERNEL in
+    Dawrin)
+        is-command-then-install "${PYTHON3}"
+        ;;
+    Linux)
+        is-library-then-install "${PYTHON3}" "${PIP3}"
+        ;;
+esac
 
 # Help
 display_help() {

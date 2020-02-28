@@ -15,6 +15,9 @@ then
     elif [[ -f /etc/debian_version ]]
     then
         OS="debian"
+    elif [[ -f /etc/redhat-release ]]
+    then
+        OS="fedora"
     fi
 else
     exit 1
@@ -23,10 +26,11 @@ fi
 
 GHI='ghi'
 FD='fd'
+NEOFETCH='neofetch'
 PERL_PACKAGE='perl'
 RUBY_PACKAGE='ruby'
-RUBY_VERSION='rbenv'
-RUBY_BUILD='ruby-build' #see, for example, bash/clean for example on debian ruby build packages
+RUBY_VERSION='rbenv' # only available on macos, or in the AUR
+RUBY_BUILD='ruby-build' #see, for example, bash/clean for example on debian ruby build packages.  Otherwise, only available on macos, or in the AUR
 HWINFO='hwinfo'
 INXI='inxi'
 PYDF='pydf'
@@ -48,7 +52,7 @@ DHCPING='dhcping'
 ROOTKITHUNT='rkhunter'
 ARPSCAN='arp-scan'
 NMAP='nmap'
-TSHARK='tshark'
+SNIFF_ALT='tshark'
 PYTHON3='python3'
 PIP3='python3-pip'
 BREWCASK='cask'
@@ -57,6 +61,7 @@ BRACKETS='brackets'
 PDFGREP='pdfgrep'
 GDEBI='gdebi-core'
 GREP='grep'
+COREUTILS='coreutils'
 
 
 case $OS in
@@ -77,9 +82,14 @@ case $OS in
         PIP3='python-pip'
         ;;
     debian)
-        FD="fd-find" #command is fdfind
+        FD='fd-find' #command is fdfind
         POWERSTAT='powerstat'
         ICU='icu-devtools'
         GHLINGUIST='ruby-github-linguist'
+        ;;
+    fedora)
+        FD='fd-find' #command is fdfind
+        LMSENSORS='lm_sensors'
+        SNIFF_ALT='tcpdump'
         ;;
 esac

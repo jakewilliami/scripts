@@ -6,17 +6,23 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
+# get os-specific dependencies
+case $OS in
+    macos)
+        is-command-then-install "${SNIFF}" "${NMAP}"
+         is-library-then-install "${DHCP}" "${ARPSCAN}"
+        ;;
+    debian)
+        is-command-then-install "${SNIFF_ALT}" "${ROOTKITHUNT}"
+        is-library-then-install "${DHCP}" "${ARPSCAN}"
+        ;;
+    arch)
+        aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
+        ;;
+esac
+# get dependencies regardless of kernel and os
 is-library-then-install "${DHCPING}" 
-[[ $OS == "debian" ]] && \
-    is-command-then-install "${TSHARK}" "${ROOTKITHUNT}"
-[[ $OS == "macos" || $OS == "arch" ]] && \
-    is-command-then-install "${SNIFF}" "${NMAP}"
-[[ $OS == "macos" || $OS == "debian" ]] && \
-    is-library-then-install "${DHCP}"
-is-library-then-install "${ARPSCAN}"
-[[ $OS == "arch" ]] && \
-    aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
+
 
 # Help
 display_help() {
@@ -40,8 +46,6 @@ display_help() {
 }
 
 
-# Get public IP
-PUBLIC_IP=$(curl -s ipinfo.io/ip)
 # set wireless interfaces to save script time when needing to check
 HOSTNAME=$(hostname)
 if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
@@ -93,6 +97,9 @@ sniff_alternative() {
     if [[ $OS == "debian" ]]
     then
         sudo tshark
+    elif [[ $OS == "fedora" ]]
+    then
+        sudo tcpdump
     else
         echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
     fi
@@ -177,6 +184,8 @@ local_ip() {
 
 
 public_ip() {
+    # Get public IP
+    PUBLIC_IP=$(curl -s ipinfo.io/ip)
     echo "${PUBLIC_IP}"
 }
 

@@ -9,25 +9,30 @@ DOWNLOADS_DIR="${HOME}/Downloads/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
+# get os-specific dependencies
+case $OS in
+    macos)
+        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+        ;;
+    debian)
+        is-command-then-install "${RUBY_PACKAGE}"
+        declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+        for i in "${debian_ruby_array[@]}"
+        do
+            is-library-then-install "${i}" 
+        done
+        ;;
+    arch)
+        is-command-then-install "${RUBY_PACKAGE}"
+        aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
+        aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
+        ;;
+    fedora)
+        is-command-then-install "${RUBY_PACKAGE}"
+        ;;
+esac
+# get dependencies regardless of kernel and os
 is-command-then-install "${PERL_PACKAGE}"
-[[ $OS == "macos" ]] && \
-    is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-if [[ $OS == "debian" ]]
-then
-    declare -a debian_ruby_array=()
-    debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-    for i in "${debian_ruby_array[@]}"
-    do
-        is-library-then-install "${i}" 
-    done
-fi
-if [[ $OS == "arch" ]]
-then
-    aur_install "${RUBY_PACKAGE}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
-    aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
-    aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
-fi
 
 # Help
 display_help() {
@@ -170,72 +175,69 @@ clean_all() {
 
 
 clean_brew() {  # https://superuser.com/a/975878/1100925
-    BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
-    echo -e "${ITYELLOW}Updating Homebrew Core${NORM}"
-    brew update # Update homebrew
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}About to update Homebrew Casks (applications)${NORM}"
-#    brew cask upgrade --greedy --dry-run
-    while true; do
-        read -p "${BWHITE}`brew cask upgrade --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
-        `echo`
-        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  ${BWHITE}Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
-        case $yn in
-            [Yy]*) 
-                    brew cask upgrade --greedy
-                    break   ;;
-            [Nn]*) 
-                    while true; do
-                        read -p "${BWHITE}`brew cask upgrade --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
-                        `echo`
-                        ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
-                        case $yn in
-                            [Yy]*) 
-                                    brew cask upgrade
-                                    break   ;;
-                            [Nn]*) 
-                                    break  ;;
-                            *)     
-                                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
-                            esac
-                        done
-                    break  ;;
-            *)     
-                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
-        esac
-    done
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Updating Homebrew Formulae${NORM}"
-    brew upgrade  # Update outdated formula
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Removing Outdated Formula${NORM}"
-    brew cleanup -s  # Remove outdated formula
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Running Homebrew Doctor for potential problems${NORM}"
-    brew cask doctor
-    brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
-    echo
-    echo -e "${BWHITE}${BIG_LINE}${NORM}"
-    echo -e "${ITYELLOW}Clearing Homebrew Cache${NORM}"
-    ls $(brew --cache)
-    rm -rf $(brew --cache)
-    #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
+    if [[ $OS == 'macos' ]]
+    then
+        BIG_LINE=$(seq -s= $(tput cols) | tr -d '[:digit:]')
+        echo -e "${ITYELLOW}Updating Homebrew Core${NORM}"
+        brew update # Update homebrew
+        echo
+        echo -e "${BWHITE}${BIG_LINE}${NORM}"
+        echo -e "${ITYELLOW}About to update Homebrew Casks (applications)${NORM}"
+    #    brew cask upgrade --greedy --dry-run
+        while true; do
+            read -p "${BWHITE}`brew cask upgrade --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+            `echo`
+            ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  ${BWHITE}Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
+            case $yn in
+                [Yy]*) 
+                        brew cask upgrade --greedy
+                        break   ;;
+                [Nn]*) 
+                        while true; do
+                            read -p "${BWHITE}`brew cask upgrade --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+                            `echo`
+                            ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
+                            case $yn in
+                                [Yy]*) 
+                                        brew cask upgrade
+                                        break   ;;
+                                [Nn]*) 
+                                        break  ;;
+                                *)     
+                                        echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+                                esac
+                            done
+                        break  ;;
+                *)     
+                        echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+            esac
+        done
+        echo
+        echo -e "${BWHITE}${BIG_LINE}${NORM}"
+        echo -e "${ITYELLOW}Updating Homebrew Formulae${NORM}"
+        brew upgrade  # Update outdated formula
+        echo
+        echo -e "${BWHITE}${BIG_LINE}${NORM}"
+        echo -e "${ITYELLOW}Removing Outdated Formula${NORM}"
+        brew cleanup -s  # Remove outdated formula
+        echo
+        echo -e "${BWHITE}${BIG_LINE}${NORM}"
+        echo -e "${ITYELLOW}Running Homebrew Doctor for potential problems${NORM}"
+        brew cask doctor
+        brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
+        echo
+        echo -e "${BWHITE}${BIG_LINE}${NORM}"
+        echo -e "${ITYELLOW}Clearing Homebrew Cache${NORM}"
+        ls $(brew --cache)
+        rm -rf $(brew --cache)
+        #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
+    fi
 }
 
 
 clean_gems() {
-    if [[ ${KERNEL} == "Darwin" ]]
-    then
-        sudo gem update  # https://stackoverflow.com/a/36150004/12069968
-        sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
-    elif [[ ${KERNEL} == "Linux" ]]
-    then
-        echo -e "${BYELLOW}This option is not currently supported for Linux.${NORM}"
-    fi
+    sudo gem update  # https://stackoverflow.com/a/36150004/12069968
+    sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
 }
 
 clean_perl() {
