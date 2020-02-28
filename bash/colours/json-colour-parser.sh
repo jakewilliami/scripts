@@ -1,6 +1,10 @@
 #! /bin/bash
 
 # Parse json colours to bash
+if [[ ! -d ${BASH_DIR}/temp.d/ ]]
+then
+    mkdir ${BASH_DIR}/temp.d/
+fi
 jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' ${BASH_DIR}/colours/textcolours.json | \
 sed -e 's/=\([^" >][^ >]*\)/="\1"/g' > \
 ${BASH_DIR}/temp.d/textcolours && source ${BASH_DIR}/temp.d/textcolours
