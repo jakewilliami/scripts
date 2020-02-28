@@ -6,45 +6,49 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
+# get kernel- and os-specific dependencies
+case $KERNEL in
+    Darwin)
+        is-library-then-install "${BREWCASK}"
+        is-app-then-install "${BRACKETS}"
+        ;;
+    Linux)
+        if ! command -v brackets > /dev/null 2>&1
+        then
+            case $(getconf LONG_BIT) in
+                64)
+                    case $OS in
+                        debian)
+                            cd "${HOME}/Downloads/"
+                            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
+                            sudo gdebi Brackets.Release.*
+                            echo -e "${BRED}There have been issues with the libcurl3 dependency.  Until this is fixed, follow the instructions here: \`https://github.com/adobe/brackets/issues/14171#issuecomment-389584065\`.${NORM}"
+                            cd - > /dev/null
+                            ;;
+                        arch)
+                            aur_install "${BRACKETS}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz'
+                            ;;
+                    esac
+                    ;;
+                32)
+                    case $OS in
+                        debian)
+                            cd "${HOME}/Downloads/"
+                            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
+                            sudo gdebi Brackets.Release.*
+                            cd - > /dev/null
+                            ;;
+                        *)
+                            echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}"
+                            clean-exit
+                            ;;
+                        esac
+                    ;;
+            esac
+        fi
+        ;;
+esac
 
-# Installing Atom for macOS
-[[ $KERNEL == "Darwin" ]] && \
-    is-library-then-install "${BREWCASK}"
-[[ $KERNEL == "Darwin" ]] && \
-    is-app-then-install "${ATOM}"
-# Installing Atom for Linux
-[[ $OS == "debian" ]] && \
-    is-library-then-install "${GDEBI}"
-if ! command -v brackets > /dev/null 2>&1
-then
-    if [[ $(getconf LONG_BIT) == "64" ]]
-    then
-        if [[ $OS == "debian"  ]]
-        then
-            cd "${HOME}/Downloads/"
-            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.64-bit.deb || echo -e "${ERROR_OCCURRED}"
-            sudo gdebi Brackets.Release.*
-            echo -e "${BRED}There have been issues with the libcurl3 dependency.  Until this is fixed, follow the instructions here: \`https://github.com/adobe/brackets/issues/14171#issuecomment-389584065\`.${NORM}"
-            cd - > /dev/null
-        fi
-        if [[ $OS == "arch" ]]
-        then
-            aur_install "${BRACKETS}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/brackets.tar.gz'
-        fi
-    elif [[ $(getconf LONG_BIT) == "32" ]]
-    then
-        if [[ $OS == "debian" ]]
-        then
-            cd "${HOME}/Downloads/"
-            wget https://github.com/adobe/brackets/releases/download/release-1.14.1/Brackets.Release.1.14.1.32-bit.deb || echo -e "${ERROR_OCCURRED}" 
-            sudo gdebi Brackets.Release.*
-            cd - > /dev/null
-        else
-            echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
-            clean-exit
-        fi
-    fi
-fi
 
 display_help() {
     help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Brackets.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.  Need to manually run `brew cask install brackets`.'

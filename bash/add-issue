@@ -6,8 +6,18 @@ BASH_DIR="${HOME}"/scripts/bash/
 # source required scripts
 source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
-# get script dependencies
-is-command-then-install "${GHI}"
+# get os-specific dependencies
+case $OS in
+    fedora)
+        is-library-then-install "${RUBY_PACKAGE}"
+        gem_install "${GHI}"
+        ;;
+    *)
+        is-command-then-install "${GHI}"
+        ;;
+esac
+
+
 
 # Help
 display_help() { #Displays help

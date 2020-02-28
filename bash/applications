@@ -6,7 +6,7 @@ BASH_DIR="${HOME}"/scripts/bash/
 # source required scripts
 source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
-# get script dependencies
+# get dependencies regardless of kernel and os
 is-command-then-install "${PERL_PACKAGE}"
 
 # Help

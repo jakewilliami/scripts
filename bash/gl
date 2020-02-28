@@ -7,30 +7,36 @@ BASH_DIR="${HOME}"/scripts/bash/
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
+# get os-specific dependencies
+case $OS in
+    macos)
+        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+        gem_install "${GHLINGUIST}"
+        ;;
+    debian)
+        is-command-then-install "${RUBY_PACKAGE}"
+        declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+        for i in "${debian_ruby_array[@]}"
+        do
+            is-library-then-install "${i}" 
+        done
+        is-library-then-install "${GHLINGUIST}"
+        ;;
+    arch)
+        is-command-then-install "${RUBY_PACKAGE}"
+        aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
+        aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
+        gem_install "${GHLINGUIST}"
+        ;;
+    fedora)
+        is-command-then-install "${RUBY_PACKAGE}"
+        gem_install "${GHLINGUIST}"
+        ;;
+esac
+# get dependencies regardless of kernel and os
 is-library-then-install "${ICU}"
-is-command-then-install "${PERL_PACKAGE}" "${GHI}" "${CMAKE}" "${PKG_CONFIG}" 
-if [[ $OS == "debian" ]]
-then
-    declare -a debian_ruby_array=()
-    debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-    for i in "${debian_ruby_array[@]}"
-    do
-        is-library-then-install "${i}" 
-    done
-fi
-[[ $OS == "macos" ]] && \
-    is-command-then-install "${RUBY_VERSION}" "${RUBY_PACKAGE}" "${RUBY_BUILD}" 
-[[ $OS == "macos" || $OS == "arch" ]] && \
-    gem_install "${GHLINGUIST}"
-[[ $OS == "debian" ]] && \
-    is-library-then-install "${GHLINGUIST}"
-if [[ $OS == "arch" ]]
-then
-    aur_install "${RUBY_PACKAGE}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
-    aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
-    aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
-fi
+is-command-then-install "${PERL_PACKAGE}" "${CMAKE}" "${PKG_CONFIG}" 
+gem_install "${GHI}"
 
 
 # Help

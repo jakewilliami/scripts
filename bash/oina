@@ -6,34 +6,39 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# Installing Atom for macOS
-[[ $KERNEL == "Darwin" ]] && \
-    is-library-then-install "${BREWCASK}"
-[[ $KERNEL == "Darwin" ]] && \
-    is-app-then-install "${ATOM}"
-# Installing Atom for Linux
-if ! command -v atom > /dev/null 2>&1
-then
-    if [[ $(getconf LONG_BIT) == "64" ]]
-    then
-        if [[ $OS == "debian"  ]]
+# get kernel- and os-specific dependencies
+case $KERNEL in
+    Darwin)
+        is-library-then-install "${BREWCASK}"
+        is-app-then-install "${ATOM}"
+        ;;
+    Linux)
+        if ! command -v atom > /dev/null 2>&1
         then
-            cd "${HOME}"/Downloads/
-            wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
-            sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list' && \
-            sudo apt-get update && \
-            sudo apt-get install atom || echo -e "${ERROR_OCCURRED}"
+            case $(getconf LONG_BIT) in
+                64)
+                    case $OS in
+                        debian)
+                            cd "${HOME}"/Downloads/
+                            wget -qO - https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+                            sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list' && \
+                            sudo apt-get update && \
+                            sudo apt-get install atom || echo -e "${ERROR_OCCURRED}"
+                            ;;
+                        arch)
+                            aur_install "${ATOM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
+                            ;;
+                    esac
+                    ;;
+                32)
+                    echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}"
+                    clean-exit
+                    ;;
+            esac
         fi
-        if [[ $OS == "arch" ]]
-        then
-            aur_install "${ATOM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/atom-editor-git.tar.gz'
-        fi
-    elif [[ $(getconf LONG_BIT) == "32" ]]
-    then
-        echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}" && \
-        clean-exit
-    fi
-fi
+        ;;
+esac
+
 
 display_help() {
     help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Atom.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.'
