@@ -27,7 +27,7 @@ case $OS in
         is-command-then-install "${NMAP}"
         ;;
     fedora)
-        is-command-then-install "${ROOTKITHUNT}" "${NMAP}"
+        is-command-then-install "${ROOTKITHUNT}" "${NMAP}" "${SNIFF_ALT}"
         ;;    
 esac
 # get dependencies regardless of kernel and os
@@ -38,11 +38,11 @@ is-library-then-install "${DHCPING}" "${ARPSCAN}"
 display_help() {
     help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).  Also see the command `cstatus`.'
     help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
+    help_commands '-A' '--minimal-arp' '1' 'Prints a' 'M' 'inimal arp' 'output.'
     help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
     help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
     help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
     help_commands '-m' '--malware' '2' 'Check the present computer for' 'm' 'alware' '(in the form of rootkits).'
-    help_commands '-M' '--minimal-arp' '1' 'Prints a' 'M' 'inimal arp' 'output.'
     help_commands '-n' '--nmap' '2' 'Prints' 'n' 'map' 'results.'
     help_commands '-p' '--ping' '2' 'Prints' 'p' 'ing' '\bed results.'
     help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
@@ -136,7 +136,7 @@ sniff_function() {
         sudo sniffglue -vv "${WIRELESS_DEVICE}"
     elif [[ $OS == 'debian' || $OS == 'fedora' ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported for Debian.${NORM}"
+        echo -e "${BYELLOW}This option is not currently supported for Debian or Fedora.  Check out the \`-S\` option though.${NORM}"
     fi
 }
 
@@ -229,7 +229,7 @@ minimal_arp() {
 
 
 # Options
-while getopts ":-:aMnphlHPsSgVmqvVx" OPTION; do
+while getopts ":-:aAnphlHPsSgVmqvVx" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -286,7 +286,7 @@ while getopts ":-:aMnphlHPsSgVmqvVx" OPTION; do
                 m)
                     rootkits
                     clean-exit ;;
-                M)
+                A)
                     minimal_arp
                     clean-exit ;;
                 q)
