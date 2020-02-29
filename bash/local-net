@@ -6,29 +6,38 @@ BASH_DIR="${HOME}/scripts/bash/"
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
+# get kernel-specific dependencies
+case $KERNEL in
+    Linux)
+        is-library-then-install "${NETSNIFF}" "${V_SNIFF_ALT}"
+        ;;
+esac
 # get os-specific dependencies
 case $OS in
     macos)
         is-command-then-install "${SNIFF}" "${NMAP}"
-         is-library-then-install "${DHCP}" "${ARPSCAN}"
+         is-library-then-install "${DHCP}" 
         ;;
     debian)
         is-command-then-install "${SNIFF_ALT}" "${ROOTKITHUNT}"
-        is-library-then-install "${DHCP}" "${ARPSCAN}"
+        is-library-then-install "${DHCP}"
         ;;
     arch)
         aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
+        is-command-then-install "${NMAP}"
         ;;
+    fedora)
+        is-command-then-install "${ROOTKITHUNT}" "${NMAP}"
+        ;;    
 esac
 # get dependencies regardless of kernel and os
-is-library-then-install "${DHCPING}" 
+is-library-then-install "${DHCPING}" "${ARPSCAN}"
 
 
 # Help
 display_help() {
     help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).  Also see the command `cstatus`.'
     help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
-    help_commands '-A' '--alternate-sniff' '1' '\b' 'S' 'niff' '\bs using alternate method.  See also options `-s` and `-S`.'
     help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
     help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
     help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
@@ -39,7 +48,9 @@ display_help() {
     help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
     help_commands '-q' '--query-server' '1' '\b' 'Q' 'uery server' '\bs on the local network.'
     help_commands '-s' '--sniff' '2' '\b' 'S' 'niff' '\bs packages exchanged through the local network.'
-    help_commands '-S' '--verbose-sniff' '1' '\b' 'V' 'erbosely sniff' '\bs packages exchanged through the local network.'
+    help_commands '-S' '--sniff-alt' '1' '\b' 'S' 'niff' '\bs using alternate method.'
+    help_commands '-v' '--verbose-sniff' '1' '\b' 'V' 'erbosely sniff' '\bs packages exchanged through the local network.'
+    help_commands '-V' '--verbose-sniff-alt' '1' '\b' 'V' 'erbosely sniff' '\bs using alternate methods'
     help_commands '-x' '--arp-poisoning' '1' '\b' 'DO NOT USE.' ' \b' 'Begins ARP-poisoning the local network.'
     help_help '2'
     clean-exit
@@ -57,6 +68,9 @@ then
 elif [[ ${HOSTNAME%%.*} == 'jake-mbp2017' ]]
 then
     WIRELESS_DEVICE='en0'
+elif [[ ${HOSTNAME%%.*} == 'jake-hp-pavilion2012' ]]
+then
+    WIRELESS_DEVICE='eno1' || 'wlo1'
 fi
 
 
@@ -72,7 +86,7 @@ ping_function() {
 rootkits() {
     if [[ $KERNEL == "Darwin" || $OS == "arch" ]]
     then
-        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch Linux.${NORM}"
     else
         sudo rkhunter --check
     fi
@@ -94,12 +108,9 @@ arp_function() {
 
 
 sniff_alternative() {
-    if [[ $OS == "debian" ]]
+    if [[ $OS == "debian" || $OS == "fedora" ]]
     then
         sudo tshark
-    elif [[ $OS == "fedora" ]]
-    then
-        sudo tcpdump
     else
         echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
     fi
@@ -120,11 +131,12 @@ nmap_function() {
 
 
 sniff_function() {
-    if [[ $OS == "debian" ]]
+    if [[ $OS == 'macos' || $OS == 'arch' ]]
+    then
+        sudo sniffglue -vv "${WIRELESS_DEVICE}"
+    elif [[ $OS == 'debian' || $OS == 'fedora' ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for Debian.${NORM}"
-    else
-        sudo sniffglue -vv "${WIRELESS_DEVICE}"
     fi
 }
 
@@ -135,6 +147,15 @@ verbose_sniff() {
         sudo netsniff-ng
     else
         sudo sniffglue -vvvv "${WIRELESS_DEVICE}"
+    fi
+}
+
+verbose_sniff_alt() {
+    if [[ ${KERNEL} == "Linux" ]]
+    then
+        sudo tcpdump
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
     fi
 }
 
@@ -208,7 +229,7 @@ minimal_arp() {
 
 
 # Options
-while getopts ":-:aMnphlHPsSgVmqAx" OPTION; do
+while getopts ":-:aMnphlHPsSgVmqvVx" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
@@ -239,7 +260,10 @@ while getopts ":-:aMnphlHPsSgVmqAx" OPTION; do
                         verbose-sniff)
                             verbose_sniff
                             clean-exit ;;
-                        alternate-sniff)
+                        verbose-sniff-alt)
+                            verbose_sniff_alt
+                            clean-exit ;;
+                        sniff-alt)
                             sniff_alternative
                             clean-exit ;;
                         Hostnames)
@@ -271,9 +295,6 @@ while getopts ":-:aMnphlHPsSgVmqAx" OPTION; do
                 a)
                     arp_function 
                     clean-exit ;;
-                A)
-                    sniff_alternative
-                    clean-exit ;;
                 n)
                     nmap_function
                     clean-exit ;;
@@ -284,7 +305,13 @@ while getopts ":-:aMnphlHPsSgVmqAx" OPTION; do
                     sniff_function
                     clean-exit ;;
                 S)
+                    sniff_alternative
+                    clean-exit ;;
+                v)
                     verbose_sniff
+                    clean-exit ;;
+                V)
+                    verbose_sniff_alt
                     clean-exit ;;
                 H)
                     dhcp_function

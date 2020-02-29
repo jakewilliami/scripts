@@ -47,6 +47,8 @@ PKG_CONFIG='pkg-config'
 ICU='icu'
 GHLINGUIST='github-linguist'
 SNIFF='sniffglue'
+NETSNIFF='netsniff-ng'
+V_SNIFF='tcpdump'
 DHCP='dhcpdump'
 DHCPING='dhcping'
 ROOTKITHUNT='rkhunter'
@@ -90,6 +92,6 @@ case $OS in
     fedora)
         FD='fd-find' #command is fdfind
         LMSENSORS='lm_sensors'
-        SNIFF_ALT='tcpdump'
+        SNIFF_ALT='wireshark-cli'
         ;;
 esac
