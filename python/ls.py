@@ -74,6 +74,8 @@ def print_dirs(root, dirs):
     for dir in dirs:
         if dir.startswith('.'):
             continue
+#        if dir == 'bash':
+#            continue
         print('\t{}{}{}/'.format(colour_dict["BBLUE"], dir, colour_dict["NORM"]))
         for root1, dirs1, files1 in walk_level(os.path.join(root, dir), 0):
             for dir1 in dirs1:
