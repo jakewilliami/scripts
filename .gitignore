@@ -1,6 +1,14 @@
+# Silly macOS stuff
 **/.DS_Store
-rust/rusty_ls/Cargo*
+
+# Rusty stuff
+**/Cargo*
+**/target/
+
+# Temporary files
 **/temp.d/*
+
+# LaTeX stuff
 **/*.synctex.gz
 **/*.log
 **/*.aux
