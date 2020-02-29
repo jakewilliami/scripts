@@ -1,0 +1,136 @@
+#! /bin/bash
+
+#IMPORTANT NOTE:
+#There exists an alias in ~/.bashrc that looks like
+#alias scripts="source mconfig"
+#mconfig stands for mojave configuration, not macOS configuration.  I don't know why, but that is what I have decided, despite the repo name.
+
+# define important directories
+BASH_DIR="${HOME}/scripts/bash"
+GIT_LOCATION="${HOME}/macOS-config/"
+
+# define email for bitwarden
+EMAIL="jakewilliami@icloud.com"
+
+# get scripts for dependencies if I don't have them
+if [[ ! -d "${HOME}"/scripts/ ]]
+then
+    cd "${HOME}" && \
+    git clone https://github.com/jakewilliami/scripts.git
+fi
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
+
+# get script dependencies
+[[ $KERNEL == "Darwin" ]] && \
+    is-library-then-install "${PYTHON3}" "${bitwarden-cli}" "${GREP}"
+[[ $KERNEL == "Linux" ]] && \
+    is-library-then-install "${PYTHON3}" "${PIP3}"
+    
+    
+#get repo information
+REPO_NAME=$(basename $(git rev-parse --show-toplevel))
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+
+# Help
+display_help() {
+    help_start 'curl-raw [option... | relative path to file...]' 'The present script will curl a raw file from the present repo'
+    help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
+    help_help '2'
+    clean-return
+}
+
+
+get_access_token() {
+    # set booleans
+    LOGIN=false
+    # set counters
+    LOGIN_TRY=0
+    # make new current session
+    bw --quiet logout
+    # exit script if password is incorrect thrice
+    while [[ ${LOGIN} == false ]]
+    do
+        if [[ "${LOGIN_TRY}" -lt "3" ]]
+        then
+            if [[ "${LOGIN_TRY}" -gt 0 ]]
+            then
+                echo -e "${BYELLOW}You have $((3-LOGIN_TRY)) attemps left.${NORM}"
+            else
+                echo -e "${BWHITE}Renewing BitWarden session and generating access token.  You have $((3-LOGIN_TRY)) attempts at logging into your BitWarden account.${NORM}"
+            fi
+            bw login --raw "${EMAIL}" > "${GIT_LOCATION}"/temp.d/bw-access-token && \
+                LOGIN=true
+            LOGIN_TRY=$((LOGIN_TRY+1))
+        else
+            echo -e "${BRED}Incorrect password.  Exiting.${NORM}"
+            clean-exit
+        fi
+    done
+    [[ ${LOGIN} == false ]] && \
+    # sync vault
+    echo -e "${BWHITE}Syncing vault.${NORM}"
+    bw --quiet sync
+    # generate gitlab bw id
+    echo -e "${BWHITE}Obtaining GitLab Access Token.${NORM}"
+    bw list items --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) --search GitLab | \
+        jq --raw-output '.[] | .id' > \
+        "${GIT_LOCATION}"/temp.d/gitlab-id
+    # get access token from gitlab
+    bw --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) get item $(cat "${GIT_LOCATION}"/temp.d/gitlab-id) | \
+        jq --raw-output '.fields | .[] | select(.name=="Personal Access Token for jakewilliami") | .value' > \
+        "${GIT_LOCATION}/temp.d/gl-access-token"
+    # get project id from gitlab
+    echo -e "${BWHITE}Obtaining ${REPO_NAME} project ID.${NORM}"
+    bw --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) get item $(cat "${GIT_LOCATION}"/temp.d/gitlab-id) | \
+        jq --raw-output '.fields | .[] | select(.name=="Project ID for '$REPO_NAME'") | .value' > \
+        "${GIT_LOCATION}/temp.d/gl-project-id"
+}
+
+
+INPUT_FILE="${1}"
+process_input() {
+    FULL_PATH=$(echo $(pwd)/${INPUT_FILE})
+    if [[ -f ${FULL_PATH} ]]
+    then
+        echo "file exists from here"
+    else
+        echo "file exists from script location"
+    fi
+    INPUT_FILE_PROCESSED=$(echo "${INPUT_FILE}" | sed 's:/:%2F:g')
+    echo "${INPUT_FILE_PROCESSED}"
+    echo "${FULL_PATH}"
+}
+
+
+curl_raw() {
+    get_access_token
+    curl --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}"/temp.d/gl-project-id)/repository/files/dotfiles%2F.bash%2F.bash_profile/raw?ref=${BRANCH}
+}
+
+
+process_input
+
+
+OPTIND=1
+while getopts ":-:h" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)  
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+# Clean up
+clean-exit
