@@ -9,7 +9,8 @@ BASH_DIR="${HOME}/scripts/bash/"
 GIT_LOCATION="${HOME}/scripts/"
 
 # source required scripts
-source ${BASH_DIR}/dependencies/source-dependencies.sh
+# shellcheck disable=SC1090
+source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
 # get kernel-specific dependencies
 case $KERNEL in
@@ -24,6 +25,7 @@ esac
 
 # Help
 display_help() {
+    # shellcheck disable=SC2016
     help_start 'scripts [option...]' 'The present script will take you to the scripts directory and by default list its content.  See `~/scripts/python/ls.py`.'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
     help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
@@ -34,7 +36,7 @@ display_help() {
 
 issues() {
     cd "${BASH_DIR}/.." || clean-return
-    if [[ -z "${@}" ]]
+    if [[ -z "${*}" ]]
     then
         ghi list -N "depricated pdfsearch"
     else
@@ -45,7 +47,7 @@ issues() {
 
 
 opt_l() {
-    cd "${BASH_DIR}/.."
+    cd "${BASH_DIR}/.." || clean-return
     clean-return
 }
 
