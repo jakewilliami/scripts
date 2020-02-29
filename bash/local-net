@@ -27,7 +27,8 @@ case $OS in
         is-command-then-install "${NMAP}"
         ;;
     fedora)
-        is-command-then-install "${ROOTKITHUNT}" "${NMAP}" "${SNIFF_ALT}"
+        is-command-then-install "${ROOTKITHUNT}" "${NMAP}"
+        is-library-then-install "${SNIFF_ALT}"
         ;;    
 esac
 # get dependencies regardless of kernel and os
