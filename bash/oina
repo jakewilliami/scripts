@@ -71,7 +71,7 @@ do
     then
         if [[ -f $f ]] # Checks to see if file exists in current working directory
         then
-            ${OPEN_COMMAND} $f
+            atom $f
         else
             atom "${HOME}/scripts/bash/${f}"
         fi
@@ -79,7 +79,7 @@ do
     then
         if [[ -f $f ]] # Checks to see if file exists in current working directory
         then
-            ${OPEN_COMMAND} $f
+            open -a Atom.app $f
         else
             open -a Atom.app "${HOME}/scripts/bash/${f}"
         fi
