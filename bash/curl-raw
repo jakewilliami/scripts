@@ -22,13 +22,34 @@ fi
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get script dependencies
-[[ $KERNEL == "Darwin" ]] && \
-    is-library-then-install "${PYTHON3}" "${bitwarden-cli}" "${GREP}"
-[[ $KERNEL == "Linux" ]] && \
-    is-library-then-install "${PYTHON3}" "${PIP3}"
-    
-    
+# get kernel-specific dependencies
+case $KERNEL in
+    Darwin)
+        is-library-then-install "${PYTHON3}" "${BITWARDEN_CLI}" "${GREP}"
+        ;;
+    Linux)
+        is-library-then-install "${PYTHON3}" "${PIP3}"
+        ;;
+esac
+# get os-specific dependencies
+case $OS in
+    debian)
+        is-library-then-install "${SNAP}"
+        sudo ln -s /var/lib/snapd/snap /snap
+        sudo snap install bw
+        ;;
+    arch)
+        aur_install "${BITWARDEN_CLI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/bitwarden-cli.tar.gz'
+        ;;
+    fedora)
+        is-library-then-install "${SNAP}"
+        sudo ln -s /var/lib/snapd/snap /snap
+        sudo snap install bw
+        ;;
+esac
+
+
+
 #get repo information
 REPO_NAME=$(basename $(git rev-parse --show-toplevel))
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
@@ -124,7 +145,7 @@ while getopts ":-:h" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
-                h)  
+                h)
                     display_help ;;
                 *)
                     opt_err ;;

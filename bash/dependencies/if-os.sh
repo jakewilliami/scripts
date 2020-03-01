@@ -64,6 +64,8 @@ PDFGREP='pdfgrep'
 GDEBI='gdebi-core'
 GREP='grep'
 COREUTILS='coreutils'
+BITWARDEN_CLI='bitwarden-cli'
+SNAP='snapd'
 
 
 case $OS in
