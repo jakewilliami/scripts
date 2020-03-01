@@ -18,6 +18,9 @@ is-command-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
+            return 0
+        else
+            return 1
         fi
     done
     #echo satisfying deps if needed
@@ -41,7 +44,7 @@ is-command-then-install() {
     else
         [[ $MISSING_DEPENDENCIES = true ]] && \
         echo -e "${ERROR_OCCURRED}"
-    fi 
+    fi
 }
 
 is-library-then-install() {
@@ -57,6 +60,9 @@ is-library-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
+            return 0
+        else
+            return 1
         fi
     done
     #echo satisfying deps if needed
@@ -79,7 +85,7 @@ is-library-then-install() {
         echo -e "${LIBS_SATISFIED}"
     else
         [[ $MISSING_DEPENDENCIES = true ]] && \
-        echo -e "${ERROR_OCCURRED}" 
+        echo -e "${ERROR_OCCURRED}"
     fi
 }
 
@@ -97,6 +103,9 @@ is-app-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
+            return 0
+        else
+            return 1
         fi
     done
     #echo satisfying deps if needed
@@ -119,6 +128,6 @@ is-app-then-install() {
         echo -e "${APPS_SATISFIED}"
     else
         [[ $MISSING_DEPENDENCIES = true ]] && \
-        echo -e "${ERROR_OCCURRED}" 
+        echo -e "${ERROR_OCCURRED}"
     fi
 }
