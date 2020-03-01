@@ -24,6 +24,7 @@ And on Arch:
 sudo pacman -S rust
 ```
 
+## Notes on use of Rust
 
 To create a new Rust project, you should run
 ```
