@@ -66,6 +66,7 @@ GREP='grep'
 COREUTILS='coreutils'
 BITWARDEN_CLI='bitwarden-cli'
 SNAP='snapd'
+NVM='nvm'
 
 
 case $OS in
