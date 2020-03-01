@@ -8,9 +8,15 @@ I have created a separate directory for [Rust](https://www.wikiwand.com/en/Rust_
 
 To create a new Rust project, you should run
 ```
-PROJNAME="<name of project>"
+PROJNAME="<name of project>" && \
 cd ~/scripts/rust && \
 cargo init --bin ${PROJNAME} && \
 cd ${PROJNAME}/ && \
 cargo run src/main.rs
+```
+If you need to download a Rust library, you must first clone it, and then
+```
+PROJNAME="<name of project>" && \
+cd ./${PROJNAME} && \
+cargo build
 ```
