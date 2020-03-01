@@ -34,16 +34,17 @@ esac
 # get os-specific dependencies
 case $OS in
     debian)
-        is-library-then-install "${SNAP}"
-        sudo ln -s /var/lib/snapd/snap /snap
+        is-library-then-install "${SNAP}" && \
+        sudo ln -s /var/lib/snapd/snap /snap && \
         sudo snap install bw
         ;;
     arch)
+        aur_install "${NVM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/nvm.tar.gz'
         aur_install "${BITWARDEN_CLI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/bitwarden-cli.tar.gz'
         ;;
     fedora)
-        is-library-then-install "${SNAP}"
-        sudo ln -s /var/lib/snapd/snap /snap
+        is-library-then-install "${SNAP}" && \
+        sudo ln -s /var/lib/snapd/snap /snap && \
         sudo snap install bw
         ;;
 esac
