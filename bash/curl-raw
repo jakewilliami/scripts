@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /usr/bin/env bash
 
 #IMPORTANT NOTE:
 #There exists an alias in ~/.bashrc that looks like
@@ -50,18 +50,33 @@ case $OS in
 esac
 
 
-
-#get repo information
-REPO_NAME=$(basename $(git rev-parse --show-toplevel))
-BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
-
 # Help
 display_help() {
-    help_start 'curl-raw [option... | relative path to file...]' 'The present script will curl a raw file from the present repo'
+    help_start 'curl-raw [option... | relative path to file...]' 'The present script will curl a raw file from my private macOS-config repo'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
     help_help '2'
     clean-return
+}
+
+
+#get repo information
+# if git rev-parse --is-inside-work-tree > /dev/null 2>&1
+# then
+#     REPO_NAME=$(basename $(git rev-parse --show-toplevel))
+#     BRANCH=$(git rev-parse --abbrev-ref HEAD)
+# else
+    # echo -e "${BYELLOW}Setting repository name to standard 'macOS-config' and branch to standard 'master'.${NORM}"
+    REPO_NAME='macOS-config'
+    BRANCH='master'
+# fi
+
+
+pTouch() {
+  for p do
+    _dir="$(dirname -- "$p")"
+    mkdir -p -- "$_dir" &&
+      touch -- "$p"
+  done
 }
 
 
@@ -81,7 +96,7 @@ get_access_token() {
             then
                 echo -e "${BYELLOW}You have $((3-LOGIN_TRY)) attemps left.${NORM}"
             else
-                echo -e "${BWHITE}Renewing BitWarden session and generating access token.  You have $((3-LOGIN_TRY)) attempts at logging into your BitWarden account.${NORM}"
+                echo -e "${BBLUE}===>${NORM}${BWHITE}\tRenewing BitWarden session and generating access token.  You have $((3-LOGIN_TRY)) attempts at logging into your BitWarden account.${NORM}"
             fi
             bw login --raw "${EMAIL}" > "${GIT_LOCATION}"/temp.d/bw-access-token && \
                 LOGIN=true
@@ -91,12 +106,11 @@ get_access_token() {
             clean-exit
         fi
     done
-    [[ ${LOGIN} == false ]] && \
     # sync vault
-    echo -e "${BWHITE}Syncing vault.${NORM}"
+    echo -e "${BBLUE}===>${NORM}${BWHITE}\tSyncing vault.${NORM}"
     bw --quiet sync
     # generate gitlab bw id
-    echo -e "${BWHITE}Obtaining GitLab Access Token.${NORM}"
+    echo -e "${BBLUE}===>${NORM}${BWHITE}\tObtaining GitLab Access Token and project ID.${NORM}"
     bw list items --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) --search GitLab | \
         jq --raw-output '.[] | .id' > \
         "${GIT_LOCATION}"/temp.d/gitlab-id
@@ -105,7 +119,6 @@ get_access_token() {
         jq --raw-output '.fields | .[] | select(.name=="Personal Access Token for jakewilliami") | .value' > \
         "${GIT_LOCATION}/temp.d/gl-access-token"
     # get project id from gitlab
-    echo -e "${BWHITE}Obtaining ${REPO_NAME} project ID.${NORM}"
     bw --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) get item $(cat "${GIT_LOCATION}"/temp.d/gitlab-id) | \
         jq --raw-output '.fields | .[] | select(.name=="Project ID for '$REPO_NAME'") | .value' > \
         "${GIT_LOCATION}/temp.d/gl-project-id"
@@ -115,25 +128,37 @@ get_access_token() {
 INPUT_FILE="${1}"
 process_input() {
     FULL_PATH=$(echo $(pwd)/${INPUT_FILE})
-    if [[ -f ${FULL_PATH} ]]
-    then
-        echo "file exists from here"
-    else
-        echo "file exists from script location"
-    fi
     INPUT_FILE_PROCESSED=$(echo "${INPUT_FILE}" | sed 's:/:%2F:g')
-    echo "${INPUT_FILE_PROCESSED}"
-    echo "${FULL_PATH}"
 }
 
 
 curl_raw() {
-    get_access_token
-    curl --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}"/temp.d/gl-project-id)/repository/files/dotfiles%2F.bash%2F.bash_profile/raw?ref=${BRANCH}
+    if [[ -e "${FULL_PATH}" ]]
+    then
+        echo -e "${BYELLOW}===>${NORM}${ITYELLOW}\tOverwriting ${FULL_PATH} from repository.  Press control + C within five seconds to cancel.${NORM}" && \
+        sleep 5
+    else
+        echo -e "${BBLUE}===>${NORM}${BWHITE}\tCreating ${FULL_PATH}.${NORM}" && \
+        pTouch "${FULL_PATH}"
+    fi
+    if [ ! $(curl --raw --silent --show-error --write-out '%{http_code}' --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" --url https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}/temp.d/gl-project-id")/repository/files/"${INPUT_FILE_PROCESSED}"/raw?ref="${BRANCH}" --output "${FULL_PATH}") == '404' ]
+    then
+        echo -e "${BGREEN}Output written to ${FULL_PATH}.${NORM}"
+    else
+        echo -e "${BRED}Could not find input file.  Removing file \`${FULL_PATH##*/}\` and any empty parents.${NORM}"
+        rm "${FULL_PATH}"
+        # clean up created file and empty parent directories
+        COUNT_SEP="${FULL_PATH//[^\/]}"
+        for countDir in $(seq 2 $((${#COUNT_SEP}+1)))
+        do
+            PARENT_DIR=$(echo ${FULL_PATH} | awk -v variable="${countDir}" -F/ '{ print $variable }')
+            if [ -z "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/")" ]
+            then
+                rm -d "${FULL_PATH%/${PARENT_DIR}*}/"
+            fi
+        done
+    fi
 }
-
-
-process_input
 
 
 OPTIND=1
@@ -152,6 +177,14 @@ while getopts ":-:h" OPTION; do
                     opt_err ;;
         esac
 done
+
+
+if [[ $OPTIND -eq 1 ]]
+then
+    get_access_token
+    process_input
+    curl_raw
+fi
 
 
 # Clean up
