@@ -25,25 +25,25 @@ display_help() {
     help_start 'mytex [option...]' 'The present script will take you to the my-tex directory (for my LaTeX macros) and by default list its content.'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
     help_help '2'
-    clean-return
+    clean-exit
 }
 
 
 issues() {
-    cd "${BASH_DIR}/.." || clean-return
+    cd "${BASH_DIR}/.." || clean-exit
     if [[ -z "${@}" ]]
     then
         ghi list -N "${@}"
     else
         ghi list -N "${@}"
     fi
-    clean-return
+    clean-exit
 }
 
 
 opt_l() {
     cd "${DIR}"
-    clean-return
+    clean-exit
 }
 
 
@@ -66,7 +66,7 @@ while getopts ":-:ilh" OPTION; do
                     issues "${@:2}" ;;
                 l)
                     opt_l ;;
-                h)  
+                h)
                     display_help ;;
                 *)
                     opt_err ;;
@@ -77,10 +77,10 @@ done
 # List
 if [[ -z $1 ]]
 then
-    cd "${DIR}" || clean-return
+    cd "${DIR}" || clean-exit
     python3 "${BASH_DIR}/../python/ls.py" "${DIR}"
 fi
 
 
 # Clean up
-clean-return
+clean-exit
