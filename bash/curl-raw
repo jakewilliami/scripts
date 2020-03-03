@@ -1,26 +1,30 @@
 #! /usr/bin/env bash
 
-#IMPORTANT NOTE:
-#There exists an alias in ~/.bashrc that looks like
-#alias scripts="source mconfig"
-#mconfig stands for mojave configuration, not macOS configuration.  I don't know why, but that is what I have decided, despite the repo name.
-
-# define important directories
+# define constants
 BASH_DIR="${HOME}/scripts/bash"
 GIT_LOCATION="${HOME}/macOS-config/"
-
-# define email for bitwarden
 EMAIL="jakewilliami@icloud.com"
+REPO_NAME='macOS-config'
+BRANCH='master'
 
-# get scripts for dependencies if I don't have them
-if [[ ! -d "${HOME}"/scripts/ ]]
+# define variables
+OUT_DIR="${3}"
+OPT_PASSED=false
+if [[ $1 =~ ^\-.+ ]] # checks to see if first argument begins with a minus (i.e., is an option) as we cannot assess $OPTIND before options are called
 then
-    cd "${HOME}" && \
-    git clone https://github.com/jakewilliami/scripts.git
+    OPT_PASSED=true
 fi
+if [[ $OPT_PASSED == true  ]]
+then
+    INPUT_FILE="${2}"
+else
+    INPUT_FILE="${1}"
+fi
+
 
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
+
 
 # get kernel-specific dependencies
 case $KERNEL in
@@ -52,23 +56,13 @@ esac
 
 # Help
 display_help() {
-    help_start 'curl-raw [option... | relative path to file...]' 'The present script will curl a raw file from my private macOS-config repo'
-    help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
+    help_start 'curl-raw [-ho] [relative path to file...] [output directory...]' 'The present script will curl a raw file from my private macOS-config repo'
+    help_commands '-o' '--output' '2' 'Pushes `curl`ed file into given' 'o' 'utput' 'directory.'
     help_help '2'
-    clean-return
+    help_examples 'Running `curl-raw dotfiles/.bash/.bashrc` from the macOS-config directory will update your `~/macOS-config/dotfiles/.bash/.bashrc` file.'
+    help_examples 'Running `curl-raw -o dotfiles/.bash/.bashrc path/to/output/dir/`'
+    clean-exit
 }
-
-
-#get repo information
-# if git rev-parse --is-inside-work-tree > /dev/null 2>&1
-# then
-#     REPO_NAME=$(basename $(git rev-parse --show-toplevel))
-#     BRANCH=$(git rev-parse --abbrev-ref HEAD)
-# else
-    # echo -e "${BYELLOW}Setting repository name to standard 'macOS-config' and branch to standard 'master'.${NORM}"
-    REPO_NAME='macOS-config'
-    BRANCH='master'
-# fi
 
 
 pTouch() {
@@ -125,14 +119,22 @@ get_access_token() {
 }
 
 
-INPUT_FILE="${1}"
+# turn file path into something gitlab will understand
 process_input() {
-    FULL_PATH=$(echo $(pwd)/${INPUT_FILE})
+    LONG_PATH=$(echo $(pwd)/${INPUT_FILE})
     INPUT_FILE_PROCESSED=$(echo "${INPUT_FILE}" | sed 's:/:%2F:g')
 }
 
 
+# curl the file if it exists from the specified gitlab repo
 curl_raw() {
+    # define a 'full path' variable either as their input if they didn't give an option, or as their output directory given an option
+    if [[ $OPT_PASSED == true ]]
+    then
+        FULL_PATH="${1}/${LONG_PATH##*/}"
+    else
+        FULL_PATH="${LONG_PATH}"
+    fi
     if [[ -e "${FULL_PATH}" ]]
     then
         echo -e "${BYELLOW}===>${NORM}${ITYELLOW}\tOverwriting ${FULL_PATH} from repository.  Press control + C within five seconds to cancel.${NORM}" && \
@@ -141,18 +143,18 @@ curl_raw() {
         echo -e "${BBLUE}===>${NORM}${BWHITE}\tCreating ${FULL_PATH}.${NORM}" && \
         pTouch "${FULL_PATH}"
     fi
-    if [ ! $(curl --raw --silent --show-error --write-out '%{http_code}' --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" --url https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}/temp.d/gl-project-id")/repository/files/"${INPUT_FILE_PROCESSED}"/raw?ref="${BRANCH}" --output "${FULL_PATH}") == '404' ]
+    if [ ! $(curl --raw --silent --show-error --write-out '%{http_code}' --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" --url https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}/temp.d/gl-project-id")/repository/files/"${INPUT_FILE_PROCESSED}"/raw?ref="${BRANCH}" --output "${FULL_PATH}") == '404' ] # takes first arg as output
     then
         echo -e "${BGREEN}Output written to ${FULL_PATH}.${NORM}"
     else
         echo -e "${BRED}Could not find input file.  Removing file \`${FULL_PATH##*/}\` and any empty parents.${NORM}"
-        rm "${FULL_PATH}"
+        rm "${FULL_PATH}" > /dev/null 2>&1
         # clean up created file and empty parent directories
         COUNT_SEP="${FULL_PATH//[^\/]}"
         for countDir in $(seq 2 $((${#COUNT_SEP}+1)))
         do
             PARENT_DIR=$(echo ${FULL_PATH} | awk -v variable="${countDir}" -F/ '{ print $variable }')
-            if [ -z "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/")" ]
+            if ls -A "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1
             then
                 rm -d "${FULL_PATH%/${PARENT_DIR}*}/"
             fi
@@ -161,30 +163,51 @@ curl_raw() {
 }
 
 
-OPTIND=1
-while getopts ":-:h" OPTION; do
+output_function() {
+    if ! ls "${OUT_DIR}" > /dev/null 2>&1
+    then
+        mkdir -p "${OUT_DIR}"
+    fi
+    if [ ! -d "${OUT_DIR}" ]
+    then
+        echo -e "${BRED}Given output is not a directory.  Exiting.${NORM}"
+    else
+        get_access_token
+        process_input
+        curl_raw "${OUT_DIR}"
+    fi
+}
+
+
+while getopts ":-:oh" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
                         help)
                             display_help ;;
+                        output)
+                             output_function ;;
                         *)
                             opt_err ;;
                     esac ;;
                 h)
                     display_help ;;
+                o)
+                    output_function ;;
                 *)
                     opt_err ;;
         esac
 done
 
 
+# if no options passed, curl file into appropriate directory
 if [[ $OPTIND -eq 1 ]]
 then
     get_access_token
     process_input
-    curl_raw
+    curl_raw "${FULL_PATH}"
 fi
+shift $((OPTIND-1))
 
 
 # Clean up
