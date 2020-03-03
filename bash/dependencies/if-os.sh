@@ -67,6 +67,8 @@ COREUTILS='coreutils'
 BITWARDEN_CLI='bitwarden-cli'
 SNAP='snapd'
 NVM='nvm'
+FDUPES="fdupes"
+PZIP="p7zip"
 
 
 case $OS in
