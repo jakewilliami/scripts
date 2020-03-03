@@ -15,6 +15,7 @@ While I am beginning to look into different sorts of programming, I want to have
 - [Executing Commands](#executing-commands)
 - [In Case of Moving Files Around](#in-case-of-moving-files-around)
 - [In Case of Finding and Replacing Text Within Files](#in-case-of-finding-and-replacing-text-within-files)
+- [A Note on Sourcing Scripts Which Change Directory](#a-note-on-sourcing-scripts-which-change-directory)
 
 ---
 
@@ -59,3 +60,11 @@ It should be noted that you must escape any special characters with a `\`.  For 
 ```
 perl -pi -e 's/if \[\[ \$USER = \"jakeireland\" ]]/if \[\[ \$\(hostname) == \"jake\-mbp2017\.local\" ]] && \[\[ \$\(whoami) == \"jakeireland\" ]]/g' bash/*
 ```
+
+## A Note on Sourcing Scripts Which Change Directory
+
+On this day, 3rd March 2020, I no longer need messy `return` statements for sourcing scripts.  Rather than putting `return` rather than `exit` in my bash scripts (which, within the scripts, change the directory), and add in my `.bashrc` an `alias` to source them, I did this (for example, for the command which takes me to this git directory):
+```
+alias scripts="cd ${HOME}/scripts/; scripts $@"
+```
+I've felt dirty for the longest time because of this session madness.  Eureka.
