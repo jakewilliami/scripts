@@ -9,9 +9,9 @@ gem_install() {
         do
             if [[ $OS == "arch" ]]
             then
-                gem install "${i}" 
+                gem install "${i}"
             else
-                sudo gem install "${i}" 
+                sudo gem install "${i}"
             fi
         done && \
         echo -e "${BGREEN}Dependencies successfully installed.${NORM}"
