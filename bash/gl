@@ -10,7 +10,7 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # get os-specific dependencies
 case $OS in
     macos)
-        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+        is-library-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
         gem_install "${GHLINGUIST}"
         ;;
     debian)
@@ -18,7 +18,7 @@ case $OS in
         declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
         for i in "${debian_ruby_array[@]}"
         do
-            is-library-then-install "${i}" 
+            is-library-then-install "${i}"
         done
         is-library-then-install "${GHLINGUIST}"
         ;;
@@ -35,7 +35,7 @@ case $OS in
 esac
 # get dependencies regardless of kernel and os
 is-library-then-install "${ICU}"
-is-command-then-install "${PERL_PACKAGE}" "${CMAKE}" "${PKG_CONFIG}" 
+is-command-then-install "${PERL_PACKAGE}" "${CMAKE}" "${PKG_CONFIG}"
 gem_install "${GHI}"
 
 
@@ -46,7 +46,7 @@ display_help() { #Displays help
     help_commands '-s' '--status' '2' 'Prints current git' 's' 'tatus' 'minimally.'
     help_commands '-i' '--issues' '2' 'Prints currently open' 'i' 'ssues' 'in present repository.'
     help_commands '-b' '--branch' '2' 'Lists local' 'b' 'ranches' 'of current repository; highlights current branch.'
-    help_commands '-t' '--tags | --labels' '1' 'Lists this repository\x27s issues\x27' 't' 'ags/labels' '.' 
+    help_commands '-t' '--tags | --labels' '1' 'Lists this repository\x27s issues\x27' 't' 'ags/labels' '.'
     help_commands '-l' '--languages' '1' 'Prints' 'l' 'anguage' 'breakdown in present repository.'
     help_commands '-f' '--filtered-issues' '1' 'Prints' 'f' 'iltered issues' 'by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.'
     help_commands '-e' '--exclude-issues' '1' 'Prints issues' 'e' 'xcluding issues' 'that are tagged with "depricated" and "pdfsearch" unless stated otherwise.'
@@ -57,7 +57,7 @@ display_help() { #Displays help
 
 
 # Languages as string
-languages() {  # languages | after `%` and white space | in uppercase | with spaces as underscores 
+languages() {  # languages | after `%` and white space | in uppercase | with spaces as underscores
     github-linguist | \
     sed 's/.*%[[:blank:]]*//' | \
     awk '{print toupper($0)}' | \
@@ -137,17 +137,17 @@ do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
-                        status)  
+                        status)
                             opt_s ;;
-                        commit-count)  
+                        commit-count)
                             opt_c ;;
-                        branch)  
+                        branch)
                             opt_b ;;
-                        tags) 
+                        tags)
                             opt_t ;;
                         labels)
                             opt_t ;;
-                        issues)  
+                        issues)
                             opt_i ;;
                         exclude-issues)
                             opt_filtered_not_i "${@:2}" ;;
@@ -164,21 +164,21 @@ do
                     opt_s ;;
                 c)
                     opt_c ;;
-                b)  
+                b)
                     opt_b ;;
-                t)  
+                t)
                     opt_t ;;
                 i)
                     opt_i ;;
-                e) 
+                e)
                     opt_filtered_not_i "${@:2}" ;;
-                f) 
+                f)
                     opt_filtered_i "${@:2}" ;;
                 l)
                     print_language_breakdown ;;
-                h)  
+                h)
                     display_help ;;
-                *)  
+                *)
                     opt_err ;;
         esac
 done
@@ -199,8 +199,8 @@ git_log() { # checks to see if my username is one of the usernames, and if so, p
         {
         if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
             { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
-        else 
-            { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; } 
+        else
+            { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; }
     } '
 }
 

@@ -18,9 +18,6 @@ is-command-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
-            return 0
-        else
-            return 1
         fi
     done
     #echo satisfying deps if needed
@@ -29,7 +26,7 @@ is-command-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        if [[ $MISSING_DEPENDENCIES = true ]]
+        if [[ $MISSING_DEPENDENCIES == true ]]
         then
             brew_install "${i}" && \
             DEPS_DOWNLOADED=true && \
@@ -37,12 +34,12 @@ is-command-then-install() {
         fi
     done
     #echo deps satisfied if they are
-    if [[ $DEPS_DOWNLOADED = true  ]]
+    if [[ $DEPS_DOWNLOADED == true  ]]
     then
         [[ $COUNTER_MISSING == $COUNTER_DOWNLOADED ]] && \
         echo -e "${DEPS_SATISFIED}"
     else
-        [[ $MISSING_DEPENDENCIES = true ]] && \
+        [[ $MISSING_DEPENDENCIES == true ]] && \
         echo -e "${ERROR_OCCURRED}"
     fi
 }
@@ -60,18 +57,15 @@ is-library-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
-            return 0
-        else
-            return 1
         fi
     done
     #echo satisfying deps if needed
-    $MISSING_DEPENDENCIES && \
+    $MISSING_DEPENDENCIES
     echo -e "${SATISFYING_LIBS}"
     #install deps if command is not found
     for i in "${@}"
     do
-        if [[ $MISSING_DEPENDENCIES = true ]]
+        if [[ $MISSING_DEPENDENCIES == true ]]
         then
             lib_install "${i}" && \
             DEPS_DOWNLOADED=true && \
@@ -79,12 +73,12 @@ is-library-then-install() {
         fi
     done
     #echo libs satisfied if needed
-    if [[ $DEPS_DOWNLOADED = true ]]
+    if [[ $DEPS_DOWNLOADED == true ]]
     then
         [[ $COUNTER_MISSING == $COUNTER_DOWNLOADED ]] && \
         echo -e "${LIBS_SATISFIED}"
     else
-        [[ $MISSING_DEPENDENCIES = true ]] && \
+        [[ $MISSING_DEPENDENCIES == true ]] && \
         echo -e "${ERROR_OCCURRED}"
     fi
 }
@@ -103,9 +97,6 @@ is-app-then-install() {
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
-            return 0
-        else
-            return 1
         fi
     done
     #echo satisfying deps if needed
@@ -114,7 +105,7 @@ is-app-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        if [[ $MISSING_DEPENDENCIES = true ]]
+        if [[ $MISSING_DEPENDENCIES == true ]]
         then
             app_install "${i}" && \
             DEPS_DOWNLOADED=true && \
@@ -122,12 +113,12 @@ is-app-then-install() {
         fi
     done
     #echo libs satisfied if needed
-    if [[ $DEPS_DOWNLOADED = true ]]
+    if [[ $DEPS_DOWNLOADED == true ]]
     then
         [[ $COUNTER_MISSING == $COUNTER_DOWNLOADED ]] && \
         echo -e "${APPS_SATISFIED}"
     else
-        [[ $MISSING_DEPENDENCIES = true ]] && \
+        [[ $MISSING_DEPENDENCIES == true ]] && \
         echo -e "${ERROR_OCCURRED}"
     fi
 }

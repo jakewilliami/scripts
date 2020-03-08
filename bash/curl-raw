@@ -35,6 +35,7 @@ case $KERNEL in
         is-library-then-install "${PYTHON3}" "${PIP3}"
         ;;
 esac
+
 # get os-specific dependencies
 case $OS in
     debian)
@@ -154,9 +155,9 @@ curl_raw() {
         for countDir in $(seq 2 $((${#COUNT_SEP}+1)))
         do
             PARENT_DIR=$(echo ${FULL_PATH} | awk -v variable="${countDir}" -F/ '{ print $variable }')
-            if ls -A "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1
+            if [ -z "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1)" ]
             then
-                rm -d "${FULL_PATH%/${PARENT_DIR}*}/"
+                rm -d "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1
             fi
         done
     fi
