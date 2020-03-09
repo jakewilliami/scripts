@@ -51,7 +51,7 @@ app_install() {
     PACINSTALL=false
     for i in "${@}"; #previously @:2
     do
-        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1
+        if ! $PACSEARCH | grep "^${i}$" > /dev/null 2>&1
         then
             echo -e "${ITWHITE}Installing ${1}${NORM}"
             $PACAPP "${i}" && PACINSTALL=true
