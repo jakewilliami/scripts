@@ -88,7 +88,13 @@ is-library-then-install() {
 
 is-app-then-install() {
     # make temporary libraries list
-    $PACSEARCH > /tmp/liblist
+    if [[ $KERNEL == 'Darwin' ]]
+    then
+        $PACAPPSEARCH > /tmp/liblist
+    elif [[ $KERNEL == 'Linux' ]]
+    then
+        $PACSEARCH > /tmp/liblist
+    fi
     #boolean for checking if we need to install commands
     MISSING_DEPENDENCIES=false
     DEPS_DOWNLOADED=false
