@@ -7,6 +7,7 @@ EMAIL="jakewilliami@icloud.com"
 REPO_NAME='macOS-config'
 BRANCH='master'
 
+
 # define variables
 OUT_DIR="${3}"
 OPT_PASSED=false
@@ -44,7 +45,6 @@ case $OS in
         sudo snap install bw
         ;;
     arch)
-        echo hi
         aur_install "${NVM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/nvm.tar.gz'
         aur_install "${BITWARDEN_CLI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/bitwarden-cli.tar.gz'
         ;;
@@ -94,7 +94,7 @@ get_access_token() {
             else
                 echo -e "${BBLUE}===>${NORM}${BWHITE}\tRenewing BitWarden session and generating access token.  You have $((3-LOGIN_TRY)) attempts at logging into your BitWarden account.${NORM}"
             fi
-            bw login --raw "${EMAIL}" > "${GIT_LOCATION}"/temp.d/bw-access-token && \
+            bw login --raw "${EMAIL}" > /tmp/bw-access-token && \
                 LOGIN=true
             LOGIN_TRY=$((LOGIN_TRY+1))
         else
@@ -107,17 +107,17 @@ get_access_token() {
     bw --quiet sync
     # generate gitlab bw id
     echo -e "${BBLUE}===>${NORM}${BWHITE}\tObtaining GitLab Access Token and project ID.${NORM}"
-    bw list items --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) --search GitLab | \
+    bw list items --session $(cat /tmp/bw-access-token) --search GitLab | \
         jq --raw-output '.[] | .id' > \
-        "${GIT_LOCATION}"/temp.d/gitlab-id
+        /tmp/gitlab-id
     # get access token from gitlab
-    bw --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) get item $(cat "${GIT_LOCATION}"/temp.d/gitlab-id) | \
+    bw --session $(cat /tmp/bw-access-token) get item $(cat /tmp/gitlab-id) | \
         jq --raw-output '.fields | .[] | select(.name=="Personal Access Token for jakewilliami") | .value' > \
-        "${GIT_LOCATION}/temp.d/gl-access-token"
+        "/tmp/gl-access-token"
     # get project id from gitlab
-    bw --session $(cat "${GIT_LOCATION}/"temp.d/bw-access-token) get item $(cat "${GIT_LOCATION}"/temp.d/gitlab-id) | \
+    bw --session $(cat /tmp/bw-access-token) get item $(cat /tmp/gitlab-id) | \
         jq --raw-output '.fields | .[] | select(.name=="Project ID for '$REPO_NAME'") | .value' > \
-        "${GIT_LOCATION}/temp.d/gl-project-id"
+        "/tmp/gl-project-id"
 }
 
 
@@ -145,7 +145,7 @@ curl_raw() {
         echo -e "${BBLUE}===>${NORM}${BWHITE}\tCreating ${FULL_PATH}.${NORM}" && \
         pTouch "${FULL_PATH}"
     fi
-    if [ ! $(curl --raw --silent --show-error --write-out '%{http_code}' --header "PRIVATE-TOKEN: $(cat "${GIT_LOCATION}/temp.d/gl-access-token")" --url https://gitlab.com/api/v4/projects/$(cat "${GIT_LOCATION}/temp.d/gl-project-id")/repository/files/"${INPUT_FILE_PROCESSED}"/raw?ref="${BRANCH}" --output "${FULL_PATH}") == '404' ] # takes first arg as output
+    if [ ! $(curl --raw --silent --show-error --write-out '%{http_code}' --header "PRIVATE-TOKEN: $(cat "/tmp/gl-access-token")" --url https://gitlab.com/api/v4/projects/$(cat "/tmp/gl-project-id")/repository/files/"${INPUT_FILE_PROCESSED}"/raw?ref="${BRANCH}" --output "${FULL_PATH}") == '404' ] # takes first arg as output
     then
         echo -e "${BGREEN}Output written to ${FULL_PATH}.${NORM}"
     else
