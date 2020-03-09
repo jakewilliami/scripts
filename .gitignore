@@ -4,6 +4,7 @@
 # Rusty stuff
 **/Cargo*
 **/target/
+**/*.rs.bk
 
 # Temporary files
 **/temp.d/*
