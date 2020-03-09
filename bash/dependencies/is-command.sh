@@ -53,26 +53,26 @@ is-library-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! $PACSEARCH | grep "${i}" > /dev/null 2>&1 # if can't find $i installed then we have missing
+        if ! $PACSEARCH | grep "^${i}$" > /dev/null 2>&1 # if can't find $i installed then we have missing
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
         fi
     done
     #echo satisfying deps if needed
-    $MISSING_DEPENDENCIES
+    $MISSING_DEPENDENCIES && \
     echo -e "${SATISFYING_LIBS}"
     #install deps if command is not found
     for i in "${@}"
     do
-        if [[ $MISSING_DEPENDENCIES == true ]]
+        if ! $PACSEARCH | grep "^${i}$" > /dev/null 2>&1
         then
             lib_install "${i}" && \
             DEPS_DOWNLOADED=true && \
             COUNTER_DOWNLOADED=$((COUNTER_DOWNLOADED+1))
         fi
     done
-    #echo libs satisfied if needed
+    #echo libs satisfied if they have been
     if [[ $DEPS_DOWNLOADED == true ]]
     then
         [[ $COUNTER_MISSING == $COUNTER_DOWNLOADED ]] && \
