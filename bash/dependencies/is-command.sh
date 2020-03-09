@@ -45,7 +45,9 @@ is-command-then-install() {
 }
 
 is-library-then-install() {
-    #boolean for checking if we need to install commands
+    # make temporary libraries list
+    $PACSEARCH > /tmp/liblist
+    # boolean for checking if we need to install commands
     MISSING_DEPENDENCIES=false
     DEPS_DOWNLOADED=false
     COUNTER_MISSING=0
@@ -53,7 +55,7 @@ is-library-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! $PACSEARCH | grep "^${i}$" > /dev/null 2>&1 # if can't find $i installed then we have missing
+        if ! grep "^${i}$" /tmp/liblist > /dev/null 2>&1 # if can't find $i installed then we have missing
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
@@ -65,7 +67,7 @@ is-library-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        if ! $PACSEARCH | grep "^${i}$" > /dev/null 2>&1
+        if ! grep "^${i}$" /tmp/liblist > /dev/null 2>&1
         then
             lib_install "${i}" && \
             DEPS_DOWNLOADED=true && \
@@ -85,6 +87,8 @@ is-library-then-install() {
 
 
 is-app-then-install() {
+    # make temporary libraries list
+    $PACSEARCH > /tmp/liblist
     #boolean for checking if we need to install commands
     MISSING_DEPENDENCIES=false
     DEPS_DOWNLOADED=false
@@ -93,7 +97,7 @@ is-app-then-install() {
     #echo satifying deps if needed
     for i in "${@}"
     do
-        if ! $PACAPPSEARCH | grep "^${i}$" > /dev/null 2>&1 # if can't find $i installed then we have missing
+        if ! grep "^${i}$" /tmp/liblist > /dev/null 2>&1 # if can't find $i installed then we have missing
         then
             MISSING_DEPENDENCIES=true
             COUNTER_MISSING=$((COUNTER_MISSING+1))
@@ -105,7 +109,7 @@ is-app-then-install() {
     #install deps if command is not found
     for i in "${@}"
     do
-        if [[ $MISSING_DEPENDENCIES == true ]]
+        if ! grep "^${i}$" /tmp/liblist > /dev/null 2>&1
         then
             app_install "${i}" && \
             DEPS_DOWNLOADED=true && \
