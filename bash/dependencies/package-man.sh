@@ -17,7 +17,7 @@ else
     
     declare -A osSearch;
     osSearch[/etc/redhat-release]='dnf list installed'
-    osSearch[/etc/arch-release]='pacman -Q'
+    osSearch[/etc/arch-release]='pacman -Qq'
     osSearch[/etc/gentoo-release]="cd /var/db/pkg/ && ls -d */*| sed 's/\/$//'"
     osSearch[/etc/SuSE-release]='rpm -qa'
     osSearch[/etc/debian_version]='dpkg -l' # previously `apt list --installed`.  Can use `sudo apt-cache search`.

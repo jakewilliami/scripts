@@ -44,6 +44,7 @@ case $OS in
         sudo snap install bw
         ;;
     arch)
+        echo hi
         aur_install "${NVM}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/nvm.tar.gz'
         aur_install "${BITWARDEN_CLI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/bitwarden-cli.tar.gz'
         ;;
