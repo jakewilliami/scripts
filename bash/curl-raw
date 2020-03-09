@@ -7,6 +7,14 @@ EMAIL="jakewilliami@icloud.com"
 REPO_NAME='macOS-config'
 BRANCH='master'
 
+# ensure not running in root
+if [[ ! "$(pwd)" =~ ^${HOME}.*$ ]]
+then
+    echo -e "\u001b[1;31mIt is not advised you run this anywhere in your root directory, in case you change important configurations.  Exiting.\u001b[0;38m"
+    exit $!
+fi
+    
+
 
 # define variables
 OUT_DIR="${3}"
@@ -150,15 +158,16 @@ curl_raw() {
         echo -e "${BGREEN}Output written to ${FULL_PATH}.${NORM}"
     else
         echo -e "${BRED}Could not find input file.  Removing file \`${FULL_PATH##*/}\` and any empty parents.${NORM}"
-        rm "${FULL_PATH}" > /dev/null 2>&1
+        rm "${FULL_PATH}"
         # clean up created file and empty parent directories
         COUNT_SEP="${FULL_PATH//[^\/]}"
-        for countDir in $(seq 2 $((${#COUNT_SEP}+1)))
+        for countDir in $(seq $((${#COUNT_SEP}+1)) 5)
         do
             PARENT_DIR=$(echo ${FULL_PATH} | awk -v variable="${countDir}" -F/ '{ print $variable }')
-            if [ -z "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1)" ]
+            PATH_OF_INTEREST=$(echo "${FULL_PATH%/${PARENT_DIR}*}/")
+            if [ -z "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/")" ] || [ "$(ls -A "${FULL_PATH%/${PARENT_DIR}*}/")" == ".DS_Store" ]
             then
-                rm -d "${FULL_PATH%/${PARENT_DIR}*}/" > /dev/null 2>&1
+                rm -d "${FULL_PATH%/${PARENT_DIR}*}/"
             fi
         done
     fi
