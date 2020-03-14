@@ -34,10 +34,10 @@ int main(void)
  height = 8;
  profit = 2150.48f;
 
- volume = pow(10, (height * profit * 0.5));
+// volume = pow(10, (height * profit * 0.5));
 
- printf("To C, or not to C: that is the question.\n");
- printf("volume = ", volume, "\n");
+printf("To C, or not to C: that is the question.\n");
+// printf("volume = ", volume, "\n");
 
  return 0;
 }
