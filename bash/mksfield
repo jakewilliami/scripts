@@ -70,7 +70,6 @@ make_field() {
     LINE_PICTURE_ENDS_AT="82"
     LINE_PICTURE_STARTS_AT="48"
     head -n "${LINE_PICTURE_ENDS_AT}" "${ABS_PATH}/slope-field.tex" | tail -n "$((${LINE_COUNT_TEX_FILE}-${LINE_PICTURE_STARTS_AT}))" > "${ABS_PATH}/slope-field-code-only.tex"
-    # echo ${LINE_COUNT_TEX_FILE}
 }
 
 
