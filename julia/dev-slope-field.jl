@@ -1,4 +1,4 @@
-#! /usr/bin/julia
+#! /usr/bin/#! /usr/bin/env julia
 
 # using Pkg
 # Pkg.add("Conda")

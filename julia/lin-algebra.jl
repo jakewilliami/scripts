@@ -1,3 +1,5 @@
+#! /usr/bin/env julia
+
 using LinearAlgebra
 import Pkg; Pkg.add("RowEchelon")
 using RowEchelon
