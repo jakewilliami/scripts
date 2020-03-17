@@ -1,4 +1,4 @@
-#! /usr/bin/julia
+#! /usr/bin/env julia
 
 x = parse(Float64, ARGS[1])
 y = parse(Float64, ARGS[2])
