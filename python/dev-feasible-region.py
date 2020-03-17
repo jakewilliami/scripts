@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+# https://stackoverflow.com/questions/57017444/how-to-visualize-feasible-region-for-linear-programming-with-arbitrary-inequali
+
 import matplotlib.pyplot as plt
 import numpy as np
 
