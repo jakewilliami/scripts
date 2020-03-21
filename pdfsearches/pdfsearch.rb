@@ -1,12 +1,12 @@
 #!/usr/bin/ruby
 
-#gem install pdf-reader if out of date
+# sudo gem install pdf-reader rubygems colorize pathname rails find
 require 'pdf-reader'
 require 'rubygems'
 require 'colorize'
 require 'pathname'
-require 'rails'
-require "find"
+# require 'rails' # Broken for some reason
+require 'find'
 
 #puts 'What is your name?'
 #name = gets.chomp
@@ -35,7 +35,7 @@ os_walk = Dir.glob( "#{mainDir}/**/*.pdf" )
 #    puts "Usage: cd /dir/to/search/ && pdfsearch \"<search_term>\" [option...]\n".bwhite
 #    puts "The present programme will search PDFs in current directory and subdirectories for a search term, then print the PDFs for which said tern is found, and then print how many PDFs the search term was found in, and how many times it was found.".bitwhite
 #    puts
-#    print "   -h".bblue 
+#    print "   -h".bblue
 #    puts "           Shows help (present output).".byellow
 #    exit
 #end
