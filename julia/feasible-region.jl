@@ -1,7 +1,7 @@
 #! /usr/bin/env julia
 
-# import Pkg; Pkg.add("Plots"); Pkg.add("ImplicitEquations"); Pkg.add("IntervalConstraintProgramming"); Pkg.add("ValidatedNumerics"); Pkg.add("Makie")
-using ImplicitEquations, Plots, IntervalConstraintProgramming, ValidatedNumerics, Makie
+# import Pkg; Pkg.add("Plots"); Pkg.add("ImplicitEquations"); Pkg.add("IntervalConstraintProgramming"); Pkg.add("ValidatedNumerics"); Pkg.add("GeometryTypes"); Pkg.add("Makie")
+using ImplicitEquations, Plots, IntervalConstraintProgramming, ValidatedNumerics, GeometryTypes, Makie
 
 ###NOTE
 # Dependencies for Ubuntu/Debian for Makie include running
@@ -16,6 +16,8 @@ using ImplicitEquations, Plots, IntervalConstraintProgramming, ValidatedNumerics
 # ```
 # brew install ffmpeg cmake
 # ```
+## Dependencies for Makie within Julia:
+# import Pkg; Pkg.add("GeometryTypes"); using GeometryTypes
 
 ############### Uses Plots
 
