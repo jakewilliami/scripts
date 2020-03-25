@@ -86,10 +86,6 @@ get_languages() {
 }
 
 
-# unset langInfo
-# declare -A langInfo
-
-
 languageBreakdown() {
     
     get_languages
@@ -113,39 +109,7 @@ languageBreakdown() {
             echo "${LANG_NAME}" >> /tmp/langName
         fi
         
-        # langInfo[(percentage of each language)]=(language name in uppercase with no spaces and no hyphens)
-        # langInfo["${LANG_NAME}"]="${LANG_PERCENT}"
-        
     done < /tmp/languages
-    
-    # LINE_COUNTER=0
-    # for line in "${!langInfo[@]}"
-    # do
-    #     LINE_COUNTER=$(($LINE_COUNTER+1))
-    #     if [[ $LINE_COUNTER -eq 1 ]]
-    #     then
-    #         echo "${langInfo[$line]}" > /tmp/langPercent # write percentages to file
-    #         echo "${line}" > /tmp/langName # write names to file
-    #     elif [[ $LINE_COUNTER -gt 1 ]]
-    #     then
-    #         echo "${langInfo[$line]}" >> /tmp/langPercent
-    #         echo "${line}" >> /tmp/langName
-    #     fi
-    # done
-    
-    
-    # # prints percentages
-    # for lang in "${!langInfo[@]}"
-    # do
-    #     echo "${langInfo[$lang]}"
-    # done
-    # # prints names
-    # for lang in "${!langInfo[@]}"
-    # do
-    #     echo "${lang}"
-    # done
-    
-    
     
 }
 
@@ -154,35 +118,10 @@ print_language_breakdown() { # Prints language breakdown
 
     languageBreakdown
     
-    # for LANG_SEP_UNDERSCORES in $(languages-underscores)  #"${array[@]}"  # from 0--|lowest used lang|
-    # do
-        # LANG_SEP_SPACE="$(echo "${LANG_SEP_UNDERSCORES}" | awk '{ gsub ("_", " ", $0); print}')"
-        # LANG_NO_SPACES="$(echo "${LANG_SEP_UNDERSCORES}" | awk '{ gsub ("_", "", $0); print}')"
-        # for lang in "${langInfo[@]}"
-        # do
-        #     LANGINFO=$( echo "${lang}" | ggrep -Ei "^.*$LANG_SEP_SPACE$")  # pulls $j to print in correct colour
-        #     echo -en "${!LANG_NO_SPACES}${LANGINFO}${NORM}\n"  # the `${!i}` expands variables indirectly from colours defined above (http://mywiki.wooledge.org/BashFAQ/006#Indirection)
-        # done
-        while read line <&3 && read percentage <&4 && read name <&5
-        do
-            # for lang in "${!langInfo[@]}"
-            # do
-            # echo "${name}"
-                # if [[ "${percentage}" =~ ^${line}.* ]]
-                # then
-                    echo -en "${!name}${line}${NORM}\n" # the `${!i}` expands variables indirectly from colours defined above (http://mywiki.wooledge.org/BashFAQ/006#Indirection)
-                # fi
-            # done
-        done 3</tmp/languages 4</tmp/langpercent 5</tmp/langName  # need to sort the output by unique keys because: if n languages have the same percentage, they will both print n times.
-    # done
-    
-    # for i in $(languages)
-    # do
-    #     j=$( echo "${i}" | awk '{ gsub (" ", "_" $0); print }' )
-    #     # echo "${i} and ${j}"
-    #     LANGINFO=$(echo "${LANGUAGE_BREAKDOWN_STR}"| ggrep -Ei -- "$j"$)
-    #     echo -en "${!i}$LANGINFO${NORM}\n" # the `${!i}` expands variables indirectly from colours defined above (http://mywiki.wooledge.org/BashFAQ/006#Indirection)
-    # done
+    while read line <&3 && read percentage <&4 && read name <&5
+    do
+        echo -en "${!name}${line}${NORM}\n" # the `${!i}` expands variables indirectly from colours defined above (http://mywiki.wooledge.org/BashFAQ/006#Indirection)
+    done 3</tmp/languages 4</tmp/langpercent 5</tmp/langName  # need to sort the output by unique keys because: if n languages have the same percentage, they will both print n times.
     
 }
 
