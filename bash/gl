@@ -60,24 +60,6 @@ display_help() { #Displays help
 }
 
 
-# Languages as string
-languages-underscores() { # prints the languages only
-
-    github-linguist | \
-        awk 'BEGIN { OFS='\t' } {
-        if($3) {
-            print toupper($2) "_" toupper($3)
-        }
-        else if($4) {
-            print toupper($2) "_" toupper($3) "_" toupper($4)
-        }
-        else {
-            print toupper($2)
-        } }'
-        
-}
-
-
 get_languages() {
     truncate -s0 /tmp/languages
     truncate -s0 /tmp/langName
