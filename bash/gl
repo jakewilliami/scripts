@@ -61,10 +61,13 @@ display_help() { #Displays help
 
 
 get_languages() {
+    
     truncate -s0 /tmp/languages
     truncate -s0 /tmp/langName
     truncate -s0 /tmp/langPercent
+    
     github-linguist > /tmp/languages
+    
 }
 
 
@@ -72,24 +75,14 @@ languageBreakdown() {
     
     get_languages
     
-    LINE_COUNTER=0
-    
     while read line
     do
         
         LANG_PERCENT="$(echo "${line}" | awk '{ OFS='\t' } { print $1 }')"
         LANG_NAME="$(echo "${line}" | awk 'BEGIN { OFS='\t' } { $1=""; gsub ("-", "", $0); gsub ("+", "P", $0); print toupper($0) }')"
         
-        LINE_COUNTER=$(($LINE_COUNTER+1))
-        if [[ $LINE_COUNTER -eq 1 ]]
-        then
-            echo "${LANG_PERCENT}" > /tmp/langPercent # write percentages to file
-            echo "${LANG_NAME}" > /tmp/langName # write names to file
-        elif [[ $LINE_COUNTER -gt 1 ]]
-        then
-            echo "${LANG_PERCENT}" >> /tmp/langPercent
-            echo "${LANG_NAME}" >> /tmp/langName
-        fi
+        echo "${LANG_PERCENT}" >> /tmp/langPercent
+        echo "${LANG_NAME}" >> /tmp/langName
         
     done < /tmp/languages
     
