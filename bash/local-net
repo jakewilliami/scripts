@@ -9,14 +9,14 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # get kernel-specific dependencies
 case $KERNEL in
     Linux)
-        is-library-then-install "${NETSNIFF}" "${V_SNIFF_ALT}"
+        is-library-then-install "${NETSNIFF}" "${V_SNIFF}"
         ;;
 esac
 # get os-specific dependencies
 case $OS in
     macos)
         is-command-then-install "${SNIFF}" "${NMAP}"
-         is-library-then-install "${DHCP}" 
+         is-library-then-install "${DHCP}"
         ;;
     debian)
         is-command-then-install "${SNIFF_ALT}" "${ROOTKITHUNT}"
@@ -29,7 +29,7 @@ case $OS in
     fedora)
         is-command-then-install "${ROOTKITHUNT}" "${NMAP}"
         is-library-then-install "${SNIFF_ALT}"
-        ;;    
+        ;;
 esac
 # get dependencies regardless of kernel and os
 is-library-then-install "${DHCPING}" "${ARPSCAN}"
@@ -98,12 +98,12 @@ query_server() {
     sudo dhcping -s 192.168.1.1 #ask this separately to avoid getting asked for password 254 times
     for i in $(seq 2 254); do
         (sudo dhcping -s 192.168.1.${i} > /dev/null 2>&1 && echo "Response from 192.168.1.${i}" &)
-    done 
+    done
 }
 
 
 arp_function() {
-    sudo arp-scan -l   
+    sudo arp-scan -l
 }
 
 
@@ -172,12 +172,12 @@ arp_poisoning() {
         while true; do
         read -p "${BRED}Are you sure you want to begin ARP-Poisoning the local network? https://doubleoctopus.com/security-wiki/threats-and-tools/address-resolution-protocol-poisoning/${NORM}" yn
         case $yn in
-            [Yy]*) 
+            [Yy]*)
                     sudo ettercap -T -M arp:oneway /192.168.1.1//
                     break   ;;
-            [Nn]*) 
+            [Nn]*)
                     break  ;;
-            *)     
+            *)
                     echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
         esac
     done
@@ -294,7 +294,7 @@ while getopts ":-:aAnphlHPsSgVmqvVx" OPTION; do
                     query_server
                     clean-exit ;;
                 a)
-                    arp_function 
+                    arp_function
                     clean-exit ;;
                 n)
                     nmap_function
