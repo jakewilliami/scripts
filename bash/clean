@@ -1,5 +1,9 @@
 #! /bin/bash
 
+
+### TO-DO
+# PIP: sudo -H pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | sudo -H xargs -n1 pip3 install -U
+
 BASH_DIR="${HOME}/scripts/bash/"
 TRASH_SHARED_DIR="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
 TRASH_LOCAL_DIR="${HOME}/.Trash/"
@@ -19,7 +23,7 @@ case $OS in
         declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
         for i in "${debian_ruby_array[@]}"
         do
-            is-library-then-install "${i}" 
+            is-library-then-install "${i}"
         done
         ;;
     arch)
@@ -64,9 +68,9 @@ remove_old() {
 }
 
 
-size_of_dir() { 
+size_of_dir() {
     DIR_SIZE=$(sudo find "${1}" ! -type d -print0 | xargs -0 stat -f '%z' | awk '{sum += $1} END{print sum}')  # Finds total space taken up by dir in bytes.  Not my own code: https://unix.stackexchange.com/a/177371/372726
-    echo "${DIR_SIZE}" 
+    echo "${DIR_SIZE}"
     }
     
     
@@ -128,11 +132,11 @@ clean_function() {
     while true; do
         read -p "${1}" yn
         case $yn in
-            [Yy]*) 
+            [Yy]*)
                     return 0 ;;
-            [Nn]*) 
+            [Nn]*)
                     clean-exit ;;
-            *)     
+            *)
                     echo "${BYELLOW}Please answer yes or no.${NORM}";;
         esac
     done
@@ -189,26 +193,26 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
             `echo`
             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  ${BWHITE}Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
             case $yn in
-                [Yy]*) 
+                [Yy]*)
                         brew cask upgrade --greedy
                         break   ;;
-                [Nn]*) 
+                [Nn]*)
                         while true; do
                             read -p "${BWHITE}`brew cask upgrade --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
                             `echo`
                             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
                             case $yn in
-                                [Yy]*) 
+                                [Yy]*)
                                         brew cask upgrade
                                         break   ;;
-                                [Nn]*) 
+                                [Nn]*)
                                         break  ;;
-                                *)     
+                                *)
                                         echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
                                 esac
                             done
                         break  ;;
-                *)     
+                *)
                         echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
             esac
         done
@@ -279,7 +283,7 @@ big_clean() {
     echo
     echo -e "${BGREEN}${BIG_LINE}${NORM}"
     echo -e "${BYELLOW}CLEANING APPS FROM THE APPLE APP STORE${NORM}"
-    mas upgrade 
+    mas upgrade
 }
 
 
@@ -295,10 +299,10 @@ while getopts ":-:tdhpbmrao" OPTION; do
                             big_clean
                             clean-exit ;;
                         downloads)
-                            clean_downloads 
+                            clean_downloads
                             clean-exit ;;
                         trash)
-                            clean_trash 
+                            clean_trash
                             clean-exit ;;
                         help)
                             display_help ;;
@@ -306,13 +310,13 @@ while getopts ":-:tdhpbmrao" OPTION; do
                             clean_brew
                             clean-exit ;;
                         perl)
-                            clean_perl 
+                            clean_perl
                             clean-exit ;;
                         ruby)
-                            clean_gems 
+                            clean_gems
                             clean-exit ;;
                         mas)
-                            mas_upgrade 
+                            mas_upgrade
                             clean-exit ;;
                         *)
                             opt_err ;;
@@ -324,24 +328,24 @@ while getopts ":-:tdhpbmrao" OPTION; do
                     big_clean
                     clean-exit ;;
                 t)
-                    clean_trash 
+                    clean_trash
                     clean-exit ;;
-                m) 
-                    mas_upgrade 
+                m)
+                    mas_upgrade
                     clean-exit ;;
-                d)  
-                    clean_downloads 
+                d)
+                    clean_downloads
                     clean-exit ;;
                 h)
                     display_help ;;
                 b)
                     clean_brew
                     clean-exit ;;
-                p) 
-                    clean_perl 
+                p)
+                    clean_perl
                     clean-exit ;;
                 r)
-                    clean_gems 
+                    clean_gems
                     clean-exit ;;
                 *)
                     opt_err ;;
