@@ -69,6 +69,7 @@ SNAP='snapd'
 NVM='nvm'
 FDUPES="fdupes"
 PZIP="p7zip"
+JULIA_LIB="julia"
 
 
 case $OS in
