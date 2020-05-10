@@ -10,12 +10,13 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # get dependencies regardless of kernel and os
 is-app-then-install "${JULIA_LIB}"
+is-command-then-install "${PYTHON3}"
 
 
 # Help
 display_help() {
     help_start 'progress-bar [-h | -s <int>]' 'The present script is mostly to be used with other scripts.  It either takes an integer argument with the -s flag, or it is used inside other scripts, but that has paramaters that are to be designed.'
-    help_commands '-s' '--seq' '2' 'Constructs a progress bar using a' 's' 'eq' '\quence from 1 to <integer>.'
+    help_commands '-s' '--seq' '2' 'Constructs a progress bar using a' 's' 'eq' '\buence from 1 to <integer>.'
     help_help '2'
     clean-exit
 }
