@@ -69,7 +69,8 @@ SNAP='snapd'
 NVM='nvm'
 FDUPES="fdupes"
 PZIP="p7zip"
-JULIA_LIB="julia"
+JULIA_LIB="julia" ### NOTE: CANNOT BE NAMED 'JULIA' DUE TO COLOURS TAKING THAT NAME
+MAS="mas"
 
 
 case $OS in
