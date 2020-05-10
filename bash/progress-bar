@@ -1,0 +1,118 @@
+#! /usr/local/bin/bash
+
+### Dependencies: Julia (for maths, because I want to use it, so why not?)
+
+# define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
+
+# get dependencies regardless of kernel and os
+is-app-then-install "${JULIA_LIB}"
+
+
+# Help
+display_help() {
+    help_start 'progress-bar [-h | -s <int>]' 'The present script is mostly to be used with other scripts.  It either takes an integer argument with the -s flag, or it is used inside other scripts, but that has paramaters that are to be designed.'
+    help_commands '-s' '--seq' '2' 'Constructs a progress bar using a' 's' 'eq' '\quence from 1 to <integer>.'
+    help_help '2'
+    clean-exit
+}
+
+
+main() {
+    #function to put cursor back to normal
+    function cleanup() {
+        tput cnorm
+    }
+    # Removes cursor and brings it back upon exit
+    trap cleanup EXIT
+    tput civis
+
+
+    # calc_command="julia --math-mode=fast --quiet --depwarn=no -E"
+    # calc_command="python3 -c"
+    # calc_command="" # undefined to revert to bash calculations...a little messy, I know, but has no dependencies.
+    space_reserved=6   # reserved width for the percentage value at end of line
+    jobs_to_do=$1
+    columns=$(tput cols)
+    space_available=$(( columns - space_reserved ))
+
+
+    while read jobs_done; do
+        
+        if [[ $calc_command =~ ^julia ]]
+        then
+            proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); round(proportion, digits=2)")
+            percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); trunc(Int64, percentage)")
+            columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); trunc(Int64, cols)")
+            columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); trunc(Int64, cols_blank)")
+        elif [[ $calc_command =~ ^python ]]
+        then
+            proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); print(round(proportion, 2))")
+            percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); print(int(round(percentage)))")
+            columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); print(int(round(cols)))")
+            columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); print(int(round(cols_blank)))")
+        else
+            proportion_done=$(echo "scale=2; $jobs_done/$jobs_to_do" | bc -l )
+            percentage_done=$(echo "scale=2; ($jobs_done/$jobs_to_do)*100" | bc -l | awk -F'.' '{ print $1 }')
+            columns_to_fill=$(echo "scale=2; $space_available*$proportion_done" | bc -l | awk -F'.' '{ print $1 }')
+            columns_left_blank=$((space_available-columns_to_fill))
+        fi
+            
+        progress_done() {
+            for (( done=0; done<(columns_to_fill); done=done+1 )); do
+                printf "▇"
+            done
+        }
+        progress_not_complete() {
+            for (( done=0; done<(columns_left_blank); done=done+1 )); do
+                printf " "
+            done
+        }
+        percentage() {
+            printf "| %s%%" $percentage_done ;
+        }
+        clean_line() {
+            printf "\r"
+        }
+        
+        progress_done; progress_not_complete; percentage
+        clean_line
+        
+    done <<< $(seq 1 $jobs_to_do)
+
+
+    # enables user input again
+    stty echo
+}
+
+# Options
+while getopts ":-:hs" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        seq)
+                            main $2 ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                s)
+                    main $2 ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+# If no options
+[[ -z $1 ]] && echo -e "${BYELLOW}Please specify an option.  Use option -h for help.${NORM}"
+
+
+# Clean up
+clean-exit

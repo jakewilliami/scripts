@@ -1,6 +1,8 @@
-# Run using perl -X pdfsearches/pdfsearch.pl
-
 #!/usr/bin/perl
+
+# Run using perl -X pdfsearches/pdfsearch.pl
+# Ensure you run
+    # brew install cpanminus && cpanm install --force PDF::Core File::Extract::PDF CAM::PDF Text::FromAny Term::ANSIColor File::Find Time::HiRes File::Spec::Functions Getopt::Long Term::ExtendedColor File::Extract::PDF
 
 ### WORK IN PROGRESS ###
 
@@ -53,7 +55,7 @@ sub eachFile {
             if (index($text, $searchString) != -1) {
                 print color("BOLD"), "\"${searchString}\" found in ${fullpath}/${filename}!\n", color("reset");
                 $countPdfsFound++;
-            } 
+            }
         }
     }
 }
