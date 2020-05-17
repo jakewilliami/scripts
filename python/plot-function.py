@@ -32,59 +32,59 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys # for arguments
-import math # for pi (math.pi)
 import re # for prettifying the input equation
 
 
-# for myltiple substitutions
+# for multiple substitutions
 class Substitutable(str):
   def __new__(cls, *args, **kwargs):
     newobj = str.__new__(cls, *args, **kwargs)
     newobj.sub = lambda fro,to: Substitutable(re.sub(fro, to, newobj))
     return newobj
 
-# define some substitutions
-# yPrime = Substitutable(r"yp = ")
-# subTimes = Substitutable(r"*")
-# subDivide = Substitutable(r"/")
-# subSine = Substitutable(r"sin")
-# subCosine = Substitutable(r"cos")
-# subTangent = Substitutable(r"tan")
 
-
+# if arg needed (potentially for future script)
 arg = sys.argv[1:]
 
 # an easier trig function
 sin = np.sin
 cos = np.cos
 tan = np.tan
+pi = np.pi
+exp = np.exp
 
 # Create the vectors X and Y
-y = np.array(range(100))
-yp = np.array(range(100))
+sample = 100
+y = np.array(range(sample))
+x = np.array(range(sample))
+
+### IF SINE: uncomment the following two lines, and comment out the exec(equation) line
+# y = np.arange(0,4*np.pi,0.1)   # start,stop,step
+# yp = sin(y)
 
 # Define the function
 # y' == yp[rime] == yp
-equation = Substitutable("yp = y*(y-2)") ### <<< INPUT FUNCTION GOES HERE
+equation = Substitutable("yp = y**(10)*7*exp(y)") ### <<< INPUT FUNCTION GOES HERE
 
 # evaluate the function
 exec(equation)
-prettyEqn1 = equation.sub(r"yp = ", "y' = ").sub(r"*", r"\cdot").sub(r"/", r"\textdiv").sub(r"^(.*)$", r"$\1$")
-# prettyEqn1 = re.sub(r"yp = ", "y' = ", equation) # make yp -> y'
-# prettyEqn2 = re.sub(r"*", r"\cdot", prettyEqn1)
-# prettyEqn3 = re.sub(r"/", r"\textdiv", prettyEqn2)
-# prettyEqn4 = re.sub(r"^(.*)$", r"$\1$", prettyEqn3) # make math mode
+
+# make equation pretty for title
+prettyEqn = equation.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r"\\cdot ").sub(r"/", r"\\div").sub(r"exp", r"\\exp").sub(r"^(.*)$", r"$\1$")
 
 # Create the plot
-plt.plot(y,yp,label="y'")
+plt.plot(y, yp, label="y'")
 
 # Add a title
-# plt.title(r"$y'=\sin(x)+c$")
-plt.title(r"{}".format(prettyEqn1))
+plt.title(r"{}".format(prettyEqn))
 
 # Add X and y Label
-plt.xlabel(r"y")
-plt.ylabel(r"y'")
+plt.xlabel(r"$y$")
+plt.ylabel(r"$y'$")
+
+# set x (and y) limits
+axes = plt.gca()
+# axes.set_xlim([-10,10])
 
 # Add a grid
 plt.grid(alpha=.4,linestyle='--')
