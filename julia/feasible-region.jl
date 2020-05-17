@@ -1,6 +1,12 @@
 #! /usr/bin/env julia
 
+
+#########################################################################
+# EXAMPLE for PLOTTING FEASIBLE REGION (MATH353; Autumn, 2020)
+#########################################################################
+
 # import Pkg; Pkg.add("Plots"); Pkg.add("ImplicitEquations"); Pkg.add("IntervalConstraintProgramming"); Pkg.add("ValidatedNumerics"); Pkg.add("GeometryTypes"); Pkg.add("Makie")
+# suppressMessages(suppressWarnings(Pkg))
 using ImplicitEquations, Plots, IntervalConstraintProgramming, ValidatedNumerics, GeometryTypes, Makie
 
 ###NOTE

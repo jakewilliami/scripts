@@ -1,5 +1,11 @@
 #! /usr/bin/#! /usr/bin/env julia
 
+
+#########################################################################
+# EXAMPLE for FInDING SLOPES FOR A VECTOR FIELD (MATH244; Autumn, 2020)
+#########################################################################
+
+
 # using Pkg
 # Pkg.add("Conda")
 # Pkg.add("CalculusWithJulia")
