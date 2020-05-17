@@ -1,5 +1,11 @@
 #! /usr/bin/env julia
 
+
+##################################################################################
+# EXAMPLE for REDUCING A MATRIX AND FINDING ITS NULL SPACE (MATH251; Winter, 2019)
+##################################################################################
+
+
 using LinearAlgebra
 import Pkg; Pkg.add("RowEchelon")
 using RowEchelon

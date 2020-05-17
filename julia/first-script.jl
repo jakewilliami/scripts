@@ -1,5 +1,9 @@
 #! /usr/bin/env julia
 
+#########################################################################
+# FIRST EVER SCRIPT; GETTING MY HEAD AROUND SYNTAX AND ARGUMENTS
+#########################################################################
+
 x = parse(Float64, ARGS[1])
 y = parse(Float64, ARGS[2])
 #if it is a float with .0, print as integer, otherwise, print as float
