@@ -23,23 +23,16 @@ model = Model(GLPK.Optimizer)
 @variable(model, a >= 0)
 @variable(model, b >= 0)
 @variable(model, c >= 0)
-@variable(model, d >= 0)
-@variable(model, e >= 0)
 
 # A constraint is modelled using @constraint(name of the model object, constraint).
-@constraint(model, 2a + 4b + c + 3d + 7e <= 10)
-@constraint(model, a + c + d <= 2)
-@constraint(model, 4a + 4d + 4e <= 7)
+@constraint(model, 5a +3b +5c <= 100)
+@constraint(model, 3a +5b +5c <= 80)
 
-@constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
-@constraint(model, b in MOI.ZeroOne())
-@constraint(model, c in MOI.ZeroOne())
-@constraint(model, d in MOI.ZeroOne())
-@constraint(model, e in MOI.ZeroOne())
+# @constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
 # @constraint(model, x in MOI.Integer())  # For integer programming
 
 # The objective is set in a similar manner using @objective(name of the model object, Min/Max, function to be optimized)
-@objective(model, Max, 3a + 6b + 4c + 10d + 3e)
+@objective(model, Max,  250a + 300b + 400c)
 
 # To solve the optimization problem, we call the optimize function.
 optimize!(model)
@@ -48,6 +41,4 @@ optimize!(model)
 @show value(a);
 @show value(b);
 @show value(c);
-@show value(d);
-@show value(e);
 @show objective_value(model);
