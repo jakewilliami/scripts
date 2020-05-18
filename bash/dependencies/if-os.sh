@@ -77,6 +77,7 @@ case $OS in
     macos)
         ICU='icu4c'
         PYTHON3='python' # Includes pip3 on macOS
+        CPANM="cpanminus"
         ;;
     arch)
         LMSENSORS='i2c-tools'

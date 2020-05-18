@@ -1,6 +1,9 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 # Run using perl -X ${HOME}/scripts/perl/applications.pl
+
+# cpanm install XML::LibXML String::Approx Text::Fuzzy Regexp::Approx File::HomeDir
+# sudo cpan -I XML::LibXML String::Approx Text::Fuzzy Regexp::Approx File::HomeDir
 
 # for defining to use a specific version of Perl
 use v5.30;

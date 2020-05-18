@@ -64,7 +64,7 @@ x = np.array(range(sample))
 
 # Define the function
 # y' == yp[rime] == yp
-equation = Substitutable("yp = y**(10)*7*exp(y)") ### <<< INPUT FUNCTION GOES HERE
+equation = Substitutable("yp = y*(y-1)*(y-2)") ### <<< INPUT FUNCTION GOES HERE
 
 # evaluate the function
 exec(equation)
@@ -84,7 +84,8 @@ plt.ylabel(r"$y'$")
 
 # set x (and y) limits
 axes = plt.gca()
-# axes.set_xlim([-10,10])
+axes.set_xlim([-50,50])
+axes.set_ylim([-100,100])
 
 # Add a grid
 plt.grid(alpha=.4,linestyle='--')
