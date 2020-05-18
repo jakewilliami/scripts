@@ -18,10 +18,9 @@ class Substitutable(str):
 
 # get derivatives of functions
 
-x = symbols('x')
-y = symbols('y')
+x, y = symbols('x y', real=True)
 
-f = Substitutable("5*x*y**3")
+f = Substitutable("2 + x**2 + (1/4)*y**2")
 d1 = Substitutable(diff(f, x))
 d2 = Substitutable(diff(f, y))
 
