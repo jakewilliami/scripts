@@ -25,14 +25,16 @@ model = Model(GLPK.Optimizer)
 @variable(model, c >= 0)
 
 # A constraint is modelled using @constraint(name of the model object, constraint).
-@constraint(model, 5a +3b +5c <= 100)
-@constraint(model, 3a +5b +5c <= 80)
+@constraint(model, 17a +10b +14c <= 19)
+# @constraint(model, 3a +5b +5c <= 80)
 
-# @constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
+@constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
+@constraint(model, b in MOI.ZeroOne())
+@constraint(model, c in MOI.ZeroOne())
 # @constraint(model, x in MOI.Integer())  # For integer programming
 
 # The objective is set in a similar manner using @objective(name of the model object, Min/Max, function to be optimized)
-@objective(model, Max,  250a + 300b + 400c)
+@objective(model, Max,  51a + 72b + 41c)
 
 # To solve the optimization problem, we call the optimize function.
 optimize!(model)

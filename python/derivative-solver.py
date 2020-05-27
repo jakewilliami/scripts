@@ -6,6 +6,7 @@
 
 from sympy import *
 import re # for prettifying the input equation
+# import numpy as np # https://stackoverflow.com/q/60383716/12069968
 
 
 # for multiple substitutions
@@ -16,19 +17,23 @@ class Substitutable(str):
     return newobj
 
 
-# get derivatives of functions
+# sin = np.sin
 
+# get derivatives of functions
 x, y = symbols('x y', real=True)
 
-f = Substitutable("2 + x**2 + (1/4)*y**2")
-d1 = Substitutable(diff(f, x))
-d2 = Substitutable(diff(f, y))
+# f = Substitutable("sin(x**2)")
+f = x*sin(x)
+# d1 = Substitutable(diff(f, x))
+# d2 = Substitutable(diff(f, y))
 
 
-prettyFunction = f.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
-prettyD1 = d1.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
-prettyD2 = d2.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
+# prettyFunction = f.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
+# prettyD1 = d1.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
+# prettyD2 = d2.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r" · ").sub(r"/", r" ÷ ")
 
-print(r"Taking the derivative of {}".format(prettyFunction), "\n")
-print("\tWRT x:\t {}".format(prettyD1))
-print("\tWRT y:\t {}".format(prettyD2))
+print(r"Taking the derivative of {}".format(f), "\n")
+dydx = diff(f, x); print("\tWRT x:\t {}".format(dydx))
+dxdy = diff(f, y); print("\tWRT y:\t {}".format(dxdy), "\n")
+print("\tSecond derivative WRT x:\t {}".format(diff(dydx, x)))
+print("\tSecond derivative WRT y:\t {}".format(diff(dxdy, y)))
