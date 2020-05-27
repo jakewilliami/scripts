@@ -54,9 +54,16 @@ pi = np.pi
 exp = np.exp
 
 # Create the vectors X and Y
-sample = 100
-y = np.array(range(sample))
-x = np.array(range(sample))
+sample = 10000
+# y = np.array(range(sample))
+# x = np.array(range(sample))
+y = np.arange(sample)
+x = np.arange(sample)
+
+# 100 linearly spaced numbers
+# x = np.linspace(-10,10,100)
+# rng = np.arange(50)
+# domain = 10 + rng
 
 ### IF SINE: uncomment the following two lines, and comment out the exec(equation) line
 # y = np.arange(0,4*np.pi,0.1)   # start,stop,step
@@ -72,26 +79,39 @@ exec(equation)
 # make equation pretty for title
 prettyEqn = equation.sub("^yp = ", r"y' = ").sub(r"\*\*\((\d+)\)", r"^{\1}").sub(r"\*\*", r"^").sub(r"\*", r"\\cdot ").sub(r"/", r"\\div").sub(r"exp", r"\\exp").sub(r"^(.*)$", r"$\1$")
 
+# setting the axes at the centre
+fig = plt.figure()
+# ax = fig.add_subplot(1, 1, 1)
+# ax.spines['left'].set_position('center')
+# ax.spines['bottom'].set_position('center')
+# ax.spines['right'].set_color('none')
+# ax.spines['top'].set_color('none')
+# ax.xaxis.set_ticks_position('bottom')
+# ax.yaxis.set_ticks_position('left')
+# ax.set_xlim(xmin=rng[0], xmax=rng[-1])
+# ax.set_ylim(ymin=rng[0], ymax=rng[-1])
+# fig.tight_layout()
+
 # Create the plot
-plt.plot(y, yp, label="y'")
+plt.plot(y, yp, 'g', label="y'")
 
 # Add a title
-plt.title(r"{}".format(prettyEqn))
-
-# Add X and y Label
-plt.xlabel(r"$y$")
-plt.ylabel(r"$y'$")
+# plt.title(r"{}".format(prettyEqn))
+#
+# # Add X and y Label
+# plt.xlabel(r"$y$")
+# plt.ylabel(r"$y'$")
 
 # set x (and y) limits
-axes = plt.gca()
-axes.set_xlim([-50,50])
-axes.set_ylim([-100,100])
+# axes = plt.gca()
+# axes.set_xlim([-50,50])
+# axes.set_ylim([-100,100])
 
 # Add a grid
-plt.grid(alpha=.4,linestyle='--')
-
-# Add a Legend
-plt.legend()
+# plt.grid(alpha=.4,linestyle='--')
+#
+# # Add a Legend
+# plt.legend(loc='upper left')
 
 # Show the plot
 plt.show()
