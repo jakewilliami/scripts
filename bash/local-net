@@ -197,7 +197,7 @@ local_ip() {
         EN_DEVICES="$(ifconfig -a | grep -E 'en[[:digit:]]*:' | awk -F'[n:]' '{print $2}')"
 	for i in ${EN_DEVICES}
 	do
-	    if [[ ! -z "${i}" ]]
+	    if [[ ! -z "$(ipconfig getifaddr en"${i}")" ]]
 	    then
 		LOCAL_IP="$(ipconfig getifaddr en"${i}")"
 	    fi
