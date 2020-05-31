@@ -79,7 +79,6 @@ case $OS in
         ICU='icu4c'
         PYTHON3='python' # Includes pip3 on macOS
         CPANM="cpanminus"
-        SED_PACKAGE='gsed'
         ;;
     arch)
         LMSENSORS='i2c-tools'
