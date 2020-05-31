@@ -7,7 +7,7 @@
 
 
 # import Pkg; Pkg.add("ForwardDiff")
-using ForwardDiff, SymPy
+using ForwardDiff, SymPy, LinearAlgebra
 
 f(x) = 2*x[2]^2+x[1]^2 # f must take a vector as input
 
@@ -19,7 +19,7 @@ g([1,2]) # evaluate the partial derivatives (gradient) at some point x
 
 @vars x y
 
-f(x,y) = x^2 - 2*x + y^2 - 6*y + 12
+f(x,y) =  3*x^2 - 2*x*y + 2*y^2
 
 fx = diff(f(x,y), x)
 fxx = diff(fx, x)
@@ -38,4 +38,7 @@ println("fxy:\t\t\t\t\t\t", fxy)
 println("fyx:\t\t\t\t\t\t", fyx, "\n")
 
 println("Hence, we have a Hessian Matrix:")
-println(H)
+println(H, "\n")
+
+println("The determinant of the Hessian Matrix is:\t", det(H), ", and")
+println("fxx + fyy is:\t\t\t\t\t", simplify(fxx+fyy))
