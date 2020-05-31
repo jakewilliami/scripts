@@ -3,7 +3,11 @@
 # Run using perl -X ${HOME}/scripts/perl/applications.pl
 
 # cpanm install XML::LibXML String::Approx Text::Fuzzy Regexp::Approx File::HomeDir
-# sudo cpan -I XML::LibXML String::Approx Text::Fuzzy Regexp::Approx File::HomeDir
+# cpan install XML::LibXML
+# cpan install String::Approx
+# cpan install Text::Fuzzy
+# cpan install Text::Fuzzy::PP
+# cpan install File::HomeDir
 
 # for defining to use a specific version of Perl
 use v5.30;
@@ -11,9 +15,9 @@ use warnings;
 use strict;
 
 use XML::LibXML;
-use String::Approx 'amatch';  # Used to approximate matches
-use Text::Fuzzy;  # Used to approximate matches
-package Regexp::Approx;  # Allows String::Approx within Regex
+# use String::Approx 'amatch';  # Used to approximate matches
+# use Text::Fuzzy;  # Used to approximate matches
+# package Regexp::Approx;  # Allows String::Approx within Regex
 use File::HomeDir;  # Used to get home directory
 #use re::engine::TRE max_cost => 2;  # Allows regex approx matching
 

@@ -7,64 +7,146 @@ BASH_DIR="${HOME}"/scripts/bash/
 source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
 # get dependencies regardless of kernel and os
-is-command-then-install "${PERL_PACKAGE}"
+is-command-then-install "${PERL_PACKAGE}" "${SED_PACKAGE}"
 
 # Help
 display_help() { #Displays help
     help_start 'applications [option...]' 'The present script will create system information in \`~/scripts/perl\` regarding applications and use them to find the applications which are not managed by the Mac App Store or Homebrew.'
     help_commands '-a' '--list-applications' '1' 'Lists' 'a' 'pplications' 'that are not from the app store or made by Apple.'
     help_commands '-b' '--list-brew' '2' 'Lists' 'b' 'rew' 'casks.'
-    help_commands '-c' '--compile' '3' '\b' 'C' 'ompiles' 'data from applications and saves as text in \`~/scripts/perl\`.'
+    help_commands '-c' '--compile' '3' '\b' 'c' 'ompiles' 'data from applications and saves as text in \`~/scripts/perl\`.'
+    help_commands '-C' '--Compare' '3' '\b' 'C' 'ompares' 'application lists from brew and system; outputs applications found on system not installed by brew.'
     help_help '3'
     clean-exit
 }
 
+notify_user() {
+    echo -e "${BBLUE}===>${NORM}\t${BWHITE}${1}${NORM}"
+}
+
 # Compile .txt files for casks, applications, and process system_profiler -xml
 perl_compile() {
-    perl -X ${HOME}/scripts/perl/applications.pl || exit $?
+    PERL_VERSION="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5}')"
+    if [ "${PERL_VERSION}" == "5.30" ]
+    then
+        perl -X ${HOME}/scripts/perl/applications.pl || \
+            echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir; do cpan install \"\${i}\"; done\` to install the required Perl modules.${BNORM}"
+    else
+        echo -e "${BYELLOW}Please run \`brew install perl\` and check that \`which perl\` is located at /usr/bin/local/, as the version required to run this script is 5.30.  You are currently running version $($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5}')${BNORM}"
+    fi
+    
 }
 
 list_applications() {
-    cat ${HOME}/scripts/perl/temp.d/dataApps.txt | cut -f1 -d":" | sed 's/[0-9]*$//' | sed 's/-$//' | awk '{$1=$1;print}'
+    notify_user 'Compiling Homebrew and system lists of applications.'
+    
+    perl_compile
+    
+    cat ${HOME}/scripts/perl/temp.d/dataApps.txt | cut -f1 -d":" | sed 's/[0-9]*$//' | sed 's/-$//' | awk '{$1=$1;print}' | sort | uniq
 }
 
 list_casks() {
+    notify_user 'Compiling Homebrew and system lists of applications.'
+    
+    perl_compile
+    
     cat ${HOME}/scripts/perl/temp.d/casks.txt | awk '{ gsub ("-", " ", $0); print}'
+}
+
+compare_lists() {
+    notify_user 'Compiling Homebrew and system lists of applications.'
+    
+    perl_compile
+    
+    notify_user 'Editing lists for fuzzy matching.'
+    
+    # create applications list from raw
+    awk -F':' '
+        {
+            gsub(/[^[:alnum:]]+/, "", $1)
+        }
+        {
+            print tolower($1)
+        }
+        ' ${HOME}/scripts/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
+        
+    # create cask list from raw
+    awk '
+        {
+            gsub(/[^[:alnum:]]+/, "")
+        }
+        {
+            print tolower($0)
+        }
+        ' ${HOME}/scripts/perl/temp.d/casks.txt > /tmp/casks.txt
+    
+    # edit cask list
+    notify_user 'Editing lists for manual override.'
+    
+    gsed -i 's/^zoomus$/zoom/g' /tmp/casks.txt
+    gsed -i 's/^iterm[[:digit:]]*$/iterm/g' /tmp/casks.txt
+    gsed -i 's/^julia[[:digit:]]*$/julia/g' /tmp/dataApps.txt
+    gsed -i 's/^tigervncviewer[[:digit:]]*$/tigervncviewer/g' /tmp/dataApps.txt
+    gsed -i 's/^feedthebeast$/ftbapp/g' /tmp/casks.txt
+    gsed -i 's/^gimp[[:digit:]]*$/gimp/g' /tmp/dataApps.txt
+    gsed -i 's/^adobedigitaleditions[[:digit:]]*$/adobedigitaleditions/g' /tmp/dataApps.txt
+    gsed -i 's/^alfred[[:digit:]]*$/alfred/g' /tmp/dataApps.txt
+    gsed -i 's/^dockerquickstartterminal$/dockertoolbox/g' /tmp/dataApps.txt
+    
+    # compare lists
+    # grep -iv -Fvxf /tmp/casks.txt /tmp/dataApps.txt
+    # comm -12
+    notify_user 'Comparing lists.'
+    
+    awk '
+        BEGIN {
+            FS=""
+               }                        # preserve whitespace
+        (NR==FNR) {
+            ll1[FNR]=$0; nl1=FNR
+                   }                    # file1, index by lineno
+        (NR!=FNR) {
+            ss2[$0]++
+                  }                     # file2, index by string
+        END {
+            for (ll=1; ll<=nl1; ll++) if (!(ll1[ll] in ss2)) print ll1[ll]
+        }
+        ' /tmp/dataApps.txt /tmp/casks.txt | column
 }
 
 
 # Options
-while getopts ":-:abch" OPTION
+while getopts ":-:abcCh" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
                         list-applications)
-                            perl_compile && \
                             list_applications ;;
                         list-brew)
-                            perl_compile && \
                             list_casks ;;
                         help)
                             display_help ;;
                         compile)
                             perl_compile && \
-                    echo -e "${BGREEN}Successfully compiled application data in \`~/scripts/perl\`.${NORM}";;
+                            echo -e "${BGREEN}Successfully compiled application data in \`~/scripts/perl\`.${NORM}";;
+                        Compare)
+                            compare_lists ;;
                         *)
                             opt_err ;;
                     esac ;;
                 a)
-                    perl_compile && \
                     list_applications ;;
                 b)
-                    perl_compile && \
-                    list_casks ;;
+d                    list_casks ;;
                 c)
                     perl_compile && \
                     echo -e "${BGREEN}Successfully compiled Homebrew casks in \`~/scripts/perl/casks.txt\` and application data (minus app store and Apple data) in \`~/scripts/perl/dataApps.txt\`.${NORM}";;
-                h)  
+                C)
+                    compare_lists ;;
+                h)
                     display_help ;;
-                *)  
+                *)
                     opt_err ;;
         esac
 done

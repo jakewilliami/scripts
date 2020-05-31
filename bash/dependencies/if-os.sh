@@ -67,10 +67,11 @@ COREUTILS='coreutils'
 BITWARDEN_CLI='bitwarden-cli'
 SNAP='snapd'
 NVM='nvm'
-FDUPES="fdupes"
-PZIP="p7zip"
-JULIA_LIB="julia" ### NOTE: CANNOT BE NAMED 'JULIA' DUE TO COLOURS TAKING THAT NAME
-MAS="mas"
+FDUPES='fdupes'
+PZIP='p7zip'
+JULIA_LIB='julia' ### NOTE: CANNOT BE NAMED 'JULIA' DUE TO COLOURS TAKING THAT NAME
+MAS='mas'
+SED_PACKAGE='sed'
 
 
 case $OS in
@@ -78,6 +79,7 @@ case $OS in
         ICU='icu4c'
         PYTHON3='python' # Includes pip3 on macOS
         CPANM="cpanminus"
+        SED_PACKAGE='gsed'
         ;;
     arch)
         LMSENSORS='i2c-tools'

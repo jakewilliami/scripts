@@ -1,64 +1,113 @@
-ChatMate for Facebook: identified_developer
-GitKraken: identified_developer
-coconutBattery: identified_developer
-Elmedia Player: identified_developer
-Microsoft AutoUpdate: identified_developer
-Tor Browser: identified_developer
-Atom: identified_developer
-Microsoft Excel: identified_developer
-OpenEmu: unknown
-Thunderbird: identified_developer
-VNC Server: identified_developer
-Uninstall VNC Server: identified_developer
-VNC Server: identified_developer
-VNC Server Licensing: identified_developer
-VNC Chat: identified_developer
-qBittorrent: unknown
-Standard Notes: identified_developer
-Brackets: identified_developer
-iTerm: identified_developer
-GIMP-2: identified_developer
-Microsoft Word: identified_developer
-Keka: identified_developer
-TigerVNC Viewer 1.10: identified_developer
-Spectacle: identified_developer
-Tunnelblick: identified_developer
-Jami: identified_developer
-Alfred 4: identified_developer
-TeXShop: identified_developer
-PyCharm CE: identified_developer
-Brave Browser: identified_developer
 Microsoft PowerPoint: identified_developer
-Discord: identified_developer
-Table Tool: identified_developer
+Microsoft AutoUpdate: identified_developer
+AppCleaner: identified_developer
 RStudio: identified_developer
-ProtonVPN: identified_developer
-Bitwarden: identified_developer
-Plex: identified_developer
-VeraCrypt: identified_developer
-Firefox: identified_developer
-R: unknown
-Acrobat Update Helper: identified_developer
-Go64: identified_developer
-Google Chrome: identified_developer
-LaTeXiT: unknown
-OmniDiskSweeper: identified_developer
-OnionShare: identified_developer
-Firefox Nightly: identified_developer
-Signal: identified_developer
-Brave Browser Nightly: identified_developer
-Wine Stable: unknown
-DOSBox: identified_developer
-Google Earth Pro: unknown
-Twitch: identified_developer
-Steam: identified_developer
 Spotify: identified_developer
-Minecraft: identified_developer
-Cryptomator: identified_developer
-Electron: unknown
+LibreOffice: identified_developer
+Python Launcher 3: unknown
+Python: unknown
+Plex: identified_developer
+Logitech Gaming Software: identified_developer
+Firefox: identified_developer
+Thunderbird: identified_developer
+Logitech Updater: identified_developer
+Uninstaller: unknown
+G502Update_v17: identified_developer
+G533Update_v13: identified_developer
+LogiProGamingKeyboardUpdate_v13: identified_developer
+G810Update_v31: identified_developer
+G203Update_v15: identified_developer
+G933Update_v27: identified_developer
+g502rgbUpdate_v10: identified_developer
+G303Update_v26: identified_developer
+G910R2Update_v7: identified_developer
+G410Update_v14: identified_developer
+G403Update: identified_developer
+G402Update_v17: identified_developer
+G910Update_v26: identified_developer
+PowerplayUpdate_v11: identified_developer
+G920Update_96_3_49: identified_developer
+Rectangle: identified_developer
+Hammerspoon: identified_developer
+Tunnelblick: identified_developer
+Alfred 4: identified_developer
+iTerm: identified_developer
+Discord: identified_developer
+TeXShop: identified_developer
+Slack: identified_developer
+Atom: identified_developer
+LogitechGamingInstaller: identified_developer
+Keka: identified_developer
+Caprine: identified_developer
+Standard Notes: identified_developer
+zoom: identified_developer
+League of Legends: unknown
+Twitch: identified_developer
+Riot Client: identified_developer
+Detexify: identified_developer
+Signal: identified_developer
 calibre: identified_developer
-IntelliJ IDEA CE: identified_developer
-DeDRM: unknown
+Brave Browser: identified_developer
+Keybase: identified_developer
+VeraCrypt: identified_developer
+Microsoft Word: identified_developer
+Microsoft Excel: identified_developer
+Elmedia Player: identified_developer
+dontstarve_steam: identified_developer
+GunpointSteam: unknown
+OxygenNotIncluded: identified_developer
+Steam Helper: identified_developer
+Steam Helper EH: identified_developer
+HTML5App: unknown
+Steam: identified_developer
+GIMP-2: identified_developer
+Colloquy: unknown
+MacVim: identified_developer
+Bitwarden: identified_developer
+LaTeXiT: identified_developer
+Firefox Developer Edition: identified_developer
+Brackets: identified_developer
+qBittorrent: unknown
+Python: unknown
+Python Launcher: unknown
+Python: unknown
+Python Launcher: unknown
+VLC: identified_developer
+Electron: unknown
+Firefox Nightly: identified_developer
+Inkscape: identified_developer
+SciHubEVA: unknown
+VNC Server: identified_developer
+Tor Browser: identified_developer
+RuneScape: identified_developer
+Minecraft: identified_developer
+Jami: identified_developer
+Google Earth Pro: identified_developer
+Cryptomator: identified_developer
+OmniDiskSweeper: identified_developer
+NBTExplorer: identified_developer
+Acrobat Update Helper: identified_developer
+FTBApp: unknown
+Wine Stable: unknown
+Kitematic: identified_developer
+DOSBox: identified_developer
+OpenEmu: unknown
+Assassin's Creed: unknown
+Azgaar's Fantasy Map Generator: unknown
+ChatMate for Facebook: identified_developer
+Paste: identified_developer
+Electron API Demos: unknown
+Adobe Digital Editions 4: identified_developer
+The Unarchiver: identified_developer
+ProtonVPN: identified_developer
+Jupyter Notebook Viewer: unknown
+Julia-1: identified_developer
+GitKraken: identified_developer
+btd5steam: identified_developer
+Plants vs. Zombies: unknown
+PlagueIncEvolved: unknown
+PlagueIncSC: unknown
+VirtualBox: identified_developer
 QtWebEngineProcess: unknown
 qml: unknown
 qdbusviewer: unknown
@@ -66,64 +115,83 @@ pixeltool: unknown
 Linguist: unknown
 Designer: unknown
 Assistant: unknown
-SciHubEVA: unknown
-Paste: identified_developer
-Julia-1: identified_developer
-Snagit 2019: identified_developer
-Electron API Demos: unknown
-Electron: unknown
-IntelliJ IDEA CE: identified_developer
-PyCharm CE: identified_developer
-ENService: identified_developer
-ToastIt.service: unknown
-KekaDefaultApp: identified_developer
-Paradox Launcher: unknown
-Paradox Launcher: unknown
-Roxio Restore: identified_developer
-EndNote X9.1.1 Updater: identified_developer
-EndNote X9.2 Updater: identified_developer
-dontstarve_steam: identified_developer
-OxygenNotIncluded: identified_developer
-Plants vs. Zombies: unknown
-hoi4: unknown
-CrashReporter: unknown
-CEFProcess: unknown
-Drawful 2: unknown
-Steam Helper: identified_developer
-Crash Reporter: unknown
-HTML5App: unknown
-Steam Helper EH: identified_developer
-Colloquy: unknown
-VirtualBox: identified_developer
-Docker Quickstart Terminal: unknown
+R: identified_developer
+OnionShare: identified_developer
+Little Inferno: identified_developer
+RONIN: unknown
+TownOfSalem: unknown
+Aragami: unknown
+Human: unknown
+Worms W.M.D: unknown
+UPlayBrowser: unknown
+Ubisoft Game Launcher: unknown
 nextcloud: identified_developer
-WhatsYourSign: identified_developer
-WhatsYourSign Installer: identified_developer
-AppCleaner: identified_developer
-Python Launcher 3: unknown
-Python: unknown
-VNC Viewer: identified_developer
-The Unarchiver: identified_developer
-Python Launcher 3: unknown
-Python: unknown
+Paradox Launcher: unknown
+Paradox Launcher: unknown
+Ninja: unknown
 eDEX-UI: unknown
+Go64: identified_developer
+StoryMill: identified_developer
+UPlayBrowser: unknown
+GameUpdate: unknown
+GameUpdate: unknown
+Cakebrew: identified_developer
+AirBackupHelper: identified_developer
+AnyTransToolHelper: identified_developer
+coconutBattery: identified_developer
+VNC Viewer: identified_developer
+TigerVNC Viewer 1.10: identified_developer
+Table Tool: identified_developer
+KekaDefaultApp: identified_developer
+Uninstall VNC Server: identified_developer
+WhatsYourSign: identified_developer
+Docker Quickstart Terminal: unknown
+Electron: unknown
+DeDRM: unknown
+TurmoilSteam: identified_developer
+Kingdom Rush Frontiers: identified_developer
+python: unknown
+qml: unknown
+Linguist: unknown
+Designer: unknown
+Assistant: unknown
+pixeltool: unknown
+qdbusviewer: unknown
+python: unknown
+qml: unknown
+qdbusviewer: unknown
+pixeltool: unknown
+Linguist: unknown
+Designer: unknown
+Assistant: unknown
+UE4EditorServices: identified_developer
+Python Launcher 3: unknown
+Python: unknown
+Python Launcher 3: unknown
+Python: unknown
+VNC Server: identified_developer
+VNC Server Licensing: identified_developer
+VNC Chat: identified_developer
+ENService: identified_developer
+KekaDefaultApp: identified_developer
+Roxio Restore: identified_developer
+EndNote X9.2 Updater: identified_developer
+EndNote X9.1.1 Updater: identified_developer
+CEFProcess: unknown
+hoi4: unknown
+Drawful 2: unknown
+Crash Reporter: unknown
+WhatsYourSign Installer: identified_developer
 Uninstaller: identified_developer
-EPSON Scanner: identified_developer
 Fax Receive Monitor: identified_developer
 FAX Utility: identified_developer
-EPFaxAutoSetupTool: identified_developer
 rastertoepfax: identified_developer
 commandFilter: identified_developer
 epsonfax: identified_developer
+EPFaxAutoSetupTool: identified_developer
 Cocoa-AppleScript Applet: unknown
-Canon IJScanner2: identified_developer
+EPSON Scanner: identified_developer
 Canon IJScanner6: identified_developer
 Canon IJScanner4: identified_developer
-Kitematic: identified_developer
-KekaDefaultApp: identified_developer
-Adobe Digital Editions 4: identified_developer
-Cakebrew: identified_developer
-TeX Live Utility: unknown
-StoryMill: identified_developer
-BibDesk: unknown
+Canon IJScanner2: identified_developer
 Python: unknown
