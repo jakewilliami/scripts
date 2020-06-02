@@ -7,6 +7,14 @@ LIBRARY_FILE="${HOME}/Desktop/library.csv"
 # define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
+# Immediately exits script if nothing is passed to it
+if [[ -z "${@}" ]]
+then
+    HELP="\033[1;33m You must have at least one argument.  Use -h for help. \033[0;38m"
+    echo -e "${HELP}"
+    exit $?
+fi
+
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
