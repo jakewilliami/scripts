@@ -3,6 +3,14 @@
 # define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
 
+# Immediately exits script if nothing is passed to it
+if [[ -z "${@}" ]]
+then
+    HELP="\033[1;33m You must have at least one argument.  Use -h for help. \033[0;38m"
+    echo -e "${HELP}"
+    exit $?
+fi
+
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
@@ -34,6 +42,10 @@ case $KERNEL in
                     echo -e "${BYELLOW}Sorry, you need to manually download Atom on 32-bit systems.${NORM}"
                     clean-exit
                     ;;
+                *)
+                    echo -e "${BRED}Unrecgnised architechture.  Please attempt to install Atom on your system.${NORM}"
+                    clean-exit
+                    ;;
             esac
         fi
         ;;
@@ -42,49 +54,68 @@ esac
 
 display_help() {
     help_start 'oinb [option... | file name...]' 'The present script will open a specified file in Atom.app.  If the file is not found in the current directory, it will look for it in `~/scripts/bash`.'
+    help_commands '-c' '--command' '2' 'Opens a specific' 'c' 'ommand' 'in Atom.'
     help_help '2'
     clean-exit
 }
 
 
-while getopts ":-:h" OPTION; do
+main() {
+    for f in $@
+    do
+        if [[ $KERNEL == "Linux" ]]
+        then
+            RUN_COMMAND="atom"
+        elif [[ $KERNEL == "Darwin" ]]
+        then
+            RUN_COMMAND="open -a /Applications/Atom.app"
+        else
+            echo -e "${BYELLOW}Kernel not recognised.  Please ensure you have support on your system for Atom.${NORM}"
+        fi
+        if [[ -f $f ]] # Checks to see if file exists in current working directory
+        then
+            $RUN_COMMAND "${f}"
+        else
+            $RUN_COMMAND "${HOME}/scripts/bash/${f}"
+        fi
+    done
+}
+
+
+openCommand() {
+    main "$(command -v "${1}")" # equivalent of oina $(which ${1})
+}
+
+
+while getopts ":-:ch" OPTION; do
     case $OPTION in
         -)
             case $OPTARG in
                 help)
                     display_help ;;
+                command)
+                    openCommand "${2}" ;;
                 *)
                     opt_err ;;
             esac ;;
         h)
-            display_help ;; 
+            display_help ;;
+        c)
+            openCommand "${2}" ;;
         *)
-          opt_err ;;  
+          opt_err ;;
     esac
 done
 
 
 # Open file(s)
-for f in $@
-do
-    if [[ $KERNEL == "Linux" ]]
-    then
-        if [[ -f $f ]] # Checks to see if file exists in current working directory
-        then
-            atom $f
-        else
-            atom "${HOME}/scripts/bash/${f}"
-        fi
-    elif [[ $KERNEL == "Darwin" ]]
-    then
-        if [[ -f $f ]] # Checks to see if file exists in current working directory
-        then
-            open -a Atom.app $f
-        else
-            open -a Atom.app "${HOME}/scripts/bash/${f}"
-        fi
-    fi
-done
+# if no options passed, curl file into appropriate directory
+if [[ $OPTIND -eq 1 ]]
+then
+    main "${1}"
+fi
+shift $((OPTIND-1))
+
 
 
 clean-exit
