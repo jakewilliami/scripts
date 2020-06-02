@@ -32,7 +32,7 @@ PROJNAME="<name of project>" && \
 cd ~/scripts/rust && \
 cargo init --bin ${PROJNAME} && \
 cd ${PROJNAME}/ && \
-cargo run src/main.rs
+cargo run src/main.rs  // invokes `rustc` behind the scenes
 ```
 If you need to download a Rust library, you must first clone it, and then
 ```
