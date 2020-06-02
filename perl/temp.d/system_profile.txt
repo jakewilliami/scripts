@@ -13,15 +13,55 @@
 			<string>full</string>
 		</array>
 		<key>_SPCompletionInterval</key>
-		<real>5.9534890651702881</real>
+		<real>15.965938925743103</real>
 		<key>_SPResponseTime</key>
-		<real>6.0658279657363892</real>
+		<real>16.075378060340881</real>
 		<key>_dataType</key>
 		<string>SPApplicationsDataType</string>
 		<key>_detailLevel</key>
 		<integer>1</integer>
 		<key>_items</key>
 		<array>
+			<dict>
+				<key>_name</key>
+				<string>Colloquy</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Colloquy 2.4.3; Copyright © 2003-2014, Colloquy Project</string>
+				<key>lastModified</key>
+				<date>2014-03-22T02:13:33Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/Applications/Colloquy.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>version</key>
+				<string>2.4.3</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Disk Utility</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-04-04T01:10:25Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Disk Utility.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>18.0</string>
+			</dict>
 			<dict>
 				<key>_name</key>
 				<string>Microsoft PowerPoint</string>
@@ -43,6 +83,498 @@
 				</array>
 				<key>version</key>
 				<string>16.37</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>LibreOffice</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>LibreOffice 4.2.5.2</string>
+				<key>lastModified</key>
+				<date>2020-05-30T23:31:23Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/LibreOffice.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: The Document Foundation</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.2.5002</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>RStudio</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>RStudio 1.3.959, © 2009-2020 RStudio, PBC</string>
+				<key>lastModified</key>
+				<date>2020-05-18T19:42:01Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/RStudio.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: RStudio Inc. (FYF2F5GFX4)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.3.959</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Notes</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2019-06-06T00:48:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Notes.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.6</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Plex</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Plex</string>
+				<key>lastModified</key>
+				<date>1970-01-01T00:00:00Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Plex.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Plex Inc. (K4QJ56KR4A)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.11.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Bitwarden</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-05-29T02:32:32Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Bitwarden.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: 8bit Solutions LLC (LTZ2PFU5D6)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.18.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Standard Notes</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-05-04T16:59:46Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Standard Notes.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: progenius inc (HKF9BXSN95)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.4.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Amphetamine</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-03-21T22:15:56Z</date>
+				<key>obtained_from</key>
+				<string>mac_app_store</string>
+				<key>path</key>
+				<string>/Applications/Amphetamine.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Apple Mac OS Application Signing</string>
+					<string>Apple Worldwide Developer Relations Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.0.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Rectangle</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-05-17T08:26:53Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Rectangle.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Ryan Hanson (XSYZ3E4B7D)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>0.29</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Hammerspoon</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-01-13T21:29:00Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Hammerspoon.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Chris Jones (VQCYSNZB89)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>0.9.78</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Logitech Gaming Software</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-05-29T21:43:48Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Logitech/Logitech Gaming Software.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Logitech Inc. (QED4VVPZWA)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>9.02.22</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Tunnelblick</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-03-22T16:01:12Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Tunnelblick.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Jonathan Bullard (Z2SG5H3HC8)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.8.2 (build 5480)</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Alfred 4</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-03-20T11:01:20Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Alfred 4.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Running with Crayons Ltd (XZZXE9SED4)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.0.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Slack</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-04-30T00:23:34Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Slack.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Slack Technologies, Inc. (BQR82RBBHL)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.5.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Discord</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-04-11T15:37:57Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Discord.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Discord, Inc. (53Q6R32WPB)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>0.0.257</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>TeXShop</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>4.44, Copyright 2001-2019, Richard Koch</string>
+				<key>lastModified</key>
+				<date>2020-04-28T09:24:19Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/TeX/TeXShop.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Richard Koch (RBGCY5RJWM)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>4.44</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Thunderbird</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Thunderbird 68.8.1</string>
+				<key>lastModified</key>
+				<date>2020-05-29T06:23:49Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Thunderbird.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Mozilla Corporation (43AQ936H96)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>68.8.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>iTerm</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>3.3.9</string>
+				<key>lastModified</key>
+				<date>2020-02-13T07:02:29Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/iTerm.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: GEORGE NACHMAN (H7V7XYVQ7D)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>3.3.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Spotify</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-05-21T09:40:42Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Spotify.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Spotify (2FNC3A47ZF)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.1.33.569.gced9e0f5</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Firefox</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>Firefox 76.0.1</string>
+				<key>lastModified</key>
+				<date>2020-05-07T13:25:03Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Firefox.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Mozilla Corporation (43AQ936H96)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>76.0.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Atom</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-04-23T03:21:14Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Atom.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: GitHub (VEKTX9H2N7)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.46.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Preview</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>info</key>
+				<string>10.1, Copyright 2002-2018 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2019-02-23T07:03:26Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/Applications/Preview.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.1</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Linguist</string>
+				<key>has64BitIntelCode</key>
+				<string>yes</string>
+				<key>lastModified</key>
+				<date>2020-03-28T09:19:20Z</date>
+				<key>obtained_from</key>
+				<string>unknown</string>
+				<key>path</key>
+				<string>/usr/local/Cellar/qt/5.14.2/libexec/Linguist.app</string>
+				<key>runtime_environment</key>
+				<string>arch_x86</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -90,30 +622,6 @@
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>RStudio</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>RStudio 1.3.959, © 2009-2020 RStudio, PBC</string>
-				<key>lastModified</key>
-				<date>2020-05-18T19:42:01Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/RStudio.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: RStudio Inc. (FYF2F5GFX4)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>1.3.959</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>VoiceOver Quickstart</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -155,52 +663,6 @@
 				</array>
 				<key>version</key>
 				<string>14.0</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Spotify</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-05-21T09:40:42Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Spotify.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Spotify (2FNC3A47ZF)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>1.1.33.569.gced9e0f5</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>LibreOffice</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>LibreOffice 4.2.5.2</string>
-				<key>lastModified</key>
-				<date>2020-05-30T23:31:23Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/LibreOffice.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: The Document Foundation</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>4.2.5002</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -262,30 +724,6 @@
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>Plex</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>Plex</string>
-				<key>lastModified</key>
-				<date>1970-01-01T00:00:00Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Plex.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Plex Inc. (K4QJ56KR4A)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>1.11.0</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>QuickTime Player</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -310,28 +748,6 @@
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>Logitech Gaming Software</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-05-29T21:43:48Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Logitech/Logitech Gaming Software.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Logitech Inc. (QED4VVPZWA)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>9.02.22</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>TextEdit</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -351,54 +767,6 @@
 				</array>
 				<key>version</key>
 				<string>1.14</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Firefox</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>Firefox 76.0.1</string>
-				<key>lastModified</key>
-				<date>2020-05-07T13:25:03Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Firefox.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Mozilla Corporation (43AQ936H96)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>76.0.1</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Thunderbird</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>Thunderbird 68.8.1</string>
-				<key>lastModified</key>
-				<date>2020-05-29T06:23:49Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Thunderbird.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Mozilla Corporation (43AQ936H96)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>68.8.1</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -796,254 +1164,6 @@ All rights reserved.</string>
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>Amphetamine</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-03-21T22:15:56Z</date>
-				<key>obtained_from</key>
-				<string>mac_app_store</string>
-				<key>path</key>
-				<string>/Applications/Amphetamine.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Apple Mac OS Application Signing</string>
-					<string>Apple Worldwide Developer Relations Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>5.0.1</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Rectangle</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-05-17T08:26:53Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Rectangle.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Ryan Hanson (XSYZ3E4B7D)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>0.29</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Hammerspoon</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-01-13T21:29:00Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Hammerspoon.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Chris Jones (VQCYSNZB89)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>0.9.78</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Tunnelblick</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-03-22T16:01:12Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Tunnelblick.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Jonathan Bullard (Z2SG5H3HC8)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>3.8.2 (build 5480)</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Alfred 4</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-03-20T11:01:20Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Alfred 4.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Running with Crayons Ltd (XZZXE9SED4)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>4.0.9</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>iTerm</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>3.3.9</string>
-				<key>lastModified</key>
-				<date>2020-02-13T07:02:29Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/iTerm.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: GEORGE NACHMAN (H7V7XYVQ7D)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>3.3.9</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Discord</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-04-11T15:37:57Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Discord.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Discord, Inc. (53Q6R32WPB)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>0.0.257</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>TeXShop</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>4.44, Copyright 2001-2019, Richard Koch</string>
-				<key>lastModified</key>
-				<date>2020-04-28T09:24:19Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/TeX/TeXShop.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Richard Koch (RBGCY5RJWM)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>4.44</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Slack</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-04-30T00:23:34Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Slack.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: Slack Technologies, Inc. (BQR82RBBHL)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>4.5.1</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Atom</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-04-23T03:21:14Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Atom.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: GitHub (VEKTX9H2N7)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>1.46.0</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Preview</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>10.1, Copyright 2002-2018 Apple Inc.</string>
-				<key>lastModified</key>
-				<date>2019-02-23T07:03:26Z</date>
-				<key>obtained_from</key>
-				<string>apple</string>
-				<key>path</key>
-				<string>/Applications/Preview.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Software Signing</string>
-					<string>Apple Code Signing Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>10.1</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>Installer</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -1151,28 +1271,6 @@ All rights reserved.</string>
 				</array>
 				<key>version</key>
 				<string>2.46.0</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Standard Notes</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-05-04T16:59:46Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Standard Notes.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: progenius inc (HKF9BXSN95)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>3.4.1</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -1598,28 +1696,6 @@ All rights reserved.</string>
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>Notes</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2019-06-06T00:48:24Z</date>
-				<key>obtained_from</key>
-				<string>apple</string>
-				<key>path</key>
-				<string>/Applications/Notes.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Software Signing</string>
-					<string>Apple Code Signing Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>4.6</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>iTunes</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -1641,28 +1717,6 @@ All rights reserved.</string>
 				</array>
 				<key>version</key>
 				<string>12.9.5</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Disk Utility</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2019-04-04T01:10:25Z</date>
-				<key>obtained_from</key>
-				<string>apple</string>
-				<key>path</key>
-				<string>/Applications/Utilities/Disk Utility.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Software Signing</string>
-					<string>Apple Code Signing Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>18.0</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -1930,24 +1984,6 @@ All rights reserved.</string>
 			</dict>
 			<dict>
 				<key>_name</key>
-				<string>Colloquy</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>info</key>
-				<string>Colloquy 2.4.3; Copyright © 2003-2014, Colloquy Project</string>
-				<key>lastModified</key>
-				<date>2014-03-22T02:13:33Z</date>
-				<key>obtained_from</key>
-				<string>unknown</string>
-				<key>path</key>
-				<string>/Applications/Colloquy.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>version</key>
-				<string>2.4.3</string>
-			</dict>
-			<dict>
-				<key>_name</key>
 				<string>MacVim</string>
 				<key>has64BitIntelCode</key>
 				<string>yes</string>
@@ -1967,28 +2003,6 @@ All rights reserved.</string>
 				</array>
 				<key>version</key>
 				<string>8.2.539</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Bitwarden</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-03-24T04:18:42Z</date>
-				<key>obtained_from</key>
-				<string>identified_developer</string>
-				<key>path</key>
-				<string>/Applications/Bitwarden.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-				<key>signed_by</key>
-				<array>
-					<string>Developer ID Application: 8bit Solutions LLC (LTZ2PFU5D6)</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-				<key>version</key>
-				<string>1.17.2</string>
 			</dict>
 			<dict>
 				<key>_name</key>
@@ -4661,20 +4675,6 @@ All rights reserved.</string>
 				<string>unknown</string>
 				<key>path</key>
 				<string>/usr/local/Cellar/qt/5.14.2/libexec/pixeltool.app</string>
-				<key>runtime_environment</key>
-				<string>arch_x86</string>
-			</dict>
-			<dict>
-				<key>_name</key>
-				<string>Linguist</string>
-				<key>has64BitIntelCode</key>
-				<string>yes</string>
-				<key>lastModified</key>
-				<date>2020-03-28T09:19:20Z</date>
-				<key>obtained_from</key>
-				<string>unknown</string>
-				<key>path</key>
-				<string>/usr/local/Cellar/qt/5.14.2/libexec/Linguist.app</string>
 				<key>runtime_environment</key>
 				<string>arch_x86</string>
 			</dict>
@@ -9748,7 +9748,7 @@ Copyright © 2001-2002 Jim Ingham &amp; Ian Reid</string>
 			</dict>
 		</dict>
 		<key>_timeStamp</key>
-		<date>2020-05-31T09:52:22Z</date>
+		<date>2020-05-31T22:45:02Z</date>
 		<key>_versionInfo</key>
 		<dict>
 			<key>com.apple.SystemProfiler.SPApplicationsReporter</key>

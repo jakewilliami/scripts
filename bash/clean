@@ -16,7 +16,8 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 # get os-specific dependencies
 case $OS in
     macos)
-        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}" "${CPANM}"
+        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+        is-library-then-install "${CPANM}"
         ;;
     debian)
         is-command-then-install "${RUBY_PACKAGE}"

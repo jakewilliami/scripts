@@ -1,15 +1,28 @@
+Colloquy: unknown
 Microsoft PowerPoint: identified_developer
+LibreOffice: identified_developer
+RStudio: identified_developer
+Plex: identified_developer
+Bitwarden: identified_developer
+Standard Notes: identified_developer
+Rectangle: identified_developer
+Hammerspoon: identified_developer
+Logitech Gaming Software: identified_developer
+Tunnelblick: identified_developer
+Alfred 4: identified_developer
+Slack: identified_developer
+Discord: identified_developer
+TeXShop: identified_developer
+Thunderbird: identified_developer
+iTerm: identified_developer
+Spotify: identified_developer
+Firefox: identified_developer
+Atom: identified_developer
+Linguist: unknown
 Microsoft AutoUpdate: identified_developer
 AppCleaner: identified_developer
-RStudio: identified_developer
-Spotify: identified_developer
-LibreOffice: identified_developer
 Python Launcher 3: unknown
 Python: unknown
-Plex: identified_developer
-Logitech Gaming Software: identified_developer
-Firefox: identified_developer
-Thunderbird: identified_developer
 Logitech Updater: identified_developer
 Uninstaller: unknown
 G502Update_v17: identified_developer
@@ -27,19 +40,9 @@ G402Update_v17: identified_developer
 G910Update_v26: identified_developer
 PowerplayUpdate_v11: identified_developer
 G920Update_96_3_49: identified_developer
-Rectangle: identified_developer
-Hammerspoon: identified_developer
-Tunnelblick: identified_developer
-Alfred 4: identified_developer
-iTerm: identified_developer
-Discord: identified_developer
-TeXShop: identified_developer
-Slack: identified_developer
-Atom: identified_developer
 LogitechGamingInstaller: identified_developer
 Keka: identified_developer
 Caprine: identified_developer
-Standard Notes: identified_developer
 zoom: identified_developer
 League of Legends: unknown
 Twitch: identified_developer
@@ -61,9 +64,7 @@ Steam Helper EH: identified_developer
 HTML5App: unknown
 Steam: identified_developer
 GIMP-2: identified_developer
-Colloquy: unknown
 MacVim: identified_developer
-Bitwarden: identified_developer
 LaTeXiT: identified_developer
 Firefox Developer Edition: identified_developer
 Brackets: identified_developer
@@ -112,7 +113,6 @@ QtWebEngineProcess: unknown
 qml: unknown
 qdbusviewer: unknown
 pixeltool: unknown
-Linguist: unknown
 Designer: unknown
 Assistant: unknown
 R: identified_developer
