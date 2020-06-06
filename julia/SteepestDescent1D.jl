@@ -12,7 +12,7 @@ using SymPy
 
 @vars x y
 
-f(x) = x^4 - 3*x^3 + 2
+f(x) = x^4 - 3*x^3 + 2 # equivalent of python's lambda
 df(x) = 4x^3 - 9x^2
 startingPoint = 6
 # df(x) = diff(f(x), x)
@@ -35,8 +35,6 @@ function steepestDescent(x0,eps=1e-5,stepsize=1e-3)
 end
 
 steepestDescent(startingPoint)
-
-# println("Local minimum at ", x, " with value ", f(x), " after ", nsteps, " steps.")
 
 # pl.figure()
 # xstar = steepestDescent(6)
