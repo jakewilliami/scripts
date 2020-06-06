@@ -67,3 +67,55 @@ It reads a set of strings from stdin (which has to be a file, not a pipe).
 It sends each string in turn to Sim.c as the primary string to match, and then all the other strings to compare it with. So the final results are a comparison of every string with every other.
 
 It is slow for large sets of data, because of the n * m requirement, and it runs an external process for each input string. On a 430-line C source, it takes 8 seconds and makes 46,000 comparisons.
+
+
+---
+
+comment 1:
+
+Somewhere I have some code (might be shell, awk or C, or some combination of those) which ranks multiple lines for degree of similarity, between 0.000 and 1.000. It looks for the longest common substring between any two targets, and then recursively does the same in what's left.
+
+So "abcde"/"abcde" scores 1.000, "JOKER"/"JOE KERR" scores 0.769, "pit"/"bull" scores 0.000. Obviously, you can lowercase both strings before you start, equalise whitespace, etc.
+
+I suspect the C does a few strings very fast, the awk does a lot of strings more slowly, and the shell organises the options and workload properly. I had to use this to match up 70,000 electrical substation names between two systems, so I know it works. It used to take out matches starting with the definites and impossibles, and then work towards the centre until it didn't like the vagueness level (I think that was an arg).
+
+I will try to find this in my archives today. Can you compile C if you need to?
+
+It should be easy to have it rank strings across all your files, and then tell you which is the best file to start with as a base. It could probably give you the consolidated list too.
+
+Do you know if you have foreign words in the mix? I have something that checks my backups for incremental changes, and language pack names, French song titles etc. are an issue.
+
+
+comment 2:
+
+
+Posted 4 articles on PasteBin. https://pastebin.com/u/Paul_Pedant
+
+Sorry it took so long. Post or DM me if you can't find it. There is a note on the algorithm, an awk method with a test package, a C program that just compares strings two at a time, and a ksh script that compares a file of string, two at a time, in all combinations.
+
+This stuff was all written years back, for a 24MB machine, and it is pretty crass. What it needs is for the C code to read all the strings and than check each one against all the others, instead of running it in a loop in another script.
+
+You may have an extra issue with your strings in five files. You don't want to pair things in the same file. For example, if file 1 has "Abba Hits Vol 1" and "Abba Hits Vol 2", you don't want to decide they are the same. But if file 4 has "Abba Greatest Hits", you probably want to pair that up even though is is less like either of the others.
+
+When I did this, I had thousands of names for electrical substations and transmission lines between them, with inconsistent spelling, and I had to link them all up correctly. So I took out the almost-perfect matches, and discarded the can't-be-right matches first, and then kept taking the nearest out of what was left for as long as they looked plausible. I don't have that code, but it made an impossible job (just) possible.
+
+
+comment; response to `tre-agrep`:
+
+TRE agrep looks good, but it needs embedding in a smart script.
+
+The issue is that you have to supply agrep with the patterns to match. So we will need to pick the data out of some of the files, to use as patterns for the other files, because we don't know what we are searching for until we find some names.
+
+First suggestion is to find which names occur in all 5 files, save that list, and cut them out of (copies of) all the five files. That should reduce the volume of fuzzy matches significantly.
+
+Then find all the names which occur in 4 files. For each name, fuzzy search in the "other file" for that name (using the -k option in case a name contains special characters, and maybe the -w option). You might need to experiment with the approximation settings to get the right values. You need to trim out the names you accept so they don't match again somewhere, which would be ambiguous.
+
+Repeat that for names that occur exactly in 3 files, searching the other 2 for each name.
+
+Then the same for names in 2 files, searching what's left of the 3 others.
+
+You don't need to search for the remaining names, because they would have already have been found if they were like a name from any of the other files.
+
+That sounds like a day of fun. I would probably keep all the lists in awk, and put the reduced name lists out to workfiles, and run each agrep through an awk pipe. Keep all the pain in one place. Or I could use my own comparison algorithm inside the same awk. That would be slower in the matching, but it wouldn't start up hundreds of extra processes.
+
+If you want to post your files on PasteBin or some such, I'm good to experiment with it. I'm going to install agrep anyway to see how it looks.
