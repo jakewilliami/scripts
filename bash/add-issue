@@ -58,7 +58,7 @@ do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
                     case $OPTARG in
-                        make-tag)  
+                        make-tag)
                             make_tag ;;
                         help)
                             display_help ;;
@@ -67,9 +67,9 @@ do
                     esac ;;
                 t)
                     make_tag ;;
-                h)  
+                h)
                     display_help ;;
-                *)  
+                *)
                     opt_err ;;
         esac
 done
@@ -79,9 +79,9 @@ done
 [[ -z $1 ]] && opt_err_none && clean-exit
 
 
-#if no options were passed   
+#if no options were passed
 if [ $OPTIND -eq 1 ]
-then 
+then
     add_issue "${1}" "${@:2}"
     clean-exit
 fi
