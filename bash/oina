@@ -61,7 +61,7 @@ display_help() {
 
 
 main() {
-    for f in $@
+    for f in "${@}"
     do
         if [[ $KERNEL == "Linux" ]]
         then
