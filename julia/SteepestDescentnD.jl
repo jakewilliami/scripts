@@ -13,9 +13,14 @@ using LinearAlgebra
 
 @vars x y
 
-f(x) = (x[0] - 3)^2 + (x[1] - 2)^2 # equivalent of python's lambda
-df(x) = [2*(x[0] - 3); 2*(x[1] - 2)]
-# df(x) = diff(f(x), x)
+### f(x) = f1(x[1]) + f2(x[2]) + ...
+### df(x) = [ derivative f1([x1]); derivative f2([x2]); ...  ]
+
+# f(x) = (x[1] - 3)^2 + (x[2] - 2)^2 # equivalent of python's lambda
+# df(x) = [2*(x[1] - 3); 2*(x[2] - 2)] # indexing arrays begin at 1 in Julia
+f(x) = cos(x[1]) + x[2]^2
+df(x) = [-sin(x[1]); 2*x[2]]
+
 start = [1 1]'
 xstart = [3 2]'
 
@@ -40,9 +45,13 @@ steepestDescent(start)
 # X = np.arange(0, 4, 0.1)
 # Y = np.arange(0, 3, 0.1)
 # X, Y = np.meshgrid(X, Y)
-Z = (X - 2)^4 + (X - 2*Y)^2
+# Z = (X - 2)^4 + (X - 2*Y)^2
+
 # plot3d.plot3d(X,Y,Z)
 # fig = pl.figure()
 # pl.contour(X, Y, Z, 10)
-
-# ...
+# pl.plot(start[0],start[1],'ko',ms=20)
+# x = steepestDescent(start)
+# pl.plot(xstar[0],xstar[1],'go',ms=20)
+# pl.title("Steepest Descent")
+# pl.show()
