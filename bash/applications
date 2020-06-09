@@ -25,6 +25,7 @@ display_help() { #Displays help
     help_commands '-b' '--list-brew' '2' 'Lists' 'b' 'rew' 'casks.'
     help_commands '-c' '--compile' '3' '\b' 'c' 'ompiles' 'data from applications and saves as text in \`~/scripts/perl\`.'
     help_commands '-C' '--Compare' '3' '\b' 'C' 'ompares' 'application lists from brew and system; outputs applications found on system not installed by brew.'
+    help_commands '-n' '--no-interaction' '1' 'Does the same as --Compare but with ' 'n' 'o [user] interaction' '(takes parameter that is an output file)'
     help_help '3'
     clean-exit
 }
@@ -124,8 +125,64 @@ compare_lists() {
 }
 
 
+no_interaction() {
+    
+    perl_compile
+    
+    # create applications list from raw
+    awk -F':' '
+        {
+            gsub(/[^[:alnum:]]+/, "", $1)
+        }
+        {
+            print tolower($1)
+        }
+        ' ${HOME}/scripts/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
+        
+    # create cask list from raw
+    awk '
+        {
+            gsub(/[^[:alnum:]]+/, "")
+        }
+        {
+            print tolower($0)
+        }
+        ' ${HOME}/scripts/perl/temp.d/casks.txt > /tmp/casks.txt
+    
+    # edit cask list
+    gsed -i 's/^zoomus$/zoom/g' /tmp/casks.txt
+    gsed -i 's/^iterm[[:digit:]]*$/iterm/g' /tmp/casks.txt
+    gsed -i 's/^julia[[:digit:]]*$/julia/g' /tmp/dataApps.txt
+    gsed -i 's/^tigervncviewer[[:digit:]]*$/tigervncviewer/g' /tmp/dataApps.txt
+    gsed -i 's/^feedthebeast$/ftbapp/g' /tmp/casks.txt
+    gsed -i 's/^gimp[[:digit:]]*$/gimp/g' /tmp/dataApps.txt
+    gsed -i 's/^adobedigitaleditions[[:digit:]]*$/adobedigitaleditions/g' /tmp/dataApps.txt
+    gsed -i 's/^alfred[[:digit:]]*$/alfred/g' /tmp/dataApps.txt
+    gsed -i 's/^dockerquickstartterminal$/dockertoolbox/g' /tmp/dataApps.txt
+    
+    # compare lists
+    # grep -iv -Fvxf /tmp/casks.txt /tmp/dataApps.txt
+    # comm -12
+    awk '
+        BEGIN {
+            FS=""
+               }                        # preserve whitespace
+        (NR==FNR) {
+            ll1[FNR]=$0; nl1=FNR
+                   }                    # file1, index by lineno
+        (NR!=FNR) {
+            ss2[$0]++
+                  }                     # file2, index by string
+        END {
+            for (ll=1; ll<=nl1; ll++) if (!(ll1[ll] in ss2)) print ll1[ll]
+        }
+        ' /tmp/dataApps.txt /tmp/casks.txt | column > "${1}"
+    
+}
+
+
 # Options
-while getopts ":-:abcCh" OPTION
+while getopts ":-:abncCh" OPTION
 do
         case $OPTION in
                 -)  #Long options for bash (without GNU)
@@ -141,6 +198,8 @@ do
                             echo -e "${BGREEN}Successfully compiled application data in \`~/scripts/perl\`.${NORM}";;
                         Compare)
                             compare_lists ;;
+                        no-interaction)
+                            no_interaction "${2}" ;;
                         *)
                             opt_err ;;
                     esac ;;
@@ -153,6 +212,8 @@ d                    list_casks ;;
                     echo -e "${BGREEN}Successfully compiled Homebrew casks in \`~/scripts/perl/casks.txt\` and application data (minus app store and Apple data) in \`~/scripts/perl/dataApps.txt\`.${NORM}";;
                 C)
                     compare_lists ;;
+                n)
+                    no_interaction "${2}" ;;
                 h)
                     display_help ;;
                 *)

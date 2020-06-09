@@ -51,11 +51,13 @@ display_help() { #Displays help
     help_commands '-f' '--filtered-issues' '1' 'Prints' 'f' 'iltered issues' 'by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.'
     help_commands '-e' '--exclude-issues' '1' 'Prints issues' 'e' 'xcluding issues' 'that are tagged with "depricated" and "pdfsearch" unless stated otherwise.'
     help_help '2'
-    help_examples 'If you run into issues installing `github-linguist` for the `-l` option, see:'
+    help_examples '===>\tIf you run into issues installing `github-linguist` for the `-l` option, see:'
     help_examples '\thttps://github.com/github/linguist/issues/4484#issuecomment-479612716, https://github.com/github/linguist/issues/4484#issuecomment-510073475'
     help_examples '\thttps://github.com/castwide/vscode-solargraph/issues/78#issuecomment-535211712, https://github.com/castwide/vscode-solargraph/issues/78#issuecomment-535210783'
     help_examples '\thttps://stackoverflow.com/questions/27438457/xcode-6-1-how-to-uninstall-command-line-tools#29859370, https://stackoverflow.com/questions/9329243/how-to-install-xcode-command-line-tools#9329325'
     help_examples '\thttps://github.com/github/linguist/issues/4449#issuecomment-470208078'
+    help_examples '===>\tI have also had issues with the dynamic library that charlock_holmes uses:'
+    help_examples '\thttps://github.com/github/linguist/issues/4879'
     clean-exit
 }
 
