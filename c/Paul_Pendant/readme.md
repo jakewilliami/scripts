@@ -119,3 +119,58 @@ You don't need to search for the remaining names, because they would have alread
 That sounds like a day of fun. I would probably keep all the lists in awk, and put the reduced name lists out to workfiles, and run each agrep through an awk pipe. Keep all the pain in one place. Or I could use my own comparison algorithm inside the same awk. That would be slower in the matching, but it wouldn't start up hundreds of extra processes.
 
 If you want to post your files on PasteBin or some such, I'm good to experiment with it. I'm going to install agrep anyway to see how it looks.
+---
+I had a major rethink about Sim.c, the C program which does fuzzy comparisons. It was clumsy to use, and needed to be called a lot of times. I rewrote it to manage all the names in memory at once, and to sort the results internally, and also added a couple more options.
+
+(1) It now works on either one or two files:
+
+(a) With one input file, it compares each line with every other line for similarity. So for n lines, it does (n * (n - 1) / 2) comparisons. This is nCr -- combinations of n objects 2 at a time. So for 1600 input lines, you get almost 1.3 million results. This runs in about 15 seconds.
+
+(b) With two input files, it compares every line in one file with every line in the other. So for n and m lines, you get (n * m) results. With 1400 against 1500 lines, you get 2.1 million results. This runs in about 45 seconds.
+
+(2) There is now a -p option to remove punctuation, along with the case-insensitive and white-space options. Run Sim -H for the full help.
+
+The are some re-useable functions in Sim.c.
+
+.. fileLoader() gets a whole file into memory effectively, either from a named file or from stdin.
+
+.. fileIndex() makes that file text into an array of strings in situ.
+
+I wrote a test package for this (also pasted here), using my ripped CD directory as test data.
+
+The similarity rating needs careful inspection. The 1.000 "identical" rating is just the same as a direct comparison. Anything below about 0.800 is probably not a real match: any random string of words is going to match quite a few letters, simply because there are only 26 of them to choose from (and only 5 vowels). I used the -t 0.75 option to reduce the number of listed matches to under 2000. The interesting part is to decide where the best cutoff point comes, for any specific data set.
+
+There are still some difficult areas. My raw track path names were like:
+
+Harry Chapin/Story of a Life- The Harry Chapin Box Disc 1/01 Taxi [Live].mp3
+
+That's no good for matching -- the artist name, album name, track number, [Live] and mp3 are all too common. The track is actually called "Taxi". All the other stuff is just going to dilute the similarity.
+
+I got an exact match on "Taxi", probably because of that "x". But I got a one-letter false match on what are two entirely different tracks:
+
+      2 0.900|Losing You|Loving You|
+
+So I convert those full path names into track names, with a serious awk script. It also removes .ini files, .jpeg artwork, It comments on what it deals with, and how many times, like:
+
+     167  Delete Art-Small.jpg
+     127  Delete desktop.ini
+      64  Delete unlabelled track
+    1419  Omit .mp3 suffix
+      12  Omit [Alternate Take]
+       6  Omit [Demo Version]
+      50  Omit [Live]
+    1403  Omit track prefix
+
+However, that makes it hard to trace back to the original references to see where they came from. When I found three variations on this spelling:
+
+      1 0.968|Shake Rattle 'n' Roll|Shake Rattle & Roll|
+      1 0.941|Shake Rattle and Roll|Shake Rattle 'n' Roll|
+      1 0.909|Shake Rattle and Roll|Shake Rattle & Roll|
+
+I used grep to extract:
+
+Buddy Holly/The Very Best of Buddy Holly/21 Shake Rattle & Roll.mp3
+The Red Stripe Band/Start Spreading The News/02 Shake Rattle 'n' Roll.mp3
+Various Artists/Dreamboats and Petticoats/19 Shake Rattle and Roll.mp3
+
+That's going to need to be an automated tool for a serious application. Also, any filtering is going to depend on what your specific names represent.
