@@ -1,6 +1,4 @@
-#! /usr/local/bin/julia -i
-
-#####! /usr/bin/env julia
+#! /usr/bin/env julia -i
 
 #########################################################################
 # EXAMPLE for PLOTTING FUNCTIONS (MATH244; Autumn, 2020)
@@ -15,7 +13,7 @@
 # import Pkg; Pkg.add("Plots"); Pkg.add("DifferentialEquations")
 using Plots, DifferentialEquations
 
-f(x) = log(abs(tan(x)+sec(x))) + sec(x) * tan(x) + (1/(cos(x)))
+f(x) = log(abs(tan(x)+sec(x)))
 
 # plot([f], -3, 3) # plot [f(x),...] over [-3, 3]
 # or simply

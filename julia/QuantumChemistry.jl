@@ -3,7 +3,7 @@
 
 # import Pkg; Pkg.add("PhysicalConstants")
 # import Pkg; Pkg.add("Unitful") # adds the stripping of units, `ustrip`, method.
-using PhysicalConstants.CODATA2018, Unitful
+using PhysicalConstants.CODATA2018, Unitful, SymPy, LinearAlgebra, RowEchelon
 
 #########################################################################
 # EXAMPLE for PHYSICAL CALCULATIONS (CHEM303; Winter, 2020)
@@ -13,9 +13,9 @@ using PhysicalConstants.CODATA2018, Unitful
 # QUESTION ONE
 #####################################################################################################################################
 
-# Length = (1.4 * 22) / 1e10
-# N_HOMO = 11
-# N_LUMO = 12
+# Length = 1.27e-9
+# N_HOMO = 5
+# N_LUMO = N_HOMO + 1
 #
 # EnergyHOMO = ustrip((ReducedPlanckConstant^2 * pi^2 * N_HOMO^2) / (2 * ElectronMass * Length^2))
 # EnergyHOMOeV = ustrip(EnergyHOMO / ElementaryCharge)
@@ -44,11 +44,15 @@ using PhysicalConstants.CODATA2018, Unitful
 # QUESTION TWO
 #####################################################################################################################################
 
-# Radius = 0.529 / 1e10
+# ls=1.5e-10
+# ld=1.34e-10
+#
+# Radius = (2*ls) + (2*ld)
 # Length = 2 * pi * Radius
 #
 # FirstLowestEnergyLevel = 0
-# SecondLowestEnergyLevel = 1
+# SecondLowestEnergyLevel = FirstLowestEnergyLevel + 1
+#
 #
 # FirstLowestEnergy = ustrip((2 * pi^2 * PlanckConstant^2 * FirstLowestEnergyLevel^2) / (ElectronMass * Length^2))
 # SecondLowestEnergy = ustrip((2 * pi^2 * PlanckConstant^2 * SecondLowestEnergyLevel^2) / (ElectronMass * Length^2))
@@ -69,9 +73,70 @@ using PhysicalConstants.CODATA2018, Unitful
 #
 # println("Transitional Wavelength:\t", Wavelength, " nm")
 
+
+#####################################################################################################################################
+# QUESTION THREE
+#####################################################################################################################################
+
+# FundamentalOvertoneStretch = 1213.6
+# FirstOvertoneStretch = 0
+# SecondOvertoneStretch = 3564.6
+#
+# @vars ν ωe xe
+#
+# G(ν) = (ν + 0.5)*ωe - (ν - 0.5)^2*ωe*xe # measured in per cm
+#
+# ωe = 1213.6
+# xe = 12.7 / ωe
+#
+# FundamentalTransition = G(1) - G(0)
+# FirstTransition = G(2) - G(0)
+# SecondTransition = G(3) - G(0)
+# ThirdTransition = G(4) - G(0)
+# FourthTransition = G(5) - G(0)
+
+# println(FourthTransition)
+#
+# Wavelength = ωe/(ωe*xe)
+# Energy = ustrip(((PlanckConstant * SpeedOfLightInVacuum) / (Wavelength))) / (1e-9)
+#
+#
+# println("De in wavelength:\t", Wavelength, "λ")
+# println("De in Joules:\t", Energy, "J")
+#
+# # FundamentalTransition = ωe
+# # SecondTransition = ωe*xe
+#
+# ### Use linear algebra rref to solve for ωe and ωexe
+#
+# De = (FundamentalOvertoneStretch^2) / (4*SecondOvertoneStretch)
+# De = (FundamentalTransition^2) / (4*SecondTransition)
+
+# println(FundamentalTransition, " = ", FundamentalOvertoneStretch)
+# println(SecondTransition, "=", SecondOvertoneStretch, "\n")
+#
+# A = [1 0 FundamentalOvertoneStretch; 3 -6 SecondOvertoneStretch]
+#
+# println(rref(A))
+
+# println(De) # measured in per cm
+
+
 #####################################################################################################################################
 # QUESTION FOUR
 #####################################################################################################################################
+
+Wavelength = 260e-9
+Energy = ustrip(((PlanckConstant * SpeedOfLightInVacuum) / (Wavelength))) / (1e-9)
+EnergyeV = ustrip(Energy / ElementaryCharge)
+
+# println("Wavelength:\t", Wavelength, " λ")
+# println("Energy in J:\t", Energy, " J \n")
+# println("Energy in eV:\t", EnergyeV, " eV \n")
+
+eqn1 = (7.46e-10) / ((cos((2*pi*4)/(28) - (cos((2*pi*3)/(28))))
+
+println(eqn1)
 
 eqn = abs((2.4*1.602e-19)*(cos((8*pi)/(28))-cos((6*pi)/(28))))
 
@@ -79,4 +144,4 @@ eqneV = eqn / 1.602e-19
 
 Wavelength = ustrip(((PlanckConstant * SpeedOfLightInVacuum) / (eqn))) / (1e-9)
 
-println(Wavelength)
+# println("Wavelength now:\t",Wavelength)
