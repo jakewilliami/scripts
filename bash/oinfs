@@ -1,0 +1,71 @@
+#! /bin/bash
+
+# define bash directory
+BASH_DIR="${HOME}/scripts/bash/"
+
+# Immediately exits script if nothing is passed to it
+if [[ -z "${@}" ]]
+then
+    HELP="\033[1;33m You must have at least one argument.  Use -h for help. \033[0;38m"
+    echo -e "${HELP}"
+    exit $?
+fi
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
+
+# exit if linux
+[[ $KERNEL == "Linux" ]] && {
+    echo "${BYELLOW}This script does not need to support Linux, as Linux's window management is generally good, and if it is not, it is your responsibility to get a better windows manager or desktop environment.  Convince me otherwise.${BNORM}"
+    exit $?
+}
+
+
+display_help() {
+    help_start 'oinfs [option... | file name...]' 'The present script will open a specified application in full screen.'
+    help_help '2'
+    clean-exit
+}
+
+
+main() {
+    for app in "${@}"
+    do
+        osascript -e "tell application \"${app}\"" -e "activate" -e "delay 1" -e "tell application \"System Events\" to tell process \"${app}\"" -e "set value of attribute \"AXFullScreen\" of window 1 to true" -e "end tell" -e "end tell"
+    done
+}
+
+
+openCommand() {
+    main "$(command -v "${1}")" # equivalent of oina $(which ${1})
+}
+
+
+while getopts ":-:ch" OPTION; do
+    case $OPTION in
+        -)
+            case $OPTARG in
+                help)
+                    display_help ;;
+                *)
+                    opt_err ;;
+            esac ;;
+        h)
+            display_help ;;
+        *)
+          opt_err ;;
+    esac
+done
+
+
+# Open file(s)
+# if no options passed, curl file into appropriate directory
+if [[ $OPTIND -eq 1 ]]
+then
+    main "${@}"
+fi
+shift $((OPTIND-1))
+
+
+
+clean-exit
