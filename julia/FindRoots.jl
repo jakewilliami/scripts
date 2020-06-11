@@ -1,4 +1,4 @@
-#! /usr/bin/env julia
+#! /usr/bin/env julia -i
 
 # import Pkg; Pkg.add("IntervalArithmetic"), Pkg.add("IntervalRootFinding"), Pkg.add("PlotlyJS"), Pkg.add("ORCA")
 
