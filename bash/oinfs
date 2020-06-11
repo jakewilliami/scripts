@@ -31,7 +31,20 @@ display_help() {
 main() {
     for app in "${@}"
     do
-        osascript -e "tell application \"${app}\"" -e "activate" -e "delay 1" -e "tell application \"System Events\" to tell process \"${app}\"" -e "set value of attribute \"AXFullScreen\" of window 1 to true" -e "end tell" -e "end tell"
+        # get application name (applicationName) from case insensitive input
+        # activate application
+        # set application to fullscreen
+        osascript \
+            -e "tell application \"System Events\"" \
+                -e "set applicationName to name of my application \"${app}\"" \
+            -e "end tell" \
+            -e "tell application applicationName" \
+                -e "activate" \
+                -e "delay 1" \
+                -e "tell application \"System Events\" to tell process applicationName" \
+                    -e "set value of attribute \"AXFullScreen\" of window 1 to true" \
+                -e "end tell" \
+            -e "end tell"
     done
 }
 
