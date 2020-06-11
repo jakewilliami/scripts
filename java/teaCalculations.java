@@ -1,4 +1,6 @@
-//This convesion calculator is for 11 pt garamond font
+// This convesion calculator is for 11 pt garamond font (see jakewilliami/tex-macros for why)
+// run using `java teaCalculations.java <int> <conversion from> <conversion to>`
+// see the post which inspired this: https://tex.stackexchange.com/a/8337/181375
 
 import java.util.Scanner;
 import java.util.*;
@@ -30,7 +32,7 @@ public class MainConversions{
         double size = Double.parseDouble(args[0]);
         String from = args[1];
         String to = args[2];
-        double convertedSize = size * conversionRatio(from, to);
+        double convertedSize = size * conversionRatio(to, from);
         
         String out = convertedSize + " " + to;
         System.out.println(out);
