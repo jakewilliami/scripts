@@ -5,7 +5,7 @@
 using IntervalArithmetic, IntervalRootFinding
 
 # define the function
-f(xx) = ( (x, y) = xx; x^2 - 2*x + y^2 - 6*y + 12 )
+f(xx) = ( (x, y) = xx; 2*x^2+y^2-2*x*y+2*x^3+x^4 )
 
 # obtain its gradient using the gradient operator ∇ exported by the package
 ∇f = ∇(f)

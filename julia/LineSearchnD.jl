@@ -13,13 +13,18 @@ using LinearAlgebra
 
 @vars x y
 
-f(x) = (x[1] - 3)^2 + (x[2] - 2)^2
-df(x) = [2*(x[1] - 3); 2*(x[2] - 2)] # indexing arrays begin at 1 in Julia
+# f(x) = (x[1] - 3)^2 + (x[2] - 2)^2
+# df(x) = [2*(x[1] - 3); 2*(x[2] - 2)] # indexing arrays begin at 1 in Julia
 
-start = [1; 1]
-xstart = [3; 2]
+f(x) = 2*x^3 - x^2 - 4*x + 2
+df(x) = 6*x^2 - 2*x - 4
 
-function lineSearch(x,fprime,alpha0=1,rho=0.5,c=0.5)
+start = 4
+
+# start = [1; 1]
+# xstar = [3; 2]
+
+function lineSearch(x,fprime,alpha0=0.25,rho=0.5,c=0.5)
     nChanges = 0
     alpha = alpha0
     while f(x - alpha*fprime) > f(x) - c*alpha*dot(fprime,fprime)
