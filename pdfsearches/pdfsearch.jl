@@ -64,6 +64,7 @@ function scanFiles(path, key)
                 pathToFile = joinpath(root, file)
                 
                 println(pathToFile)
+                
                 # get PDF plain text
                 getPDFText("$pathToFile", "/tmp/tempPDFOut")
                 
@@ -71,14 +72,14 @@ function scanFiles(path, key)
                 # open("/tmp/tempPDFOut") do f
                 #
                 #     # loop through lines in file
-                #     # for l in eachline(f)
-                #     #
-                #     #     # find matches to input
-                #     #     # if occursin(r"$ARGS[1]"i, l)
-                #     #         # println(l)
-                #     #     # end
-                #     #
-                #     # end
+                #     for l in eachline(f)
+                #
+                #         # find matches to input
+                #         # if occursin(r"$ARGS[1]"i, l)
+                #             println(file)
+                #         # end
+                #
+                #     end
                 #
                 # end
                 

@@ -11,6 +11,12 @@ then
     exit $?
 fi
 
+# ensure there is a place to write temporary files to
+if [[ ! -d "${HOME}"/scripts/perl/temp.d/ ]]
+then
+    mkdir "${HOME}"/scripts/perl/temp.d/
+fi
+
 # source required scripts
 source "${BASH_DIR}"/dependencies/source-dependencies.sh
 
@@ -206,7 +212,7 @@ do
                 a)
                     list_applications ;;
                 b)
-d                    list_casks ;;
+                    list_casks ;;
                 c)
                     perl_compile && \
                     echo -e "${BGREEN}Successfully compiled Homebrew casks in \`~/scripts/perl/casks.txt\` and application data (minus app store and Apple data) in \`~/scripts/perl/dataApps.txt\`.${NORM}";;
