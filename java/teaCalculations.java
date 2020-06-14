@@ -4,17 +4,34 @@
 
 import java.util.Scanner;
 import java.util.*;
+import com.beust.jcommander.Parameter;
 
-//all measurements factor from [unit] to pts
+// all measurements factor from [unit] to pts
 public class MainConversions{
+    
+    private List<String> parameters = new ArrayList<>();
+    @Parameter(names = { "-h", "--help" }, description = "Help (shows present output).")
+    @Parameter(names = {"-c", "--convert"}, description = "Use -c flag to run the conversions.")
+    
+    // parse options
+    public static void main(String ... argv) {
+        
+        Main main = new Main();
+        JCommander.newBuilder()
+            .addObject(main)
+            .build()
+            .parse(argv);
+        main.run();
+        
+    }
     
     public static final Map<String, Double> units = new HashMap<>();
     
     private static double conversionRatio(String from, String to) {
         return units.get(to) / units.get(from);
     }
-    
-    public static void main(String[] args) {
+
+    public void run() {
         
         //pt to pt
         units.put("pt", 1.00);
