@@ -1,6 +1,5 @@
 #! /usr/bin/env julia
 
-
 ##################################################################################
 # SYMBOLIC LAPLACE TRANSFORMATION CALCULATIONS (MATH244; Winter, 2019)
 ##################################################################################
@@ -16,12 +15,13 @@ using SymPy
 
 # input = @eval(Meta.parse(ARGS[1]))
 # f(x) = convert(input, Sym)
-f(x) = (x)/(s)
+f(x) = (x)^5
 #
 # println(typeof(f(x)))
 
 function laplaceTransform()
-    laplace = simplify(integrate(f(x)*exp(-s*x), (x, 0, Inf)))
+    raw_laplace = integrate(f(x)*exp(-s*x), (x, 0, Inf))
+    laplace = simplify(raw_laplace)
     println(laplace)
 end
 
