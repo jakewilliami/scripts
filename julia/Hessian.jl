@@ -19,7 +19,7 @@ g([1,2]) # evaluate the partial derivatives (gradient) at some point x
 
 @vars x y
 
-f(x,y) =  3*x^2 - 2*x*y + 2*y^2
+f(x,y) =  2*x^2+y^2-2*x*y+2*x^3+x^4
 
 fx = diff(f(x,y), x)
 fxx = diff(fx, x)

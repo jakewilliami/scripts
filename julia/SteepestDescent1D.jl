@@ -12,9 +12,9 @@ using SymPy
 
 @vars x y
 
-f(x) = x^4 - 3*x^3 + 2 # equivalent of python's lambda
-df(x) = 4x^3 - 9x^2
-startingPoint = 6
+f(x) = 2*x^3 - x^2 - 4*x + 2 # equivalent of python's lambda
+df(x) = 6*x^2 - 2*x - 4
+startingPoint = 4
 
 function steepestDescent(x0,eps=1e-5,stepsize=1e-3)
     previousStepSize = 1.0
