@@ -15,7 +15,7 @@ using SymPy
 
 # input = @eval(Meta.parse(ARGS[1]))
 # f(x) = convert(input, Sym)
-f(x) = (x)^5
+f(x) = 1/(s^2+2)
 #
 # println(typeof(f(x)))
 
