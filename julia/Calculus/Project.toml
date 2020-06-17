@@ -1,0 +1,7 @@
+[deps]
+CalculusWithJulia = "a2e0e22d-7d4c-5312-9169-8b992201a882"
+Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+Symata = "a906b1d5-d016-55c4-aab3-8a20cba0db2a"

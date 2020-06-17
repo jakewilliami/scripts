@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+    #=
+    exec julia --project="~/scripts/julia/Algorithms/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
+    "${BASH_SOURCE[0]}" "$@"
+    =#
+
+"""
+LINE SEARCH IN ND (MATH353; Winter, 2019)
+"""
+
+
+# using Plots; plotlyjs()
+using SymPy
+using LinearAlgebra
+
+@vars x y
+
+# f(x) = (x[1] - 3)^2 + (x[2] - 2)^2
+# df(x) = [2*(x[1] - 3); 2*(x[2] - 2)] # indexing arrays begin at 1 in Julia
+
+f(x) = 2*x^3 - x^2 - 4*x + 2
+df(x) = 6*x^2 - 2*x - 4
+
+start = 4
+
+# start = [1; 1]
+# xstar = [3; 2]
+
+function lineSearch(x,fprime,alpha0=0.25,rho=0.5,c=0.5)
+    nChanges = 0
+    alpha = alpha0
+    while f(x - alpha*fprime) > f(x) - c*alpha*dot(fprime,fprime)
+        alpha = rho*alpha
+        nChanges += 1
+    end
+    if nChanges == 1
+        println("Starting alpha = ", alpha)
+    else
+        println("New alpha = ", alpha)
+    end
+    return alpha
+end
+
+function gradientDescent(x0,eps=1e-5)
+    previousStepSize = 1
+    x = x0
+    nSteps = 0
+    # pl.plot(x[0],x[1],'ko',ms=20)
+    while previousStepSize > eps && nSteps < 50
+        oldx = x
+        stepsize = lineSearch(x,df(oldx))
+        x = x - stepsize*df(oldx)
+        println("Old x: ", df(oldx), "\tNew x:", x, "\n")
+        previousStepSize = norm(x - oldx)
+        # pl.quiver(oldx[0],oldx[1],x[0],x[1] - oldx[1],scale_utils='xy',angles='xy',scale=1)
+        # pl.plot([oldx[0],x[0]],[oldx[1],x[1]],'ro')
+        nSteps += 1
+    end
+    println("\nLocal minimum at ", x, " with value ", f(x), " after ", nSteps, " steps")
+    return x
+end
+
+# x = np.arange(0, 4, 0.1)
+# Y = np.arange(0, 3, 0.1)
+# X, Y = np.meshgrid(X, Y)
+# Z = (X-2)^4 + (X-2.0*Y)^2
+# Z = (X-3)^2 + (Y-2)^2
+
+# pl.figure()
+# pl.contour(X,Y,Z,10)
+
+# pl.plot(start[0],start[1],'ko',ms=20)
+x = gradientDescent(start)
+# pl.plot(xstar[0],xstar[1],'go',ms=20)
+# pl.title("Line Search")
+# pl.show()
+
+println(x)
