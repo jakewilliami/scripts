@@ -1,0 +1,6 @@
+[deps]
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+PhysicalConstants = "5ad8b20f-a522-5ce9-bfc9-ddf1d5bda6ab"
+RowEchelon = "af85af4c-bcd5-5d23-b03a-a909639aa875"
+SymPy = "24249f21-da20-56a4-8eb1-6a02cf4ae2e6"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
