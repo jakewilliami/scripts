@@ -2,7 +2,8 @@
 
 # Define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
-LIBRARY_FILE="${HOME}/Desktop/library.csv"
+#LIBRARY_FILE="${HOME}/Desktop/library.csv"
+LIBRARY_FILE="/Volumes/NO NAME/my-data/library/library.csv"
 
 # define bash directory
 BASH_DIR="${HOME}/scripts/bash/"
