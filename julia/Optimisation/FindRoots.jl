@@ -29,7 +29,5 @@ sleep(10)
 xs = first.(midpoints)
 ys = last.(midpoints)
 
-#using Plots; plotlyjs()
-
 surface(-5:0.1:6, -6:0.1:6, (x,y)->f([x,y]))
 scatter!(xs, ys, f.(midpoints))

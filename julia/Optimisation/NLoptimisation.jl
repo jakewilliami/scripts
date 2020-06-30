@@ -14,19 +14,24 @@ using Ipopt
 
 model = Model(Ipopt.Optimizer)
 
-@variable(model, x, start = 0.0)
-@variable(model, y, start = 0.0)
+@variable(model, x)
+@variable(model, y)
 
-@NLobjective(model, Min, 2*x^2 + 2*x*y + y^2 + x - y)
+@NLobjective(model, Max, x^2 + y^2)
 
-optimize!(model)
+# optimize!(model)
 
-println("x = ", value(x), " y = ", value(y))
+# println("x = ", value(x), " y = ", value(y))
 
 # adding a (linear) constraint
 
-# @constraint(model, x + y == 10)
+@constraint(model, 0.25*x^2 + y^2 <= 1)
+@constraint(model, x^2 + 0.25*y^2 <= 1)
+@constraint(model, x >= 0)
+@constraint(model, y >= 0)
+# @constraint(model, x <= Inf)
 
 optimize!(model)
 
 println("x = ", value(x), " y = ", value(y))
+# println("x = ", value(x))

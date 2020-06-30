@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
     #=
-    exec julia --project="~/scripts/julia/Algorithms/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
+    exec julia --project="~/scripts/julia/Counting/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
 
@@ -132,8 +132,8 @@ function reverseFactorial(r)
 	if isapprox(rTuple[1], rTuple[2], atol=1e-3)
 		return rTuple[2], Integer(big(r))
 	else
-		reverseFactorialCountDown(r) # previously used this until I realised how slow it is for large integers
-		# reverseFactorialDavidsMethod(r)
+		# reverseFactorialCountDown(r) # previously used this until I realised how slow it is for large integers
+		reverseFactorialDavidsMethod(r)
 	end
 	
 end

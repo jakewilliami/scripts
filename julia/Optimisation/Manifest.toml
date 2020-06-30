@@ -128,6 +128,12 @@ git-tree-sha1 = "1728d2633a206e931daf818309d90eb39c1ce93b"
 uuid = "a603d957-0e48-4f86-8fbd-0b7bc66df689"
 version = "0.2.1"
 
+[[CategoricalArrays]]
+deps = ["DataAPI", "Future", "JSON", "Missings", "Printf", "Statistics", "Unicode"]
+git-tree-sha1 = "a6c17353ee38ddab30e73dcfaa1107752de724ec"
+uuid = "324d7699-5711-5eae-9e2f-1d82baa6b597"
+version = "0.8.1"
+
 [[ChainRulesCore]]
 deps = ["MuladdMacro"]
 git-tree-sha1 = "32e2c6e44d4fdd985b5688b5e85c1f6892cf3d15"
@@ -199,6 +205,18 @@ git-tree-sha1 = "7c4f882c41faa72118841185afc58a2eb00ef612"
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "0.3.3+0"
 
+[[Compose]]
+deps = ["Base64", "Colors", "DataStructures", "Dates", "IterTools", "JSON", "LinearAlgebra", "Measures", "Printf", "Random", "Requires", "UUIDs"]
+git-tree-sha1 = "034174e607d254b8ca0853a1a9029b265114bf6c"
+uuid = "a81c6b42-2e10-5240-aca2-a61377ecd94b"
+version = "0.8.2"
+
+[[Conda]]
+deps = ["JSON", "VersionParsing"]
+git-tree-sha1 = "7a58bb32ce5d85f8bf7559aa7c2842f9aecf52fc"
+uuid = "8f4d0f93-b110-5947-807f-2305c1781a2d"
+version = "1.4.1"
+
 [[ConsoleProgressMonitor]]
 deps = ["Logging", "ProgressMeter"]
 git-tree-sha1 = "3ab7b2136722890b9af903859afcf457fa3059e8"
@@ -215,6 +233,12 @@ deps = ["StaticArrays"]
 git-tree-sha1 = "0b17db36e7e03f8437e0d1f55aea3e4a60c74353"
 uuid = "d38c429a-6771-53c6-b99e-75d170b6e991"
 version = "0.5.3"
+
+[[CoupledFields]]
+deps = ["LinearAlgebra", "Statistics", "StatsBase"]
+git-tree-sha1 = "6c9671364c68c1158ac2524ac881536195b7e7bc"
+uuid = "7ad07ef1-bdf2-5661-9d2b-286fd4296dac"
+version = "0.2.0"
 
 [[CpuId]]
 deps = ["Markdown", "Test"]
@@ -416,6 +440,10 @@ git-tree-sha1 = "04cb9cfaa6ba5311973994fe3496ddec19b6292a"
 uuid = "de31a74c-ac4f-5751-b3fd-e18cd04993ca"
 version = "0.5.0"
 
+[[Future]]
+deps = ["Random"]
+uuid = "9fa8497b-333b-5362-9e8d-4d0656e87820"
+
 [[GLFW]]
 deps = ["GLFW_jll"]
 git-tree-sha1 = "7c47cfbfe9e1ff1cf658ff3e739eb1b56ee95cbe"
@@ -464,6 +492,12 @@ git-tree-sha1 = "247adbd2b33c0c4b42efa20d1e807acf6312145f"
 uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
 version = "0.50.1"
 
+[[Gadfly]]
+deps = ["Base64", "CategoricalArrays", "Colors", "Compose", "Contour", "CoupledFields", "DataStructures", "Dates", "Distributions", "DocStringExtensions", "Hexagons", "IndirectArrays", "IterTools", "JSON", "Juno", "KernelDensity", "LinearAlgebra", "Loess", "Measures", "Printf", "REPL", "Random", "Requires", "Showoff", "Statistics"]
+git-tree-sha1 = "3d6d5025e08ce535c90979303ec6ab103c8a09b9"
+uuid = "c91e804a-d5a3-530f-b6f0-dfbca275c004"
+version = "1.3.0"
+
 [[GeneralizedGenerated]]
 deps = ["CanonicalTraits", "DataStructures", "JuliaVariables", "MLStyle"]
 git-tree-sha1 = "9a917449bebc5a241d23e13d36ea62c77129ce6e"
@@ -493,6 +527,12 @@ deps = ["Base64", "Dates", "IniFile", "MbedTLS", "Sockets"]
 git-tree-sha1 = "ec87d5e2acbe1693789efbbe14f5ea7525758f71"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 version = "0.8.15"
+
+[[Hexagons]]
+deps = ["Test"]
+git-tree-sha1 = "de4a6f9e7c4710ced6838ca906f81905f7385fd6"
+uuid = "a1b4810d-1bce-5fbd-ac56-80944d57a21f"
+version = "0.2.0"
 
 [[Hiccup]]
 deps = ["MacroTools", "Test"]
@@ -667,6 +707,12 @@ deps = ["MLStyle", "NameResolution"]
 git-tree-sha1 = "8868479ff35ab98588ed0a529a9c2a4f8bda3bd6"
 uuid = "b14d175d-62b4-44ba-8fb7-3064adc8c3ec"
 version = "0.2.0"
+
+[[Juno]]
+deps = ["Base64", "Logging", "Media", "Profile"]
+git-tree-sha1 = "a686b0cf235fa3e491b79b4783c2d2382292b436"
+uuid = "e5e0dc1b-0480-54bc-9374-aad01c23163d"
+version = "0.8.2"
 
 [[KernelDensity]]
 deps = ["Distributions", "FFTW", "Interpolations", "Optim", "StatsBase", "Test"]
@@ -860,6 +906,12 @@ version = "2.16.0+2"
 git-tree-sha1 = "e498ddeee6f9fdb4551ce855a46f54dbd900245f"
 uuid = "442fdcdd-2543-5da2-b0f3-8c86c306513e"
 version = "0.3.1"
+
+[[Media]]
+deps = ["MacroTools", "Test"]
+git-tree-sha1 = "75a54abd10709c01f1b86b84ec225d26e840ed58"
+uuid = "e89f7d12-3494-54d1-8411-f7d8b9ae1f27"
+version = "0.5.0"
 
 [[MeshIO]]
 deps = ["ColorTypes", "FileIO", "GeometryBasics", "Printf"]
@@ -1112,6 +1164,10 @@ version = "0.1.0"
 deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
+[[Profile]]
+deps = ["Printf"]
+uuid = "9abbd945-dff8-562f-b5e8-e1ebf5ef1b79"
+
 [[ProgressLogging]]
 deps = ["Logging", "SHA", "UUIDs"]
 git-tree-sha1 = "e47914361d124d8760f5e356403daeb7f3b81633"
@@ -1123,6 +1179,18 @@ deps = ["Distributed", "Printf"]
 git-tree-sha1 = "3e1784c27847bba115815d4d4e668b99873985e5"
 uuid = "92933f4c-e287-5a05-a399-4b506db050ca"
 version = "1.3.1"
+
+[[PyCall]]
+deps = ["Conda", "Dates", "Libdl", "LinearAlgebra", "MacroTools", "Serialization", "VersionParsing"]
+git-tree-sha1 = "3a3fdb9000d35958c9ba2323ca7c4958901f115d"
+uuid = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+version = "1.91.4"
+
+[[PyPlot]]
+deps = ["Colors", "LaTeXStrings", "PyCall", "Sockets", "Test", "VersionParsing"]
+git-tree-sha1 = "67dde2482fe1a72ef62ed93f8c239f947638e5a2"
+uuid = "d330b81b-6aea-500a-939a-2ce795aea3ee"
+version = "2.9.0"
 
 [[QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
@@ -1426,6 +1494,11 @@ deps = ["CpuId", "LinearAlgebra"]
 git-tree-sha1 = "a7eeff8fae4f11bd1ec140169ae2b10e26adf673"
 uuid = "3d5dd08c-fd9d-11e8-17fa-ed2836048c2f"
 version = "0.12.6"
+
+[[VersionParsing]]
+git-tree-sha1 = "80229be1f670524750d905f8fc8148e5a8c4537f"
+uuid = "81def892-9a0e-5fdd-b105-ffc91e053289"
+version = "1.2.0"
 
 [[WebIO]]
 deps = ["AssetRegistry", "Base64", "Distributed", "FunctionalCollections", "JSON", "Logging", "Observables", "Pkg", "Random", "Requires", "Sockets", "UUIDs", "WebSockets", "Widgets"]
