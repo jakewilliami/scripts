@@ -10,7 +10,7 @@
 # cpan install File::HomeDir
 
 # for defining to use a specific version of Perl
-use v5.30;
+use v5.30.3;
 use warnings;
 use strict;
 
