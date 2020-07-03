@@ -1,5 +1,7 @@
 #! /bin/bash
 
+trap "exit" INT
+
 # define bash directory
 BASH_DIR="${HOME}"/scripts/bash/
 PERL_VERSION_PATH="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"

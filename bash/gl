@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 #Future: `brew install yarn && yarn global add taskbook`?
 
+trap "exit" INT
+
 # define bash directory
 BASH_DIR="${HOME}"/scripts/bash/
 
