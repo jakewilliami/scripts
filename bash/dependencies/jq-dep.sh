@@ -1,18 +1,21 @@
 #! /bin/bash
 
-# Get package manager
-source "${HOME}"/scripts/bash/dependencies/package-man.sh
+# get the package manager from which-pacman.sh
+getInstallCommands
 
-#Define jq package for system
-JQ="jq"
+main() {
+    #Define jq package for system
+    JQ="jq"
 
-# Ensure jq is installed
-if ! command -v jq > /dev/null 2>&1
-then
-    echo -e "\u001b[1;38mInstalling \`jq\`...\u001b[0;38m" && \
-    $PACMAN "${JQ}" && \
-    echo -e "\u001b[1;38;5;2m\`jq\` installed successfully\u001b[0;38m" 
-fi
+    # Ensure jq is installed
+    if ! command -v jq > /dev/null 2>&1
+    then
+        echo -e "\033[1;38mInstalling \`jq\`...\033[0;38m" && \
+        $PACMAN "${JQ}" && \
+        echo -e "\033[1;38;5;2m\`jq\` installed successfully\033[0;38m"
+    fi
+}
 
 # get colours
+main
 source "${BASH_DIR}"/colours/json-colour-parser.sh
