@@ -16,37 +16,6 @@ fi
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get kernel-specific dependencies
-case $KERNEL in
-    Dawrin)
-        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-        gem_install "${GHLINGUIST}"
-        gem_install iStats
-        ;;
-    Linux)
-        is-command-then-install "${PYDF}" "${POWERSTAT}" "${DSTAT}"
-        is-library-then-install "${LMSENSORS}" "${SYSSTAT}"
-        ;;
-esac
-# get os-specific dependencies
-case $OS in
-    debian)
-        is-command-then-install "${NETSTAT_ALT}" "${INXI}"
-        declare -a debian_ruby_array=()
-        debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-        for i in "${debian_ruby_array[@]}"
-        do
-            is-library-then-install "${i}" 
-        done
-        ;;
-    arch)
-        is-command-then-install "${HWINFO}"
-        aur_install "${INXI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz'
-        ;;
-esac
-# get dependencies regardless of kernel and os
-is-command-then-install "${NETSTAT}"
-
 
 # Help
 display_help() {
@@ -71,17 +40,30 @@ display_help() {
 
 
 space() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-command-then-install "${PYDF}"
+            ;;
+    esac
+    
     if [[ $OS == "macos" ]]
     then
         df -mh
-    elif [[ $OS == "arch" ]]
-    then
+    else
         pydf
     fi
 }
 
 
 cpu_utilisation() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${SYSSTAT}"
+            ;;
+    esac
+    
     ps -A -o %cpu | \
     awk '{s+=$1} END {print s "%"}'  # Adds up all processes using cpu
     if [[ ${KERNEL} == "Linux" ]]
@@ -92,6 +74,13 @@ cpu_utilisation() {
 
 
 cpu_utilisation_extended() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${SYSSTAT}"
+            ;;
+    esac
+
     if [[ ${KERNEL} == "Linux" ]]
     then
         iostat -cdhx -o JSON | jq
@@ -102,6 +91,16 @@ cpu_utilisation_extended() {
 
 
 cpu_statistics() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Dawrin)
+            gem_install iStats
+            ;;
+        Linux)
+            is-library-then-install "${LMSENSORS}"
+            ;;
+    esac
+
     if [[ $OS == "macos" ]]
     then
         istats
@@ -113,6 +112,13 @@ cpu_statistics() {
 
 
 extended_devices() {
+    # get os-specific dependencies
+    case $OS in
+        arch)
+            is-command-then-install "${HWINFO}"
+            ;;
+    esac
+
     if [[ $OS == "macos" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
@@ -124,6 +130,13 @@ extended_devices() {
 
 
 network_devices_extended() {
+    # get os-specific dependencies
+    case $OS in
+        arch)
+            is-command-then-install "${HWINFO}"
+            ;;
+    esac
+
     if [[ $OS == "arch" ]]
     then
         hwinfo --short
@@ -155,6 +168,15 @@ network_devices() {
 }
 
 overview() {
+    case $OS in
+        debian)
+            is-command-then-install "${INXI}"
+            ;;
+        arch)
+            aur_install "${INXI}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/inxi.tar.gz'
+            ;;
+    esac
+
     if [[ $OS == "macos" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
@@ -171,6 +193,9 @@ overview() {
 
 
 network_stats() {
+    # get dependencies regardless of kernel and os
+    is-command-then-install "${NETSTAT}"
+
     if [[ $OS == "debian" || $OS == "macos" ]]
     then
         ifstat
@@ -182,6 +207,13 @@ network_stats() {
 
 
 network_stats_alt() {
+    # get os-specific dependencies
+    case $OS in
+        debian)
+            is-command-then-install "${NETSTAT_ALT}"
+            ;;
+    esac
+    
     if [[ $OS == "debian" ]]
     then
         sudo tcpstat
@@ -194,6 +226,13 @@ network_stats_alt() {
 
 
 power() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${POWERSTAT}"
+            ;;
+    esac
+
     if [[ $OS == "debian" ]]
     then
         powerstat -Hz
@@ -209,6 +248,13 @@ power() {
 
 
 pid_stat() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${SYSSTAT}"
+            ;;
+    esac
+
     if [[ $OS == "macos" ]]
     then
         ps aux
@@ -220,6 +266,13 @@ pid_stat() {
 
 
 live_overview() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-command-then-install "${DSTAT}"
+            ;;
+    esac
+
     if [[ ${KERNEL} == "Linux" ]]
     then
         dstat
