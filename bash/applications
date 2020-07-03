@@ -2,6 +2,10 @@
 
 # define bash directory
 BASH_DIR="${HOME}"/scripts/bash/
+PERL_VERSION_PATH="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
+PATH_VERSION_BREW="$(/usr/local/bin/perl --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
+PERL_VERSION_CURL="$(curl -s https://www.perl.org/ | awk -F'<span class="version-highlight">|</span>' '{printf "%s",$2}')"
+PERL_VERSION_CURRENT=${PERL_VERSION_CURL%%<*}
 
 # Immediately exits script if nothing is passed to it
 if [[ -z "${@}" ]]
@@ -42,29 +46,24 @@ notify_user() {
 
 # Compile .txt files for casks, applications, and process system_profiler -xml
 perl_compile() {
-    PERL_VERSION_PATH="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
-    PATH_VERSION_BREW="$(/usr/local/bin/perl --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
-    PERL_VERSION_CURL=$(curl -s https://www.perl.org/ | awk -F'<span class="version-highlight">|</span>' '{printf "%s",$2}')
-    PERL_VERSION_CURRENT=${PERL_VERSION_CURL%%<*}
     if [ "${PERL_VERSION_PATH}" == "${PERL_VERSION_BREW}" ]
     then
         perl -X ${HOME}/scripts/perl/applications.pl > /dev/null 2>&1 || \
-            echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir; do cpan install \"\${i}\"; done\` to install the required Perl modules.${BNORM}"
+            echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir; do cpan install \"\${i}\"; done\` to install the required Perl modules.${NORM}"
     else
         if [ -z "$(brew list | grep -E '^perl$')" ]
         then
-            echo -e "${BYELLOW}The current version of Perl available is version ${PERL_VERSION_CURRENT}.  You are currently running version ${PERL_VERSION_PATH}.  The version required to run this script is 5.30.\nPlease run \`brew install perl\` and check that \`which perl\` is located at /usr/local/bin/perl.  Once that is done (and you ensure that \`/usr/local/bin/perl --version\` is correct), please run this script again."
+            echo -e "${BYELLOW}The current version of Perl available is version ${PERL_VERSION_CURRENT}.  You are currently running version ${PERL_VERSION_PATH}.  The version required to run this script is 5.30.\nPlease run \`brew install perl\` and check that \`which perl\` is located at /usr/local/bin/perl.  Once that is done (and you ensure that \`/usr/local/bin/perl --version\` is correct), please run this script again.${NORM}"
             # echo -e "If you have trouble getting the perl executable downloaded via Homebrew to be the one used by your path, run \`\\\\curl -L https://install.perlbrew.pl | bash\` to download \`perlbrew\` (and ensure that \`~/perl5/perlbrew/bin/\` is in your path), and then run \`perlbrew switch perl-${PATH_VERSION_BREW}\`${BNORM}"
         else
             if [ -e /usr/local/bin/perl ]
             then
                 /usr/local/bin/perl -X ${HOME}/scripts/perl/applications.pl > /dev/null 2>&1 || \
-                    echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir; do cpan install \"\${i}\"; done\` to install the required Perl modules.${BNORM}"
+                    echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir Text::Fuzzy::PP; do /usr/local/bin/cpan install \"\${i}\"; done\` to install the required Perl modules.${NORM}"
             else
                 echo -e "${BWHITE}The Perl version that is currently on your path is version ${PERL_VERSION_PATH}.  This should be the same as your Homebrew version, ${PERL_VERSION_BREW}.  If I'm quite honest, I don't understand how we got here.  I mean logically.  Your Perl version on your path is not the same as that from Homebrew, whatever that may be; ${ITWHITE}AND${NORM}${BWHITE} your have Perl installed via Homebrew; ${ITWHITE}AND${NORM}${BWHITE} the default path for Perl (if installed via Homebre) is not what it should be (i.e., it is not in /usr/local/bin/).  What on earth have you done to your system?${NORM}"
             fi
         fi
-        clean-exit
     fi
     
 }
