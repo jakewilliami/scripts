@@ -9,37 +9,6 @@ BASH_DIR="${HOME}"/scripts/bash/
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get os-specific dependencies
-case $OS in
-    macos)
-        is-library-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-        gem_install "${GHLINGUIST}"
-        ;;
-    debian)
-        is-command-then-install "${RUBY_PACKAGE}"
-        declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-        for i in "${debian_ruby_array[@]}"
-        do
-            is-library-then-install "${i}"
-        done
-        is-library-then-install "${GHLINGUIST}"
-        ;;
-    arch)
-        is-command-then-install "${RUBY_PACKAGE}"
-        aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
-        aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
-        gem_install "${GHLINGUIST}"
-        ;;
-    fedora)
-        is-command-then-install "${RUBY_PACKAGE}"
-        gem_install "${GHLINGUIST}"
-        ;;
-esac
-# get dependencies regardless of kernel and os
-is-library-then-install "${ICU}"
-is-command-then-install "${PERL_PACKAGE}" "${CMAKE}" "${PKG_CONFIG}"
-gem_install "${GHI}"
-
 
 # Help
 display_help() { #Displays help
@@ -65,6 +34,33 @@ display_help() { #Displays help
 
 
 get_languages() {
+
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-library-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+            gem_install "${GHLINGUIST}"
+            ;;
+        debian)
+            is-command-then-install "${RUBY_PACKAGE}"
+            declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+            for i in "${debian_ruby_array[@]}"
+            do
+                is-library-then-install "${i}"
+            done
+            is-library-then-install "${GHLINGUIST}"
+            ;;
+        arch)
+            is-command-then-install "${RUBY_PACKAGE}"
+            aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
+            aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
+            gem_install "${GHLINGUIST}"
+            ;;
+        fedora)
+            is-command-then-install "${RUBY_PACKAGE}"
+            gem_install "${GHLINGUIST}"
+            ;;
+    esac
     
     truncate -s0 /tmp/languages
     truncate -s0 /tmp/langName
@@ -130,16 +126,25 @@ opt_b() { #Prints working branch
 
 
 opt_t() { #Prints tags/labels available for use
+    # get dependencies regardless of kernel and os
+    gem_install "${GHI}"
+    
     ghi label --list
 }
 
 
 opt_i() { # Prints open issues
+    # get dependencies regardless of kernel and os
+    gem_install "${GHI}"
+
     ghi list
 }
 
 
 opt_filtered_not_i() {
+    # get dependencies regardless of kernel and os
+    gem_install "${GHI}"
+
     if [[ -z "${@}" ]]
     then
         ghi list -N "depricated pdfsearch"
@@ -150,6 +155,9 @@ opt_filtered_not_i() {
 
 
 opt_filtered_i() {
+    # get dependencies regardless of kernel and os
+    gem_install "${GHI}"
+
     if [[ -z "${@}" ]]
     then
         ghi list -L "enhancement feature"
@@ -211,6 +219,10 @@ do
         esac
 done
 
+
+# get dependencies regardless of kernel and os
+is-library-then-install "${ICU}"
+is-command-then-install "${PERL_PACKAGE}" "${CMAKE}" "${PKG_CONFIG}"
 
 # Pretty git log
 if [[ -z "${1}" ]]

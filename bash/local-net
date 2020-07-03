@@ -16,34 +16,6 @@ fi
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get kernel-specific dependencies
-case $KERNEL in
-    Linux)
-        is-library-then-install "${NETSNIFF}" "${V_SNIFF}"
-        ;;
-esac
-# get os-specific dependencies
-case $OS in
-    macos)
-        is-command-then-install "${SNIFF}" "${NMAP}"
-         is-library-then-install "${DHCP}"
-        ;;
-    debian)
-        is-command-then-install "${SNIFF_ALT}" "${ROOTKITHUNT}"
-        is-library-then-install "${DHCP}"
-        ;;
-    arch)
-        aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
-        is-command-then-install "${NMAP}"
-        ;;
-    fedora)
-        is-command-then-install "${ROOTKITHUNT}" "${NMAP}"
-        is-library-then-install "${SNIFF_ALT}"
-        ;;
-esac
-# get dependencies regardless of kernel and os
-is-library-then-install "${DHCPING}" "${ARPSCAN}"
-
 
 # Help
 display_help() {
@@ -70,19 +42,12 @@ display_help() {
 
 # set wireless interfaces to save script time when needing to check
 HOSTNAME=$(hostname)
-if [[ ${HOSTNAME%%.*} == 'jake-imac2008' ]]
-then
-    WIRELESS_DEVICE='wls4'
-elif [[ ${HOSTNAME%%.*} == 'jake-macbook2007' ]]
-then
-    WIRELESS_DEVICE='eth0'
-elif [[ ${HOSTNAME%%.*} == 'jake-mbp2017' ]]
-then
-    WIRELESS_DEVICE='en0'
-elif [[ ${HOSTNAME%%.*} == 'jake-hp-pavilion2012' ]]
-then
-    WIRELESS_DEVICE='eno1' || 'wlo1'
-fi
+case ${HOSTNAME%%.*} in
+    jake-imac2008) WIRELESS_DEVICE='wls4' ;;
+    jake-macbook2007) WIRELESS_DEVICE='eth0' ;;
+    jake-mbp2017) WIRELESS_DEVICE='en0' ;;
+    jake-hp-pavilion2012) WIRELESS_DEVICE='wlo1' ;;
+esac
 
 
 
@@ -95,6 +60,16 @@ ping_function() {
 
 
 rootkits() {
+    # get os-specific dependencies
+    case $OS in
+        debian)
+            is-command-then-install "${ROOTKITHUNT}"
+            ;;
+        fedora)
+            is-command-then-install "${ROOTKITHUNT}"
+            ;;
+    esac
+
     if [[ $KERNEL == "Darwin" || $OS == "arch" ]]
     then
         echo -e "${BYELLOW}This option is not currently supported for macOS or Arch Linux.${NORM}"
@@ -105,6 +80,9 @@ rootkits() {
 
 
 query_server() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+
     sudo dhcping -s 192.168.1.1 #ask this separately to avoid getting asked for password 254 times
     for i in $(seq 2 254); do
         (sudo dhcping -s 192.168.1.${i} > /dev/null 2>&1 && echo "Response from 192.168.1.${i}" &)
@@ -113,12 +91,25 @@ query_server() {
 
 
 arp_function() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+    
     sudo arp-scan -l
 }
 
 
 
 sniff_alternative() {
+    # get os-specific dependencies
+    case $OS in
+        debian)
+            is-command-then-install "${SNIFF_ALT}"
+            ;;
+        fedora)
+            is-library-then-install "${SNIFF_ALT}"
+            ;;
+    esac
+
     if [[ $OS == "debian" || $OS == "fedora" ]]
     then
         sudo tshark
@@ -129,6 +120,19 @@ sniff_alternative() {
 
 
 nmap_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}" "${NMAP}"
+            ;;
+        arch)
+            is-command-then-install "${NMAP}"
+            ;;
+        fedora)
+            is-command-then-install "${NMAP}"
+            ;;
+    esac
+
 #    IP=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
     if [[ $OS == "debian" ]]
     then
@@ -142,6 +146,16 @@ nmap_function() {
 
 
 sniff_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}"
+            ;;
+        arch)
+            is-library-then-install "${NETSNIFF}"
+            ;;
+    esac
+
     if [[ $OS == 'macos' || $OS == 'arch' ]]
     then
         sudo sniffglue -vv "${WIRELESS_DEVICE}"
@@ -153,6 +167,19 @@ sniff_function() {
 
 
 verbose_sniff() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${NETSNIFF}"
+            ;;
+    esac
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}"
+            ;;
+    esac
+
     if [[ ${KERNEL} == "Linux" ]]
     then
         sudo netsniff-ng
@@ -162,6 +189,13 @@ verbose_sniff() {
 }
 
 verbose_sniff_alt() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${V_SNIFF}"
+            ;;
+    esac
+
     if [[ ${KERNEL} == "Linux" ]]
     then
         sudo tcpdump
@@ -172,6 +206,19 @@ verbose_sniff_alt() {
 
 
 dhcp_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+             is-library-then-install "${DHCP}"
+            ;;
+        debian)
+            is-library-then-install "${DHCP}"
+            ;;
+        arch)
+            aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
+            ;;
+    esac
+
     sudo dhcpdump -i "${WIRELESS_DEVICE}" | grep -B2 'Host name'
 }
 
@@ -243,6 +290,9 @@ geo_ip_public() {
 
 
 minimal_arp() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+
     arp -a
 }
 

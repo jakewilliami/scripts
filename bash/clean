@@ -22,32 +22,6 @@ fi
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh
 
-# get os-specific dependencies
-case $OS in
-    macos)
-        is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
-        is-library-then-install "${CPANM}"
-        ;;
-    debian)
-        is-command-then-install "${RUBY_PACKAGE}"
-        declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
-        for i in "${debian_ruby_array[@]}"
-        do
-            is-library-then-install "${i}"
-        done
-        ;;
-    arch)
-        is-command-then-install "${RUBY_PACKAGE}"
-        aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
-        aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
-        ;;
-    fedora)
-        is-command-then-install "${RUBY_PACKAGE}"
-        ;;
-esac
-# get dependencies regardless of kernel and os
-is-command-then-install "${PERL_PACKAGE}"
-
 # Help
 display_help() {
     help_start '[sudo] clean [option...]' 'The present script will help to clear deprecated files.  Omitting option altogether will iteratively delete everything in both Trash and Downloads.'
@@ -245,16 +219,52 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
         ls $(brew --cache)
         rm -rf $(brew --cache)
         #Run `brew tap beeftornado/rmtree; brew rmtree [formula]` to remove package AND dependencies
+    else
+        echo "${BRED}Please use your default package manager, ${PACMAN}.${NORM}"
+        exit 0
     fi
 }
 
 
 clean_gems() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install  "${RUBY_PACKAGE}" "${RUBY_VERSION}" "${RUBY_BUILD}"
+            ;;
+        debian)
+            is-command-then-install "${RUBY_PACKAGE}"
+            declare -a debian_ruby_array=('ruby-charlock-holmes' 'ruby-escape-utils' 'ruby-rugged')
+            for i in "${debian_ruby_array[@]}"
+            do
+                is-library-then-install "${i}"
+            done
+            ;;
+        arch)
+            is-command-then-install "${RUBY_PACKAGE}"
+            aur_install "${RUBY_VERSION}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/rbenv.tar.gz'
+            aur_install "${RUBY_BUILD}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/ruby-build.tar.gz'
+            ;;
+        fedora)
+            is-command-then-install "${RUBY_PACKAGE}"
+            ;;
+    esac
+    
     sudo gem update  # https://stackoverflow.com/a/36150004/12069968
     sudo gem cleanup  # https://nathanhoad.net/how-to-clean-up-old-gems/
 }
 
 clean_perl() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-library-then-install "${CPANM}"
+            ;;
+    esac
+    
+    # get dependencies regardless of kernel and os
+    is-command-then-install "${PERL_PACKAGE}"
+    
     perl -MCPAN -e "upgrade /(.\*)/"
 }
 
@@ -262,6 +272,13 @@ clean_perl() {
 mas_upgrade() {
     if [[ ${KERNEL} == "Darwin" ]]
     then
+        # get os-specific dependencies
+        case $OS in
+            macos)
+                is-library-then-install "${CPANM}"
+                ;;
+        esac
+        
         mas upgrade
     elif [[ ${KERNEL} == "Linux" ]]
     then
