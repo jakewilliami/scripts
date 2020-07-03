@@ -1,5 +1,7 @@
 #! /usr/local/bin/bash
 
+trap "exit" INT
+
 ### Dependencies: Julia (for maths, because I want to use it, so why not?)
 
 # define bash directory

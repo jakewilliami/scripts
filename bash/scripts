@@ -1,5 +1,7 @@
 #! /bin/bash
 
+trap "exit" INT
+
 #IMPORTANT NOTE:
 #There exists an alias in ~/.bashrc that looks like
 #alias scripts="source scripts"

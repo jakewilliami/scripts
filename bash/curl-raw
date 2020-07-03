@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+trap "exit" INT
+
 # define constants
 BASH_DIR="${HOME}/scripts/bash"
 GIT_LOCATION="${HOME}/macOS-config/"
