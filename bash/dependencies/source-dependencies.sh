@@ -3,23 +3,30 @@
 # Define bash directory
 BASH_DIR="${HOME}"/scripts/bash/
 
-#decide on packages
+# determines which package manager one uses
+source "${BASH_DIR}"/dependencies/which-pacman.sh
+
+# provides OS-specific package names (after determining the kernel and OS)
 source "${BASH_DIR}"/dependencies/if-os.sh
 
-#get jq if not installed and dejsonify colours for bash (jq-dep.sh sources colours/json-colour-parser.sh which does the actual de>
+# get jq if not installed and dejsonify colours for bash (jq-dep.sh sources colours/json-colour-parser.sh
+# which does the actual dejsonifying).  Sources get-dependencies.sh for the getInstallCommands function.
 source "${BASH_DIR}"/dependencies/jq-dep.sh
 
-#get is-command function
-source "${BASH_DIR}"/dependencies/is-command.sh
+# provides the notifyUser <x> <message> function to print a user message in nice colours
+source "${BASH_DIR}"/dependencies/notifying-messages.sh
 
-#get aur_install command
+# provides functions to check if a command/library/application is available and install if not
+source "${BASH_DIR}"/dependencies/get-dependencies.sh
+
+# provides the aur_install command for installing libraries and applications from the AUR
 source "${BASH_DIR}"/dependencies/aur.sh
 
-# get the Gem Install function (for installing ruby gems)
+# provides the gen_install function for installing ruby gems
 source "${BASH_DIR}"/dependencies/gem-install-dep.sh
 
-#get help_function command
+# provides functions for making the writing of help output easier
 source "${BASH_DIR}"/help/help.sh
 
-# get errors for lack of options
+# provides the error for lack of options function
 source "${BASH_DIR}"/help/option-errors.sh
