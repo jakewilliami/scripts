@@ -85,7 +85,10 @@ main() {
 
 
 openCommand() {
-    main "$(command -v "${1}")" # equivalent of oina $(which ${1})
+    for c in $@
+    do
+        main "$(command -v "${c}")" # equivalent of oina $(which ${1})
+    done
 }
 
 
@@ -96,14 +99,14 @@ while getopts ":-:ch" OPTION; do
                 help)
                     display_help ;;
                 command)
-                    openCommand "${2}" ;;
+                    openCommand "${@:2}" ;;
                 *)
                     opt_err ;;
             esac ;;
         h)
             display_help ;;
         c)
-            openCommand "${2}" ;;
+            openCommand "${@:2}" ;;
         *)
           opt_err ;;
     esac
@@ -114,7 +117,7 @@ done
 # if no options passed, curl file into appropriate directory
 if [[ $OPTIND -eq 1 ]]
 then
-    main "${1}"
+    main "${@}"
 fi
 shift $((OPTIND-1))
 
