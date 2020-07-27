@@ -9,12 +9,6 @@ a = parse(Int, ARGS[1])
 b = parse(Int, ARGS[2])
 m = parse(Int, ARGS[2])
 
-# define divisor and remainder (similar to Python3's `divmod`)
-function divrem(x::Number, y::Number)
-	return div(x, y), rem(x, y)
-end
-
-
 # Extended Euclidean Algorithm
 # After writing this, I found that Julia Base has a built-in extended Euclidean Algorithm: (g, ainverse, ignore) = gcdx(a, m)
 function gcdExtended(a::Integer, b::Integer, x=0, y=0)
