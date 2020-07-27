@@ -14,8 +14,9 @@ function divrem(x::Number, y::Number)
 	return div(x, y), rem(x, y)
 end
 
-\
+
 # Extended Euclidean Algorithm
+# After writing this, I found that Julia Base has a built-in extended Euclidean Algorithm: (g, ainverse, ignore) = gcdx(a, m)
 function gcdExtended(a::Integer, b::Integer, x=0, y=0)
 	# Base case
 	if iszero(a)
@@ -32,8 +33,9 @@ end
 
 # Find the modulo multiplicative inverse
 function moduloInverse(a::Integer, m::Integer)
-	g, x, y = gcdExtended(a, m)
-    if isone(g)
+	#g, x, y = gcdExtended(a, m) # this method uses my own gcdExtended function (defined above)
+    g, x, y = gcdx(a, m) # this method uses Julia's Base gcdExtended function
+	if isone(g)
 		return mod(x, m)
 	else
         error("Modulo inverse of ", a, " modulo ", m, " does not exist")
