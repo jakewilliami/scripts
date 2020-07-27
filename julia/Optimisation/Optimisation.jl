@@ -17,7 +17,7 @@ https://nbviewer.jupyter.org/github/JuliaOpt/JuMPTutorials.jl/blob/master/notebo
 """
 
 
-using JuMP, GLPK # JuMP provides a domain-specific modelling language for optimisation, where GLPK provides the optimisation solver
+using GLPK#JuMP, GLPK # JuMP provides a domain-specific modelling language for optimisation, where GLPK provides the optimisation solver
 
 
 # A model object is a container for variables, constraints, solver options, etc. Models are created with the Model() function. The model can be created with an optimizer attached with default arguments by calling the constructor with the optimizer type, as follows:
@@ -29,16 +29,16 @@ model = Model(GLPK.Optimizer)
 @variable(model, c >= 0)
 
 # A constraint is modelled using @constraint(name of the model object, constraint).
-@constraint(model, 17a +10b +14c <= 19)
+@constraint(model, 0.4a +0.3b <= 0.41)
 # @constraint(model, 3a +5b +5c <= 80)
 
-@constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
-@constraint(model, b in MOI.ZeroOne())
-@constraint(model, c in MOI.ZeroOne())
+# @constraint(model, a in MOI.ZeroOne())  # For integer programming (deprecating integer_programming.jl)
+# @constraint(model, b in MOI.ZeroOne())
+# @constraint(model, c in MOI.ZeroOne())
 # @constraint(model, x in MOI.Integer())  # For integer programming
 
 # The objective is set in a similar manner using @objective(name of the model object, Min/Max, function to be optimized)
-@objective(model, Max,  51a + 72b + 41c)
+@objective(model, Max,  a+b)
 
 # To solve the optimization problem, we call the optimize function.
 optimize!(model)

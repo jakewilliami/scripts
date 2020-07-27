@@ -32,72 +32,117 @@ display_help() {
 }
 
 
+#function to put cursor back to normal
+function cleanup() {
+    tput cnorm
+}
+
+
+progress_done() {
+    for (( done=0; done<(columns_to_fill); done=done+1 )); do
+        printf "▇"
+    done
+}
+
+
+progress_not_complete() {
+    for (( done=0; done<(columns_left_blank); done=done+1 )); do
+        printf " "
+    done
+}
+
+
+percentage() {
+    printf "| %s%%" $percentage_done ;
+}
+
+
+clean_line() {
+    printf "\r"
+}
+
+
 main() {
-    #function to put cursor back to normal
-    function cleanup() {
-        tput cnorm
-    }
     # Removes cursor and brings it back upon exit
     trap cleanup EXIT
     tput civis
-
-
-    # calc_command="julia --math-mode=fast --quiet --depwarn=no -E"
-    # calc_command="python3 -c"
-    # calc_command="" # undefined to revert to bash calculations...a little messy, I know, but has no dependencies.
+    
     space_reserved=6   # reserved width for the percentage value at end of line
     jobs_to_do=$1
     columns=$(tput cols)
     space_available=$(( columns - space_reserved ))
-
-
+    
     while read jobs_done; do
         
-        if [[ $calc_command =~ ^julia ]]
-        then
-            proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); round(proportion, digits=2)")
-            percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); trunc(Int64, percentage)")
-            columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); trunc(Int64, cols)")
-            columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); trunc(Int64, cols_blank)")
-        elif [[ $calc_command =~ ^python ]]
-        then
-            proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); print(round(proportion, 2))")
-            percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); print(int(round(percentage)))")
-            columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); print(int(round(cols)))")
-            columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); print(int(round(cols_blank)))")
-        else
-            proportion_done=$(echo "scale=2; $jobs_done/$jobs_to_do" | bc -l )
-            percentage_done=$(echo "scale=2; ($jobs_done/$jobs_to_do)*100" | bc -l | awk -F'.' '{ print $1 }')
-            columns_to_fill=$(echo "scale=2; $space_available*$proportion_done" | bc -l | awk -F'.' '{ print $1 }')
-            columns_left_blank=$((space_available-columns_to_fill))
-        fi
-            
-        progress_done() {
-            for (( done=0; done<(columns_to_fill); done=done+1 )); do
-                printf "▇"
-            done
-        }
-        progress_not_complete() {
-            for (( done=0; done<(columns_left_blank); done=done+1 )); do
-                printf " "
-            done
-        }
-        percentage() {
-            printf "| %s%%" $percentage_done ;
-        }
-        clean_line() {
-            printf "\r"
-        }
+        case $2 in
+            jl)
+                calc_command="julia --math-mode=fast --quiet --depwarn=no -E"
+                proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); round(proportion, digits=2)")
+                percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); trunc(Int64, percentage)")
+                columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); trunc(Int64, cols)")
+                columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); trunc(Int64, cols_blank)")
+                ;;
+            py)
+                calc_command="python3 -c"
+                proportion_done=$($calc_command "proportion=($jobs_done/$jobs_to_do); print(round(proportion, 2))")
+                percentage_done=$($calc_command "percentage=(($jobs_done/$jobs_to_do)*100); print(int(round(percentage)))")
+                columns_to_fill=$($calc_command "cols=($space_available*$proportion_done); print(int(round(cols)))")
+                columns_left_blank=$($calc_command "cols_blank=($space_available-$columns_to_fill); print(int(round(cols_blank)))")
+                ;;
+            *)
+                proportion_done=$(echo "scale=2; $jobs_done/$jobs_to_do" | bc -l )
+                # percentage_done_full=$(echo "scale=2; ($jobs_done/$jobs_to_do)*100" | bc -l | awk -F'.' '{ print $1 }')
+                percentage_done_full=$(echo "scale=2; ($jobs_done/$jobs_to_do)*100" | bc -l)
+                percentage_done=${percentage_done_full%%.*}
+                # columns_to_fill_full=$(echo "scale=2; $space_available*$proportion_done" | bc -l | awk -F'.' '{ print $1 }')
+                columns_to_fill_full=$(echo "scale=2; $space_available*$proportion_done" | bc -l)
+                columns_to_fill=${columns_to_fill_full%%.*}
+                columns_left_blank=$((space_available-columns_to_fill))
+                ;;
+        esac
         
+        # print the progress bar
         progress_done; progress_not_complete; percentage
         clean_line
         
     done <<< $(seq 1 $jobs_to_do)
 
-
     # enables user input again
     stty echo
 }
+
+
+reformat_and_output_line() {
+    COLS=()
+    for val in $1 ; do
+            COLS+=("$val")
+    done
+    if [[ ${#COLS[@]} == 9 ]]; then
+        RELATIVE_PROGRESS=${COLS[6]%?}
+        ABSOLUTE_PROGRESS=$(numfmt --from=iec --to=iec-i --format "%.1fB" ${COLS[0]} |
+                            sed 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/')
+        SPEED=$(printf "%+8s" "${COLS[7]}/s")
+        TIME=$(printf "%+5s" ${COLS[8]})
+        progressbar "somefile.txt" "$RELATIVE_PROGRESS" 100 "$ABSOLUTE_PROGRESS" "$SPEED" "$TIME"
+    elif [[ ${#COLS[@]} == 7 ]]; then
+        RELATIVE_PROGRESS=${COLS[5]%?}
+        ABSOLUTE_PROGRESS=$(numfmt --from=iec --to=iec-i --format "%.1fB" ${COLS[0]} |
+                            sed 's/\([^[:blank:]]\)\([[:upper:]]\)/\1 \2/')
+        SPEED=$(printf "%+8s" "$(echo ${COLS[6]} | cut -d= -f1 )/s")
+        TIME=$(printf "%+5s" $(echo ${COLS[6]} | cut -d= -f2 ))
+        progressbar "somefile.txt" "$RELATIVE_PROGRESS" 100 "$ABSOLUTE_PROGRESS" "$SPEED" "$TIME"
+    fi
+}
+
+
+wget --recursive --no-parent --reject "index.html*" "${1}" 2>&1 | (
+        while IFS= read -r line; do
+            reformat_and_output_line "${line}"
+        done
+        printf "\r"
+        reformat_and_output_line "${line}"
+        echo
+    )
 
 # Options
 while getopts ":-:hs" OPTION; do
@@ -105,14 +150,14 @@ while getopts ":-:hs" OPTION; do
                 -)
                     case $OPTARG in
                         seq)
-                            main $2 ;;
+                            main $2 '' ;;
                         help)
                             display_help ;;
                         *)
                             opt_err ;;
                     esac ;;
                 s)
-                    main $2 ;;
+                    main $2 '' ;;
                 h)
                     display_help ;;
                 *)
