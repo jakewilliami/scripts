@@ -9,6 +9,10 @@ a = parse(Int, ARGS[1])
 b = parse(Int, ARGS[2])
 m = parse(Int, ARGS[2])
 
+if ! isinteger(a) || ! isinteger(b)
+	error("Inputs must all be integers.")
+end
+
 # Extended Euclidean Algorithm
 # After writing this, I found that Julia Base has a built-in extended Euclidean Algorithm: (g, ainverse, ignore) = gcdx(a, m)
 function gcdExtended(a::Integer, b::Integer, x=0, y=0)
@@ -41,5 +45,5 @@ end
 # Printing outputs
 output = moduloInverse(a, m)
 
-println("The multiplicative inverse of ", a, " modulo ", m, " is:")
+#println("The multiplicative inverse of ", a, " modulo ", m, " is:")
 println(output)
