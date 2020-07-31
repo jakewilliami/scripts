@@ -11,11 +11,11 @@ p = parse(Int, ARGS[1])
 function isPrimeFermatsTheorem(p::Integer)
 	# return isprime(p)
 
-	if p == 2
+	if isequal(p, 2)
 		return true
 	end
 	
-	for priorPrime in primes(0, p)
+	for priorPrime in primes(0, Int(ceil(sqrt(p))))
 		if isone(mod(priorPrime^(p-1), p))
 			return true
 		else
