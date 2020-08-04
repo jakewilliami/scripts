@@ -10,7 +10,7 @@
 using Primes
 
 #a = parse(Int, ARGS[1])
-#n = parse(Int, ARGS[2])
+n = parse(Int, ARGS[1])
 #m = parse(Int, ARGS[3])
 
 
@@ -305,4 +305,4 @@ end
 #@time p=quadratic_sieve(n)
 #@assert mod(n,p)==0
 
-print(quadratic_sieve(851))
+print("For input", n, "p = ", quadratic_sieve(n))
