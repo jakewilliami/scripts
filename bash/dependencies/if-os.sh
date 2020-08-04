@@ -73,6 +73,8 @@ JULIA_LIB='julia' ### NOTE: CANNOT BE NAMED 'JULIA' DUE TO COLOURS TAKING THAT N
 MAS='mas'
 SED_PACKAGE='sed'
 GREP_PACKAGE='grep'
+POPPLER='poppler'
+IMAGEMAGICK='imagemagick'
 
 
 case $OS in
@@ -99,6 +101,7 @@ case $OS in
         POWERSTAT='powerstat'
         ICU='icu-devtools'
         GHLINGUIST='ruby-github-linguist'
+		POPPLER='poppler-utils'
         ;;
     fedora)
         FD='fd-find' #command is fdfind
