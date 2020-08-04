@@ -1,0 +1,122 @@
+#! /bin/bash
+
+trap "exit" INT
+
+# define bash directory
+BASH_DIR="${HOME}"/scripts/bash/
+
+# source required scripts
+source "${BASH_DIR}"/dependencies/source-dependencies.sh
+
+# get dependencies irrespective of OS or Kernel
+is-library-then-install "${POPPLER}" "${IMAGEMAGICK}"
+
+
+ensure_commands() {
+	# Set booleans
+	IMAGE_BOOL=TRUE
+	POP_BOOL=TRUE
+	
+	# double check we have convert command
+	if [[ -z $(command -v convert) ]]
+	then
+		echo -e "${BRED}Cannot install ImageMagick.${NORM}" && IMAGE_BOOL=FALSE
+		if [[ "${KERNEL}" == "Darwin" ]]
+		then
+			echo -e "${BYELLOW}Trying to re-link binaries.${NORM}"
+			brew link --overwrite imagemagick && IMAGE_BOOL=TRUE
+		fi
+	fi
+	
+	# double check we have pdfunite command
+	if [[ -z $(command -v pdfunite) ]]
+	then
+	    echo -e "${BRED}Cannot install Poppler.${NORM}" && POP_BOOL=FALSE
+	    if [[ "${KERNEL}" == "Darwin" ]]
+	    then
+	    	echo -e	"${BYELLOW}Trying to re-link binaries.${NORM}"
+	    	brew link --overwrite imagemagick && POP_BOOL=TRUE
+	    fi
+	fi
+}
+
+
+make_pdf() {
+	if [[ -f "${HOME}/Desktop/out.pdf" ]] && [[ -f "${HOME}/Desktop/out_old.pdf" ]]
+    then
+        notifyUser r "You already have an out.pdf and an out_old.pdf in your Desktop directory.  Please ensure these are moved or\
+ renamed so as to avoid any overwritten files."
+    clean-exit
+	fi
+
+	notifyUser w "Constructing PDF; this may take a moment."
+
+	i=0
+	j=0
+	k=TRUE
+	for image in "${@}"
+	do
+		let i++
+		convert "${image}" "/tmp/${i}.pdf" && let j++
+	done
+
+	pdfunite $(for pdf in $(seq 1 "${i}"); do printf "/tmp/${pdf}.pdf "; done) /tmp/out_possibly_large.pdf && k=TRUE
+
+	if [[ -f "${HOME}/Desktop/out.pdf" ]]
+	then
+		mv "${HOME}/Desktop/out.pdf" "${HOME}/Desktop/out_old.pdf"
+	fi
+
+	OUTPUT_FILE="${HOME}/Desktop/out.pdf"
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/prepress -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${OUTPUT_FILE}" /tmp/out_possibly_large.pdf
+	
+	if [[ "${j}" -eq "${#@}" ]] && [[ $k ]]
+	then
+		notifyUser g "PDF constructed at ${OUTPUT_FILE}."
+	else
+		notifyUser r "It looks like your conversion has failed."
+		clean-exit
+	fi
+}
+
+
+# Help
+display_help() { #Displays help
+    help_start 'mkpdf [option...] [file 1] ... [file n]' 'The present script will construct a PDF from chronologically given input files/photos.'
+    help_help '2'
+    clean-exit
+}
+
+
+# Options
+while getopts ":-:th" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+#if no arguments
+[[ -z $1 ]] && opt_err_none && clean-exit
+
+#if no options were passed
+if [ $OPTIND -eq 1 ]
+then
+	ensure_commands
+	make_pdf "${@:1}"
+    clean-exit
+fi
+
+# Clean up
+clean-exit
