@@ -3,6 +3,11 @@
     exec julia --project="~/scripts/julia/Cryptography/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
+	
+"""
+e.g.
+	$ ./LCG.jl 9 5 2 0
+"""
 
 m = parse(Int, ARGS[1])
 a = parse(Int, ARGS[2])
