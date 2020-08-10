@@ -3,12 +3,17 @@
     exec julia --project="~/scripts/julia/Cryptography/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
+	
+"""
+e.g.
+	$ ./LSR. jl "1001" "0100"
+"""
 
 constStr = ARGS[1]
 initStr = ARGS[2]
 
 function lsrPeriod(constStr::AbstractString, initStr::AbstractString)
-	constVec = Vector()	
+	constVec = Vector()
 	initVec = Vector()
 	sequenceVec = Vector()
 
