@@ -86,16 +86,16 @@ function get_smooths(n, prime_max, range_size, power_max)
 
     n_base=length(base_primes)
     r=isqrt(n)
-    lbound=r-range_size # lower bound
-    ubound=r+range_size # upper bound
-    size=ubound-lbound+1
+    lbound = r - range_size # lower bound
+    ubound = r + range_size # upper bound
+    size = ubound - lbound+1
     q = Array{BigInt, 1}(undef, size)
 	n_bits_q = Array{Int64, 1}(undef, size)
     signs = zeros(Int64,size)
     pows = zeros(Int64,size,n_base)
 
     for k in lbound:ubound
-        i=Int64(k-lbound+1)
+        i = Int64(k-lbound+1)
         q[i] = k*k-n
         n_bits_q[i] = ndigits(q[i],base=2)
 

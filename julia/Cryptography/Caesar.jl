@@ -6,7 +6,7 @@
 """
 	e.g., ./Caesar.jl "khoorzruog" 3 d
 
-	e.g., ./Caesar.jl "maryhadalittlelamb" 6 e
+	e.g., ./Caesar.jl "maryhadalittlelamb" 13 e
 """
 
 plaintext = ARGS[1]
@@ -27,8 +27,8 @@ end
 
 function encryptCaesar(plaintext::AbstractString, shift::Integer)
 
-	global encryptedAlphaVec = Vector()
-	global encryptedArabVec = Vector()
+	encryptedAlphaVec = Vector()
+	encryptedArabVec = Vector()
 
 	for character in split(plaintext, "")
 		encryptedArabChar = mod(get(dict, character, 0) + shift, length(dict))
@@ -43,8 +43,8 @@ function encryptCaesar(plaintext::AbstractString, shift::Integer)
 end
 
 function decryptCaesar(ciphertext::AbstractString, shift::Integer)
-	global decryptedAlphaVec = Vector()
-	global decryptedArabVec = Vector()
+	decryptedAlphaVec = Vector()
+	decryptedArabVec = Vector()
 
 	for character in split(ciphertext, "")
 		decryptedArabChar = mod(get(dict, character, 0) - shift, length(dict))

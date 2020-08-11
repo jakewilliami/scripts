@@ -6,7 +6,7 @@
 	
 """
 e.g.
-	$ ./LCG.jl 9 5 2 0
+	./LCG.jl 9 5 2 0
 """
 
 m = parse(Int, ARGS[1])
