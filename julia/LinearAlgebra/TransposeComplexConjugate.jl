@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
     #=
-    exec julia --project="~/scripts/julia/LinearAlgebra/" "${BASH_SOURCE[0]}" "$@" -e 'include(popfirst!(ARGS))' \
+    exec julia --project="~/scripts/julia/LinearAlgebra/" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
 
