@@ -30,9 +30,9 @@ end
 
 function encryptVigenere(plaintext::AbstractString, key::AbstractString)
 
-	global encryptedAlphaVec = Vector()
-	global encryptedArabVec = Vector()
-	global keyVec = Vector()
+	encryptedAlphaVec = Vector()
+	encryptedArabVec = Vector()
+	keyVec = Vector()
 
 	for character in split(plaintext, "")
 		encryptedArabChar = get(dict, character, 0)
@@ -58,9 +58,9 @@ function encryptVigenere(plaintext::AbstractString, key::AbstractString)
 end
 
 function decryptVigenere(ciphertext::AbstractString, key::AbstractString)
-	global decryptedAlphaVec = Vector()
-	global decryptedArabVec = Vector()
-	global keyVec = Vector()
+	decryptedAlphaVec = Vector()
+	decryptedArabVec = Vector()
+	keyVec = Vector()
 	
 	# split key into numbers
 	for keyChar in split(key, "")
@@ -85,12 +85,12 @@ end
 
 
 function findKey(plaintext::AbstractString, ciphertext::AbstractString)
-	global encryptedAlphaVec = Vector()
-	global encryptedArabVec = Vector()
-	global decryptedAlphaVec = Vector()
-	global decryptedArabVec = Vector()
-	global keyVec = Vector()
-	global decryptedKeyVec = Vector()
+	encryptedAlphaVec = Vector()
+	encryptedArabVec = Vector()
+	decryptedAlphaVec = Vector()
+	decryptedArabVec = Vector()
+	keyVec = Vector()
+	decryptedKeyVec = Vector()
 
 	for character in split(plaintext, "")
 		encryptedArabChar = get(dict, character, 0)

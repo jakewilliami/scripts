@@ -27,8 +27,8 @@ end
 
 function encryptAffine(plaintext::AbstractString, a::Integer, b::Integer)
 
-	global encryptedAlphaVec = Vector()
-	global encryptedArabVec = Vector()
+	encryptedAlphaVec = Vector()
+	encryptedArabVec = Vector()
 
 	for character in split(plaintext, "")
 		encryptedArabChar = mod(get(dict, character, 0)*a + b, length(dict)) # mod(ax + b, m)
@@ -44,8 +44,8 @@ end
 
 function decryptAffine(ciphertext::AbstractString, a::Integer, b::Integer)
 	# invmod(a)(f(x) - b) = x
-	global decryptedAlphaVec = Vector()
-	global decryptedArabVec = Vector()
+	decryptedAlphaVec = Vector()
+	decryptedArabVec = Vector()
 
 	for character in split(ciphertext, "")
 		decryptedArabChar = mod(invmod(a, length(dict)) * (get(dict, character, 0) - b), length(dict))
@@ -64,4 +64,3 @@ elseif cryptType == "d"
 else
 	error("Specify *cryption type: either `d` or `e`.")
 end
-
