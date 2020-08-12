@@ -5,9 +5,11 @@
 	=#
 
 #=
-	e.g., ./Affine.jl "olwreglfelehnjjhmehlos" 7 5 27 d
+	e.g., ./RSA.jl 19 31 23 100001
 
-	e.g., ./Affine.jl "maryhadalittlelamb" 19 5 26 e
+	e.g., ./RSA.jl 7 17 35 23 91 71
+	
+	e.g., ./RSA.jl 53 107 75 2001 1720 873
 =#
 
 
@@ -73,6 +75,7 @@ d = parse(BigInt, ARGS[3])
 M = parse(BigInt, ARGS[4])
 varM = 1 # defaul (global) values to fall back on
 varDS = 1
+Mthreshold = big(10)^8
 
 if isequal(length(ARGS), 6)
 	varM = parse(BigInt, ARGS[5])
@@ -94,6 +97,10 @@ end
 function getPubKey(d::Integer, p::Integer, q::Integer)
 	# Bob recieves public key (e, n)
 	
+	if iszero((p-1)*(q-1))
+		return (0, p*q)
+	end
+	
 	e = invmod(d, (p-1)*(q-1))
 	
 	return (e, p*q)
@@ -108,7 +115,11 @@ function getCiphertext(M::Integer, d::Integer, p::Integer, q::Integer)
 		- Encrypts message C = M^e (mod n)
 	=#
 	
-	e = invmod(d, (p-1)*(q-1)) # from getPubKey
+	if iszero(M)
+		return 0
+	end
+	
+	e = getPubKey(d,p,q)[1]
 	
 	C = mod(M^e, p*q)
 	
@@ -125,11 +136,21 @@ function decryptCiphertext(M::Integer, d::Integer, p::Integer, q::Integer)
 	
 	C = getCiphertext(M, d, p, q)
 	
+	if iszero(C)
+		return 0
+	end
+	
 	M = mod(C^d, p*q)
+	
+	return C
 end
 
 
 function signMessage(M::Integer, d::Integer, p::Integer, q::Integer)
+	if iszero(M)
+		return 0, 0
+	end
+	
 	DS = mod(M^d, p*q)
 	
 	return (M, DS)
@@ -146,14 +167,57 @@ function verifySignature(M::Integer, d::Integer, p::Integer, q::Integer)
 	M = varM
 	DS = varDS
 	
-	e = invmod(d, (p-1)*(q-1)) # from getPubKey
-		
+	e = getPubKey(d,p,q)[1]
+	
 	if isequal(M, mod(DS^e, p*q))
 		return true #"Alice sent the message"
 	else
 		return false #"Fred is up to no good"
 	end # end if
 end
+
+function getHash(M::Integer, d::Integer, p::Integer, q::Integer)
+	if iszero(M)
+		return 0, 0
+	end
+	
+	hM = mod(M, p*q)
+	
+	hDS = signMessage(hM, d, p, q)[2]
+	
+	return hM, hDS
+end
+
+
+function hashSols(Mthreshold::Integer, d::Integer, p::Integer, q::Integer)
+	nSols = Mthreshold / p*q
+	
+	return nSols, rationalize(1 / nSols)
+end
+
+
+function verifyHashedSignature(M::Integer, d::Integer, p::Integer, q::Integer)
+	hashInfo = getHash(M, d, p, q)
+	
+	if iszero(M)
+		return nothing
+	end
+	
+	hM = hashInfo[1]
+	hDS = hashInfo[2]
+	
+	e = getPubKey(d,p,q)[1]
+	
+	if isequal(mod(hDS^e, p*q), hM)
+		return true
+	else
+		return false
+	end
+end
+
+
+
+# outputs
 
 println("Given n=$p×$q, is d=$d a good decryption key?")
 output = checkD(d, p, q)
@@ -175,6 +239,21 @@ println("Suppose M=$M.  What is the (M, DS(M)) that Alice sends to Bob?")
 output = signMessage(M, d, p, q)
 println("\t", output, "\n")
 
-println("Given M=$varM, DS=$varDS, how does Bob know this message was from Alice?  *Was* it from Alice?  Is DS(M)^e = M?")
-output = verifySignature(M, d, p, q)
+if isequal(length(ARGS), 6)
+	println("Given M=$varM, DS=$varDS, how does Bob know this message was from Alice?  *Was* it from Alice?  Is DS(M)^e = M?")
+	output = verifySignature(M, d, p, q)
+	println("\t", output, "\n")
+end
+
+println("Given M=$M, we calculate the hash (h(M), DS(h(M))) (With h(M) = M (mod $p×$q)).")
+output = getHash(M, d, p, q)
+println("\t", output, "\n")
+
+
+println("How many M's satisfy this hash, with 0 ≤ h(M) ≤ $p×$q?  We return the number of solutions and the probability of choosing the correct M:")
+output = hashSols(Mthreshold, d, p, q)
+println("\t", output, "\n")
+
+println("Bob receives the hashed signature DS(h(M))=", getHash(M, d, p, q)[1], ".  Was this message from Alice?  Is h(DS(M))^e (mod $p×$q) = hM?")
+output = verifyHashedSignature(M, d, p, q)
 println("\t", output)

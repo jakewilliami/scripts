@@ -32,11 +32,20 @@ function lsrPeriod(constStr::AbstractString, initStr::AbstractString)
 		sequenceVec = vcat(sequenceVec, newVal)
 	end
 
-	return join(sequenceVec[4:end])
+	return join(sequenceVec)
 end
 
 
-output = lsrPeriod(constStr, initStr)
+function findX0(constStr::AbstractString, initStr::AbstractString)
+	sequence = lsrPeriod(constStr, initStr)
+	previousMatch = match(Regex("(....)$initStr"), "$sequence").captures[1]
+	
+	# return join((initStr[1], reverse(previousMatch[2:end])))
+	return reverse(previousMatch)
+end
 
-println("Sequence from c1c2c3c4 = $constStr, X(0) = $initStr:")
+
+output = findX0(constStr, initStr)
+
+println("Sequence from c1c2c3c4 = $constStr, starting sequence = $initStr...:")
 println("\t", output)
