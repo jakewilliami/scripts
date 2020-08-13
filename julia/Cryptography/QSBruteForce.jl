@@ -6,7 +6,7 @@
 	
 """
 e.g.
-	./LCG.jl 9 5 2 0
+	./QSBruteForce.jl 481
 """
 
 n = parse(BigInt, ARGS[1])
