@@ -10,16 +10,68 @@
         ./FindAffineDecryptionKeyFromFormulae.jl aa ab ba bb m
         
     e.g. ./FindAffineDecryptionKeyFromFormulae.jl 0 2 3 1 26
+	
+	@show chineseRemainder([3, 1, 6], [5, 7, 8])
 =#
 	
 # using RowEchelon
+using LinearAlgebra
 
-aa = parse(Int, ARGS[1])
-ab = parse(Int, ARGS[2])
-ba = parse(Int, ARGS[3])
-bb = parse(Int, ARGS[4])
-m = parse(Int, ARGS[5])
+# aa = parse(Int, ARGS[1])
+# ab = parse(Int, ARGS[2])
+# ba = parse(Int, ARGS[3])
+# bb = parse(Int, ARGS[4])
+# m = parse(Int, ARGS[5])
 
+
+
+function chineseRemainder(a::Array, n::Array)
+	#=
+	Suppose we have
+		x ≡ b1 mod n1
+		x ≡ b2 mod n2
+		x ≡ b3 mod n3
+	So
+		Π = n1⋅n2⋅n3 ⟹ Πi = Π ÷ ni
+		xi = invmod(x(i-1), n(i-1))
+	Note: All the ni and the Π must be coprimes.
+	We construct a tableau
+		bi			Πi			xi			bi⋅Πi⋅xi
+		———————————————————————————————————————————————————————
+		b1		Π1 = n2⋅n3		x1			b1⋅Π1⋅x1
+		b2		Π2 = n1⋅n3		x2			b2⋅Π2⋅x2
+		b3		Π3 = n1⋅n2		x3			b3⋅Π3⋅x3
+	Using this,
+		x = Σ_{i=1}^{3} bi⋅Πi⋅xi (mod Π)
+	=#
+	
+    Π = prod(n)
+    Σ = sum(ai * invmod(Π ÷ ni, ni) * Π ÷ ni for (ni, ai) in zip(n, a))
+	x = mod(Σ, Π)
+	
+	return x, Π # x (mod Π)
+end
+
+
+
+function solveEqns(n::Integer, A::Array, v::Array) # mod; variables and congruencies
+	# v = [3 7; 4 5]
+	# e = [2; 7]
+	#
+	
+	A = rationalize.([2 -1; 4 3])
+	v = rationalize.([1, 2])
+	
+	w = A\v # solve
+	
+	ww = [numerator(w[1]) * invmod(denominator(w[1]), n); numerator(w[2]) * invmod(denominator(w[2]), n)]
+	
+	return A * ww
+	
+end
+
+
+println(solveEqns(8, [3 7; 4 5], [2; 7]))
 
 
 function findDecryptionKey(aa::Integer, ab::Integer, ba::Integer, bb::Integer, m::Integer)
@@ -76,7 +128,7 @@ function findDecryptionKey(aa::Integer, ab::Integer, ba::Integer, bb::Integer, m
 end
 
 
-out = findDecryptionKey(aa, ab, ba, bb, m)
+# out = findDecryptionKey(aa, ab, ba, bb, m)
 
 # println("The decryption key is: ", out[1], "(f(x) - ", out[2], ") = x")
-println(out)
+# println(out)
