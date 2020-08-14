@@ -9,7 +9,7 @@
 	f(ba) = bb ⟺ ba*a + b = bb
         ./FindAffineDecryptionKeyFromFormulae.jl aa ab ba bb m
         
-    e.g. ./FindAffineDecryptionKeyFromFormulae.jl 0 2 3 1 26
+    e.g. ./FindAffineDecryptionKeyFromFormulae.jl 0 1 2 3 1 1 26
 	
 	@show chineseRemainder([3, 1, 6], [5, 7, 8])
 =#
@@ -17,11 +17,15 @@
 # using RowEchelon
 using LinearAlgebra
 
-# aa = parse(Int, ARGS[1])
-# ab = parse(Int, ARGS[2])
-# ba = parse(Int, ARGS[3])
-# bb = parse(Int, ARGS[4])
-# m = parse(Int, ARGS[5])
+aa = Rational(parse(Int, ARGS[1]))
+ab = Rational(parse(Int, ARGS[2]))
+aeq = Rational(parse(Int, ARGS[3]))
+ba = Rational(parse(Int, ARGS[3]))
+bb = Rational(parse(Int, ARGS[4]))
+beq = Rational(parse(Int, ARGS[5]))
+n = parse(Int, ARGS[6])
+
+Rational(parse(Float64, "1"))
 
 
 
@@ -59,19 +63,20 @@ function solveEqns(n::Integer, A::Array, v::Array) # mod; variables and congruen
 	# e = [2; 7]
 	#
 	
-	A = rationalize.([2 -1; 4 3])
-	v = rationalize.([1, 2])
+	# A = rationalize.([2 -1; 4 3])
+	# v = rationalize.([1, 2])
 	
 	w = A\v # solve
 	
 	ww = [numerator(w[1]) * invmod(denominator(w[1]), n); numerator(w[2]) * invmod(denominator(w[2]), n)]
 	
-	return A * ww
+	return mod.(A * ww, n)
 	
 end
 
 
-println(solveEqns(8, [3 7; 4 5], [2; 7]))
+# println(solveEqns(8, [3 7; 4 5], [2; 7]))
+println(solveEqns(n, [aa ab; ba bb], [aeq; beq]))
 
 
 function findDecryptionKey(aa::Integer, ab::Integer, ba::Integer, bb::Integer, m::Integer)

@@ -4,10 +4,12 @@
     "${BASH_SOURCE[0]}" "$@"
     =#
 	
-"""
+#=
+Linear Shift Registers
+
 e.g.
 	./LSR. jl "1001" "0100"
-"""
+=#
 
 constStr = ARGS[1]
 initStr = ARGS[2]
@@ -32,7 +34,7 @@ function lsrPeriod(constStr::AbstractString, initStr::AbstractString)
 		sequenceVec = vcat(sequenceVec, newVal)
 	end
 
-	return join(sequenceVec[4:end])
+	return join(sequenceVec[1:end]) # previously, sequenceVec[1:end]
 end
 
 

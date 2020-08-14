@@ -23,3 +23,4 @@ end
 out = findDecryptionKey(a, b, m)
 
 println("The decryption key is: ", out[1], "(f(x) - ", out[2], ") = x")
+println("Or, as Linus would prefer: ", out[1], "y + ", mod(out[1]*(-out[2]), m), " = x")
