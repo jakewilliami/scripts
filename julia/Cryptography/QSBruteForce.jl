@@ -20,8 +20,8 @@ function primeFactorisation(n::Integer)
 		m = m + 1
 	end
 	
-	p = convert(Int, m-sqrt(mod(m^2, n)))
-	q = convert(Int, m+sqrt(mod(m^2, n)))
+	p = Int(m - sqrt(mod(m^2, n)))
+	q = Int(m + sqrt(mod(m^2, n)))
 
 	return p, q
 end
