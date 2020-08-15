@@ -9,7 +9,8 @@
 
 using Primes
 
-n = parse(Int, ARGS[1])
+# n = parse(Int, ARGS[1])
+n = big(2)^(big(82589933)) - 1
 
 
 # Solve x such that x^2 = a (mod p) when p is prime
