@@ -40,8 +40,8 @@ function findX0(constStr::AbstractString, initStr::AbstractString)
 	sequence = lsrPeriod(constStr, initStr)
 	previousMatch = match(Regex("(....)$initStr"), "$sequence").captures[1]
 	
-	# return join((initStr[1], reverse(previousMatch[2:end])))
-	return reverse(previousMatch)
+	return join((initStr[1], reverse(previousMatch[2:end])))
+	#return reverse(previousMatch)
 end
 
 

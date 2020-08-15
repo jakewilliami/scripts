@@ -34,7 +34,7 @@ function lsrPeriod(constStr::AbstractString, initStr::AbstractString)
 		sequenceVec = vcat(sequenceVec, newVal)
 	end
 
-	return join(sequenceVec[1:end]) # previously, sequenceVec[1:end]
+	return join(sequenceVec[4:end]) # previously, sequenceVec[4:end]
 end
 
 
