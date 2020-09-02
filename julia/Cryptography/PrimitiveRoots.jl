@@ -3,10 +3,11 @@
     exec julia --project="~/scripts/julia/Cryptography/" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
-    
 
-using Primes: isprime
 
+#=
+    e.g. PrimitiveRoots.jl 19
+=#
 
 p = parse(Int, ARGS[1])
 
@@ -33,7 +34,7 @@ function displaymatrix(M::AbstractArray)
 end
 
 
-function getPrimitiveArray(p::Integer)::AbstractArray
+function getPrimitiveArray(p::Integer)::Array{AbstractFloat, 2}
     if ! isprime(p)
         error("$p is not a prime number")
     end
@@ -65,10 +66,7 @@ function getPrimitiveArray(p::Integer)::AbstractArray
 end
 
 
-function findPrimitiveRoots(p::Integer, arr::AbstractArray)::AbstractArray
-    a = []
-    n = size(arr)[1] # or size(arr)[2]
-    
+function findPrimitiveRoots(p::Integer, arr::Array{AbstractFloat, 2})::Array{Integer, 1}
     if ! isprime(p)
         error("$p is not a prime number")
     end
@@ -76,6 +74,9 @@ function findPrimitiveRoots(p::Integer, arr::AbstractArray)::AbstractArray
     if isequal(p, 2)
         return "$p does not have a primitive root."
     end
+    
+    a = []
+    n = size(arr)[1] # or size(arr)[2]
     
     for i in 1:n
         is_primitive = true
