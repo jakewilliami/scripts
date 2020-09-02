@@ -7,12 +7,16 @@
 """
 e.g.
 	./PairingFunction.jl 9 5 2 0
+    ./PairingFunction.jl 17
 """
 
 # m = parse(Int, ARGS[1])
 # a = parse(Int, ARGS[2])
 # b = parse(Int, ARGS[3])
 # x0 = parse(Int, ARGS[4])
+
+
+## TODO: Make depairing thruple more efficient
 
 a = parse(BigInt, ARGS[1])
 
@@ -33,9 +37,12 @@ function pairTuple(x::Number, y::Number)
     z = Int(x + binomial(x+y+1, 2))
     # z = Int(x + (((x+y)*(x+y+1)) / 2)) # also from notes
     # z = Int(((1/2) * (x+y) * (x+y+1)) + y) # from http://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
+    #https://docs.julialang.org/en/v1/manual/faq/#...-combines-many-arguments-into-one-argument-in-function-definitions
         
     return z
 end
+
+pairTuple(x::Number, y::Number, z::Number...) = pairTuple(x, pairTuple(y, z...))
 
 
 function unzipTuple(z::Number)
