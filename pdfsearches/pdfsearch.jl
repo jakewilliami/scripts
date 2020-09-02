@@ -1,8 +1,14 @@
-#! /usr/bin/env julia
+#!/usr/bin/env bash
+    #=
+    exec julia --project="~/scripts/pdfsearches/" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
+    "${BASH_SOURCE[0]}" "$@"
+    =#
 
 # import Pkg; Pkg.add("PDFIO"); Pkg.add("Match")
 
 using PDFIO
+
+searchStr = ARGS[1]
 
 
 """
@@ -63,25 +69,25 @@ function scanFiles(path, key)
                 # define a full path to pdf fule
                 pathToFile = joinpath(root, file)
                 
-                println(pathToFile)
+                # println(pathToFile)
                 
                 # get PDF plain text
                 getPDFText("$pathToFile", "/tmp/tempPDFOut")
                 
                 # read file created
-                # open("/tmp/tempPDFOut") do f
-                #
-                #     # loop through lines in file
-                #     for l in eachline(f)
-                #
-                #         # find matches to input
-                #         # if occursin(r"$ARGS[1]"i, l)
-                #             println(file)
-                #         # end
-                #
-                #     end
-                #
-                # end
+                open("/tmp/tempPDFOut") do f
+                
+                    # loop through lines in file
+                    for l in eachline(f)
+                
+                        # find matches to input
+                        if occursin(r"$searchStr"i, l)
+                            println(file)
+                        end
+                
+                    end
+                
+                end
                 
             end
             
