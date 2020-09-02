@@ -12,12 +12,24 @@ alias pdfsearch.rb="ruby ~/scripts/pdfsearches/pdfsearch.rb"
 alias pdfsearch.py="python3 ~/scripts/pdfsearches/pdfsearch.py"
 alias pdfsearch.pl="perl -X ~/scripts/pdfsearches/pdfsearch.pl"
 alias pdfsearch.lisp="clisp ~/scripts/pdfsearches/pdfsearch.lisp"
+...
 ```
 
 ## Contents
+- [Description](#description)
 - [A Note on `pdfsearch` in Terminal](#a-note-on-pdfsearch-in-terminal)
 
 ---
+
+## Work in Progress:
+The following PDFsearches are still a work in progress:
+ - `pdfsearch.lisp`
+ - `pdfsearch.c`
+ - `pdfsearch.cpp`
+ - `pdfsearch.haskell`
+ - `pdfsearch.rs`
+ - `pdfsearch.jl`
+ - `pdfsearch.ex`
 
 ## A Note on `pdfsearch` in Terminal
 
