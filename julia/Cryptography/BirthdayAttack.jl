@@ -4,12 +4,16 @@
     "${BASH_SOURCE[0]}" "$@"
     =#
     
+#=
+    e.g., BirthdayAttack.jl 60 28
+=#
+    
 a = parse(Int, ARGS[1])
 b = parse(Int, ARGS[2])
 
 
-function hashProbability(k::Integer, r::Integer)::Float64
-    r = 2^r
+function hashProbability(k::Integer, l::Integer)::Float64
+    r = 2^l
     N = 2^k
     return (1 - exp(-(r^2)/(N))) * 100
 end
