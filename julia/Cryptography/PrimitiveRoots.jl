@@ -9,6 +9,8 @@
     e.g. PrimitiveRoots.jl 19
 =#
 
+using Primes: isprime
+
 p = parse(Int, ARGS[1])
 
 #=
