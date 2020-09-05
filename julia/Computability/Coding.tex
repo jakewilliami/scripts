@@ -1,0 +1,69 @@
+% !TEX TS-program = pdflatexmk.py
+\documentclass[border=3pt]{standalone}
+
+%use the option bib-apa to use apa-style referencing
+
+% To change any options that are being overwritten by the class,
+% You will have to put this in an \AtEndPreamble statement
+
+\RequirePackage{garamondx}
+\PassOptionsToPackage{utf8}{inputenc}
+\RequirePackage{inputenc}
+\PassOptionsToPackage{english}{babel}
+\RequirePackage{babel}
+\PassOptionsToPackage{garamondx}{newtxmath}
+\RequirePackage{newtxmath}
+
+\usepackage{dsfont}%for real and complex numbers
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{cfr-lm}
+
+\newcolumntype{M}{>{$}c<{$}}
+\newcolumntype{L}{>{$}l<{$}}
+
+\def\tt#1{\texttt{#1}}
+\def\id{\tt{\emdash}}
+
+\def\reals{\ensuremath{\mathds{R}}}
+\def\complex{\ensuremath{\mathds{C}}}
+\def\rationals{\ensuremath{\mathds{Q}}}
+\let\quotients\rationals
+\def\field{\ensuremath{\mathds{F}}}
+\def\naturals{\ensuremath{\mathds{N}}}
+\def\integers{\ensuremath{\mathds{Z}}}
+\def\paren#1{\ensuremath{\left(#1\right)}}
+\def\curly#1{\ensuremath{\left\{#1\right\}}}
+\def\emdash
+		{\discretionary{}{}{\kern 0.1em}---\discretionary{}{}{\kern 0.1em}}
+	\date{
+		\today
+		}
+
+\begin{document}
+
+%In mathematical computability, we really like to use natural numbers in proving computability.  As a result, we have developed various bijective coding functions to translate \integers, \rationals, and some \reals into \naturals, as defined in \href{run:./Coding.jl}{\tt{Coding.jl}}.
+
+%\tabcolsep=5pt
+\def\arraystretch{2}
+
+\begin{tabularx}{80em}{LLMMMMMMMMM}
+		\toprule%\tt{\textbf{Coding.jl}}
+		&& \multicolumn{9}{M}{\textsc{\textbf{Domain}}} \\
+                \cmidrule{3-11}
+		&& \naturals & \integers & \rationals & \reals & \naturals^2 & \integers \times \paren{ \integers \setminus \curly{0} } & \integers^2 & \rationals^2 & \reals^2 \\
+		\midrule
+		\multirow{9}{*}{\textsc{\textbf{Codomain}}} & \naturals & \id & \tt{IntToNat(x)} &  &  &  &  & \tt{PairNTuple(x,y)} &  & \\
+		& \integers & \tt{NatToInt(x)} & \id &  &  &  &  &  &  & \\
+		& \rationals &  &  & \id &  &  &  &  &  & \\
+		& \reals &  &  &  & \id &  &  &  &  & \\
+		& \naturals^2 & \tt{NatToPair(x)} &  &  &  & \id &  & \tt{IntToNat!(x,y)} &  & \\
+		& \integers \times \paren{ \integers \setminus \curly{0} } &  &  &  &  &  & \id &  &  & \\
+		& \integers^2 &  &  &  &  & \tt{NatToInt!(x,y)} &  & \id &  & \\
+		& \rationals^2 &  &  &  &  &  &  &  & \id & \\
+		& \reals^2 &  &  &  &  &  &  &  &  & \id \\
+		\bottomrule
+\end{tabularx}
+
+\end{document}
