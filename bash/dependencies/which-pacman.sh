@@ -4,7 +4,7 @@ getInstallCommands() {
     then
         PACMAN='brew install'
         PACSEARCH='brew list'
-        PACAPPSEARCH='brew cask list'
+        PACAPPSEARCH='brew list --cask'
         PACAPP='brew cask install'
     else
         declare -A osInfo;
