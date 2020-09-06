@@ -33,7 +33,7 @@ close(FH);
 
 
 ### Gets standard output from brew cask install
-my $casks = `brew cask list`;
+my $casks = `brew list --cask`;
 my $filecasks = "${home}/scripts/perl/temp.d/casks.txt";
 open(FH, '>', $filecasks) or die $!;
     print FH $casks;
