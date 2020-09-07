@@ -11,7 +11,7 @@
 
 using Primes: isprime
 
-p = parse(Int, ARGS[1])
+p = parse(BigInt, ARGS[1])
 
 #=
 p: prime
@@ -36,7 +36,7 @@ function displaymatrix(M::AbstractArray)
 end
 
 
-function getPrimitiveArray(p::Integer)::Array{AbstractFloat, 2}
+function getPrimitiveArray(p::Integer)
     if ! isprime(p)
         error("$p is not a prime number")
     end
@@ -48,27 +48,27 @@ function getPrimitiveArray(p::Integer)::Array{AbstractFloat, 2}
     l = []
     
     # a % b == 0 ⟹ b | a
-    for i in 1:p-2
-        if iszero(mod(p-1, i))
-            l = push!(l, i)
-        end
+    for n in 1:p-2
+       if iszero(mod(p-1, n))
+           l = push!(l, n)
+       end
     end
         
-    n = length(l)
-    arr = zeros(n, n)
+    L = length(l)
+    arr = Array{Float64}(undef, p-1, L)
         
-    for i in 1:n # iterate over rows
-        for j in 1:n # iterate over columns
-            arr[i,j] = mod(i^j, p)
+    for i in 1:p-1 # iterate over rows
+        for j in 1:L # iterate over columns
+            arr[i,j] = mod(i^l[j], p)
         end
     end
     
     
-    return arr
+    return arr, l
 end
 
 
-function findPrimitiveRoots(p::Integer, arr::Array{AbstractFloat, 2})::Array{Integer, 1}
+function findPrimitiveRoots(p::Integer)::Array{Integer, 1}
     if ! isprime(p)
         error("$p is not a prime number")
     end
@@ -77,22 +77,27 @@ function findPrimitiveRoots(p::Integer, arr::Array{AbstractFloat, 2})::Array{Int
         return "$p does not have a primitive root."
     end
     
-    a = []
-    n = size(arr)[1] # or size(arr)[2]
+    primitiveArray, properDivisors = getPrimitiveArray(p)
     
-    for i in 1:n
-        is_primitive = true
+    a = []
+    h, w = size(primitiveArray)
+    
+    if w != length(properDivisors)
+        throw(error("An error occurred.  I don't know how it occurred."))
+    end
+    
+    for i in 1:h
+        is_primitive = true # innocent till proven guilty
         
-        for element in arr[i,:]
-            
-            if isequal(mod(element, p), 1)
+        for j in 1:w
+            if isone(mod(primitiveArray[i,j], p))
                 is_primitive = false
                 break
             end
         end
         
         if is_primitive
-            a = push!(a, i)
+            a = push!(a, primitiveArray[i, 1])
         end
     end
     
@@ -100,7 +105,10 @@ function findPrimitiveRoots(p::Integer, arr::Array{AbstractFloat, 2})::Array{Int
 end
 
 
-primitiveArray = getPrimitiveArray(p)
-out = findPrimitiveRoots(p, primitiveArray)
+
+out = findPrimitiveRoots(p)
 
 displaymatrix(out)
+# println(getPrimitiveArray(p))
+# displaymatrix(getPrimitiveArray(p)[1])
+# displaymatrix(getPrimitiveArray(p)[2])
