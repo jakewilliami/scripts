@@ -7,6 +7,8 @@
 
 #=
     e.g. PrimitiveRoots.jl 19
+    
+    The idea is that you are given some prime p.  For p, you look through all a between 1 and p-1.  You also need to find the "proper" divisors of p-1 (that is, those numbers from 1 to p-1 which divide p-1 but are not p-1).  From these you can make a table, whose y axis is the numbers of $a$, and whose x axis is the proper divisors n.  To fill in the rows of the table, you must compute a_i^{n_i}.  You look through this table row-wise; the primitive roots are the numbers a whose rows do not have a one in them.
 =#
 
 using Primes: isprime
@@ -38,7 +40,7 @@ end
 
 function getPrimitiveArray(p::Integer)
     if ! isprime(p)
-        error("$p is not a prime number")
+        throw(error("$p is not a prime number"))
     end
     
     if isequal(p, 2)
@@ -64,15 +66,11 @@ function getPrimitiveArray(p::Integer)
     end
     
     
-    return arr, l
+    return arr, l # primitiveArray, properDivisors
 end
 
 
 function findPrimitiveRoots(p::Integer)::Array{Integer, 1}
-    if ! isprime(p)
-        error("$p is not a prime number")
-    end
-    
     if isequal(p, 2)
         return "$p does not have a primitive root."
     end
