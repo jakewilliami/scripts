@@ -10,12 +10,16 @@
 	e.g., ./IsPrimeFermat.jl 2599
 =#
 
-using Primes
+using Primes: primes
 
 p = parse(BigInt, ARGS[1])
 
 function isPrimeFermatsTheorem(p::Integer)
-
+	
+	if isequal(p, 1)
+		return false
+	end
+	
 	if isequal(p, 2)
 		return true
 	end

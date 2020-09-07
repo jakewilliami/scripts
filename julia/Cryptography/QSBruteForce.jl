@@ -10,9 +10,6 @@ e.g.
 """
 
 n = parse(BigInt, ARGS[1])
-# n = big(2)^(big(82589933)) - 1
-
-
 
 function primeFactorisation(n::Integer)
 	m = ceil(sqrt(n))

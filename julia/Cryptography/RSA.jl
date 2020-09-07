@@ -142,7 +142,7 @@ function decryptCiphertext(M::Integer, d::Integer, p::Integer, q::Integer)
 	
 	M = mod(C^d, p*q)
 	
-	return C
+	return M
 end
 
 
