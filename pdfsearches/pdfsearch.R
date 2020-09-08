@@ -9,40 +9,45 @@ start_time <- Sys.time()
 # Install package manager
 library(pacman)
 #pacman::p_load(package1, package2, ...)
-pacman::p_load(pdftools, crayon)
+pacman::p_load(pdftools, crayon, pkgcond)
 
 args = commandArgs(trailingOnly = TRUE)
-#message(sprintf("Hello %s", args[1L]))
+# message(sprintf("Hello %s", args[1L]))
+main <- function() {
+    found = FALSE
+    found_count = 0
 
-found = FALSE
-found_count = 0
+    pdfs_found <- dir(path = ".",
+                        pattern = "^.*\\.pdf$",
+                        all.files = FALSE,
+                        ignore.case = TRUE,
+                        full.names = TRUE,
+                        recursive = TRUE)
+                        
+    # print(pdfs_found)
 
-pdfs_found <- dir(path = ".",
-                    pattern = "^.*\\.pdf$",
-                    all.files = FALSE,
-                    ignore.case = TRUE,
-                    full.names = TRUE,
-                    recursive = TRUE)
-                    
-# print(pdfs_found)
-
-for (pdf in pdfs_found) {
-    # `pdf_text` converts it to a list
-    textified <- pdftools::pdf_text(pdf)
-    grepped_text <- grep(args[1L], textified, ignore.case = TRUE)
-    found <- any(grepped_text)
-    if (found == TRUE) {
-        found_count <- found_count + 1
-        cat(green(paste(pdf)),"\n") # print the file in which it is found
+    for (pdf in pdfs_found) {
+        # `pdf_text` converts it to a list
+        textified <- try(pdftools::pdf_text(pdf), silent=TRUE)
+        grepped_text <- grep(args[1L], textified, ignore.case = TRUE)
+        found <- any(grepped_text)
+        
+        if (found) {
+            found_count <- found_count + 1
+            cat(green(paste(pdf)),"\n") # print the file in which it is found
+        }
+        
+        match_count <- sum(lengths(grepped_text))
     }
-    match_count <- sum(lengths(grepped_text))
+
+    end_time <- Sys.time()
+
+    print(end_time - start_time)
+
+    cat(yellow(paste(end_time - start_time, " minutes\n")))
+
+    cat(blue(paste("Found", "\"", args[1L], "\"",  " in ", found_count, "PDFs.")))
 }
 
-pdf_dir <- '/Users/jakeireland/Desktop/Study/Victoria University/2018/Trimester 2/PSYC221/Minority Report/Report/Minority Report.pdf'
 
-
-end_time <- Sys.time()
-
-cat(yellow(paste(end_time - start_time, " seconds\n")))
-
-cat(blue(paste("Found", "\"", args[1L], "\"",  " in ", found_count, "PDFs.")))
+suppress_warnings(main(), "warning")
