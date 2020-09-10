@@ -4,13 +4,13 @@
     "${BASH_SOURCE[0]}" "$@"
     =#
 
-using DataFrames
-using DetectionTheory
-using CSV
-using FreqTables
+using DataFrames: DataFrame!
+using DetectionTheory: dprimeYesNo
+using CSV: File
+using FreqTables: freqtable
 
 function main()
-	dfRaw = DataFrame!(CSV.File("data.csv"))
+	dfRaw = DataFrame!(File("data.csv"))
 	dfPivot = freqtable(dfRaw, :Response, :Condition)
 
 	numberPresent = count(x -> isequal(x,"Present"), dfRaw[!, 1])
