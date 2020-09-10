@@ -64,7 +64,7 @@ function findThruple(m::Number)
     z = nothing
     
     # comprehension loop:
-    [i*j for i in 0:m, j in 0:m]
+    # [i*j for i in 0:m, j in 0:m]
     
     # triple loop:
     for x in 0:m, y in 0:m, z in 0:m
