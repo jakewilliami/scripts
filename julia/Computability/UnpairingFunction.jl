@@ -48,7 +48,8 @@ end
 function findTuple(m::Number)
     x = nothing
     y = nothing
-        
+    
+    # double loop:
     for x in 0:m, y in 0:m
         if isequal(pairTuple(x, y), m)
             return x,y
@@ -61,7 +62,11 @@ function findThruple(m::Number)
     x = nothing
     y = nothing
     z = nothing
-        
+    
+    # composite loop:
+    [i*j for i in 0:m, j in 0:m]
+    
+    # triple loop:
     for x in 0:m, y in 0:m, z in 0:m
         if isequal(pairTuple(x, y, z), m)
             return x, y, z
