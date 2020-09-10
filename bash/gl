@@ -237,7 +237,7 @@ git_log() { # checks to see if my username is one of the usernames, and if so, p
 --abbrev-commit -${LOGNUMBER} | perl -pe \
     ' if (/<([^>]*)>/)
         {
-        if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" )
+        if ( $1 eq "jakewilliami"  ||  $1 eq "Jake Ireland" || $1 eq "Jake W. Ireland" )
             { s/<$1>/\e[0m\e[36m$&\e[39m\e[0m/; }
         else
             { s/<$1>/\e[1m\e[34m$&\e[39m\e[0m/; }
