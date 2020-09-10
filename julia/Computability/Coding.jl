@@ -16,11 +16,9 @@ function NatToPair(n::Number)
     a = nothing
     b = nothing
         
-    for a in 0:n
-        for b in 0:n
-            if isequal(PairNTuple(a, b), n)
-                return a, b
-            end
+    for a in 0:n, b in 0:n
+        if isequal(PairNTuple(a, b), n)
+            return a, b
         end
     end
 end

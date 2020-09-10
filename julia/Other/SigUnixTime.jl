@@ -6,10 +6,12 @@
 
 using Dates
 
+DTFormat(d::DateTime) = string(Dates.dayname(d), ", ", Dates.day(d), " ", Dates.monthname(d), " ", Dates.year(d), ", at ", )
+
 rn = convert(BigInt, round(time()))
-rn_unix = unix2datetime(rn)
+rn_unix = Dates.unix2datetime(rn)
 
 nextBigThing = convert(BigInt, ceil(rn, sigdigits=2))
-nextBigDateTime = unix2datetime(nextBigThing)
+nextBigDateTime = Dates.unix2datetime(nextBigThing)
 
-println("It is currently $rn in unix time.  The next milestone ($nextBigThing) is at $nextBigDateTime.")
+println("It is currently $rn in unix time.  The next milestone ($nextBigThing) is on ", DTFormat(nextBigDateTime), Time(nextBigDateTime), ".")
