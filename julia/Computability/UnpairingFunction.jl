@@ -49,11 +49,9 @@ function findTuple(m::Number)
     x = nothing
     y = nothing
         
-    for x in 0:m
-        for y in 0:m
-            if isequal(pairTuple(x, y), m)
-                return x,y
-            end
+    for x in 0:m, y in 0:m
+        if isequal(pairTuple(x, y), m)
+            return x,y
         end
     end
 end
@@ -64,13 +62,9 @@ function findThruple(m::Number)
     y = nothing
     z = nothing
         
-    for x in 0:m
-        for y in 0:m
-            for z in 0:m
-                if isequal(pairTuple(x, y, z), m)
-                    return x, y, z
-                end
-            end
+    for x in 0:m, y in 0:m, z in 0:m
+        if isequal(pairTuple(x, y, z), m)
+            return x, y, z
         end
     end
 end
