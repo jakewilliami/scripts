@@ -13,25 +13,26 @@ https://gist.github.com/t-nissie/641df996b9035f85b230#gistcomment-2211339
 
 # Returns the tuple (F(n), F(n+1)).
 FibSeq(x::Int) = FibSeq(BigInt(x))
+
 input = parse(Int, ARGS[1])
-startingAt = 0
+starting_at = 0
 
 function FibSeq(n::BigInt)
-	if n == startingAt
-		return (BigInt(0), BigInt(1))
-	elseif n > startingAt
+	if isequal(n, starting_at)
+		return 0, 1
+	elseif n > starting_at
 		a, b = FibSeq(div(n,2))
 		c = a * (b * BigInt(2) - a)
 		d = a * a + b * b
 		if iseven(n)
-			return (c, d)
+			return c, d
 		else
-			return (d, c + d)
+			return d, c + d
         end
     else
-        error("The Fibonacci sequence is here indexed from n=1.  Please enter a positive integer for the sequence to work.") && return
+        throw(error("The Fibonacci sequence is here indexed from n=$starting_at.  Please enter a positive integer for the sequence to work."))
     end
 end
 
-    println("Input: n = ", input)
-    println("(F(n),F(n+1)) = ", FibSeq(input))
+println("Input: n = ", input)
+println("(F(n),F(n+1)) = ", FibSeq(input))
