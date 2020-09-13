@@ -134,6 +134,8 @@ function reverseFactorial(r)
 	else
 		# reverseFactorialCountDown(r) # previously used this until I realised how slow it is for large integers
 		reverseFactorialDavidsMethod(r)
+		# calculateInverseFactorial(r)
+		
 	end
 	
 end
@@ -154,7 +156,7 @@ end
 # number = 121645100408832000
 # number = 402025887398070221045760000
 # number = 5550293832739304789551054660550388117999982337982762871343070903773209740507907044212761943998894132603029642967578724274573160149321818341878907651093495984407926316593053871805976798524658790357488383743402086236160000000000000000000000000000000000
-main(parse(BigFloat, ARGS[1]))
+main(parse(BigInt, ARGS[1]))
 
 endTime = Dates.datetime2unix(Dates.now())
 
