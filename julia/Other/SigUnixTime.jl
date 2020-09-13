@@ -8,7 +8,7 @@ using Dates
 
 DTFormat(d::DateTime) = string(Dates.dayname(d), ", ", Dates.day(d), " ", Dates.monthname(d), " ", Dates.year(d), ", at ", )
 
-rn = convert(BigInt, round(time()))
+rn = convert(BigInt, round(datetime2unix(now())))
 rn_unix = Dates.unix2datetime(rn)
 
 nextBigThing = convert(BigInt, ceil(rn, sigdigits=2))
