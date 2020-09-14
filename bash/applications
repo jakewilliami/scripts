@@ -4,6 +4,7 @@ trap "exit" INT
 
 # define bash directory
 BASH_DIR="$(realpath $(dirname $0))"
+SCRIPTS_DIR="$(realpath $(dirname ${BASH_DIR}))"
 PERL_VERSION_PATH="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
 PATH_VERSION_BREW="$(/usr/local/bin/perl --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
 PERL_VERSION_CURL="$(curl -s https://www.perl.org/ | awk -F'<span class="version-highlight">|</span>' '{printf "%s",$2}')"
@@ -18,9 +19,9 @@ then
 fi
 
 # ensure there is a place to write temporary files to
-if [[ ! -d "${HOME}"/scripts/perl/temp.d/ ]]
+if [[ ! -d "${SCRIPTS_DIR}"/perl/temp.d/ ]]
 then
-    mkdir "${HOME}"/scripts/perl/temp.d/
+    mkdir "${SCRIPTS_DIR}"/perl/temp.d/
 fi
 
 # source required scripts
@@ -50,7 +51,7 @@ notify_user() {
 perl_compile() {
     if [ "${PERL_VERSION_PATH}" == "${PERL_VERSION_BREW}" ]
     then
-        perl -X ${HOME}/scripts/perl/applications.pl > /dev/null 2>&1 || \
+        perl -X ${SCRIPTS_DIR}/perl/applications.pl > /dev/null 2>&1 || \
             echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir; do cpan install \"\${i}\"; done\` to install the required Perl modules.${NORM}"
     else
         if [ -z "$(brew list | grep -E '^perl$')" ]
@@ -60,7 +61,7 @@ perl_compile() {
         else
             if [ -e /usr/local/bin/perl ]
             then
-                /usr/local/bin/perl -X ${HOME}/scripts/perl/applications.pl > /dev/null 2>&1 || \
+                /usr/local/bin/perl -X ${SCRIPTS_DIR}/perl/applications.pl > /dev/null 2>&1 || \
                     echo -e "${BYELLOW}Please run \`for i in XML::LibXML File::HomeDir Text::Fuzzy::PP; do /usr/local/bin/cpan install \"\${i}\"; done\` to install the required Perl modules.${NORM}"
             else
                 echo -e "${BWHITE}The Perl version that is currently on your path is version ${PERL_VERSION_PATH}.  This should be the same as your Homebrew version, ${PERL_VERSION_BREW}.  If I'm quite honest, I don't understand how we got here.  I mean logically.  Your Perl version on your path is not the same as that from Homebrew, whatever that may be; ${ITWHITE}AND${NORM}${BWHITE} your have Perl installed via Homebrew; ${ITWHITE}AND${NORM}${BWHITE} the default path for Perl (if installed via Homebre) is not what it should be (i.e., it is not in /usr/local/bin/).  What on earth have you done to your system?${NORM}"
@@ -75,7 +76,7 @@ list_applications() {
     
     perl_compile
     
-    cat ${HOME}/scripts/perl/temp.d/dataApps.txt | cut -f1 -d":" | sed 's/[0-9]*$//' | sed 's/-$//' | awk '{$1=$1;print}' | sort | uniq
+    cat ${SCRIPTS_DIR}/perl/temp.d/dataApps.txt | cut -f1 -d":" | sed 's/[0-9]*$//' | sed 's/-$//' | awk '{$1=$1;print}' | sort | uniq
 }
 
 list_casks() {
@@ -83,7 +84,7 @@ list_casks() {
     
     perl_compile
     
-    cat ${HOME}/scripts/perl/temp.d/casks.txt | awk '{ gsub ("-", " ", $0); print}'
+    cat ${SCRIPTS_DIR}/perl/temp.d/casks.txt | awk '{ gsub ("-", " ", $0); print}'
 }
 
 compare_lists() {
@@ -101,7 +102,7 @@ compare_lists() {
         {
             print tolower($1)
         }
-        ' ${HOME}/scripts/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
+        ' ${SCRIPTS_DIR}/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
         
     # create cask list from raw
     awk '
@@ -111,7 +112,7 @@ compare_lists() {
         {
             print tolower($0)
         }
-        ' ${HOME}/scripts/perl/temp.d/casks.txt > /tmp/casks.txt
+        ' ${SCRIPTS_DIR}/perl/temp.d/casks.txt > /tmp/casks.txt
     
     # edit cask list
     notify_user 'Editing lists for manual override.'
@@ -160,7 +161,7 @@ no_interaction() {
         {
             print tolower($1)
         }
-        ' ${HOME}/scripts/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
+        ' ${SCRIPTS_DIR}/perl/temp.d/dataApps.txt | sort | uniq > /tmp/dataApps.txt
         
     # create cask list from raw
     awk '
@@ -170,7 +171,7 @@ no_interaction() {
         {
             print tolower($0)
         }
-        ' ${HOME}/scripts/perl/temp.d/casks.txt > /tmp/casks.txt
+        ' ${SCRIPTS_DIR}/perl/temp.d/casks.txt > /tmp/casks.txt
     
     # edit cask list
     gsed -i 's/^zoomus$/zoom/g' /tmp/casks.txt
