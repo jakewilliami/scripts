@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+trap "exit" INT
+
+# define bash directory
+BASH_DIR="$(realpath $(dirname $0))"
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
+
+display_help() { #Displays help
+    help_start 'mkjl [-h] [<dir name> <file name>]' 'Make a Julia file.'
+    # help_commands '-c' '--commit-count' '1' 'Prints the current' 'c' 'ommit count' 'on working branch in the past 24 hours'
+    help_help '2'
+    clean-exit
+}
+
+main() {
+    DIR_NAME="$(realpath "${1}")"
+    FILE_NAME="${2}"
+    
+    # append extension to file name if required
+    if [[ ${FILE_NAME: -3} != ".jl" ]]
+    then
+        FILE_NAME="${FILE_NAME}.jl"
+    fi
+    
+    # get full path to file to avoid ambiguity.  Use this from now on
+    PATH_TO_FILE="${DIR_NAME}/${FILE_NAME}"
+        
+    # check if file already exists so as to not overwrite it
+    if [[ -e "${PATH_TO_FILE}" ]]
+    then
+        notifyUser r "${PATH_TO_FILE} already exists.  Exiting."
+        exit $?
+    fi
+    
+    touch "${PATH_TO_FILE}"
+    echo '#!/usr/bin/env bash' >> "${PATH_TO_FILE}"
+    echo '    #=' >> "${PATH_TO_FILE}"
+    echo '    exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e "include(popfirst!(ARGS))" \ ' >> "${PATH_TO_FILE}"
+    echo '    "${BASH_SOURCE[0]}" "$@"' >> "${PATH_TO_FILE}"
+    echo '    =#' >> "${PATH_TO_FILE}"
+}
+
+# Options
+while getopts ":-:h" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+# default function for no options passed
+if [[ $OPTIND -eq 1 ]]
+then
+    main "${1}" "${2}"
+fi
+shift $((OPTIND-1))
