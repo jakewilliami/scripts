@@ -78,7 +78,7 @@ main() {
         then
             $RUN_COMMAND "${f}"
         else
-            $RUN_COMMAND "${HOME}/scripts/bash/${f}"
+            $RUN_COMMAND "${HOME}/projects/scripts/bash/${f}"
         fi
     done
 }
