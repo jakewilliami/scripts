@@ -26,7 +26,7 @@ function pairTuple(x::Integer, y::Integer)::BigInt
     return z
 end
 
-pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(x, pairTuple(y, z...))
+pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(pairTuple(x, y), z...)
 
 
 

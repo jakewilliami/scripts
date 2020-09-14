@@ -14,10 +14,10 @@ e.g.
 
 # n = parse(Int, ARGS[1])
 # m = parse(BigInt, ARGS[2])
-using StatsPlots#Plots
-using CSV
-using DataFrames
-using Distributed
+# using StatsPlots#Plots
+# using CSV
+# using DataFrames
+# using Distributed
 
 function displaymatrix(M::AbstractArray)
     return show(IOContext(stdout, :limit => true, :compact => true, :short => true), "text/plain", M); print("\n")
@@ -25,7 +25,7 @@ end
 
 
 pairTuple(x::Integer, y::Integer)::BigInt = BigInt(x + binomial(x+y+1, 2))
-pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(x, pairTuple(y, z...))
+pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(pairTuple(x, y), z...)
 
 
 #=
@@ -48,8 +48,8 @@ pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(x, pairTupl
     end
 end
 
-# ntuple_out = @time unpair_ntuple(Val(n), m)
-# println("\t$m ⟼  < $ntuple_out >")
+ntuple_out = @time unpair_ntuple(Val(n), m)
+println("\t$m ⟼  < $ntuple_out >")
 
 
 #=
