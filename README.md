@@ -22,7 +22,7 @@ While I am beginning to look into different sorts of programming, I want to have
 ## Installation
 Simply run
 ```
-cd ${HOME} && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/scripts/bash && source ~/.bash_profile && scripts
+cd ${HOME} && mkdir -p "${HOME}/projects/" && cd ./projects/ && git clone https://www.github.com/jakewilliami/scripts.git; echo 'export PATH=$PATH:~/projects/scripts/bash' >> ~/.bash_profile && chmod -R u+x ~/projects/scripts/bash && source ~/.bash_profile && scripts
 ```
 
 ## Executing commands
@@ -65,6 +65,6 @@ perl -pi -e 's/if \[\[ \$USER = \"jakeireland\" ]]/if \[\[ \$\(hostname) == \"ja
 
 On this day, 3rd March 2020, I no longer need messy `return` statements for sourcing scripts.  Rather than putting `return` rather than `exit` in my bash scripts (which, within the scripts, change the directory), and add in my `.bashrc` an `alias` to source them, I did this (for example, for the command which takes me to this git directory):
 ```
-alias scripts="cd ${HOME}/scripts/; scripts $@"
+alias scripts="cd ${HOME}/projects/scripts/; scripts $@"
 ```
 I've felt dirty for the longest time because of this session madness.  Eureka.
