@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
     #=
-    exec julia --project="~/scripts/julia/Computability/" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
+    exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
     "${BASH_SOURCE[0]}" "$@"
     =#
 	
@@ -12,12 +12,12 @@ e.g.
 
 ## TODO: Make depairing thruple more efficient
 
-# n = parse(Int, ARGS[1])
-# m = parse(BigInt, ARGS[2])
-# using StatsPlots#Plots
-# using CSV
-# using DataFrames
-# using Distributed
+n = parse(Int, ARGS[1])
+m = parse(BigInt, ARGS[2])
+using StatsPlots#Plots
+using CSV
+using DataFrames
+using Distributed
 
 function displaymatrix(M::AbstractArray)
     return show(IOContext(stdout, :limit => true, :compact => true, :short => true), "text/plain", M); print("\n")
@@ -126,4 +126,4 @@ function genPlot()
     savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
 end
 
-genPlot()
+# genPlot()
