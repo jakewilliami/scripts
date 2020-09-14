@@ -1,6 +1,6 @@
 #!/bin/bash
 	#=
-	exec julia --project="~/scripts/julia/Cryptography/" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
+	exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
 	    "${BASH_SOURCE[0]}" "$@"
 	=#
 
