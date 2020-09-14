@@ -5,10 +5,10 @@ REPLACING="\033[01;31mReplacing outdated file(s) in git repository from ~/.cargo
 COMPLETED="\033[1;38;5;2m.cargo transfer complete.\033[0;38m"
 ALL_GOOD="\033[1;38;5;2mYour git repository's .cargo files are up to date with your local ~/.cargo directory.\033[0;38m"
 
-GIT_LOCATION="${HOME}/scripts/"
+GIT_LOCATION="$(realpath $(dirname $(realpath $(dirname $0))))"
 
 LOCAL_DIR="${HOME}/.cargo/"
-GIT_DIR="${GIT_LOCATION}rust/"
+GIT_DIR="${GIT_LOCATION}/rust/"
 
 DIFF=$(comm -23 <(ls "${LOCAL_DIR}" | sort) <(ls "${GIT_DIR}" | sort))
 

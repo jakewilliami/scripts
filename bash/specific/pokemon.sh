@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 TRASH_SHARED_DIR="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
 TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"

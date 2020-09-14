@@ -3,7 +3,7 @@
 trap "exit" INT
 
 # Define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 #LIBRARY_FILE="${HOME}/Desktop/library.csv"
 LIBRARY_FILE="/Volumes/NO NAME/my-data/library/library.csv"
 

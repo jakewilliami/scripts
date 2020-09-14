@@ -2,11 +2,11 @@
 
 
 DIRECTORY_ARCHIVE="${HOME}/Archives/archived-reddit/"
-SCRIPTS_DIR="${HOME}/scripts/"
+SCRIPTS_DIR="$(realpath $(dirname $(realpath $(dirname $0))))"
 
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh

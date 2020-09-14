@@ -7,8 +7,8 @@ trap "exit" INT
 #alias scripts="source scripts"
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
-GIT_LOCATION="${HOME}/scripts/"
+BASH_DIR="$(realpath $(dirname $0))"
+GIT_LOCATION="$(realpath $(dirname $(realpath $(dirname $0))))"
 
 # source required scripts
 # shellcheck disable=SC1090

@@ -1,6 +1,6 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realname $(dirname $(realpath $(dirname $0))))"
 
 if [[ $(hostname) == "jake-mbp2017.local" ]] && [[ $(whoami) == "jakeireland" ]]
 then

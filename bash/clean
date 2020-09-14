@@ -6,7 +6,7 @@ trap "exit" INT
 # PIP: sudo -H pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | sudo -H xargs -n1 pip3 install -U
 # Consider using numfmt for calculating the bytes
 
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 TRASH_SHARED_DIR="${HOME}/Library/Mobile Documents/com~apple~CloudDocs/.Trash/"
 TRASH_LOCAL_DIR="${HOME}/.Trash/"
 TRASH_ROOT_DIR="/private/var/root/.Trash/"
