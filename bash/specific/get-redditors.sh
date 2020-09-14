@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 
 # source required scripts
 source ${BASH_DIR}/dependencies/source-dependencies.sh

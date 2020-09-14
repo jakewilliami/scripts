@@ -3,7 +3,7 @@
 trap "exit" INT
 
 # define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="$(realpath $(dirname $0))"
 
 # Immediately exits script if nothing is passed to it
 if [[ -z "${@}" ]]

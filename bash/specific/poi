@@ -1,6 +1,6 @@
 #! /bin/bash
 
-TEMPLATES="${HOME}/tex-macros/templates/moderncv/"
+TEMPLATES="${HOME}/projects/tex-macros/templates/moderncv/"
 
 template() {
 echo '

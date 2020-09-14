@@ -1,7 +1,8 @@
 #! /bin/bash
 
 # Define bash directory
-BASH_DIR="${HOME}"/scripts/bash/
+BASH_DIR="$(realpath $(dirname $0))/"
+BASH_DIR="${HOME}/projects/scripts/bash/"
 
 # determines which package manager one uses
 source "${BASH_DIR}"/dependencies/which-pacman.sh

@@ -3,7 +3,7 @@
 trap "exit" INT
 
 # define bash directory
-BASH_DIR="${HOME}"/scripts/bash/
+BASH_DIR="$(realpath $(dirname $0))"
 PERL_VERSION_PATH="$($(which perl) --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
 PATH_VERSION_BREW="$(/usr/local/bin/perl --version | head -n 2 | tail -n 1 | awk -F'[v).]' '{print $4 "." $5 "." $6}')"
 PERL_VERSION_CURL="$(curl -s https://www.perl.org/ | awk -F'<span class="version-highlight">|</span>' '{printf "%s",$2}')"

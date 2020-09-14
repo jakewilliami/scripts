@@ -1,12 +1,12 @@
 #! /bin/bash
 
-BASH_DIR="${HOME}/scripts/bash/"
+BASH_DIR="${HOME}/projects/scripts/bash/"
 
 help_start() {
     echo -e "${BWHITE}Usage: ${1}${NORM}"
     echo
     echo -e "${ITWHITE}${2}${NORM}"
-    echo 
+    echo
 }
 
 help_help() {
