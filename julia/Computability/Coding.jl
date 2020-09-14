@@ -6,22 +6,23 @@
     
 module Coding
 
-export PairNTuple, NatToPair,
+export PairNTuple, NatToNTuple,
         IntToNat, IntToNat!, NatToInt, NatToInt!, f
 
 PairNTuple(x::Integer, y::Integer)::Integer = x < 0 || y < 0 ? error("This function is only defined for natural numbers.  Use IntToNat!.") : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
 PairNTuple(x::Integer, y::Integer, z::Integer...)::Integer = PairNTuple(x, PairNTuple(y, z...)...) # multiple inputs
 
-function NatToPair(n::Number)
-    a = nothing
-    b = nothing
-        
-    for a in 0:n, b in 0:n
-        if isequal(PairNTuple(a, b), n)
-            return a, b
+@generated function NatToNTuple(::Val{n}, m::Integer) where {n}
+    quote
+        @inbounds @fastmath Base.Cartesian.@nloops $n i d -> 0:m begin
+            if isequal(PairNTuple((Base.Cartesian.@ntuple $n i)...), m)
+                return Base.Cartesian.@ntuple $n i
+            end
         end
     end
 end
+
+NatToNTuple(n::Integer, m::Integer) = NatToNTuple(Val(n), m)
 
 IntToNat(z::Integer)::Integer = z >= 0 ? 2 * z : (2 * abs(z)) - 1 # base case
 IntToNat(z::Integer, w::Integer...) = IntToNat(z), IntToNat(w...)... # multiple inputs
@@ -46,7 +47,8 @@ function test()
     @test PairNTuple(5,7) == 83
     @test PairNTuple(5,7,20) == 76250
     @test PairNTuple([1,2,3,4,5,6,7,8,9]...) == 6311822920396919125408612435408496798197806713267032880607810866415866365846756729940810210974488939507829451263691704142949582073486360979796574028521007676991056360811439992631142153411030118420604722583844533351520010617917043983043649066080781
-    @test NatToPair(83) == (5,7)
+    @test NatToNTuple(2, 83) == (5,7)
+    @test NatToNTuple(3, 83) == (5, 1, 2)
     
     @test IntToNat!([0,-1,1,-2,2,-3,3,-4,4]) == [0, 1, 2, 3, 4, 5, 6, 7, 8]
     @test IntToNat((-1,2)) == 16
