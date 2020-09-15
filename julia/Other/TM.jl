@@ -1,7 +1,40 @@
+#!/usr/bin/env bash
+    #=
+    exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
+    "${BASH_SOURCE[0]}" "$@"
+    =#
+    
+# Adapted form https://rosettacode.org/wiki/Universal_Turing_machine#Julia
+
+Blank = " " # "□"
+Tape = "10101111" * Blank * "1000001"
+
+#=
+List of Programs:
+    1) Remove last character from string
+    2) Duplicate input string
+    3) Calculate tally-code successor
+    4) Calculate binary successor
+    5) Calculates the sum of two binary numbers (blank delimited)
+=#
+ChosenProgram = 5
+
+
+
+
+
+#----------------------------------------------------------------------------
 import Base.show
- 
+
+# parse tape into tuple of strings.
+# you can apply the string. function to this if you want to
+# ensure that the elements are strings and not substrings
+Tape = tuple(split(string(Tape), "")...)
+
+# define moving
 @enum Move Left=1 Stay Right
- 
+
+# defing structs
 mutable struct MachineState
     state::String
     tape::Dict{Int, String}
@@ -10,10 +43,10 @@ end
  
 struct Rule
     instate::String
+    outstate::String
     s1::String
     s2::String
     move::Move
-    outstate::String
 end
  
 struct Program
@@ -23,26 +56,129 @@ struct Program
     blank::String
     rules::Vector{Rule}
 end
- 
-const testprograms = [
-    (Program("Simple incrementer", "q0", "qf", "B",
-        [Rule("q0", "1", "1", Right, "q0"), Rule("q0", "B", "1", Stay, "qf")]),
-     Dict(1 =>"1", 2 => "1", 3 => "1"), true),
-    (Program("Three-state busy beaver", "a", "halt", "0",
-        [Rule("a", "0", "1", Right, "b"), Rule("a", "1", "1", Left, "c"),
-         Rule("b", "0", "1", Left, "a"), Rule("b", "1", "1", Right, "b"),
-         Rule("c", "0", "1", Left, "b"), Rule("c", "1", "1", Stay, "halt")]),
-     Dict(), true),
-    (Program("Five-state busy beaver", "A", "H", "0",
-        [Rule("A", "0", "1", Right, "B"), Rule("A", "1", "1", Left, "C"),
-         Rule("B", "0", "1", Right, "C"), Rule("B", "1", "1", Right, "B"),
-         Rule("C", "0", "1", Right, "D"), Rule("C", "1", "0", Left, "E"),
-         Rule("D", "0", "1", Left, "A"), Rule("D", "1", "1", Left, "D"),
-         Rule("E", "0", "1", Stay, "H"), Rule("E", "1", "0", Left, "A")]),
-     Dict(), false)]
+
+# define programs
+const programs = [
+    (Program("Turing Machine to Truncate String", "q0", "halt", Blank,
+        [
+            Rule("q0", "q0", "0", "0", Right),
+            Rule("q0", "q0", "1", "1", Right),
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q1", "0", "0", Right),
+            Rule("q1", "q1", "1", "1", Right),
+            Rule("q1", "q2", Blank, Blank, Left),
+            Rule("q2", "q3", "0", Blank, Left),
+            Rule("q2", "q3", "1", Blank, Left),
+            Rule("q3", "q3", "0", "0", Left),
+            Rule("q3", "q3", "1", "1", Left),
+            Rule("q3", "q4", Blank, Blank, Left),
+            Rule("q4", "q4", "0", "0", Left),
+            Rule("q4", "q4", "1", "1", Left),
+            Rule("q4", "halt", Blank, Blank, Right)
+        ]),
+        Tape, true
+    ),
+    (Program("Turing Machine to Duplicate Input", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q2", "1", "A", Right),
+            Rule("q2", "q2", "1", "1", Right),
+            Rule("q2", "q2", "0", "0", Right),
+            Rule("q2", "q2", "A", "A", Right),
+            Rule("q2", "q2", "B", "B", Right),
+            Rule("q2", "q3", Blank, "A", Left),
+            Rule("q3", "q3", "A", "A", Left),
+            Rule("q3", "q3", "B", "B", Left),
+            Rule("q3", "q6", "1", "1", Left),
+            Rule("q3", "q6", "0", "0", Left),
+            Rule("q3", "q7", Blank, Blank, Right),
+            Rule("q6", "q6", "1", "1", Left),
+            Rule("q6", "q6", "0", "0", Left),
+            Rule("q6", "q1", "A", "A", Right),
+            Rule("q6", "q1", "B", "B", Right),
+            Rule("q1", "q4", "0", "B", Left),
+            Rule("q4", "q4", "1", "1", Right),
+            Rule("q4", "q4", "0", "0", Right),
+            Rule("q4", "q4", "A", "A", Right),
+            Rule("q4", "q4", "B", "B", Right),
+            Rule("q4", "q5", Blank, "B", Left),
+            Rule("q5", "q5", "A", "A", Left),
+            Rule("q5", "q5", "B", "B", Left),
+            Rule("q5", "q6", "1", "1", Left),
+            Rule("q5", "q6", "0", "0", Left),
+            Rule("q5", "q7", Blank, Blank, Right),
+            Rule("q7", "q7", "A", "1", Right),
+            Rule("q7", "q7", "B", "0", Right),
+            Rule("q7", "q8", Blank, Blank, Left),
+            Rule("q8", "q8", "1", "1", Left),
+            Rule("q8", "q8", "0", "0", Left),
+            Rule("q8", "halt", Blank, Blank, Right)
+        ]),
+        Tape, true
+    ),
+    (Program("Turing Machine to Calculate the Tally-code Successor", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q1", "1", "1", Right),
+            Rule("q1", "halt", Blank, "1", Stay)
+        ]),
+        Tape, true
+    ),
+    (Program("Turing Machine to Calculate the Binary Successor", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q1", "0", "0", Right),
+            Rule("q1", "q1", "1", "1", Right),
+            Rule("q1", "q2", Blank, Blank, Left),
+            Rule("q2", "q2", "1", "0", Left),
+            Rule("q2", "halt", "0", "1", Stay),
+            Rule("q2", "halt", Blank, "1", Stay)
+        ]),
+        Tape, true
+    ),
+    (Program("Turing Machine to Add Two Binary Numbers", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q1", "0", "0", Right),
+            Rule("q1", "q1", "1", "1", Right),
+            Rule("q1", "q1", "A", "A", Right),
+            Rule("q1", "q1", "B", "B", Right),
+            Rule("q2", "q1", "0", "A", Right),
+            Rule("q2", "q1", "1", "B", Right),
+            Rule("q2", "q2", "A", "A", Left),
+            Rule("q2", "q2", "B", "B", Left),
+            Rule("q3", "q2", Blank, Blank, Left),
+            Rule("q3", "q3", "1", "1", Left),
+            Rule("q3", "q3", "0", "0", Left),
+            Rule("q1", "q4", Blank, Blank, Right),
+            Rule("q4", "q4", "1", "1", Right),
+            Rule("q4", "q4", "0", "0", Right),
+            Rule("q4", "q5", Blank, Blank, Left),
+            Rule("q5", "q8", "1", Blank, Left),
+            Rule("q8", "q8", "1", "1", Left),
+            Rule("q8", "q8", "0", "0", Left),
+            Rule("q8", "q7", Blank, Blank, Left),
+            Rule("q7", "q7", "A", "A", Left),
+            Rule("q7", "q7", "B", "B", Left),
+            Rule("q7", "q6", "1", "A", Left),
+            Rule("q7", "q1", "0", "B", Right),
+            Rule("q6", "q6", "1", "0", Left),
+            Rule("q6", "q1", Blank, "1", Right),
+            Rule("q6", "q1", "0", "1", Right),
+            Rule("q5", "q3", "0", Blank, Left),
+            Rule("q5", "q9", Blank, Blank, Left),
+            Rule("q9", "q9", "B", "1", Left),
+            Rule("q9", "q9", "A", "0", Left),
+            Rule("q9", "halt", "0", "0", Stay),
+            Rule("q9", "halt", "1", "1", Stay),
+            Rule("q9", "halt", Blank, Blank, Stay)
+        ]),
+        Tape, true
+    ),
+]
  
 function show(io::IO, mstate::MachineState)
-    ibracket(i, curpos, val) = (i == curpos) ? "[$val]" : " $val "
+    ibracket(i, curpos, val) = isequal(i, curpos) ? "[$val]" : " $val "
     print(io, rpad("($(mstate.state))", 12))
     for i in sort(collect(keys(mstate.tape)))
         print(io, "   $(ibracket(i, mstate.headpos, mstate.tape[i]))")
@@ -50,37 +186,61 @@ function show(io::IO, mstate::MachineState)
 end
  
 function turing(program, tape, verbose)
-    println("\n$(program.title)")
-    verbose && println(" State       \tTape [head]\n--------------------------------------------------")
+    println("\u001b[1;38m$(program.title)\u001b[0;38m")
+    verbose && println(" State\t\t\tTape [head]\n", "-"^displaysize(stdout)[2])
+    
     mstate = MachineState(program.initial, tape, 1)
     stepcount = 0
     while true
-        if !haskey(mstate.tape, mstate.headpos)
+        if ! haskey(mstate.tape, mstate.headpos)
             mstate.tape[mstate.headpos] = program.blank
         end
+        
         verbose && println(mstate)
+        
         for rule in program.rules
-            if rule.instate == mstate.state && rule.s1 == mstate.tape[mstate.headpos]
+            if isequal(rule.instate, mstate.state) && isequal(rule.s1, mstate.tape[mstate.headpos])
                 mstate.tape[mstate.headpos] = rule.s2
-                if rule.move == Left
+                if isequal(rule.move, Left)
                     mstate.headpos -= 1
-                elseif rule.move == Right
+                elseif isequal(rule.move, Right)
                     mstate.headpos += 1
                 end
+                
                 mstate.state = rule.outstate
                 break
             end
         end
+        
         stepcount += 1
-        if mstate.state == program.final
+        
+        if isequal(mstate.state, program.final)
             break
         end
     end
+    
     verbose && println(mstate)
-    println("Total steps: $stepcount")
+    println("Total number of steps taken: $stepcount")
 end
- 
-for (prog, tape, verbose) in testprograms
-        turing(prog, tape, verbose)
+
+function main()
+    (prog, tape_tuple, verbose) = programs[ChosenProgram]
+    
+    # pad tape with blanks
+    tape_tuple = (Blank, tape_tuple..., Blank)
+    
+    # construct dictionary from tape
+    tape = Dict{Int,String}()
+    entry_count = 0
+    
+    for i in tape_tuple
+        entry_count += 1
+        push!(tape, entry_count => string(i))
+    end
+    
+
+    turing(prog, tape, verbose)
+    print("\n")
 end
- 
+
+@time main()
