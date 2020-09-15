@@ -14,14 +14,10 @@ e.g.
 
 n = parse(Int, ARGS[1])
 m = parse(BigInt, ARGS[2])
-using StatsPlots#Plots
-using CSV
-using DataFrames
-using Distributed
-
-function displaymatrix(M::AbstractArray)
-    return show(IOContext(stdout, :limit => true, :compact => true, :short => true), "text/plain", M); print("\n")
-end
+# using StatsPlots#Plots
+# using CSV
+# using DataFrames
+# using Distributed
 
 
 pairTuple(x::Integer, y::Integer)::BigInt = BigInt(x + binomial(x+y+1, 2))
@@ -48,7 +44,9 @@ pairTuple(x::Integer, y::Integer, z::Integer...)::BigInt = pairTuple(pairTuple(x
     end
 end
 
-ntuple_out = @time unpair_ntuple(Val(n), m)
+unpair_ntuple(n::Integer, m::Integer) = unpair_ntuple(Val(n), m)
+
+ntuple_out = @time unpair_ntuple(n, m)
 println("\t$m ⟼  < $ntuple_out >")
 
 
@@ -79,17 +77,22 @@ function iterative_unpair_ntuple(dimension::Integer, max::Integer)
 end
 
 
-# ntuple_out_iterative = @time iterative_unpair_ntuple(n, m)
-# println("\t$m ⟼  < $ntuple_out_iterative >")
+# suggested by /u/iagueqnar
+function iterative_implementation(n::Integer, m::Integer)
+    for idx in Iterators.product(repeat([0:m], n)...)
+        args = Tuple(idx)
+        if isequal(pairTuple(args...), m)
+            return args
+        end
+    end
+end
 
-
-# write(joinpath(dirname(dirname(@__FILE__)), "data", "faceness-scores.csv"), DataFrame(hcat(face_names, df_faces, non_face_names, df_non_faces)), writeheader=false)
 
 function genPlot()
-    stop_n_at = 4
-    stop_m_at = 200
-    num_of_datapoints = 100
-    data = Matrix{Union{AbstractFloat,Integer}}(undef,num_of_datapoints,4)# needs 3 columns: n; m; bonk time; doov time
+    stop_n_at = 10
+    stop_m_at = 10
+    num_of_datapoints = 50
+    data = Matrix{Union{AbstractFloat,Integer}}(undef,num_of_datapoints,5)# needs 5 columns: n; m; bonk time; doov time; iagueqnar time
     m_data = []
 
     # for n in 2:stop_n_at
@@ -105,7 +108,8 @@ function genPlot()
         m = rand(1:stop_m_at)
         bonks = @elapsed unpair_ntuple(Val(n), m)
         doovs = @elapsed iterative_unpair_ntuple(n, m)
-        data[i,:] .= [n, m, bonks, doovs]
+        i_guys = @elapsed iterative_implementation(n, m)
+        data[i,:] .= [n, m, bonks, doovs, i_guys]
     end
 
     # make n and m integers
@@ -122,8 +126,11 @@ function genPlot()
     gr() # set plot backend
     theme(:solarized)
     
-    plot = scatter(data[:,1], data[:,3:4], smooth = true, fontfamily = font("Times"), xlabel = "n", ylabel = "Time elapsed during calculation [seconds]", label = ["Bonk's" "Doov's"])#, xlims = (0, stop_n_at))
-    savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
+    # plot = scatter(data[:,1], data[:,3:4], smooth = true, fontfamily = font("Times"), xlabel = "n", ylabel = "Time elapsed during calculation [seconds]", label = ["Bonk's" "Doov's"])#, xlims = (0, stop_n_at))
+    # savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
+    
+    plot = scatter(data[:,1], data[:,3:5], smooth = true, fontfamily = font("Times"), xlabel = "n", ylabel = "Time elapsed during calculation [seconds]", label = ["Bonk's" "Doov's" "iagueqnar"])#, xlims = (0, stop_n_at))
+    savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk_v_iagueqnar,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
 end
 
 # genPlot()
