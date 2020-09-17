@@ -27,7 +27,7 @@ main() {
     
     # get full path to file to avoid ambiguity.  Use this from now on
     PATH_TO_FILE="${DIR_NAME}/${FILE_NAME}"
-        
+    
     # check if file already exists so as to not overwrite it
     if [[ -e "${PATH_TO_FILE}" ]]
     then
@@ -64,6 +64,11 @@ done
 # default function for no options passed
 if [[ $OPTIND -eq 1 ]]
 then
-    main "${1}" "${2}"
+    if [[ -z "${2}" ]]
+    then
+        main . "${1}"
+    else
+        main "${1}" "${2}"
+    fi
 fi
 shift $((OPTIND-1))
