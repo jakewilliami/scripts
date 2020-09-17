@@ -7,7 +7,8 @@
 # Adapted form https://rosettacode.org/wiki/Universal_Turing_machine#Julia
 
 Blank = " " # "□"
-Tape = "10101111" * Blank * "1000001"
+# Tape = 11111111111
+# Tape = "101010" * Blank * "1"
 
 #=
 List of Programs:
@@ -16,8 +17,36 @@ List of Programs:
     3) Calculate tally-code successor
     4) Calculate binary successor
     5) Calculates the sum of two binary numbers (blank delimited)
+    6) x → x mod 3
 =#
-ChosenProgram = 5
+# ChosenProgram = 6
+
+println("The following are the list of programmes to choose from:")
+println("\t1) Remove last character from string")
+println("\t2) Duplicate input string")
+println("\t3) Calculate tally-code successor")
+println("\t4) Calculate binary successor")
+println("\t5) Calculates the sum of two binary numbers (blank delimited)")
+println("\t6) x → x mod 3")
+println("\n")
+println("Please choose a number as defined above.")
+
+ChosenProgram = parse(Int, readline())
+
+println("\n")
+println("Now please enter a tape.")
+Tape = readline()
+println("\n")
+
+println("Do you want to show the process of the Turing Machine?")
+Show = nothing
+verbosity_input = readline()
+if occursin(r"y"i, verbosity_input)
+    Show = true
+else
+    Show = false
+end
+println("\n")
 
 
 
@@ -76,7 +105,7 @@ const programs = [
             Rule("q4", "q4", "1", "1", Left),
             Rule("q4", "halt", Blank, Blank, Right)
         ]),
-        Tape, true
+        Tape, Show
     ),
     (Program("Turing Machine to Duplicate Input", "q0", "halt", Blank,
         [
@@ -114,7 +143,7 @@ const programs = [
             Rule("q8", "q8", "0", "0", Left),
             Rule("q8", "halt", Blank, Blank, Right)
         ]),
-        Tape, true
+        Tape, Show
     ),
     (Program("Turing Machine to Calculate the Tally-code Successor", "q0", "halt", Blank,
         [
@@ -122,7 +151,7 @@ const programs = [
             Rule("q1", "q1", "1", "1", Right),
             Rule("q1", "halt", Blank, "1", Stay)
         ]),
-        Tape, true
+        Tape, Show
     ),
     (Program("Turing Machine to Calculate the Binary Successor", "q0", "halt", Blank,
         [
@@ -134,7 +163,7 @@ const programs = [
             Rule("q2", "halt", "0", "1", Stay),
             Rule("q2", "halt", Blank, "1", Stay)
         ]),
-        Tape, true
+        Tape, Show
     ),
     (Program("Turing Machine to Add Two Binary Numbers", "q0", "halt", Blank,
         [
@@ -173,7 +202,20 @@ const programs = [
             Rule("q9", "halt", "1", "1", Stay),
             Rule("q9", "halt", Blank, Blank, Stay)
         ]),
-        Tape, true
+        Tape, Show
+    ),
+    (Program("Turing Machine to Calculate x mod 3, where x is in tallycode", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q2", "1", Blank, Right),
+            Rule("q2", "q3", "1", Blank, Right),
+            Rule("q3", "q4", Blank, "1", Left),
+            Rule("q4", "halt", Blank, "1", Stay),
+            Rule("q2", "halt", Blank, "1", Stay),
+            Rule("q3", "q1", "1", Blank, Right),
+            Rule("q1", "halt", Blank, Blank, Stay)
+        ]),
+        Tape, Show
     ),
 ]
  
