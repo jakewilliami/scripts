@@ -11,7 +11,7 @@ Blank = " " # "□"
 # Tape = "101010" * Blank * "1"
 
 #=
-List of Programs:
+List of Programmes:
     1) Remove last character from string
     2) Duplicate input string
     3) Calculate tally-code successor
@@ -19,7 +19,7 @@ List of Programs:
     5) Calculates the sum of two binary numbers (blank delimited)
     6) x → x mod 3
 =#
-# ChosenProgram = 6
+# ChosenProgramme = 6
 
 println("The following are the list of programmes to choose from:")
 println("\t1) Remove last character from string")
@@ -31,7 +31,7 @@ println("\t6) x → x mod 3")
 println("\n")
 println("Please choose a number as defined above.")
 
-ChosenProgram = parse(Int, readline())
+ChosenProgramme = parse(Int, readline())
 
 println("\n")
 println("Now please enter a tape.")
@@ -78,7 +78,7 @@ struct Rule
     move::Move
 end
  
-struct Program
+struct Programme
     title::String
     initial::String
     final::String
@@ -86,9 +86,9 @@ struct Program
     rules::Vector{Rule}
 end
 
-# define programs
-const programs = [
-    (Program("Turing Machine to Truncate String", "q0", "halt", Blank,
+# define programmes
+const programmes = [
+    (Programme("Turing Machine to Truncate String", "q0", "halt", Blank,
         [
             Rule("q0", "q0", "0", "0", Right),
             Rule("q0", "q0", "1", "1", Right),
@@ -107,7 +107,7 @@ const programs = [
         ]),
         Tape, Show
     ),
-    (Program("Turing Machine to Duplicate Input", "q0", "halt", Blank,
+    (Programme("Turing Machine to Duplicate Input", "q0", "halt", Blank,
         [
             Rule("q0", "q1", Blank, Blank, Right),
             Rule("q1", "q2", "1", "A", Right),
@@ -145,7 +145,7 @@ const programs = [
         ]),
         Tape, Show
     ),
-    (Program("Turing Machine to Calculate the Tally-code Successor", "q0", "halt", Blank,
+    (Programme("Turing Machine to Calculate the Tally-code Successor", "q0", "halt", Blank,
         [
             Rule("q0", "q1", Blank, Blank, Right),
             Rule("q1", "q1", "1", "1", Right),
@@ -153,7 +153,7 @@ const programs = [
         ]),
         Tape, Show
     ),
-    (Program("Turing Machine to Calculate the Binary Successor", "q0", "halt", Blank,
+    (Programme("Turing Machine to Calculate the Binary Successor", "q0", "halt", Blank,
         [
             Rule("q0", "q1", Blank, Blank, Right),
             Rule("q1", "q1", "0", "0", Right),
@@ -165,7 +165,7 @@ const programs = [
         ]),
         Tape, Show
     ),
-    (Program("Turing Machine to Add Two Binary Numbers", "q0", "halt", Blank,
+    (Programme("Turing Machine to Add Two Binary Numbers", "q0", "halt", Blank,
         [
             Rule("q0", "q1", Blank, Blank, Right),
             Rule("q1", "q1", "0", "0", Right),
@@ -204,7 +204,7 @@ const programs = [
         ]),
         Tape, Show
     ),
-    (Program("Turing Machine to Calculate x mod 3, where x is in tallycode", "q0", "halt", Blank,
+    (Programme("Turing Machine to Calculate x mod 3, where x is in tallycode", "q0", "halt", Blank,
         [
             Rule("q0", "q1", Blank, Blank, Right),
             Rule("q1", "q2", "1", Blank, Right),
@@ -227,20 +227,20 @@ function show(io::IO, mstate::MachineState)
     end
 end
  
-function turing(program, tape, verbose)
-    println("\u001b[1;38m$(program.title)\u001b[0;38m")
+function turing(programme, tape, verbose)
+    println("\u001b[1;38m$(programme.title)\u001b[0;38m")
     verbose && println(" State\t\t\tTape [head]\n", "-"^displaysize(stdout)[2])
     
-    mstate = MachineState(program.initial, tape, 1)
+    mstate = MachineState(programme.initial, tape, 1)
     stepcount = 0
     while true
         if ! haskey(mstate.tape, mstate.headpos)
-            mstate.tape[mstate.headpos] = program.blank
+            mstate.tape[mstate.headpos] = programme.blank
         end
         
         verbose && println(mstate)
         
-        for rule in program.rules
+        for rule in programme.rules
             if isequal(rule.instate, mstate.state) && isequal(rule.s1, mstate.tape[mstate.headpos])
                 mstate.tape[mstate.headpos] = rule.s2
                 if isequal(rule.move, Left)
@@ -256,7 +256,7 @@ function turing(program, tape, verbose)
         
         stepcount += 1
         
-        if isequal(mstate.state, program.final)
+        if isequal(mstate.state, programme.final)
             break
         end
     end
@@ -266,7 +266,7 @@ function turing(program, tape, verbose)
 end
 
 function main()
-    (prog, tape_tuple, verbose) = programs[ChosenProgram]
+    (prog, tape_tuple, verbose) = programmes[ChosenProgramme]
     
     # pad tape with blanks
     tape_tuple = (Blank, tape_tuple..., Blank)
