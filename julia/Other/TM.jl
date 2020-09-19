@@ -18,6 +18,7 @@ List of Programmes:
     4) Calculate binary successor
     5) Calculates the sum of two binary numbers (blank delimited)
     6) x → x mod 3
+    7) x → 3x in binary
 =#
 # ChosenProgramme = 6
 
@@ -28,6 +29,7 @@ println("\t3) Calculate tally-code successor")
 println("\t4) Calculate binary successor")
 println("\t5) Calculates the sum of two binary numbers (blank delimited)")
 println("\t6) x → x mod 3")
+println("\t7) x → 3x in binary")
 println("\n")
 println("Please choose a number as defined above.")
 
