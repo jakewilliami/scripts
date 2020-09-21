@@ -10,26 +10,19 @@ Blank = " " # "□"
 # Tape = 11111111111
 # Tape = "101010" * Blank * "1"
 
-#=
-List of Programmes:
-    1) Remove last character from string
-    2) Duplicate input string
-    3) Calculate tally-code successor
-    4) Calculate binary successor
-    5) Calculates the sum of two binary numbers (blank delimited)
-    6) x → x mod 3
-    7) x → 3x in binary
-=#
-# ChosenProgramme = 6
+global programme_counter = 0
+programme_description(description::AbstractString) = (global programme_counter; programme_counter += 1; println("\t$programme_counter) $description"))
 
 println("The following are the list of programmes to choose from:")
-println("\t1) Remove last character from string")
-println("\t2) Duplicate input string")
-println("\t3) Calculate tally-code successor")
-println("\t4) Calculate binary successor")
-println("\t5) Calculates the sum of two binary numbers (blank delimited)")
-println("\t6) x → x mod 3")
-println("\t7) x → 3x in binary")
+
+programme_description("Remove last character from string")
+programme_description("Duplicate input string")
+programme_description("Calculate the tally-code successor")
+programme_description("Calculate the binary successor")
+programme_description("Calculate the binary predecessor")
+programme_description("Calculates the sum of two binary numbers (blank delimited)")
+programme_description("x → x mod 3, where x is in tally-code")
+
 println("\n")
 println("Please choose a number as defined above.")
 
@@ -40,13 +33,19 @@ println("Now please enter a tape.")
 Tape = readline()
 println("\n")
 
+if Tape == ""
+    throw(error("Don't mess with me.  The answer is probably a blank string, unless you want to compute the successor function in which case the answer is one."))
+end
+
 println("Do you want to show the process of the Turing Machine?")
 Show = nothing
 verbosity_input = readline()
 if occursin(r"y"i, verbosity_input)
     Show = true
-else
+elseif occursin(r"n"i, verbosity_input)
     Show = false
+else
+    throw(error("You need to tell the programme whether or not you want to show the process of the Turing Machine."))
 end
 println("\n")
 
@@ -164,6 +163,17 @@ const programmes = [
             Rule("q2", "q2", "1", "0", Left),
             Rule("q2", "halt", "0", "1", Stay),
             Rule("q2", "halt", Blank, "1", Stay)
+        ]),
+        Tape, Show
+    ),
+    (Programme("Turing Machine to Calculate the Binary Predecessor", "q0", "halt", Blank,
+        [
+            Rule("q0", "q1", Blank, Blank, Right),
+            Rule("q1", "q1", "0", "0", Right),
+            Rule("q1", "q1", "1", "1", Right),
+            Rule("q1", "q2", Blank, Blank, Left),
+            Rule("q2", "q2", "0", "1", Left),
+            Rule("q2", "halt", "1", "0", Stay)
         ]),
         Tape, Show
     ),
