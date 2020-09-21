@@ -24,7 +24,7 @@ import Base.π # needed in order to redefine it
 # <x1, x2, ..., xn> = <<x_1, ..., xn-1>, x_n>
 # And returns their pair.
 pairntuple_error = "This function is only defined for natural numbers.  Use cℤ."
-PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("@$airntuple_error")) : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
+PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("@$pairntuple_error")) : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
 PairNTuple(x::Integer, y::Integer, z::Integer...)::BigInt = PairNTuple(PairNTuple(x, y), z...)
 
 ##############################################################################
@@ -44,6 +44,10 @@ const algebraic = Algebra()
         iszero(n) && return nothing
         isone(n) && return m
         
+        # promote type to BigInt
+        # n = big(n)
+        m = big(m)
+        
         @inbounds @fastmath Base.Cartesian.@nloops $n i d -> 0:m begin
             if isequal(PairNTuple((Base.Cartesian.@ntuple $n i)...), m)
                 return Base.Cartesian.@ntuple $n i
@@ -54,7 +58,7 @@ end
 # Ensuring the function is more readible
 # (i.e., switch the inputs) such that
 # π(m, n) ⟼ <x1, ..., xn> = m
-π(m::Integer, n::Integer) = π(Val(n), m)
+π(m::Integer, n::Integer) = π(Val(big(n)), m)
 # default to n=2
 π(m::Integer) = π(m, 2)
 # Defining a selection function that obtains
@@ -88,6 +92,9 @@ function π(m::Integer, n::Integer, ::Algebra)
     
     return appended_tuple
 end
+# Selection function taking input k and outputting the
+# kth element in the tuple obtained by the algebraic π
+π(m::Integer, n::Integer, k::Integer, ::Algebra) = π(m, n, algebraic)[k+1]
 
 ##############################################################################
 
@@ -114,43 +121,3 @@ invcℤ(ns::AbstractArray{<:Integer}) = invcℤ.(ns)
 ##############################################################################
 
 end # end module
-
-##############################################################################
-
-# Testing
-
-using Test: @test
-using .Coding
-
-function test()
-    @test PairNTuple(5,7) == 83
-    @test PairNTuple(5,7,20) == 5439
-    @test PairNTuple([1,2,3,4,5,6,7,8,9]...) == 131504586847961235687181874578063117114329409897615188504091716162522225834932122128288032336298131
-    
-    @test π(83, 2) == (5,7)
-    @test π(83, 2, 0) == 5
-    @test π(83, 3) == (2, 0, 7)
-    @test π(1023, 2, 1) == 11
-    @test π(big(1315045868479612356871818745780631171143), 1) == 1315045868479612356871818745780631171143
-    @test π(5987349857934, 0) == nothing
-    @test π(83, 3, algebraic) == (2, 0, 7)
-    @test π(10001, 10, algebraic) == (0, 0, 0, 0, 0, 0, 1, 3, 4, 9)
-    @test π(big(1315045868479612356871818745780631171143), 1, algebraic) == 1315045868479612356871818745780631171143
-    @test π(5987349857934, 0, algebraic) == nothing
-    small_random = abs(rand(1:100))
-    large_random = abs(rand(1:10000))
-    @test π(small_random, 3, algebraic) == π(small_random, 3)
-    @test π(large_random, 2, algebraic) == π(large_random, 2)
-    
-    @test cℤ([0,-1,1,-2,2,-3,3,-4,4]) == [0, 1, 2, 3, 4, 5, 6, 7, 8]
-    @test cℤ((-1,2)) == 16
-    @test cℤ((1,1)) == 12
-    @test cℤ(3,4) == (6, 8)
-    
-    @test invcℤ([0, 1, 2, 3, 4, 5, 6, 7, 8]) == [0, -1, 1, -2, 2, -3, 3, -4, 4]
-    @test cℤ(invcℤ(79)) == 79
-    @test invcℤ(cℤ(-40)) == -40
-    @test invcℤ(10029) == -5015
-end
-
-@time test()
