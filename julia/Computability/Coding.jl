@@ -6,9 +6,15 @@
     
 module Coding
 
-export PairNTuple, π, alg_π, cℤ, invcℤ
+export ∸, PairNTuple, π, alg_π, cℤ, invcℤ
 
 import Base.π # needed in order to redefine it
+
+##############################################################################
+
+# Dot minus (monus):
+# i.e., truncated negation
+∸(x::Number, y::Number) = x - y >= 0 ? x - y : 0
 
 ##############################################################################
 
@@ -53,27 +59,8 @@ end
 π(m::Integer, n::Integer, k::Integer) = π(m, n)[k+1]
 
 # Algebraic unpairing function:
-# TODO: Implement flag, e.g.:
-# julia> function myfunct(x::Integer)
-#        return x^2
-#        end
-# myfunct (generic function with 1 method)
-#
-# julia> function myfunct(x::Integer;alt::Bool=true)
-#        return x-2
-#        end
-# myfunct (generic function with 2 method)
-#
-# julia> myfunct(2)
-# 4
-#
-# julia> myfunct(2;alt=true)
-# 0
-#
-# julia> myfunct(2)
-# 4
-
-function alg_π(m::Integer)
+# Unpairing if n=2 (base case):
+function π(m::Integer, algebra::Bool)
     w = floor((sqrt(8*m + 1) - 1) / 2)
     t = (w^2 + w) / 2
     x = m - t
@@ -81,15 +68,19 @@ function alg_π(m::Integer)
     
     return Int(x), Int(y)
 end
-
-function alg_π(m::Integer, n::Integer; algebra::Bool=true)
+# Generalised case:
+function π(m::Integer, n::Integer, algebra::Bool)
+    if ! algebra
+        return π(m, n)
+    end
+    
     iszero(n) && return nothing
     isone(n) && return m
     
-    appended_tuple = alg_π(m)
+    appended_tuple = π(m, true)
     
     while n != 2
-        appended_tuple = (alg_π(appended_tuple[1])..., appended_tuple[2:end]...)
+        appended_tuple = (π(appended_tuple[1], true)..., appended_tuple[2:end]...)
         n -= 1
     end
     
@@ -140,10 +131,14 @@ function test()
     @test π(1023, 2, 1) == 11
     @test π(big(1315045868479612356871818745780631171143), 1) == 1315045868479612356871818745780631171143
     @test π(5987349857934, 0) == nothing
-    @test alg_π(83, 3) == (2, 0, 7)
-    @test alg_π(10001, 10) == (0, 0, 0, 0, 0, 0, 1, 3, 4, 9)
-    @test alg_π(big(1315045868479612356871818745780631171143), 1) == 1315045868479612356871818745780631171143
-    @test alg_π(5987349857934, 0) == nothing
+    @test π(83, 3, true) == (2, 0, 7)
+    @test π(10001, 10, true) == (0, 0, 0, 0, 0, 0, 1, 3, 4, 9)
+    @test π(big(1315045868479612356871818745780631171143), 1, true) == 1315045868479612356871818745780631171143
+    @test π(5987349857934, 0, true) == nothing
+    small_random = abs(rand(1:100))
+    large_random = abs(rand(1:10000))
+    @test π(small_random, 3, true) == π(small_random, 3)
+    @test π(large_random, 2, true) == π(large_random, 2)
     
     @test cℤ([0,-1,1,-2,2,-3,3,-4,4]) == [0, 1, 2, 3, 4, 5, 6, 7, 8]
     @test cℤ((-1,2)) == 16
