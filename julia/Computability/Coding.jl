@@ -6,7 +6,8 @@
     
 module Coding
 
-export ∸, PairNTuple, π, alg_π, cℤ, invcℤ
+export Algebra, algebraic
+export ∸, PairNTuple, π, cℤ, invcℤ
 
 import Base.π # needed in order to redefine it
 
@@ -27,6 +28,11 @@ PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("@$air
 PairNTuple(x::Integer, y::Integer, z::Integer...)::BigInt = PairNTuple(PairNTuple(x, y), z...)
 
 ##############################################################################
+
+# Singleton type with a descriptive name, and use that as the second argument
+# In the algebraic unpairing function
+struct Algebra end
+const algebraic = Algebra()
 
 # The brute-force unpairing function:
 # Takes in integer m (that is, a natural number)
@@ -60,7 +66,7 @@ end
 
 # Algebraic unpairing function:
 # Unpairing if n=2 (base case):
-function π(m::Integer, algebra::Bool)
+function π(m::Integer, ::Algebra)
     w = floor((sqrt(8*m + 1) - 1) / 2)
     t = (w^2 + w) / 2
     x = m - t
@@ -69,18 +75,14 @@ function π(m::Integer, algebra::Bool)
     return Int(x), Int(y)
 end
 # Generalised case:
-function π(m::Integer, n::Integer, algebra::Bool)
-    if ! algebra
-        return π(m, n)
-    end
-    
+function π(m::Integer, n::Integer, ::Algebra)
     iszero(n) && return nothing
     isone(n) && return m
     
-    appended_tuple = π(m, true)
+    appended_tuple = π(m, algebraic)
     
     while n != 2
-        appended_tuple = (π(appended_tuple[1], true)..., appended_tuple[2:end]...)
+        appended_tuple = (π(appended_tuple[1], algebraic)..., appended_tuple[2:end]...)
         n -= 1
     end
     
@@ -131,14 +133,14 @@ function test()
     @test π(1023, 2, 1) == 11
     @test π(big(1315045868479612356871818745780631171143), 1) == 1315045868479612356871818745780631171143
     @test π(5987349857934, 0) == nothing
-    @test π(83, 3, true) == (2, 0, 7)
-    @test π(10001, 10, true) == (0, 0, 0, 0, 0, 0, 1, 3, 4, 9)
-    @test π(big(1315045868479612356871818745780631171143), 1, true) == 1315045868479612356871818745780631171143
-    @test π(5987349857934, 0, true) == nothing
+    @test π(83, 3, algebraic) == (2, 0, 7)
+    @test π(10001, 10, algebraic) == (0, 0, 0, 0, 0, 0, 1, 3, 4, 9)
+    @test π(big(1315045868479612356871818745780631171143), 1, algebraic) == 1315045868479612356871818745780631171143
+    @test π(5987349857934, 0, algebraic) == nothing
     small_random = abs(rand(1:100))
     large_random = abs(rand(1:10000))
-    @test π(small_random, 3, true) == π(small_random, 3)
-    @test π(large_random, 2, true) == π(large_random, 2)
+    @test π(small_random, 3, algebraic) == π(small_random, 3)
+    @test π(large_random, 2, algebraic) == π(large_random, 2)
     
     @test cℤ([0,-1,1,-2,2,-3,3,-4,4]) == [0, 1, 2, 3, 4, 5, 6, 7, 8]
     @test cℤ((-1,2)) == 16
