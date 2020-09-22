@@ -24,7 +24,7 @@ import Base.π # needed in order to redefine it
 # <x1, x2, ..., xn> = <<x_1, ..., xn-1>, x_n>
 # And returns their pair.
 pairntuple_error = "This function is only defined for natural numbers.  Use cℤ."
-PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("@$pairntuple_error")) : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
+PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("$pairntuple_error")) : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
 PairNTuple(x::Integer, y::Integer, z::Integer...)::BigInt = PairNTuple(PairNTuple(x, y), z...)
 
 ##############################################################################
@@ -45,7 +45,7 @@ const algebraic = Algebra()
         isone(n) && return m
         
         # promote type to BigInt
-        # n = big(n)
+        # we probably do not need n to be a big int
         m = big(m)
         
         @inbounds @fastmath Base.Cartesian.@nloops $n i d -> 0:m begin
@@ -58,7 +58,7 @@ end
 # Ensuring the function is more readible
 # (i.e., switch the inputs) such that
 # π(m, n) ⟼ <x1, ..., xn> = m
-π(m::Integer, n::Integer) = π(Val(big(n)), m)
+π(m::Integer, n::Integer) = π(Val(n), m)
 # default to n=2
 π(m::Integer) = π(m, 2)
 # Defining a selection function that obtains
@@ -71,12 +71,21 @@ end
 # Algebraic unpairing function:
 # Unpairing if n=2 (base case):
 function π(m::Integer, ::Algebra)
-    w = floor((sqrt(8*m + 1) - 1) / 2)
-    t = (w^2 + w) / 2
-    x = m - t
-    y = w - x
+    # Promote to BigInt
+    m = big(m)
     
-    return Int(x), Int(y)
+    w = BigInt(floor((sqrt(8*m + 1) - 1) / 2))
+    t = BigInt((w^2 + w) / 2)
+    x = (m - t)
+    y = (w - x)
+    
+    # println(x)
+    
+    if ! isequal(PairNTuple(x, y), m)
+        throw(error("The provided m = $m is not equal to ⟨ $x, $y ⟩, and so there has been an error in the calculation."))
+    end
+    
+    return BigInt(x), BigInt(y)
 end
 # Generalised case:
 function π(m::Integer, n::Integer, ::Algebra)

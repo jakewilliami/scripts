@@ -42,4 +42,9 @@ function test()
     @test invcℤ(10029) == -5015
 end
 
-@time test()
+# @time test()
+
+breaking_point = big(269784546299642447516200362006584287919412051827850717858121896273587851319250)
+
+println(π(breaking_point - 1, algebraic))
+println(π(breaking_point, algebraic))
