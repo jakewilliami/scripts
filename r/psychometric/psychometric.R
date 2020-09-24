@@ -18,8 +18,11 @@ dat <- data.frame(
     n = dPivot$n
 )
 
+
 # appdent dat data frame with the proportion of correct responses
 dat$k <- dat$correct * dat$n
+
+print(dat)
 
 myTheme <- theme(plot.title = element_text(family = "Helvetica", face = "bold", size = (15)),
     axis.title = element_text(family = "Helvetica", size = (10), colour = "steelblue4"),
@@ -30,7 +33,7 @@ p <- ggplot(dat, aes(by, correct)) +
     geom_point(colour = "orange") +
     scale_x_continuous(limits = c(0, 0.35),
                      breaks = seq(0, 0.35, 0.05)) +
-    myTheme + 
+    myTheme +
     ggtitle("Performance of Motion Coherence") +
     theme(plot.title = element_text(hjust = 0.5)) +
     labs(y="Accuracy", x = "Coherence")

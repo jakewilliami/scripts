@@ -69,6 +69,12 @@ git-tree-sha1 = "4bffea7ed1a9f0f3d1a131bbcd4b925548d75288"
 uuid = "3da002f7-5984-5a60-b8a6-cbb66c0b333f"
 version = "0.10.9"
 
+[[ColoredLLCodes]]
+deps = ["InteractiveUtils"]
+git-tree-sha1 = "9ba4b07b34be9c720946e70dccf949dafc135697"
+uuid = "15eaffa3-7f74-46bc-af11-fdd2893a4aba"
+version = "0.1.0"
+
 [[Colors]]
 deps = ["ColorTypes", "FixedPointNumbers", "InteractiveUtils", "Reexport"]
 git-tree-sha1 = "008d6bc68dea6beb6303fdc37188cb557391ebf2"
