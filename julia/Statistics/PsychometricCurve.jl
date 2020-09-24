@@ -8,7 +8,6 @@ using DataFrames
 using CSV
 using FreqTables
 using GLM
-# using Plots
 using StatsPlots
 using Distributions
 using Statistics
@@ -48,16 +47,6 @@ end
 
 function main()
 	dfRaw = DataFrame!(CSV.File("motion_coherence_data.csv"; header=4, datarow=5))
-   	# show(dfRaw, summary=false)
-	# dfPivot = freqtable(dfRaw, :Response, :Condition)
-	# println(dfRaw)
-	# println(names(dfRaw))
-
-	# construct data frame grouped by condition, with the mean and length of those correct, as well as
-	# dfPivot = combine(groupby(dfRaw, :condition1), :correct => mean, :correct => length)
-
-	# selecting certain data
-	# data[:, [x for x in names(data) if x != :column1]]
 
 	dfPivot = combine(groupby(dfRaw, :condition1)) do df
 		μ = mean(df.correct)
@@ -71,84 +60,33 @@ function main()
 
 	show(dfPivot); println()
 
-	# show(dfPivot)
-
-	# dfPivot = combine(groupby(dfRaw, :condition1)) do df
-        # (mean = mean(dfRaw.correct), n = nrow(dfRaw))
-    # end
-	# println(dfPivot)
-
-	# numberPresent = count(x -> isequal(x,"Present"), dfRaw[!, 1])
-	# numberAbsent = count(x -> isequal(x,"Absent"), dfRaw[!, 1])
-
-
-	# cdf(d::UnivariateDistribution, x::Real)
-
-	# presentRate = dfPivot[:,2] / numberPresent
-	# absentRate = dfPivot[:,1] / numberAbsent
-	
-	# x = presentRate
-	# y = absentRate
-	
-	
-
-	# dat <- data.frame(
-	#     by = as.numeric(levels(dPivot$by))[dPivot$by],
-	#     correct = dPivot$correct,
-	#     n = dPivot$n
-	# )
-	
-	# dat$k <- dat$correct * dat$n
-	
-	# model <- glm(cbind(k, n-k) ~ 1 + by, data = dat, family = binomial(mafc.probit(2)))
-   # xseq  <- seq(0, 5, length.out = 1000)
-   # yseq  <- predict(model, newdata = data.frame(by = xseq), type = "response")
-
-	# intermediate_df = [k, n-k]
-	# glm \equiv fit(GeneralizedLinearModel, ...)
-
-
-
-
-
-	# dfPivot.y = dfPivot.k ./ dfPivot.n
-	
-	# model = glm(@formula(y ~ condition1), dfPivot, Binomial(), ProbitLink(); wts=dfPivot.n)
-	# xseq = 0:5:1000
-	# yseq = predict(model)
-	# plot(xseq, yseq)
-
-	println(glm(@formula(correct ~ condition1) , dfRaw, Binomial(), Probit2AFCLink()))
+	model = glm(@formula(correct ~ condition1) , dfRaw, Binomial(), Probit2AFCLink())
 
 	@df dfPivot scatter(
+		:condition1,
 		:correct_mean,
-		:k,
-		
 	)
+	
+	a, b = coef(model)
+	
+	println(a)
+	println(b)
+	
+	plot!(predict(model))
 
-	df2 %>%
-	  group_by(x) %>%
-	  summarise(p = mean(y)) %>%
-	  ggplot(aes(x, p)) +
-	  geom_point(size = 4, shape = 1) +
-	  stat_function(fun = function(x) p(a_p + b_p*x),
-	                aes(color = "Probit")) +
-	  stat_function(fun = function(x) l(a_l + b_l*x),
-	                aes(color = "Logit")) +
-	  labs(x = "Coherence",
-	       y = "Accuracy",
-	       color = "Fitted Curve") +
-	  scale_y_continuous(limits = c(0, 1))
-
-
-	# show(dfPivot)
-
-	# lm(@formula(Y ~ X), data)
-	# Y ~ 1 + X
-	# plot = model() =
-	# plot = glm()
-	# model() =
-	# plot = curve_fit(model, )
+	# df2 %>%
+		# group_by(x) %>%
+		# summarise(p = mean(y)) %>%
+		# ggplot(aes(x, p)) +
+		# geom_point(size = 4, shape = 1) +
+		# stat_function(fun = function(x) p(a_p + b_p*x),
+		#               aes(color = "Probit")) +
+		# stat_function(fun = function(x) l(a_l + b_l*x),
+		#               aes(color = "Logit")) +
+		# labs(x = "Coherence",
+		#      y = "Accuracy",
+		#      color = "Fitted Curve") +
+		# scale_y_continuous(limits = c(0, 1))
 
 	# savefig(plot, joinpath(homedir(), "Desktop", "PsychometricCurve.pdf"))
 end # end main
