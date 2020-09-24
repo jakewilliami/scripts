@@ -6,6 +6,8 @@
     
 module Coding
 
+# setprecision(100000)
+
 export Algebra, algebraic
 export ∸, PairNTuple, π, cℤ, invcℤ
 
@@ -24,7 +26,7 @@ import Base.π # needed in order to redefine it
 # <x1, x2, ..., xn> = <<x_1, ..., xn-1>, x_n>
 # And returns their pair.
 pairntuple_error = "This function is only defined for natural numbers.  Use cℤ."
-PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("$pairntuple_error")) : BigInt(big(x) + binomial(big(x)+big(y)+1, 2))
+PairNTuple(x::Integer, y::Integer)::BigInt = x < 0 || y < 0 ? throw(error("$pairntuple_error")) : big(x) + binomial(big(x)+big(y)+1, 2)
 PairNTuple(x::Integer, y::Integer, z::Integer...)::BigInt = PairNTuple(PairNTuple(x, y), z...)
 
 ##############################################################################
@@ -71,15 +73,15 @@ end
 # Algebraic unpairing function:
 # Unpairing if n=2 (base case):
 function π(m::Integer, ::Algebra)
-    # Promote to BigInt
     m = big(m)
     
-    w = BigInt(floor((sqrt(8*m + 1) - 1) / 2))
-    t = BigInt((w^2 + w) / 2)
-    x = (m - t)
-    y = (w - x)
+    w = (Base.isqrt(8*m + 1) - 1) ÷ 2
+    t = (w^2 + w) ÷ 2
+    x = m - t
+    y = w - x
     
     # println(x)
+    # println(y)
     
     if ! isequal(PairNTuple(x, y), m)
         throw(error("The provided m = $m is not equal to ⟨ $x, $y ⟩, and so there has been an error in the calculation."))
