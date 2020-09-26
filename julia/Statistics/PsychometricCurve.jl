@@ -11,6 +11,7 @@ using GLM
 using StatsPlots
 using Distributions
 using Statistics
+using SpecialFunctions: erfinv # for probit
 
 const Dist = Distributions
 
@@ -61,6 +62,8 @@ function main()
 	show(dfPivot); println()
 
 	model = glm(@formula(correct ~ condition1) , dfRaw, Binomial(), Probit2AFCLink())
+	
+	# theme(:solarized)
 
 	@df dfPivot scatter(
 		:condition1,
@@ -71,8 +74,21 @@ function main()
 	
 	println(a)
 	println(b)
+
+	logit(p) = log(p / (1 - p))
+	probit(p) = sqrt(2) * erfinv(2*p - 1)
+	Φ⁻¹(z) = probit(z) # statistical notation
 	
-	plot!(predict(model))
+	
+	logit⁻¹(α) = 1 / (1 + exp(-α))
+	logit⁻¹(α) = logit⁻¹(α) * 0.5 + 0.5 # shift and squish for 2-AFC
+	# probit⁻¹(α) = cdf()
+	# Φ(α) = probit⁻¹(α)
+	
+	
+	plot!(x -> logit⁻¹(a + b*x), 0, 0.32)
+
+	# plot!(predict(model))
 
 	# df2 %>%
 		# group_by(x) %>%
