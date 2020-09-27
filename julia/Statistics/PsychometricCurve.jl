@@ -11,7 +11,6 @@ using GLM
 using StatsPlots
 using Distributions
 using Statistics
-using SpecialFunctions: erfinv # for probit
 
 const Dist = Distributions
 
@@ -47,7 +46,7 @@ end
 
 
 function main()
-	dfRaw = DataFrame!(CSV.File("motion_coherence_data.csv"; header=4, datarow=5))
+	dfRaw = DataFrame!(CSV.File(joinpath(dirname(@__FILE__), "motion_coherence_data.csv"); header=4, datarow=5))
 
 	dfPivot = combine(groupby(dfRaw, :condition1)) do df
 		μ = mean(df.correct)
@@ -59,52 +58,41 @@ function main()
 	)
 	end
 
-	show(dfPivot); println()
+	# show(dfPivot); println()
 
 	model = glm(@formula(correct ~ condition1) , dfRaw, Binomial(), Probit2AFCLink())
 	
-	# theme(:solarized)
+	theme(:solarized)
 
-	@df dfPivot scatter(
+	plot_points = @df dfPivot scatter(
 		:condition1,
 		:correct_mean,
+		title = "Psychometric Curve of Motion Coherence",
+		label = false,
+		xaxis = "Coherence",
+		yaxis = "Accuracy",
+		fontfamily = font("Times"),
 	)
 	
 	a, b = coef(model)
 	
-	println(a)
-	println(b)
+	println("a = ", a)
+	println("b = ", b)
 
 	logit(p) = log(p / (1 - p))
-	probit(p) = sqrt(2) * erfinv(2*p - 1)
-	Φ⁻¹(z) = probit(z) # statistical notation
-	
-	
 	logit⁻¹(α) = 1 / (1 + exp(-α))
 	logit⁻¹(α) = logit⁻¹(α) * 0.5 + 0.5 # shift and squish for 2-AFC
-	# probit⁻¹(α) = cdf()
-	# Φ(α) = probit⁻¹(α)
+	logit2afc⁻¹(α) = 0.5 + 0.5 / (1 + exp(-α))
+
+	probit(p) = Dist.quantile(Dist.Normal(), p)
+	probit⁻¹(x) = Dist.cdf(Dist.Normal(), x)
+	Φ⁻¹(z) = probit(z) # statistical notation
+	Φ(α) = probit⁻¹(α) # statistical notation
+	probit2afc⁻¹(x) = probit⁻¹(x) * 0.5 + 0.5 # shift and squish for 2-AFC
 	
-	
-	plot!(x -> logit⁻¹(a + b*x), 0, 0.32)
+	plot = plot!(plot_points, x -> probit2afc⁻¹(a + b*x), 0, 0.32, label = false)
 
-	# plot!(predict(model))
-
-	# df2 %>%
-		# group_by(x) %>%
-		# summarise(p = mean(y)) %>%
-		# ggplot(aes(x, p)) +
-		# geom_point(size = 4, shape = 1) +
-		# stat_function(fun = function(x) p(a_p + b_p*x),
-		#               aes(color = "Probit")) +
-		# stat_function(fun = function(x) l(a_l + b_l*x),
-		#               aes(color = "Logit")) +
-		# labs(x = "Coherence",
-		#      y = "Accuracy",
-		#      color = "Fitted Curve") +
-		# scale_y_continuous(limits = c(0, 1))
-
-	# savefig(plot, joinpath(homedir(), "Desktop", "PsychometricCurve.pdf"))
+	savefig(plot, joinpath(dirname(@__FILE__), "PsychometricCurve.pdf"))
 end # end main
 
 
