@@ -1,5 +1,6 @@
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 ClassicalCiphers = "ecf26e93-935c-5e64-9b21-bc8ac81b4723"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
@@ -9,3 +10,4 @@ Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Primes = "27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae"
 RowEchelon = "af85af4c-bcd5-5d23-b03a-a909639aa875"
 SHA = "ea8e919c-243c-51af-8825-aaa63cd721ce"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
