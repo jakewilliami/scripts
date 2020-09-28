@@ -79,10 +79,7 @@ function π(m::Integer, ::Algebra)
     t = (w^2 + w) ÷ 2
     x = m - t
     y = w - x
-    
-    # println(x)
-    # println(y)
-    
+        
     if ! isequal(PairNTuple(x, y), m)
         throw(error("The provided m = $m is not equal to ⟨ $x, $y ⟩, and so there has been an error in the calculation."))
     end
