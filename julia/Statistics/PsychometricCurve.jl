@@ -64,7 +64,7 @@ function main()
 	
 	theme(:solarized)
 
-	plot_points = @df dfPivot scatter(
+	plot = @df dfPivot scatter(
 		:condition1,
 		:correct_mean,
 		title = "Psychometric Curve of Motion Coherence",
@@ -76,6 +76,7 @@ function main()
 	
 	a, b = coef(model)
 	
+	println("The following coefficients have been found to maximise best fit based on your datapoints.")
 	println("a = ", a)
 	println("b = ", b)
 
@@ -90,9 +91,13 @@ function main()
 	Φ(α) = probit⁻¹(α) # statistical notation
 	probit2afc⁻¹(x) = probit⁻¹(x) * 0.5 + 0.5 # shift and squish for 2-AFC
 	
-	plot = plot!(plot_points, x -> probit2afc⁻¹(a + b*x), 0, 0.32, label = false)
+	plot!(plot, x -> probit2afc⁻¹(a + b*x), 0, 0.32, label = "Probit Link")
+	plot!(plot, x -> logit2afc⁻¹(a + b*x), 0, 0.32, label = "Logit Link")
+	# plot_all = plot!(plot_logit, x -> probit2afc⁻¹(a + b*x), 0, 0.32, label = "Probit Link")
 
 	savefig(plot, joinpath(dirname(@__FILE__), "PsychometricCurve.pdf"))
+	
+	println("\nFigure saved at ", joinpath(dirname(@__FILE__), "PsychometricCurve.pdf"))
 end # end main
 
 
