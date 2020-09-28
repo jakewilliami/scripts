@@ -9,7 +9,7 @@ module Coding
 # setprecision(100000)
 
 export Algebra, algebraic
-export ∸, PairNTuple, π, cℤ, invcℤ
+export ∸, PairNTuple, π, cℤ, cℤ⁻¹
 
 import Base.π # needed in order to redefine it
 
@@ -124,10 +124,10 @@ cℤ(r::Tuple{Integer,Integer})::Integer = PairNTuple(cℤ.(r)...)
 ##############################################################################
 
 # Converts natural numbers to integers
-# ℕ ∋ invcℤ(n) ⟼ z ∈ ℤ
-invcℤ_error = "Invalid input. We have only defined this function for natural numbers.  Why are you even using it?"
-invcℤ(n::Integer) = n < 0 ? throw(error("$invcℤ_error")) : (iseven(n) ? Int(n / 2) : -Int(floor(n / 2) + 1))
-invcℤ(ns::AbstractArray{<:Integer}) = invcℤ.(ns)
+# ℕ ∋ cℤ⁻¹(n) ⟼ z ∈ ℤ
+cℤ⁻¹_error = "Invalid input. We have only defined this function for natural numbers.  Why are you even using it?"
+cℤ⁻¹(n::Integer) = n < 0 ? throw(error("$cℤ⁻¹_error")) : (iseven(n) ? Int(n / 2) : -Int(floor(n / 2) + 1))
+cℤ⁻¹(ns::AbstractArray{<:Integer}) = cℤ⁻¹.(ns)
 
 ##############################################################################
 
