@@ -54,13 +54,13 @@
                 \cmidrule{3-11}
 		&& \naturals & \integers & \rationals & \reals & \naturals^2 & \integers \times \paren{ \integers \setminus \curly{0} } & \integers^2 & \rationals^2 & \reals^2 \\
 		\midrule
-		\multirow{9}{*}{\textsc{\textbf{Codomain}}} & \naturals & \id & \tt{IntToNat(x)} &  &  &  &  & \tt{PairNTuple(x,y)} &  & \\
-		& \integers & \tt{NatToInt(x)} & \id &  &  &  &  &  &  & \\
+		\multirow{9}{*}{\textsc{\textbf{Codomain}}} & \naturals & \id & \tt{c\integers(x)} &  &  &  &  & \tt{PairNTuple(x,y)} &  & \\
+		& \integers & \tt{c\integers\textsuperscript{--1}(x)} & \id &  &  &  &  &  &  & \\
 		& \rationals &  &  & \id &  &  &  &  &  & \\
 		& \reals &  &  &  & \id &  &  &  &  & \\
-		& \naturals^2 & \tt{NatToPair(x)} &  &  &  & \id &  & \tt{IntToNat!(x,y)} &  & \\
+		& \naturals^2 & \tt{c\integers\textsuperscript{--1}(x)} &  &  &  & \id &  & \tt{c\integers.(x,y)} &  & \\
 		& \integers \times \paren{ \integers \setminus \curly{0} } &  &  &  &  &  & \id &  &  & \\
-		& \integers^2 &  &  &  &  & \tt{NatToInt!(x,y)} &  & \id &  & \\
+		& \integers^2 &  &  &  &  & \tt{c\integers\textsuperscript{--1}.(x,y)} &  & \id &  & \\
 		& \rationals^2 &  &  &  &  &  &  &  & \id & \\
 		& \reals^2 &  &  &  &  &  &  &  &  & \id \\
 		\bottomrule
