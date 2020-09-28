@@ -11,7 +11,13 @@ include(joinpath(dirname(@__FILE__), "Coding.jl"))
 using Test: @test
 using .Coding
 
-function binary_search(a::BigInt, b::BigInt)
+using Plots
+using CSV
+using DataFrames
+using ProgressMeter: @showprogress
+using CurveFit
+
+function binary_search(a::BigInt, b::BigInt) # useful for bug fixing
     while a != b
         centre = BigInt(round((b + a) / 2))
         println(a, "\n", b, "\n")
@@ -24,6 +30,42 @@ function binary_search(a::BigInt, b::BigInt)
     end
     return a
 end
+
+function graphing_time()
+    stop_m_at = 100
+    stop_n_at = 4
+    num_of_datapoints = 50
+    data = Matrix{Float64}(undef,num_of_datapoints,4)# needs 5 columns: n; m; bonk time; doov time; iagueqnar time
+    m_data = []
+    
+    @showprogress for i in 1:num_of_datapoints
+        n = rand(2:stop_n_at)
+        m = rand(1:stop_m_at)
+        bonks = @elapsed π(m, n)
+        alg = @elapsed π(m, n, algebraic)
+        data[i,:] .= [n, m, bonks, alg]
+    end
+
+    save_path = joinpath(dirname(@__FILE__), "unpairing", "search_v_algebraic,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf")
+    theme(:solarized)
+    
+    println(typeof(data[:,1]))
+    println(typeof(data[:,2]))
+    
+    fit = curve_fit(ExpFit, data[:,1], data[:,2])
+    y0b = fit.(data[:,1])
+        
+    plot_points = scatter(data[:,1], data[:,3:4], fontfamily = font("Times"), xlabel = "n", ylabel = "Time elapsed during calculation [seconds]", label = ["Bonk's Iterative Search" "Bonk's Algebraic Method"])#, xlims = (0, stop_n_at)) # smooth = true
+    # plot = plot!(plot_points, model(1:stop_m_at, params_search))
+    
+    # plot = plot!(plot_points, data[:,1], data[:,2]
+    plot = plot!(data[:,1], y0b, label = "model")
+    savefig(plot, save_path)
+    
+    println("Plot saved at $save_path.")
+end
+
+graphing_time()
 
 function test()
     @test PairNTuple(5,7) == 83
@@ -52,13 +94,10 @@ function test()
     @test cℤ((1,1)) == 12
     @test cℤ(3,4) == (6, 8)
     
-    @test invcℤ([0, 1, 2, 3, 4, 5, 6, 7, 8]) == [0, -1, 1, -2, 2, -3, 3, -4, 4]
-    @test cℤ(invcℤ(79)) == 79
-    @test invcℤ(cℤ(-40)) == -40
-    @test invcℤ(10029) == -5015
+    @test cℤ⁻¹([0, 1, 2, 3, 4, 5, 6, 7, 8]) == [0, -1, 1, -2, 2, -3, 3, -4, 4]
+    @test cℤ(cℤ⁻¹(79)) == 79
+    @test cℤ⁻¹(cℤ(-40)) == -40
+    @test cℤ⁻¹(10029) == -5015
 end
 
 @time test()
-
-breaking_point = big(269784546299642447516200362006584287919412051827850717858121896273587851319250)
-new_breaking_point = big(444125748226667427697066283969752489153637841873512942978479011859009783869453)
