@@ -14,10 +14,6 @@ e.g.
 
 n = parse(Int, ARGS[1])
 m = parse(BigInt, ARGS[2])
-# using StatsPlots#Plots
-# using CSV
-# using DataFrames
-# using Distributed
 
 
 pairTuple(x::Integer, y::Integer)::BigInt = BigInt(x + binomial(x+y+1, 2))
@@ -130,7 +126,7 @@ function genPlot()
     # savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
     
     plot = scatter(data[:,1], data[:,3:5], smooth = true, fontfamily = font("Times"), xlabel = "n", ylabel = "Time elapsed during calculation [seconds]", label = ["Bonk's" "Doov's" "iagueqnar"])#, xlims = (0, stop_n_at))
-    savefig(plot, joinpath(homedir(), "Desktop", "doov_v_bonk_v_iagueqnar,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
+    savefig(plot, joinpath(dirname(@__FILE__), "unpairing", "doov_v_bonk_v_iagueqnar,n=$stop_n_at,m=$stop_m_at,i=$num_of_datapoints.pdf"))
 end
 
 # genPlot()
