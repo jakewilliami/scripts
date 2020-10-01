@@ -59,7 +59,7 @@ function main()
 	end
 
 	# show(dfPivot); println()
-
+	# x ~ y == dep ~ indep
 	model = glm(@formula(correct ~ condition1) , dfRaw, Binomial(), Probit2AFCLink())
 	
 	theme(:solarized)
