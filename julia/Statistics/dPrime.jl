@@ -4,13 +4,14 @@
     "${BASH_SOURCE[0]}" "$@"
     =#
 
-using DataFrames: DataFrame!
+using DataFrames: DataFrame, dropmissing
 using DetectionTheory: dprimeYesNo
 using CSV: File
 using FreqTables: freqtable
+using Distributions: quantile, Normal
 
 function main()
-	dfRaw = DataFrame!(File("data.csv"))
+	dfRaw = DataFrame(File("dprime-data.csv"))
 	dfPivot = freqtable(dfRaw, :Response, :Condition)
 
 	numberPresent = count(x -> isequal(x,"Present"), dfRaw[!, 1])
@@ -22,6 +23,14 @@ function main()
 	return (dprimeYesNo(presentRate[2], absentRate[2]))
 end
 
-output = main()
 
-println(output)
+function alt()
+	df = DataFrame(File("dprime-data.csv"))
+	frequencies = freqtable(dropmissing(df), :Condition, :Response)
+	mean_freq = frequencies ./ sum(frequencies, dims=2)
+	
+	return dprime = diff(quantile.(Normal(), mean_freq[1:2, 2]))
+end
+
+println(main())
+println(alt())
