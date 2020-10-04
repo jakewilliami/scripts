@@ -6,7 +6,7 @@ library(pacman)
 pacman::p_load(lessR, knitr, ggplot2, psyphy, tibble)
 
 # Read motion coherence data
-d <- read.csv('motion_coherence_data_1.csv')
+d <- read.csv("~/projects/scripts/r/psychometric/motion_coherence_data_1.csv")
 
 # construct pivot table
 dPivot <- pivot(data=d, compute=mean, value=correct, rows_by=c(condition1))
