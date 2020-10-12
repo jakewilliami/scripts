@@ -4,8 +4,7 @@
 
 
 ## Description
-
-While I am beginning to look into different sorts of programming, I want to have as much experience as possible.  Hence, I have created this repository as a kind of playground for various scripts I try to write.  Be warned that not everything in here may be functional.  I have prefixed depricated files with `dep-<filename>`, and development (i.e., in development) files as `dev-<filename>`.
+This is a miscellaneous repository for scripts and small programmes.  Be warned that not everything in here may be functional.  I have prefixed depricated files with `dep-<filename>`, and development (i.e., in development) files as `dev-<filename>`.
 
 ## Contents
 
