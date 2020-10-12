@@ -34,7 +34,7 @@ function make_plot()
 	    ylim = (0, maximum(:RT_mean)),
 		fontfamily = font("Times"),
 		smooth = true,
-		annotations = (3, 1100, Plots.text(equation, 8, :left))
+		annotations = (3, 1100, Plots.text(equation, 8, :white, :left))
 	)
 
 	savefig(plot, joinpath(dirname(@__FILE__), "VisualSearch.pdf"))
