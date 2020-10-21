@@ -3,7 +3,7 @@ getInstallCommands() {
     if command -v brew > /dev/null 2>&1
     then
         PACMAN='brew install'
-        PACSEARCH='brew list'
+        PACSEARCH='brew list --formula'
         PACAPPSEARCH='brew list --cask'
         PACAPP='brew cask install'
     else
