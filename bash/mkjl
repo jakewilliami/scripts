@@ -36,12 +36,7 @@ main() {
     fi
     
     touch "${PATH_TO_FILE}"
-    echo '#!/usr/bin/env bash' >> "${PATH_TO_FILE}"
-    echo '    #=' >> "${PATH_TO_FILE}"
-    echo '    exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e "include(popfirst!(ARGS))" \ ' >> "${PATH_TO_FILE}"
-    echo '    "${BASH_SOURCE[0]}" "$@"' >> "${PATH_TO_FILE}"
-    echo '    =#' >> "${PATH_TO_FILE}"
-}
+	cat "${BASH_DIR}/mkjl.txt" >> "${PATH_TO_FILE}"
 
 # Options
 while getopts ":-:h" OPTION
