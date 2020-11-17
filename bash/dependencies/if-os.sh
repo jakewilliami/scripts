@@ -75,7 +75,7 @@ SED_PACKAGE='sed'
 GREP_PACKAGE='grep'
 POPPLER='poppler'
 IMAGEMAGICK='imagemagick'
-
+PNGQUANT="pngquant"
 
 case $OS in
     macos)
