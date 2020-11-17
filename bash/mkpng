@@ -1,0 +1,107 @@
+#! /bin/bash
+
+trap "exit" INT
+
+# define bash directory
+BASH_DIR="$(realpath $(dirname $0))"
+
+# source required scripts
+source "${BASH_DIR}"/dependencies/source-dependencies.sh
+
+# get dependencies irrespective of OS or Kernel
+is-library-then-install "${POPPLER}" "${IMAGEMAGICK}" "${PNGQUANT}"
+
+
+ensure_commands() {
+	# Set booleans
+	IMAGE_BOOL=TRUE
+	POP_BOOL=TRUE
+	
+	# double check we have convert command
+	if [[ -z $(command -v convert) ]]
+	then
+		echo -e "${BRED}Cannot install ImageMagick.${NORM}" && IMAGE_BOOL=FALSE
+		if [[ "${KERNEL}" == "Darwin" ]]
+		then
+			echo -e "${BYELLOW}Trying to re-link binaries.${NORM}"
+			brew link --overwrite imagemagick && IMAGE_BOOL=TRUE
+		fi
+	fi
+	
+	# double check we have pdfunite command
+	if [[ -z $(command -v pdfunite) ]]
+	then
+	    echo -e "${BRED}Cannot install Poppler.${NORM}" && POP_BOOL=FALSE
+	    if [[ "${KERNEL}" == "Darwin" ]]
+	    then
+	    	echo -e	"${BYELLOW}Trying to re-link binaries.${NORM}"
+	    	brew link --overwrite imagemagick && POP_BOOL=TRUE
+	    fi
+	fi
+}
+
+make_png(){
+    INPUT_PATH="${1}"
+	EXT="$(echo "${INPUT_PATH}" | awk -F'.' '{print $NF}')"
+	INPUT_FILE="$(basename "${INPUT_PATH}")"
+	TEMP_FILE_BIG="/tmp/${INPUT_FILE}_big.png"
+	TEMP_FILE_SMALL="/tmp/${INPUT_FILE}_small.png"
+	OUTPUT_FILE="${INPUT_PATH}_converted"
+
+	# convert from whatever format to png
+	convert "${INPUT_PATH}" "${TEMP_FILE_BIG}"
+
+	# compress image
+	pngquant --output "${TEMP_FILE_SMALL}" "${TEMP_FILE_BIG}"
+
+	# make even smaller
+	convert -geometry 1000x "${TEMP_FILE_SMALL}" "${OUTPUT_FILE}"
+
+	# rename
+	if [[ "${EXT}" == "png" ]]; then
+		mv "${OUTPUT_FILE}" "${OUTPUT_FILE%.*}_copy.png"	
+	else
+		mv "${OUTPUT_FILE}" "${OUTPUT_FILE%.*}.png"
+	fi
+}
+
+# Help
+display_help() { #Displays help
+    help_start 'mkpng [option...] [file]' 'The present script will convert some image into a reasonably small PNG, while attempting to maintain quality but reduce size.'
+    help_help '2'
+    clean-exit
+}
+
+
+# Options
+while getopts ":-:th" OPTION
+do
+        case $OPTION in
+                -)  #Long options for bash (without GNU)
+                    case $OPTARG in
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+#if no arguments
+[[ -z $1 ]] && opt_err_none && clean-exit
+
+#if no options were passed
+if [ $OPTIND -eq 1 ]
+then
+	ensure_commands
+	make_png "${1}"
+    clean-exit
+fi
+
+# Clean up
+clean-exit
