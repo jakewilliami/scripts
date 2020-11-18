@@ -5,6 +5,55 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define BGREEN       "\x1b[1;38;5;2m"
+#define ULINE        "\x1b[1;4m"
+#define IT           "\x1b[0;3m"
+#define DULL         "\x1b[1;2m"
+#define FLASHING     "\x1b[1;5m"
+#define BWHITE       "\x1b[1;38m"
+#define ITWHITE      "\x1b[0;3;38m"
+#define BYELLOW      "\x1b[1;33m"
+#define ITYELLOW     "\x1b[0;3;33m"
+#define BRED         "\x1b[1;31m"
+#define ITRED        "\x1b[0;3;31m"
+#define BBLUE        "\x1b[1;34m"
+#define DARKBLUE     "\x1b[1;38;5;26m"
+#define RESET        "\x1b[0;38m"
+#define JULIA        "\x1b[1;38;5;133m"
+#define PYTHON       "\x1b[1;38;5;26m"
+#define JAVA         "\x1b[1;38;5;94m"
+#define RUST         "\x1b[1;38;5;5m"
+#define SHELL        "\x1b[1;38;5;28m"
+#define PERL         "\x1b[1;38;5;111m"
+#define RUBY         "\x1b[1;38;5;88m"
+#define ELIXIR       "\x1b[1;38;5;54m"
+#define COMMONLISP   "\x1b[1;38;5;29m"
+#define LISP         "\x1b[1;38;5;29m"
+#define LUA          "\x1b[1;38;5;17m"
+#define C            "\x1b[1;38;5;234m"
+#define CPP          "\x1b[1;38;5;198m"
+#define R            "\x1b[1;38;5;32m"
+#define JAVASCRIPT   "\x1b[1;38;5;185m"
+#define BATCHFILE    "\x1b[1;38;5;154m"
+#define TEX          "\x1b[1;38;5;22m"
+#define TEXT         "\x1b[0;38m"
+#define MARKDOWN     "\x1b[1;38;5;249m"
+#define OBJECTIVEC   "\x1b[1;38;5;33m"
+#define ASSEMBLY     "\x1b[1;38;5;94m"
+#define ROFF         "\x1b[1;38;5;180m"
+#define MAKEFILE     "\x1b[1;38;5;22m"
+#define SWIFT        "\x1b[1;38;5;208m"
+#define YACC         "\x1b[1;38;5;29m"
+#define DTRACE       "\x1b[1;38;5;250m"
+#define AWK          "\x1b[1;38;5;249m"
+#define SMPL         "\x1b[1;38;5;197m"
+#define SED          "\x1b[1;38;5;35m"
+#define LEX          "\x1b[1;38;5;142m"
+#define D            "\x1b[1;38;5;125m"
+#define COFFEESCRIPT "\x1b[1;38;5;4m"
+#define CSS          "\x1b[1;38;5;55m"
+
+
 int starts_with(const char *a, const char *b)
 {
     if(!strncmp(a, b, strlen(b))) {
@@ -12,26 +61,6 @@ int starts_with(const char *a, const char *b)
     }
     return 0;
 }
-
-// when return 1, scandir will put this dirent to the list
-// int parse_ext(const struct dirent *dir, const char* ext_name) {
-//     if(!dir) {
-//         return 0;
-//     }
-//
-//     if(dir->d_type == DT_REG) { // only deal with regular file
-//         const char *ext = strrchr(dir->d_name,'.');
-//         if((!ext) || (ext == dir->d_name)) {
-//             return 0;
-//         }
-//         else {
-//             if(!strcmp(ext, ext_name)) {
-//                 return 1;
-//             }
-//         }
-//     }
-//     return 0;
-// }
 
 const char *get_filename_ext(const char *filename) {
     const char *dot = strrchr(filename, '.');
@@ -43,11 +72,31 @@ const char *get_filename_ext(const char *filename) {
     return dot + 1;
 }
 
+// colourMap = {'.jl': colour_dict["JULIA"],
+//             '.py': colour_dict["PYTHON"],
+//             '.java': colour_dict["JAVA"],
+//             '.rs': colour_dict["RUST"],
+//             '.sh': colour_dict["SHELL"],
+//             '.pl': colour_dict["PERL"],
+//             '.rb': colour_dict["RUBY"],
+//             '.ex': colour_dict["ELIXIR"],
+//             '.lisp': colour_dict["LISP"],
+//             '.clisp': colour_dict["COMMONLISP"],
+//             '.lua': colour_dict["LUA"],
+//             '.c': colour_dict["C"],
+//             '.cpp': colour_dict["CPP"],
+//             '.R': colour_dict["R"],
+//             '.json': colour_dict["JAVASCRIPT"],
+//             '.md': colour_dict["MARKDOWN"],
+//             '.txt': colour_dict["TEXT"],
+//             '.tex': colour_dict["TEX"],
+//             '.sty': colour_dict["TEX"]
+//             }
+
 void recurse_dirs(const char *name, int depth, int indent)
 {
     // define the indentation value
     int indent_modifier = 4;
-    int i = 0;
     // define a pointer to directory
     DIR *dir;
     struct dirent *entry;
@@ -62,20 +111,20 @@ void recurse_dirs(const char *name, int depth, int indent)
     // recursively read directories
     while ((entry = readdir(dir)) != NULL) {
         const char* ext = get_filename_ext(entry->d_name);
-        if (starts_with(entry->d_name, ".") == 1) {
+        const char* print_colour = !strcmp(ext, "jl") ? JULIA : RESET;
+        if (starts_with(entry->d_name, ".") == 1 || !strcmp(entry->d_name, "README.md") || starts_with(entry->d_name, "dev-") || !strcmp(entry->d_name, "dep") || !strcmp(entry->d_name, "build") || !strcmp(entry->d_name, "target") || !strcmp(entry->d_name, "textcolours.txt") || !strcmp(entry->d_name, "init_notes.md")) {
             continue;
         }
         if (entry->d_type == DT_DIR) {
             char path[1024];
-            if (i == 3) {
+            if (indent / indent_modifier == depth) {
                 return;
             }
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
             printf("%*s%s\n", indent, "", entry->d_name);
             recurse_dirs(path, depth, indent + indent_modifier);
-            i ++;
         } else {
-            printf("%*s%s\n", indent, "", entry->d_name);
+            printf("%s%*s%s%s\n", print_colour, indent, "", entry->d_name, RESET);
         }
     }
     closedir(dir);
