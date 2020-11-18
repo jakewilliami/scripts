@@ -101,7 +101,7 @@ void recurse_dirs(const char *name, int depth, int indent)
                 return;
             }
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
-            printf("%s%*s%s%s\n", BBLUE, indent, "", entry->d_name, RESET);
+            printf("%s%*s%s%s/\n", BBLUE, indent, "", entry->d_name, RESET);
             recurse_dirs(path, depth, indent + indent_modifier);
         } else {
             printf("%s%*s%s%s\n", print_colour, indent, "", entry->d_name, RESET);
