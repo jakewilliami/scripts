@@ -72,27 +72,6 @@ const char *get_filename_ext(const char *filename) {
     return dot + 1;
 }
 
-// colourMap = {'.jl': colour_dict["JULIA"],
-//             '.py': colour_dict["PYTHON"],
-//             '.java': colour_dict["JAVA"],
-//             '.rs': colour_dict["RUST"],
-//             '.sh': colour_dict["SHELL"],
-//             '.pl': colour_dict["PERL"],
-//             '.rb': colour_dict["RUBY"],
-//             '.ex': colour_dict["ELIXIR"],
-//             '.lisp': colour_dict["LISP"],
-//             '.clisp': colour_dict["COMMONLISP"],
-//             '.lua': colour_dict["LUA"],
-//             '.c': colour_dict["C"],
-//             '.cpp': colour_dict["CPP"],
-//             '.R': colour_dict["R"],
-//             '.json': colour_dict["JAVASCRIPT"],
-//             '.md': colour_dict["MARKDOWN"],
-//             '.txt': colour_dict["TEXT"],
-//             '.tex': colour_dict["TEX"],
-//             '.sty': colour_dict["TEX"]
-//             }
-
 void recurse_dirs(const char *name, int depth, int indent)
 {
     // define the indentation value
@@ -111,17 +90,18 @@ void recurse_dirs(const char *name, int depth, int indent)
     // recursively read directories
     while ((entry = readdir(dir)) != NULL) {
         const char* ext = get_filename_ext(entry->d_name);
-        const char* print_colour = !strcmp(ext, "jl") ? JULIA : RESET;
+        const char* print_colour = !strcmp(ext, "jl") ? JULIA : !strcmp(ext, "rs") ? RUST : !strcmp(ext, "c") ? C : !strcmp(ext, "sh") ? SHELL : !strcmp(ext, "tex") ? TEX : !strcmp(ext, "sty") ? TEX : !strcmp(ext, "cls") ? TEX : !strcmp(ext, "json") ? JAVASCRIPT : !strcmp(ext, "pl") ? PERL : !strcmp(ext, "rb") ? RUBY : !strcmp(ext, "lua") ? LUA : !strcmp(ext, "cpp") ? CPP : !strcmp(ext, "lisp") ? LISP : !strcmp(ext, "clisp") ? COMMONLISP : !strcmp(ext, "ex") ? ELIXIR : !strcmp(ext, "md") ? MARKDOWN : !strcmp(ext, "txt") ? TEXT : !strcmp(ext, "cl") ? COMMONLISP : !strcmp(ext, "r") ? R : !strcmp(ext, "py") ? PYTHON : !strcmp(ext, "h") ? C : !strcmp(ext, "h1") ? C : !strcmp(ext, "h2") ? C : !strcmp(ext, "1") ? C : !strcmp(ext, "3") ? C : !strcmp(ext, "sed") ? SED : !strcmp(ext, "pdf") ? RESET : !strcmp(ext, "png") ? RESET : !strcmp(ext, "dvi") ? RESET: !strcmp(ext, "toml") ? RESET : SHELL;
         if (starts_with(entry->d_name, ".") == 1 || !strcmp(entry->d_name, "README.md") || starts_with(entry->d_name, "dev-") || !strcmp(entry->d_name, "dep") || !strcmp(entry->d_name, "build") || !strcmp(entry->d_name, "target") || !strcmp(entry->d_name, "textcolours.txt") || !strcmp(entry->d_name, "init_notes.md")) {
             continue;
         }
         if (entry->d_type == DT_DIR) {
             char path[1024];
+            // don't go too deep!
             if (indent / indent_modifier == depth) {
                 return;
             }
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
-            printf("%*s%s\n", indent, "", entry->d_name);
+            printf("%s%*s%s%s\n", BBLUE, indent, "", entry->d_name, RESET);
             recurse_dirs(path, depth, indent + indent_modifier);
         } else {
             printf("%s%*s%s%s\n", print_colour, indent, "", entry->d_name, RESET);
