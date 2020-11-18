@@ -17,6 +17,8 @@
 # Java stuff
 java/jcommander/
 
+# not my code
+bernstein/
 
 ### C++ stuff:
 # This file is used to ignore files which are generated
