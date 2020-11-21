@@ -84,7 +84,7 @@ done
 if [[ -z $1 ]]
 then
     cd "${GIT_LOCATION}/" || clean-exit
-    python3 "${GIT_LOCATION}/python/ls.py" "${GIT_LOCATION}/"
+    "${GIT_LOCATION}/c/compiled/Darwin/64/ls.o" "${GIT_LOCATION}/" 3 # depth level = 3
 fi
 
 

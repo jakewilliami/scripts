@@ -266,7 +266,14 @@ clean_perl() {
     # get dependencies regardless of kernel and os
     is-command-then-install "${PERL_PACKAGE}"
     
-    perl -MCPAN -e "upgrade /(.\*)/"
+	# perl -MCPAN -e "upgrade /(.\*)/"
+	# perl -MCPAN -e shell
+	# perl -MCPAN -e 'install Bundle::CPAN>; reload index; reload cpan'
+	# https://stackoverflow.com/questions/40072946/
+	# export PERL_MM_USE_DEFAULT=1
+	# perl -MCPAN -e 'install Bundle::CPAN'
+	# perl -MCPAN -e 'reload index'
+	# perl -MCPAN -e 'reload cpan'
 }
 
 
