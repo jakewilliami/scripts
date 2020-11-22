@@ -26,15 +26,12 @@ executed.
   The parameter 'void' indicates that the function takes no arguments.
 */
 
-int file_count = 0;
-DIR * dirp;
-struct dirent * entry;
-
 int main(int argc,char* argv[]){
-	/* int file_count = 0; */
-	/* DIR * dirp; */
-	/* struct dirent * entry; */
-	dirp = opendir(argv[0]);
+	int file_count = 0;
+	DIR * dirp;
+	struct dirent * entry;
+	
+	dirp = opendir(argv[1]);
 	while ((entry = readdir(dirp)) != NULL) {
 	    if (entry -> d_type == DT_REG) { /* If the entry is a regular file */
 	         file_count++;
@@ -50,4 +47,3 @@ int main(int argc,char* argv[]){
 terminate (thus ending the program), and it indicates that the 'main' function
 returns a value of 0.
 */
-

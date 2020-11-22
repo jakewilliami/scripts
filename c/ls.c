@@ -54,6 +54,19 @@
 #define CSS          "\x1b[1;38;5;55m"
 
 
+char *string_repeat(const char *s, int n) {
+  size_t slen = strlen(s);
+  char * dest = malloc(n * slen + 1);
+ 
+  int i; char * p;
+  for (i=0, p = dest; i < n; ++i, p += slen) {
+    memcpy(p, s, slen);
+  }
+  *p = '\0';
+  
+  return dest;
+}
+
 int starts_with(const char *a, const char *b)
 {
     if(!strncmp(a, b, strlen(b))) {
@@ -72,7 +85,7 @@ const char *get_filename_ext(const char *filename) {
     return dot + 1;
 }
 
-void recurse_dirs(const char *name, int depth, int indent)
+void recurse_dirs(char *name, int depth, int indent)
 {
     // define the indentation value
     int indent_modifier = 4;
@@ -80,18 +93,38 @@ void recurse_dirs(const char *name, int depth, int indent)
     DIR *dir;
     struct dirent *entry;
     
+    // cannot list a depth of zero
+    if (depth == 0) {
+        return;
+    }
+    
+    // if directory depth is negative, go up a level
+    if (depth < 0) {
+        int abs_depth = depth * -1;
+        char* parental_dirs = string_repeat("../", abs_depth);
+        // append ch to str
+        char* new_name;
+        if((new_name = malloc(strlen(parental_dirs)+strlen(name)+1)) != NULL){
+            new_name[0] = '\0';   // ensures the memory is an empty string
+            strcat(new_name, parental_dirs);
+            strcat(new_name, name);
+        } else {
+            return;
+        }
+        // printf("%s", new_name);
+        char* name = new_name;
+    }
+    
     // don't open the directory if it isn't a directory
     if (!(dir = opendir(name))) {
         return;
     }
-
-    // !strcmp(ext, "jl")
-
+    
     // recursively read directories
     while ((entry = readdir(dir)) != NULL) {
         const char* ext = get_filename_ext(entry->d_name);
         const char* print_colour = !strcmp(ext, "jl") ? JULIA : !strcmp(ext, "rs") ? RUST : !strcmp(ext, "c") ? C : !strcmp(ext, "sh") ? SHELL : !strcmp(ext, "tex") ? TEX : !strcmp(ext, "sty") ? TEX : !strcmp(ext, "cls") ? TEX : !strcmp(ext, "json") ? JAVASCRIPT : !strcmp(ext, "pl") ? PERL : !strcmp(ext, "rb") ? RUBY : !strcmp(ext, "lua") ? LUA : !strcmp(ext, "cpp") ? CPP : !strcmp(ext, "lisp") ? LISP : !strcmp(ext, "clisp") ? COMMONLISP : !strcmp(ext, "ex") ? ELIXIR : !strcmp(ext, "md") ? MARKDOWN : !strcmp(ext, "txt") ? TEXT : !strcmp(ext, "cl") ? COMMONLISP : !strcmp(ext, "r") ? R : !strcmp(ext, "py") ? PYTHON : !strcmp(ext, "h") ? C : !strcmp(ext, "h1") ? C : !strcmp(ext, "h2") ? C : !strcmp(ext, "1") ? C : !strcmp(ext, "3") ? C : !strcmp(ext, "sed") ? SED : !strcmp(ext, "pdf") ? RESET : !strcmp(ext, "png") ? RESET : !strcmp(ext, "dvi") ? RESET: !strcmp(ext, "toml") ? RESET : SHELL;
-        if (starts_with(entry->d_name, ".") == 1 || !strcmp(entry->d_name, "README.md") || starts_with(entry->d_name, "dev-") || !strcmp(entry->d_name, "dep") || !strcmp(entry->d_name, "build") || !strcmp(entry->d_name, "target") || !strcmp(entry->d_name, "textcolours.txt") || !strcmp(entry->d_name, "init_notes.md")) {
+        if (starts_with(entry->d_name, ".") == 1 || !strcmp(entry->d_name, "README.md") || starts_with(entry->d_name, "dev-") || !strcmp(entry->d_name, "build") || !strcmp(entry->d_name, "target") || !strcmp(entry->d_name, "textcolours.txt") || !strcmp(entry->d_name, "init_notes.md")) {
             continue;
         }
         if (entry->d_type == DT_DIR) {
@@ -102,7 +135,9 @@ void recurse_dirs(const char *name, int depth, int indent)
             }
             snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
             printf("%s%*s%s%s/\n", BBLUE, indent, "", entry->d_name, RESET);
-            recurse_dirs(path, depth, indent + indent_modifier);
+            if (depth != 1) {
+                recurse_dirs(path, depth, indent + indent_modifier);
+            }
         } else {
             printf("%s%*s%s%s\n", print_colour, indent, "", entry->d_name, RESET);
         }
@@ -111,9 +146,16 @@ void recurse_dirs(const char *name, int depth, int indent)
 }
 
 int main(int argc, char** argv) {
-    // convert second argument (depth) to an integer
     int depth;
-    sscanf(argv[2], "%d", &depth);
+    
+    // default depth should be 1 if not given
+    // if (!strcmp(argv[2], "")) {
+        // convert second argument (depth) to an integer
+        sscanf(argv[2], "%d", &depth);
+    // }
+    // else {
+    //     int depth = 1;
+    // }
     
     recurse_dirs(argv[1], depth, 0);
     return 0;
