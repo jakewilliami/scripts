@@ -29,12 +29,18 @@ sudo pacman -S rust
 ## Notes on use of Rust
 
 To create a new Rust project, you should run
-```
+```bash
 PROJNAME="<name of project>" && \
-cd ~/scripts/rust && \
+cd ~/projects/scripts/rust && \
 cargo init --bin ${PROJNAME} && \
 cd ${PROJNAME}/ && \
 cargo run src/main.rs  // invokes `rustc` behind the scenes
+```
+or
+```bash
+PROJNAME="<name of project>" && \
+cd ~/projects/scripts/rust && \
+cargo new ${PROJNAME}
 ```
 If you need to download a Rust library, you must first clone it, and then
 ```
@@ -51,4 +57,16 @@ If you want to use a crate as a dependency, edit your `Cargo.toml`.  There is a 
 cargo install cargo-edit
 cd /path/to/project
 cargo add <package you want to add to your rust project>
+```
+To run a project, either run
+```bash
+cargo run && ./main
+```
+or 
+```bash
+cargo build && ./main
+```
+or
+```
+rustc src/main.rs && ./main
 ```
