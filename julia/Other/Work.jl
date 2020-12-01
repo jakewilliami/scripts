@@ -70,6 +70,8 @@ function main()
 	end
 
 	for i in _start_dates
+		println(_today)
+		println(_today + Week(1))
 		if ( _today < i < _today + Week(1) ) || ( i == _today && Hour(_now) >= Hour(17) && Minute(_now) >= Minute(30) ) || ( i == _today + Week(1) && Hour(_now) <= Hour(20) && Minute(_now) < Minute(30) )
 			println("Don't forget that you are currently on call.\n\n")
 		end
