@@ -1,4 +1,4 @@
-function trees_encountered(data_path::String, vertical_component::Integer, horizontal_component::Integer)
+function trees_encountered(data_path::String, vertical_component::Int, horizontal_component::Int)
     tree_counter, col_counter, row_counter = 0, 1, 1
     data = readlines(data_path)
     bottom_row = length(data)
@@ -21,7 +21,8 @@ function trees_encountered(data_path::String, vertical_component::Integer, horiz
     return tree_counter
 end
 
-trees_encountered("data3.txt", 1, 3)
+using BenchmarkTools
+@benchmark trees_encountered("data3.txt", 1, 3)
 
 #=
 BenchmarkTools.Trial:
