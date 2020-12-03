@@ -1,0 +1,1 @@
+Note: I did not participate in Advent of Code from 2015--2019.
