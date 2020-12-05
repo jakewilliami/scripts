@@ -1,30 +1,4 @@
-byr:1992
-cid:278
-ecl:oth hgt:65in hcl:#c0946f
-iyr:2013
-pid:092712496 eyr:2024
-
-hgt:151cm
-iyr:2018 hcl:#18171d
-byr:1971 pid:599220575 cid:321
-eyr:2030
-ecl:brn
-
-byr:1956 iyr:2016 hcl:#b6652a
-pid:109381754
-ecl:hzl cid:233
-
-iyr:2015 byr:1988
-hcl:#866857 ecl:amb
-pid:274656754
-hgt:152cm eyr:2022
-
-eyr:2028 ecl:amb cid:285
-byr:1947
-hgt:186cm pid:165847317 hcl:#733820 iyr:2013
-
-hcl:#866857 pid:601229952 eyr:2023 ecl:brn
-hgt:191cm
-cid:183
-
-hgt:191cm iyr:2018 hcl:#b50bab byr:1936 eyr:2025 pid:422563929 ecl:oth
+FBFBBFFRLR
+BFFFBBFRRR
+FFFBBBFRRR
+BBFFBBFRLL
