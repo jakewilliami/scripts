@@ -1,6 +1,5 @@
 function count_yes(datafile::String)
     data = Vector{Int}()
-    yes_counter = 0
     
     open(datafile) do io
         while ! eof(io)
@@ -47,7 +46,6 @@ deepunique(A::AbstractArray) = unique(flattenall(A))
 
 function count_unanimous(datafile::String)
     data = Vector{Int}()
-    yes_counter = 0
 
     open(datafile) do io
         while ! eof(io)
