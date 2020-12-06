@@ -17,8 +17,8 @@ function count_yes(datafile::String)
     
     return sum(data)
 end
-using BenchmarkTools
-@benchmark (count_yes("data6.txt"))
+
+println(count_yes("data6.txt"))
 
 #=
 BenchmarkTools.Trial:
@@ -64,8 +64,7 @@ function count_unanimous(datafile::String)
     return sum(data)
 end
 
-using BenchmarkTools
-@benchmark (count_unanimous("data6.txt"))
+println(count_unanimous("data6.txt"))
 
 #=
 BenchmarkTools.Trial:
