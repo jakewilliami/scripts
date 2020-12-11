@@ -1,3 +1,5 @@
+const datafile = "inputs/data9.txt"
+
 function get_pair_sum(preamble::Vector{T}, k::T) where T <: Number
     for i in preamble, j in preamble
         if i ≠ j && isequal(i + j, k)
@@ -28,7 +30,7 @@ function findfirst_invalid(datafile::String, preamble_length::Int)
     end
 end
 
-println(findfirst_invalid("data9.txt", 25))
+println(findfirst_invalid(datafile, 25))
 
 #=
 BenchmarkTools.Trial:
@@ -77,7 +79,7 @@ function get_encryption_weakness(datafile::String, preamble_length::Int)
     end
 end ==
 
-println(get_encryption_weakness("data9.txt", 25))
+println(get_encryption_weakness(datafile, 25))
 
 #=
 BenchmarkTools.Trial:

@@ -1,7 +1,6 @@
-using DataFrames, DelimitedFiles, Debugger
+using DataFrames, DelimitedFiles
 
-raw_data = DataFrame(readdlm("data2.csv", ':'))
-rename!(raw_data, [:restrictions, :password])
+const datafile = "inputs/data2.csv"
 
 # clean data
 function clean_data(raw_data::DataFrame)
@@ -31,46 +30,46 @@ function count_valid(data::DataFrame)
     return i
 end
 
-println(count_valid(clean_data(raw_data)))
+println(count_valid(clean_data(rename!(DataFrame(readdlm(datafile, ':')), [:restrictions, :password]))))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  2.07 MiB
-  allocs estimate:  59734
+  memory estimate:  2.36 MiB
+  allocs estimate:  66697
   --------------
-  minimum time:     6.093 ms (0.00% GC)
-  median time:      7.131 ms (0.00% GC)
-  mean time:        7.603 ms (2.70% GC)
-  maximum time:     15.452 ms (33.18% GC)
+  minimum time:     7.798 ms (0.00% GC)
+  median time:      8.731 ms (0.00% GC)
+  mean time:        9.293 ms (2.53% GC)
+  maximum time:     16.071 ms (25.07% GC)
   --------------
-  samples:          658
+  samples:          539
   evals/sample:     1
 =#
 
 function count_valid_corrected(data::DataFrame)
     i = 0
-    
+
     for row in eachrow(data)
         if (row.password[row.num1] == row.letter) ⊻ (row.password[row.num2] == row.letter)
             i += 1
         end
     end
-    
+
     return i
 end
 
-println(count_valid_corrected(clean_data(raw_data)))
+println(count_valid_corrected(clean_data(rename!(DataFrame(readdlm(datafile, ':')), [:restrictions, :password]))))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  1.79 MiB
-  allocs estimate:  44063
+  memory estimate:  2.11 MiB
+  allocs estimate:  53354
   --------------
-  minimum time:     5.012 ms (0.00% GC)
-  median time:      5.410 ms (0.00% GC)
-  mean time:        5.852 ms (3.07% GC)
-  maximum time:     15.922 ms (30.89% GC)
+  minimum time:     6.707 ms (0.00% GC)
+  median time:      7.422 ms (0.00% GC)
+  mean time:        7.863 ms (2.77% GC)
+  maximum time:     14.772 ms (0.00% GC)
   --------------
-  samples:          855
+  samples:          636
   evals/sample:     1
 =#

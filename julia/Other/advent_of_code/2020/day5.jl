@@ -1,3 +1,5 @@
+const datafile = "inputs/data5.txt"
+
 function bisect(x::UnitRange{T}) where T <: Integer
     lower, upper = getfield(x, :start), getfield(x, :stop)
     mid = lower + div(upper - lower, 2)
@@ -57,7 +59,7 @@ function get_seat_ids(data::Vector{T}) where T <: AbstractString
     return rows .* 8 .+ seats
 end
 
-println(maximum(get_seat_ids(readlines("data5.txt"))))
+println(maximum(get_seat_ids(readlines(datafile))))
 
 #=
 BenchmarkTools.Trial:
@@ -83,7 +85,7 @@ function find_my_seat(data::Vector{T}) where T <: AbstractString
     return findfirst(seat -> seat ∉ seat_ids && all(i -> i ∈ seat_ids, seat ± 1), 0:maximum(seat_ids))
 end
 
-println(find_my_seat(readlines("data5.txt")))
+println(find_my_seat(readlines(datafile)))
 
 #=
 BenchmarkTools.Trial:

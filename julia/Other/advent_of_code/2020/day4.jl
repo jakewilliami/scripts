@@ -1,3 +1,5 @@
+const datafile = "inputs/data4.txt"
+
 abstract type AbstractPassport end
 
 mutable struct Passport <: AbstractPassport
@@ -67,7 +69,7 @@ function count_valid_ish_passports(passports::Vector{T}) where T <: AbstractPass
     return sum(validate_passport.(passports))
 end
 
-println(count_valid_ish_passports(parse_data("data4.txt")))
+println(count_valid_ish_passports(parse_data(datafile)))
 
 #=
 BenchmarkTools.Trial:
@@ -212,7 +214,7 @@ function parse_data_strict(datafile::String)
     return passports
 end
 
-println(count_valid_ish_passports(parse_data_strict("data4.txt")))
+println(count_valid_ish_passports(parse_data_strict(datafile)))
 
 #=
 BenchmarkTools.Trial:

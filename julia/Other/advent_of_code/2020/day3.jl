@@ -1,3 +1,5 @@
+const datafile = "inputs/data3.txt"
+
 function trees_encountered(data_path::String, vertical_component::Int, horizontal_component::Int)
     tree_counter, col_counter, row_counter = 0, 1, 1
     data = readlines(data_path)
@@ -21,8 +23,7 @@ function trees_encountered(data_path::String, vertical_component::Int, horizonta
     return tree_counter
 end
 
-using BenchmarkTools
-@benchmark trees_encountered("data3.txt", 1, 3)
+println(trees_encountered(datafile, 1, 3))
 
 #=
 BenchmarkTools.Trial:
@@ -38,7 +39,7 @@ BenchmarkTools.Trial:
   evals/sample:     1
 =#
 
-prod(trees_encountered("data3.txt", i, j) for (i, j) in [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)])
+println(prod(trees_encountered(datafile, i, j) for (i, j) in [(1, 1), (1, 3), (1, 5), (1, 7), (2, 1)]))
 
 #=
 BenchmarkTools.Trial:

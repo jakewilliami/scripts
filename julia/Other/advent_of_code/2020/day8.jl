@@ -1,5 +1,7 @@
 using DelimitedFiles: readdlm
 
+const datafile = "inputs/data8.txt"
+
 function parse_input(datafile::String)
     instructions = Matrix{Union{Union{String, SubString}, Int}}(undef, 0, 2)
     
@@ -44,7 +46,7 @@ function get_accumulator(instructions::Matrix)
     end
 end
 
-println(get_accumulator(parse_input("data8.txt")))
+println(get_accumulator(parse_input(datafile)))
 
 #=
 BenchmarkTools.Trial:
@@ -116,7 +118,7 @@ function get_corrected_accumulator(instructions::Matrix; line_number::Int = 1)
     end
 end
 
-println(get_corrected_accumulator(parse_input("data8.txt")))
+println(get_corrected_accumulator(parse_input(datafile)))
 
 #=
 BenchmarkTools.Trial:
