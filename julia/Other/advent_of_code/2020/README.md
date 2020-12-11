@@ -1,7 +1,7 @@
 # Benchmarking Results
 
 Day | Time | Memory | Allocations | Name
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 1 | 1.614 ms | 306.53 KiB | 18724 | Report Repair
 | 1.425 s | 289.41 MiB | 18966025 |
 2 | 9.293 ms | 2.36 MiB | 66697 | Password Philosophy
