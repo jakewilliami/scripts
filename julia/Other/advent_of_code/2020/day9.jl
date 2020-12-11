@@ -75,7 +75,7 @@ function get_encryption_weakness(datafile::String, preamble_length::Int)
             deleteat!(preamble, 1)
         end
     end
-end
+end ==
 
 println(get_encryption_weakness("data9.txt", 25))
 
