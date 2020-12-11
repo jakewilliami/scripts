@@ -1,3 +1,6 @@
+const datafile = "inputs/data7.txt"
+const my_bag = "shiny gold"
+
 function isbag_in_bag(
     dict::Dict,
     key::Union{String, SubString},
@@ -63,7 +66,7 @@ function count_bag_containers(datafile::String, search_bag::String)
     return sum([isbag_in_bag(babushka_bags, outer_bag, search_bag) for outer_bag in keys(babushka_bags)])
 end
 
-println(count_bag_containers("data7.txt", "shiny gold"))
+println(count_bag_containers(datafile, my_bag))
 
 #=
 BenchmarkTools.Trial:
@@ -109,7 +112,7 @@ function count_bags_required(datafile::String, search_bag::String)
     return count_bags_recursive(babushka_bags, search_bag)
 end
 
-println(count_bags_required("data7.txt", "shiny gold"))
+println(count_bags_required(datafile, my_bag))
 
 #=
 BenchmarkTools.Trial:

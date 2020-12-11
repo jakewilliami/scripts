@@ -1,3 +1,5 @@
+const datafile = "inputs/data6.txt"
+
 function flattenall(A::AbstractArray)
     while any(x -> typeof(x) <: AbstractArray, A)
         A = collect(Base.Iterators.flatten(A))
@@ -28,7 +30,7 @@ function count_yes(datafile::String)
     return sum(data)
 end
 
-println(count_yes("data6.txt"))
+println(count_yes(datafile))
 
 #=
 BenchmarkTools.Trial:
@@ -63,8 +65,8 @@ function count_unanimous(datafile::String)
 
     return sum(data)
 end
-using BenchmarkTools
-@benchmark (count_unanimous("data6.txt"))
+
+println(count_unanimous(datafile))
 
 #=
 BenchmarkTools.Trial:
