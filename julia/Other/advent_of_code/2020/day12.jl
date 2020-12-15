@@ -84,6 +84,20 @@ end
 
 println(manhattan_distance(parse_input(datafile)))
 
+#=
+BenchmarkTools.Trial:
+  memory estimate:  7.33 MiB
+  allocs estimate:  52689
+  --------------
+  minimum time:     8.370 ms (0.00% GC)
+  median time:      11.124 ms (0.00% GC)
+  mean time:        11.641 ms (6.16% GC)
+  maximum time:     21.652 ms (17.92% GC)
+  --------------
+  samples:          430
+  evals/sample:     1
+=#
+
 function move_to_waypoint!(ship::Ship; n_times::Int = 1)
     pos = collect(ship.pos .+ ship.waypoint_pos .* n_times)
     vert_view, hor_view = view(pos, [1, 3]), view(pos, [2, 4])
@@ -92,9 +106,9 @@ function move_to_waypoint!(ship::Ship; n_times::Int = 1)
     pos[vert_max_idx] = abs(pos[1] - pos[3])
     pos[hor_max_idx] = abs(pos[2] - pos[4])
     pos[mod1(vert_max_idx + 2, 4)], pos[mod1(hor_max_idx + 2, 4)] = 0, 0
-    
+
     setfield!(ship, :pos, Tuple(pos))
-    
+
     return ship
 end
 
@@ -115,7 +129,7 @@ end
 
 function manhattan_distance_again(instructions::Matrix{T}) where T
     ship = Ship()
-    
+
     for (action, value) in eachrow(instructions)
         if action ∈ [:L, :R]
             rotate_waypoint!(ship, action, value)
@@ -126,8 +140,22 @@ function manhattan_distance_again(instructions::Matrix{T}) where T
             reset_waypoint!(ship)
         end
     end
-    
+
     return sum(abs.((0, 0, 0, 0) .- ship.pos))
 end
 
 println(manhattan_distance_again(parse_input(datafile)))
+
+#=
+BenchmarkTools.Trial:
+  memory estimate:  7.33 MiB
+  allocs estimate:  52957
+  --------------
+  minimum time:     8.449 ms (0.00% GC)
+  median time:      9.605 ms (0.00% GC)
+  mean time:        10.706 ms (6.53% GC)
+  maximum time:     21.025 ms (20.09% GC)
+  --------------
+  samples:          467
+  evals/sample:     1
+=#
