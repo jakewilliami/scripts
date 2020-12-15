@@ -72,15 +72,15 @@ println(count('#', readlines(datafile), mutate_seats!))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  929.78 MiB
-  allocs estimate:  15090226
+  memory estimate:  6.60 GiB
+  allocs estimate:  145121722
   --------------
-  minimum time:     3.882 s (1.72% GC)
-  median time:      3.899 s (1.77% GC)
-  mean time:        3.899 s (1.77% GC)
-  maximum time:     3.916 s (1.81% GC)
+  minimum time:     17.815 s (3.54% GC)
+  median time:      17.815 s (3.54% GC)
+  mean time:        17.815 s (3.54% GC)
+  maximum time:     17.815 s (3.54% GC)
   --------------
-  samples:          2
+  samples:          1
   evals/sample:     1
 =#
 
@@ -146,3 +146,17 @@ function mutate_seats_again!(seat_layout::Vector{String})
 end
 
 println(count('#', readlines(datafile), mutate_seats_again!))
+
+#=
+BenchmarkTools.Trial:
+  memory estimate:  8.43 GiB
+  allocs estimate:  187101585
+  --------------
+  minimum time:     22.063 s (3.87% GC)
+  median time:      22.063 s (3.87% GC)
+  mean time:        22.063 s (3.87% GC)
+  maximum time:     22.063 s (3.87% GC)
+  --------------
+  samples:          1
+  evals/sample:     1
+=#
