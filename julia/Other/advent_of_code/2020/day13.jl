@@ -17,7 +17,7 @@ end
 
 @time println(catch_nearest_bus(parse_input(datafile)))
 
-function find_timestamp(input::NTuple{2, Any})
+function find_timestamp_brute_force(input::NTuple{2, Any})
     rubbish, IDs = input
     data = NTuple{2, Int128}[(IDs[ID_idx], ID_idx - 1) for ID_idx in 1:length(IDs) if IDs[ID_idx] ≠ "x"]
     first_ID, t = first(first(IDs)), ifelse(last(last(data)) > 7, 100000000000000, 0) # the problem suggest that our input (much larger than the test input) will easily be at least 100000000000000
@@ -36,4 +36,14 @@ function find_timestamp(input::NTuple{2, Any})
     return nothing
 end
 
-@time println(find_timestamp(parse_input(datafile)))
+using Mods: CRT, Mod, modulus
+
+function find_timestamp_clever(input::NTuple{2, Any})
+    rubbish, IDs = input
+    mods = Mod[Mod(ID_idx - 1, ID) for (ID_idx, ID) in enumerate(IDs) if ID ≠ "x"]
+    res = CRT(mods...)
+    
+    return modulus(res) - res.val
+end
+
+@time println(find_timestamp_clever(parse_input(datafile)))
