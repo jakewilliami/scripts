@@ -1,6 +1,6 @@
 using DelimitedFiles: readdlm
 
-const datafile = "inputs/data8.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data8.txt")
 
 function parse_input(datafile::String)
     instructions = Matrix{Union{Union{String, SubString}, Int}}(undef, 0, 2)

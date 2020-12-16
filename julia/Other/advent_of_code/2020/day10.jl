@@ -1,4 +1,4 @@
-const datafile = "inputs/data10.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data10.txt")
 
 load_file(datafile::String) = parse.(Int, readlines(datafile))
 

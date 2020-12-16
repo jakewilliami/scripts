@@ -1,4 +1,4 @@
-const datafile = "inputs/data4.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data4.txt")
 
 abstract type AbstractPassport end
 

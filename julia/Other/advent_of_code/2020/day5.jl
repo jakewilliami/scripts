@@ -1,4 +1,4 @@
-const datafile = "inputs/data5.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data5.txt")
 
 function bisect(x::UnitRange{T}) where T <: Integer
     lower, upper = getfield(x, :start), getfield(x, :stop)

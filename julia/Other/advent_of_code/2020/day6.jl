@@ -1,4 +1,4 @@
-const datafile = "inputs/data6.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data6.txt")
 
 function flattenall(A::AbstractArray)
     while any(x -> typeof(x) <: AbstractArray, A)
