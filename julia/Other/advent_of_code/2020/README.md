@@ -1,5 +1,7 @@
 # Benchmarking Results (Julia)
 
+None of these are necessarily "highly optimised".  Some of them I have optimised a little; others I have simply got working.  Oftentimes, I prefer a one-line solution using `Base` functions rather than writing my own, optimise(d|able) functions.  That said, here are some results.
+
 Day | Time | Memory | Allocations | Name
 --- | --- | --- | --- | ---
 1.1 | 1.614 ms | 306.53 KiB | 18724 | Report Repair
@@ -26,8 +28,8 @@ Day | Time | Memory | Allocations | Name
 11.2 | 22.063 s | 8.43 GiB | 187101585 | Seating System
 12.1 | 11.641 ms | 7.33 MiB | 52689 | Rain Risk
 12.2 | 10.706 ms | 7.33 MiB | 52957 | Rain Risk
-13.1 | 121.051 μs | 68.44 KiB | 521 | Shuttle Search
-13.2 | 146.392 μs | 77.81 KiB | 745 | Shuttle Search
+13.1 | 146.846 μs | 68.81 KiB | 523 | Shuttle Search
+13.2 | 339.032 μs | 615.77 KiB | 3770 | Shuttle Search
 
 ---
 
@@ -61,9 +63,9 @@ The reason this takes so long is because I made this work for n-dimensional seat
 
 ### Day 13
 
-The naïve approach to part 2 took a long time:
-```julia
-$ julia --threads=5
+The naïve approach to part 2 would take long time.  Probably months.  I didn't wait to find out exactly how long.
+<!-- ```julia
+$ julia --threads=5 # 6 CPUs allocated to this task, with min 20G RAM
 
 julia> @btime find_timestamp_brute_force(parse_input(datafile));
 
@@ -76,8 +78,12 @@ Platform Info:
   WORD_SIZE: 64
   LIBM: libopenlibm
   LLVM: libLLVM-9.0.1 (ORCJIT, broadwell)
-```
+``` -->
+
+With the help of @dmipeck, I highly optimised the brute force method, incrementing `t` by `IDs[1] * IDs[2] * ... * IDs[discrepancy - 1]` rather than simply `IDs[1]`.  The `findfirstdiscrepancy` function I adapted from the [`isequal` method for arrays](https://github.com/JuliaLang/julia/blob/master/base/abstractarray.jl#L1950-L1961).  This approach is the one listed in the table above, as &mdash; despite the CRT theorem being faster &mdash; this approach is most similar to my original (naïve) approach, with a little nudge from the resident genius.
+
+The Chinese Remainder Theorem approach is adapted from rmsrosa's solution using the same Theorem.
 
 ### Day 14
 
-I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from dmipeck and rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  dmipeck helped me to understand the problem.
+I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem.
