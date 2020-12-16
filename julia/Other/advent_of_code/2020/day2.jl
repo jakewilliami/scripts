@@ -1,6 +1,6 @@
 using DataFrames, DelimitedFiles
 
-const datafile = "inputs/data2.csv"
+const datafile = joinpath(@__DIR__, "inputs", "data2.csv")
 
 # clean data
 function clean_data(raw_data::DataFrame)

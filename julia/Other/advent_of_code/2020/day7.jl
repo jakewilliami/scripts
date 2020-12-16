@@ -1,4 +1,4 @@
-const datafile = "inputs/data7.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data7.txt")
 const my_bag = "shiny gold"
 
 function isbag_in_bag(
@@ -6,24 +6,6 @@ function isbag_in_bag(
     key::Union{String, SubString},
     search_value::Union{String, SubString}
     )
-    #= Doov's
-    bags = []
-    bags_added = []
-    
-    while true
-        for outer_bag in keys(dict)
-            if key in dict[outer_bag] && outer_bag ∉ bags
-                push!(bags_added, outer_bag)
-            end
-        end
-        if isempty(bags_added)
-            break
-        else
-            push!(bags, bags_added)
-            bags_added = []
-        end
-    end
-    =#
 
     inner_bags = dict[key]
     

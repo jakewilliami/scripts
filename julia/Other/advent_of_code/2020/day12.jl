@@ -1,4 +1,4 @@
-const datafile = "inputs/data12.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data12.txt")
 
 function parse_input(datafile::String)
     instructions = Matrix{Union{Symbol, Int}}(undef, 0, 2)

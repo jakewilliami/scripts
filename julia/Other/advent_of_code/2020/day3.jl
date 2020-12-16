@@ -1,4 +1,4 @@
-const datafile = "inputs/data3.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data3.txt")
 
 function trees_encountered(data_path::String, vertical_component::Int, horizontal_component::Int)
     tree_counter, col_counter, row_counter = 0, 1, 1

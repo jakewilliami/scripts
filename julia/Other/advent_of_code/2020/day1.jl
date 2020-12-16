@@ -1,6 +1,6 @@
 using CSV, DataFrames
 
-const datafile = "inputs/data1.csv"
+const datafile = joinpath(@__DIR__, "inputs", "data1.csv")
 
 function naive2(df)
     for i in eachrow(df)

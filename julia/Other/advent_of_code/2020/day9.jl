@@ -1,4 +1,4 @@
-const datafile = "inputs/data9.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data9.txt")
 
 function get_pair_sum(preamble::Vector{T}, k::T) where T <: Number
     for i in preamble, j in preamble

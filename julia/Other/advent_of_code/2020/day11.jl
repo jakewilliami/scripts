@@ -1,4 +1,4 @@
-const datafile = "inputs/data11.txt"
+const datafile = joinpath(@__DIR__, "inputs", "data11.txt")
 
 n_adjacencies(dim::Int) = 3^dim - 1
 
