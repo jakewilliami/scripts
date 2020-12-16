@@ -111,22 +111,22 @@ using Mods: CRT, Mod, modulus
 function find_timestamp_clever(input::NTuple{2, Any})
     rubbish, IDs = input
     mods = Mod[Mod(ID_idx - 1, ID) for (ID_idx, ID) in enumerate(IDs) if ID ≠ "x"]
-    res = CRT(mods...)
+    res = reduce(CRT, mods)
 
     return modulus(res) - res.val
 end
-
-println(find_timestamp_clever(parse_input(datafile)))
+using BenchmarkTools
+@benchmark (find_timestamp_clever(parse_input(datafile)))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  77.81 KiB
-  allocs estimate:  745
+  memory estimate:  78.14 KiB
+  allocs estimate:  744
   --------------
-  minimum time:     116.986 μs (0.00% GC)
-  median time:      123.572 μs (0.00% GC)
-  mean time:        146.392 μs (6.12% GC)
-  maximum time:     8.824 ms (74.36% GC)
+  minimum time:     120.705 μs (0.00% GC)
+  median time:      132.550 μs (0.00% GC)
+  mean time:        176.070 μs (6.00% GC)
+  maximum time:     24.057 ms (87.24% GC)
   --------------
   samples:          10000
   evals/sample:     1
