@@ -52,7 +52,7 @@ end
 
 # println(find_timestamp_brute_force_old(parse_input(datafile))) # may take months to finish
 
-@inline function findfirstdiscrepancy(A::Vector{T}, B::Vector{T}) where T
+function findfirstdiscrepancy(A::Vector{T}, B::Vector{T}) where T
     if A === B return nothing end
 
     if length(A) != length(B)
