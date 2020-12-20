@@ -2,11 +2,9 @@ using DelimitedFiles: readdlm
 
 const datafile = joinpath(@__DIR__, "inputs", "data14.txt")
 
-function apply_mask!(mask, mem::Vector{Int})
-    mask = tryparse.(Int, string.(collect(mask)))
-    
+function apply_mask!(mask::Vector{Int}, mem::Vector{Int})
     for (idx, val) in enumerate(mask)
-        val ≠ nothing && setindex!(mem, val, idx)
+        isone(val) && setindex!(mem, val, idx)
     end
     
     return mem
@@ -15,48 +13,32 @@ end
 apply_mask(mask::Vector{Int}, mem::Vector{Int}) = apply_mask!(copy(mask), mem)
 
 function part1(datafile::String)
-    mem, mask = Vector{Int}(undef, 36), Vector{Int}(undef, 36)
-    # mem, mask = zeros(Int, 36), zeros(Int, 36)
-    # mem, mask = string(), string()
+    mem, mask = zeros(Int, 36), zeros(Int, 36)
+    # out = Vector{Int}()
+    out = Vector{Int}(undef, 1_000_000)
 
     open(datafile) do io
         while ! eof(io)
             identifier, value = split(readline(io), " = ")
-            line = readline(io)
             
             if identifier == "mask"
-                # apply_mask!(mask, mem)
-                mask = parse.(Int, replace(value, 'X' => '0'), base = 2)
-                # mask = parse.(Int, string.(collect(string(parse(Int, identifier), base = 2))))
-                # mask = parse.(Int, string.(collect(value)), base = 2)
-                # continue
+                mask = parse.(Int, string.(collect(replace(value, 'X' => '0'))))
             else
-                # local_mem = Vector{Int}(undef, 36)
-                # local_mem = zeros(Int, 36)
-                # mem = parse.(Int, string.(collect(string(parse(Int, match(r"\d", identifier).match), base = 2))))
-                # mem = parse.(Int, string.(collect(match(r"\d", identifier).match)), base = 2)
-                # println(mem)
-                println(identifier)
-                # println(mem_addr)
-                # mem_slot = parse(Int, value)
-                # local_mem[(36 - length(mem_addr) + 1):end] .= mem_addr
-                # println("Applying mask to $local_mem")
-                # println(SubString.(line, findall(r"\d+", line)))
-                # println(parse(Int, match(r"\d", identifier).match))
-                # println(parse(Int, value, base = 2))
-                # println("hello")
-                # apply_mask!(local_mem, mask)
-                # mem = local_mem
-                # println("mask applied: $mem")
+                local_mem = zeros(Int, 36)
+                mem_addr = parse(Int, match(r"\d", identifier).match)
+                value = parse.(Int, collect(string(parse(Int, value), base = 2)))
+                local_mem[(36 - length(value) + 1):end] .= value
+                apply_mask!(mask, local_mem)
+                val = parse(Int, join(local_mem), base = 2)
+                out[mem_addr] = val
             end
         end
     end
     
-    return mem
-    return parse(Int, join(mem), base = 10)
+    return sum(out)
 end
 
-println(part1("inputs/test.txt"))
+println(part1(datafile))
 
 function part1(input_file::String)
     storage = Dict()
@@ -64,17 +46,15 @@ function part1(input_file::String)
     for line in eachline(input_file)
         line[1:4] == "mask" && (global mask = line[8:end]) != 0 && continue
         store = SubString.(line, findall(r"\d+", line))
-        # println(store)
         masked = parse(Int, store[2]) | parse(Int, replace(mask, 'X' => '0'), base = 2)
         masked &= parse(Int, replace(mask, 'X' => '1'), base = 2)
         storage[store[1]] = masked
-        println(storage)
     end
 
     return sum(values(storage))
 end
 
-# println(part1("inputs/test.txt"))
+println(part1(datafile))
 
 # using Combinatorics
 #
