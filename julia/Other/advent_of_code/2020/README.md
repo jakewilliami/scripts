@@ -82,8 +82,8 @@ Platform Info:
 
 With the help of @dmipeck, I highly optimised the brute force method, incrementing `t` by `IDs[1] * IDs[2] * ... * IDs[discrepancy - 1]` rather than simply `IDs[1]`.  The `findfirstdiscrepancy` function I adapted from the [`isequal` method for arrays](https://github.com/JuliaLang/julia/blob/master/base/abstractarray.jl#L1950-L1961).  This approach is the one listed in the table above, as &mdash; despite the CRT theorem being faster &mdash; this approach is most similar to my original (naïve) approach, with a little nudge from the resident genius.
 
-The Chinese Remainder Theorem approach is adapted from rmsrosa's solution using the same Theorem.
+The Chinese Remainder Theorem approach is adapted from @rmsrosa's solution using the same Theorem.
 
 ### Day 14
 
-I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem.
+I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.
