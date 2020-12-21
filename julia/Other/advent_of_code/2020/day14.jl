@@ -22,9 +22,8 @@ function apply_mask(mem::Int, mask::AbstractString)
 end
 
 function part1(datafile::String)
-    mem, mask = zeros(Int, 36), zeros(Int, 36)
-    out = Vector{Int}()
-    # out = Dict{Int, Int}()
+    out = Dict{Int, Int}()
+    mask = string()
 
     open(datafile) do io
         while ! eof(io)
@@ -35,8 +34,7 @@ function part1(datafile::String)
             else
                 mem_addr = parse(Int, match(r"\d+", identifier).match)
                 val = parse(Int, value)
-                pushto!(out, apply_mask(val, mask), mem_addr)
-                # out[mem_addr] = apply_mask(val, mask)
+                out[mem_addr] = apply_mask(val, mask)
             end
         end
     end
