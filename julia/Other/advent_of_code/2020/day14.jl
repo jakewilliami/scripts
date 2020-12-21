@@ -2,56 +2,46 @@ using DelimitedFiles: readdlm
 
 const datafile = joinpath(@__DIR__, "inputs", "data14.txt")
 
-function apply_mask!(mask::Vector{Int}, mem::Vector{Int})
-    for (idx, val) in enumerate(mask)
-        isone(val) && setindex!(mem, val, idx)
+function pushto!(V::Vector{T}, val::T, i::Int) where T <: Number
+    if i > length(V)
+        [push!(V, zero(T)) for _ in (length(V) + 1):(i - 1)]
+        push!(V, val)
+    else
+        V[i] = val
     end
     
-    return mem
+    return V
 end
 
-apply_mask(mask::Vector{Int}, mem::Vector{Int}) = apply_mask!(copy(mask), mem)
+function apply_mask(mem::Int, mask::AbstractString)
+    A, mask = collect(bitstring(mem)[end-35:end]), collect(mask)
+    i = findall(!isequal('X'), mask)
+    A[i] .= mask[i]
+    
+    return parse(Int, join(A), base = 2)
+end
 
 function part1(datafile::String)
     mem, mask = zeros(Int, 36), zeros(Int, 36)
-    # out = Vector{Int}()
-    out = Vector{Int}(undef, 1_000_000)
+    out = Vector{Int}()
+    # out = Dict{Int, Int}()
 
     open(datafile) do io
         while ! eof(io)
             identifier, value = split(readline(io), " = ")
             
             if identifier == "mask"
-                mask = parse.(Int, string.(collect(replace(value, 'X' => '0'))))
+                mask = value
             else
-                local_mem = zeros(Int, 36)
-                mem_addr = parse(Int, match(r"\d", identifier).match)
-                value = parse.(Int, collect(string(parse(Int, value), base = 2)))
-                local_mem[(36 - length(value) + 1):end] .= value
-                apply_mask!(mask, local_mem)
-                val = parse(Int, join(local_mem), base = 2)
-                out[mem_addr] = val
+                mem_addr = parse(Int, match(r"\d+", identifier).match)
+                val = parse(Int, value)
+                pushto!(out, apply_mask(val, mask), mem_addr)
+                # out[mem_addr] = apply_mask(val, mask)
             end
         end
     end
     
-    return sum(out)
-end
-
-println(part1(datafile))
-
-function part1(input_file::String)
-    storage = Dict()
-
-    for line in eachline(input_file)
-        line[1:4] == "mask" && (global mask = line[8:end]) != 0 && continue
-        store = SubString.(line, findall(r"\d+", line))
-        masked = parse(Int, store[2]) | parse(Int, replace(mask, 'X' => '0'), base = 2)
-        masked &= parse(Int, replace(mask, 'X' => '1'), base = 2)
-        storage[store[1]] = masked
-    end
-
-    return sum(values(storage))
+    return sum(values(out))
 end
 
 println(part1(datafile))
