@@ -115,8 +115,8 @@ function find_timestamp_clever(input::NTuple{2, Any})
 
     return modulus(res) - res.val
 end
-using BenchmarkTools
-@benchmark (find_timestamp_clever(parse_input(datafile)))
+
+println(find_timestamp_clever(parse_input(datafile)))
 
 #=
 BenchmarkTools.Trial:
