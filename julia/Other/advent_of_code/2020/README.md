@@ -88,4 +88,4 @@ The Chinese Remainder Theorem approach is adapted from @rmsrosa's solution using
 
 ### Day 14
 
-I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.
+I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.  @adknudson helped me with realising that splatting was the right thing to do with part 2.
