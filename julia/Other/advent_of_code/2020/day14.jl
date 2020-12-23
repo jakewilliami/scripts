@@ -2,9 +2,19 @@ using DelimitedFiles: readdlm
 
 const datafile = joinpath(@__DIR__, "inputs", "data14.txt")
 
+function findunchanged(A::Union{Vector{Char}, AbstractString})
+    indices = Vector{Int}()
+
+    for (idx, val) in enumerate(A)
+        isequal(val, 'X') || push!(indices, idx)
+    end
+
+    return indices
+end
+
 function apply_mask(mem::Int, mask::AbstractString)
     A, mask = collect(bitstring(mem)[(end - 35):end]), collect(mask)
-    i = findall(!isequal('X'), mask)
+    i = findunchanged(mask)
     A[i] .= mask[i]
     
     return parse(Int, join(A), base = 2)
@@ -30,19 +40,19 @@ function sum_masked_values(datafile::String)
     return sum(values(out))
 end
 
-println(sum_masked_values(datafile))
+prinlnt(sum_masked_values(datafile))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  1.37 MiB
-  allocs estimate:  16580
+  memory estimate:  1.33 MiB
+  allocs estimate:  16108
   --------------
-  minimum time:     1.883 ms (0.00% GC)
-  median time:      2.397 ms (0.00% GC)
-  mean time:        3.276 ms (5.20% GC)
-  maximum time:     66.226 ms (0.00% GC)
+  minimum time:     1.768 ms (0.00% GC)
+  median time:      2.046 ms (0.00% GC)
+  mean time:        2.274 ms (3.56% GC)
+  maximum time:     7.522 ms (41.93% GC)
   --------------
-  samples:          1524
+  samples:          2198
   evals/sample:     1
 =#
 
@@ -54,32 +64,42 @@ function unfold(A::Union{AbstractArray, Tuple})
     return A
 end
 
-function get_combinations(A::Vector{Char})
-    out = Vector{String}()
+function findfloating(A::Union{Vector{Char}, AbstractString})
+    indices = Vector{Int}()
 
-    for t in (unfold.(reduce(Base.Iterators.product, [['0', '1'] for _ in 1:count(isequal('X'), A)])))
+    for (idx, val) in enumerate(A)
+        isequal(val, 'X') && push!(indices, idx)
+    end
+
+    return indices
+end
+
+function get_combinations(A::Vector{Char})
+    out, B = Vector{String}(), findfloating(A)
+
+    # for t in unfold.(reduce(Base.Iterators.product, [['0', '1'] for _ in 1:length(B)]))
+    for t in Base.Iterators.product(Vector{Char}[['0', '1'] for _ in 1:length(B)]...)
+    # for t in reduce(Base.Iterators.product, Base.Iterators.repeated(['0', '1'], length(B)))
+    # for t in Base.Iterators.product(Base.Iterators.repeated(['0', '1'], length(B))...)
         local_A = copy(A)
-        local_A[findall(isequal('X'), A)] .= t
+        local_A[B] .= t
         push!(out, join(local_A))
     end
 
     return parse.(Int, out, base = 2)
 end
 
-function get_combinations(A::AbstractString)
-    A, out = A isa AbstractString ? collect(A) : A, Vector{String}()
-
-    return get_combinations(A)
-end
-
 function apply_mask_v2(mem::Int, mask::AbstractString)
-    A, mask, out = collect(bitstring(mem)[(end - 35):end]), collect(mask), Vector{String}()
-    [setindex!(A, char, i) for (i, char) in enumerate(mask) if char ≠ '0']
+    A = collect(bitstring(mem)[(end - 35):end])
+
+    for (i, char) in enumerate(mask)
+        char ≠ '0' && (A[i] = char)
+    end
 
     return A
 end
 
-function get_possible_values(mem::Int, mask::Union{AbstractString, Vector{String}})
+function get_possible_values(mem::Int, mask::AbstractString)
     return get_combinations(apply_mask_v2(mem, mask))
 end
 
@@ -94,10 +114,9 @@ function sum_values_remaining(datafile::String)
                 mask = value
             else
                 mem_addr = parse(Int, match(r"\d+", identifier).match)
-                M = get_possible_values(mem_addr, mask)
                 key = parse(Int, value)
 
-                for m in M
+                for m in get_possible_values(mem_addr, mask)
                     out[m] = key
                 end
             end
@@ -111,14 +130,14 @@ println(sum_values_remaining(datafile))
 
 #=
 BenchmarkTools.Trial:
-  memory estimate:  751.30 MiB
-  allocs estimate:  19955461
+  memory estimate:  102.41 MiB
+  allocs estimate:  1227851
   --------------
-  minimum time:     4.454 s (2.07% GC)
-  median time:      4.491 s (2.01% GC)
-  mean time:        4.491 s (2.01% GC)
-  maximum time:     4.528 s (1.95% GC)
+  minimum time:     267.388 ms (3.03% GC)
+  median time:      281.606 ms (3.19% GC)
+  mean time:        299.399 ms (6.72% GC)
+  maximum time:     530.904 ms (35.58% GC)
   --------------
-  samples:          2
+  samples:          17
   evals/sample:     1
 =#
