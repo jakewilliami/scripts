@@ -32,8 +32,10 @@ Day | Time | Memory | Allocations | Name
 13.2 | 339.032 μs | 615.77 KiB | 3770 | Shuttle Search
 14.1 | 2.274 ms | 1.33 MiB | 16108 | Docking Data
 14.2 | 299.399 ms | 102.41 MiB | 1227851 | Docking Data
-15.1 |  |  |  | Rambunctious Recitation
-15.2 |  |  |  | Rambunctious Recitation
+15.1 | 3.929 ms | 3.04 MiB | 11566 | Rambunctious Recitation
+15.2 | 2.272 s | 269.21 MiB | 112 | Rambunctious Recitation
+16.1 |  |  |  | Ticket Translation
+16.2 |  |  |  | Ticket Translation
 
 ---
 
