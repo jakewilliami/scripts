@@ -77,10 +77,7 @@ end
 function get_combinations(A::Vector{Char})
     out, B = Vector{String}(), findfloating(A)
 
-    # for t in unfold.(reduce(Base.Iterators.product, [['0', '1'] for _ in 1:length(B)]))
     for t in Base.Iterators.product(Vector{Char}[['0', '1'] for _ in 1:length(B)]...)
-    # for t in reduce(Base.Iterators.product, Base.Iterators.repeated(['0', '1'], length(B)))
-    # for t in Base.Iterators.product(Base.Iterators.repeated(['0', '1'], length(B))...)
         local_A = copy(A)
         local_A[B] .= t
         push!(out, join(local_A))

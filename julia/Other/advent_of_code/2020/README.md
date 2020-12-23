@@ -32,6 +32,7 @@ Day | Time | Memory | Allocations | Name
 13.2 | 339.032 μs | 615.77 KiB | 3770 | Shuttle Search
 14.1 | 2.274 ms | 1.33 MiB | 16108 | Docking Data
 14.2 | 299.399 ms | 102.41 MiB | 1227851 | Docking Data
+15.1 |  |  |  | Rambunctious Recitation
 
 ---
 
@@ -88,4 +89,34 @@ The Chinese Remainder Theorem approach is adapted from @rmsrosa's solution using
 
 ### Day 14
 
-I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.  @adknudson helped me with realising that splatting was the right thing to do with part 2.
+I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.  
+
+A note on part 2's main function:
+```julia
+get_combinations(A::Vector{Char})::Vector{Int}
+```
+Regarding the main bit of the aforementioned function, the following lines produces the appropriate iterator for this problem:
+```julia
+B = findfloating(A)
+Base.Iterators.product(Vector{Char}[['0', '1'] for _ in 1:length(B)]...)
+```
+However, the following lines are equivalent:
+```julia
+unfold.(reduce(Base.Iterators.product, [['0', '1'] for _ in 1:length(B)]))
+Base.Iterators.product(Base.Iterators.repeated(['0', '1'], length(B))...)
+```
+
+The first of those lines was my original solution.  In an attempt to avoid splatting, I used `reduce`.  However, I then had to unfold the arbitrarily nested tuples, which was *extremely* slow.  @adknudson helped me with realising that splatting was the right thing to do with part 2.  So using splatting I did.  The second line above uses `repeated` instead of array comprehension.  This is much faster in generating the iterator than array comprehension, but a decent amount slower than array comprehension with splatting (probably something to do with how splatting iterators work):
+```julia
+julia> @btime Base.Iterators.repeated(['0', '1'], 3);
+  36.711 ns (1 allocation: 96 bytes)
+  
+julia> @btime Vector{Char}[['0', '1'] for _ in 1:3];
+  153.447 ns (4 allocations: 400 bytes)
+
+julia> @btime [Base.Iterators.repeated(['0', '1'], 3)...];
+  392.582 ns (9 allocations: 384 bytes)
+  
+julia> @btime [Vector{Char}[['0', '1'] for _ in 1:3]...];
+  273.446 ns (5 allocations: 512 bytes)
+```
