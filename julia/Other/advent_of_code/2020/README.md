@@ -24,8 +24,8 @@ Day | Time | Memory | Allocations | Name
 9.2 | 352.691 ms | 1.16 GiB | 388972 | Encoding Error
 10.1 | 977.456 μs | 293.77 KiB | 4033 | Adapter Array
 10.2 | 37.124 μs | 13.80 KiB | 245 | Adapter Array
-11.1 | 17.815 s | 6.60 GiB | 145121722 | Seating System
-11.2 | 22.063 s | 8.43 GiB | 187101585 | Seating System
+11.1 | 5.186 s | 1.90 GiB | 36545622 | Seating System
+11.2 | 12.434 s | 3.99 GiB | 89161036 | Seating System
 12.1 | 11.641 ms | 7.33 MiB | 52689 | Rain Risk
 12.2 | 10.706 ms | 7.33 MiB | 52957 | Rain Risk
 13.1 | 146.846 μs | 68.81 KiB | 523 | Shuttle Search
@@ -33,6 +33,7 @@ Day | Time | Memory | Allocations | Name
 14.1 | 2.274 ms | 1.33 MiB | 16108 | Docking Data
 14.2 | 299.399 ms | 102.41 MiB | 1227851 | Docking Data
 15.1 |  |  |  | Rambunctious Recitation
+15.2 |  |  |  | Rambunctious Recitation
 
 ---
 
@@ -62,7 +63,7 @@ Okay, so some clever people just took the modulus of the index because the map w
 
 ### Day 11
 
-The reason this takes so long is because I made this work for n-dimensional seating arrangements (untested because representation of n dimensions in a text file is somewhat tricky).
+The reason this takes so long is because I made this work for n-dimensional seating arrangements (untested because representation of n dimensions in a text file is somewhat tricky).  It should, however, be noted that the `mutate_*!` functions are extremely hard to multidimensionalise and hence I have not fully implemented multidimensional planes in those functions.
 
 ### Day 13
 
