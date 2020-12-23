@@ -40,7 +40,7 @@ function sum_masked_values(datafile::String)
     return sum(values(out))
 end
 
-prinlnt(sum_masked_values(datafile))
+println(sum_masked_values(datafile))
 
 #=
 BenchmarkTools.Trial:
