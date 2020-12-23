@@ -30,6 +30,8 @@ Day | Time | Memory | Allocations | Name
 12.2 | 10.706 ms | 7.33 MiB | 52957 | Rain Risk
 13.1 | 146.846 μs | 68.81 KiB | 523 | Shuttle Search
 13.2 | 339.032 μs | 615.77 KiB | 3770 | Shuttle Search
+14.1 | 2.274 ms | 1.33 MiB | 16108 | Docking Data
+14.2 | 299.399 ms | 102.41 MiB | 1227851 | Docking Data
 
 ---
 
