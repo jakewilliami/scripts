@@ -102,6 +102,7 @@ function part2(
     end
     
     println(field_indices)
+    println(Int[my_ticket[idx] for (name, idx) in field_indices])
     return prod(Int[my_ticket[idx] for (name, idx) in field_indices if contains(name, "departure")])
 end
 
