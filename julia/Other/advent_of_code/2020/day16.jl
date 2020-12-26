@@ -85,40 +85,27 @@ function part2(
     for nearby_ticket in nearby_tickets
         in_values_bools = inranges(nearby_ticket, rules)
         I = findall(iszero, in_values_bools)
-        # println(nearby_ticket)
         isempty(I) && continue
         deleteat!(filtered_tickets, findfirst(e -> e == nearby_ticket, filtered_tickets))
     end
     
-    # for ticket_idx in 1:length(filtered_tickets), i in 1:length(first(filtered_tickets))
-    #
-    # end
-    
     for i in 1:length(first(filtered_tickets))
         for field in rules
             field_name, R = field
-            # println(getindices(filtered_tickets, i))
-            # println(inranges(getindices(filtered_tickets, i), R))
+            
             i ∈ values(field_indices) && continue
-            # println(values(field_indices))
             
             if all(inranges(getindices(filtered_tickets, i), R)) && R ∉ values(field_indices) && field_name ∉ keys(field_indices)
-                println("We have found that $(getindices(filtered_tickets, i)) are in all of the ranges of $R")
                 field_indices[field_name] = i
             end
-            
-            # all(1:length(first(filtered_tickets))) && break
         end
     end
     
-    res = Dict{}()
-    
-    for pair in field_indices
-        field_name, i = pair
-        
-    end
-    
-    return field_indices
+    println(field_indices)
+    return prod(Int[my_ticket[idx] for (name, idx) in field_indices if contains(name, "departure")])
 end
 
 println(part2(parse_input("inputs/test2.txt")...))
+println(part2(parse_input(datafile)...) > 465763613683) # we want this to be true
+
+# have guessed: 465763613683
