@@ -89,24 +89,34 @@ function part2(
         deleteat!(filtered_tickets, findfirst(e -> e == nearby_ticket, filtered_tickets))
     end
     
+    # for field in rules
     for i in 1:length(first(filtered_tickets))
         for field in rules
+        # for i in 1:length(first(filtered_tickets))
             field_name, R = field
-            
-            i ∈ values(field_indices) && continue
-            
+            i ∈ values(field_indices) && break
+            println(keys(field_indices))
+            # field_name ∈ keys(field_indices) && break
+            # println("checking the $i'th position of nearby tickets $field_name's ranges $R")
+                
             if all(inranges(getindices(filtered_tickets, i), R)) && R ∉ values(field_indices) && field_name ∉ keys(field_indices)
+                println("found")
                 field_indices[field_name] = i
             end
+            
+            println(values(field_indices))
+            # i ∈ values(field_indices) && continue
         end
     end
     
+    println(length(field_indices))
     println(field_indices)
-    println(Int[my_ticket[idx] for (name, idx) in field_indices])
+    # println(prod(Int[my_ticket[idx] for (name, idx) in field_indices]))
     return prod(Int[my_ticket[idx] for (name, idx) in field_indices if contains(name, "departure")])
 end
 
-println(part2(parse_input("inputs/test2.txt")...))
-println(part2(parse_input(datafile)...) > 465763613683) # we want this to be true
+# println(part2(parse_input("inputs/test2.txt")...))
+println(part2(parse_input(datafile)...))
+# println(part2(parse_input(datafile)...) > 465763613683) # we want this to be true
 
 # have guessed: 465763613683
