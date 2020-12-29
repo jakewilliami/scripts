@@ -34,8 +34,26 @@ Day | Time | Memory | Allocations | Name
 14.2 | 299.399 ms | 102.41 MiB | 1227851 | Docking Data
 15.1 | 3.929 ms | 3.04 MiB | 11566 | Rambunctious Recitation
 15.2 | 2.272 s | 269.21 MiB | 112 | Rambunctious Recitation
-16.1 |  |  |  | Ticket Translation
-16.2 |  |  |  | Ticket Translation
+16.1 | 3.604 ms | 9.98 MiB | 12042 | Ticket Translation
+16.2 | 77.730 ms | 13.62 MiB | 16260 | Ticket Translation
+<!-- 17.1 |  |  |  | Conway Cubes
+17.2 |  |  |  | Conway Cubes
+18.1 |  |  |  | Operation Order
+18.2 |  |  |  | Operation Order
+19.1 |  |  |  | Monster Messages
+19.2 |  |  |  | Monster Messages
+20.1 |  |  |  | Jurassic Jigsaw
+20.2 |  |  |  | Jurassic Jigsaw
+21.1 |  |  |  | Allergen Assessment
+21.2 |  |  |  | Allergen Assessment
+22.1 |  |  |  | Crab Combat
+22.2 |  |  |  | Crab Combat
+23.1 |  |  |  | Crab Cups
+23.2 |  |  |  | Crab Cups
+24.1 |  |  |  | Lobby Layout
+24.2 |  |  |  | Lobby Layout
+25.1 |  |  |  | Combo Breaker
+25.2 |  |  |  | Combo Breaker -->
 
 ---
 
