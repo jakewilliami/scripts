@@ -71,7 +71,17 @@ end
 println(sum_invalid(parse_input(datafile)...))
 
 #=
-
+BenchmarkTools.Trial:
+  memory estimate:  9.98 MiB
+  allocs estimate:  12042
+  --------------
+  minimum time:     2.482 ms (0.00% GC)
+  median time:      2.682 ms (0.00% GC)
+  mean time:        3.604 ms (23.91% GC)
+  maximum time:     13.140 ms (79.99% GC)
+  --------------
+  samples:          1387
+  evals/sample:     1
 =#
 
 function getindices(A::Vector{Vector{T}}, i::Int) where {T, N}
@@ -83,7 +93,7 @@ function field_search(
     my_ticket::Vector{Int},
     nearby_tickets::Vector{Vector{Int}}
 )
-	
+
 	filtered_tickets, field_indices, len = copy(nearby_tickets), Dict{String, Int}(), length(rules)
 
 	# filter the good tickets
@@ -96,13 +106,13 @@ function field_search(
 
 	positions = Vector{Int}[[e[i] for e in filtered_tickets] for i in 1:len]
 	mapped = Dict{String, Int}()
-	
+
 	# map ticket values to field names
 	while length(mapped) < len
 		for (i, pos) in enumerate(positions)
 			i ∈ values(mapped) && continue
 			valid = Vector{Tuple{String, Int}}()
-			
+
 			for rule in rules
 				field_name, R = rule
 				field_name ∈ keys(mapped) && continue
@@ -110,16 +120,30 @@ function field_search(
 					push!(valid, (field_name, i))
 				end
 			end
-			
+
 			if isone(length(valid))
 				i, rule = first(valid)
 				mapped[i] = rule
 			end
 		end
 	end
-	
+
 	# return product of relevant results
 	return prod(Int[my_ticket[idx] for (name, idx) in mapped if contains(name, "departure")])
 end
 
 println(field_search(parse_input(datafile)...))
+
+#=
+BenchmarkTools.Trial:
+  memory estimate:  13.62 MiB
+  allocs estimate:  16260
+  --------------
+  minimum time:     71.510 ms (0.00% GC)
+  median time:      75.602 ms (0.00% GC)
+  mean time:        77.730 ms (1.30% GC)
+  maximum time:     115.070 ms (0.00% GC)
+  --------------
+  samples:          65
+  evals/sample:     1
+=#
