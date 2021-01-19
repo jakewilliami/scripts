@@ -3,12 +3,9 @@
 trap "exit" INT
 
 # Define bash directory
-BASH_DIR="$(realpath $(dirname $0))"
+BASH_DIR="$(realpath "$(dirname "$0")")"
 #LIBRARY_FILE="${HOME}/Desktop/library.csv"
 LIBRARY_FILE="/Volumes/NO NAME/my-data/library/library.csv"
-
-# define bash directory
-BASH_DIR="${HOME}/scripts/bash/"
 
 # Immediately exits script if nothing is passed to it
 if [[ -z "${@}" ]]
@@ -23,7 +20,7 @@ source ${BASH_DIR}/dependencies/source-dependencies.sh
 
 # Help
 display_help() { #Displays help
-    help_start 'gl [option...]' 'The present script will parse and analyse a csv file of my library.'
+    help_start 'library [option...]' 'The present script will parse and analyse a csv file of my library.'
     help_commands '-e' '--entries' '2' 'Prints number of' 'e' 'ntries' 'in library.'
     help_commands '-t' '--term-serch' '1' 'Prints number of books found with some search' 't' 'erm' '\b.'
     help_help '2'
@@ -32,7 +29,7 @@ display_help() { #Displays help
 
 
 entries() {
-    LINES_IN_LIB=$(cat ${LIBRARY_FILE} | wc -l | awk '{$1=$1;print}')
+    LINES_IN_LIB=$(cat "${LIBRARY_FILE}" | wc -l | awk '{$1=$1;print}')
     
     echo -e "${BWHITE}Your library consists of ${LINES_IN_LIB} books!${NORM}"
     clean-exit
@@ -42,7 +39,7 @@ entries() {
 TERM_SEARCHED_FOR="${2}"
 how-many-terms() {
     [[ -z "${TERM_SEARCHED_FOR}" ]] && echo -e "${BYELLOW}You must have at least one argument using this option (a search term).${norm}" && clean-exit
-    TERMS_COUNT=$(cat ${LIBRARY_FILE} | grep -i ${TERM_SEARCHED_FOR} | wc -l | awk '{$1=$1;print}' )
+    TERMS_COUNT=$(cat "${LIBRARY_FILE}" | grep -i ${TERM_SEARCHED_FOR} | wc -l | awk '{$1=$1;print}' )
     
     echo -e "${BWHITE}Your library contains ${TERMS_COUNT} books matching your term \"${TERM_SEARCHED_FOR}\"!${NORM}"
 }
@@ -67,9 +64,9 @@ do
                     entries ;;
                 t)
                     how-many-terms 1 ;;
-                h)  
+                h)
                     display_help ;;
-                *)  
+                *)
                     opt_err ;;
         esac
 done

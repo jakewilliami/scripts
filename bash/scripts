@@ -6,9 +6,15 @@ trap "exit" INT
 #There exists an alias in ~/.bashrc that looks like
 #alias scripts="source scripts"
 
+if ! command -v realpath > /dev/null 2>&1; then
+	echo "Please install realpath"
+	exit
+fi
+
 # define bash directory
-BASH_DIR="$(realpath $(dirname $0))"
-GIT_LOCATION="$(realpath $(dirname $(realpath $(dirname $0))))"
+BASH_DIR="$(realpath "$(dirname "$0")")"
+GIT_LOCATION="$(realpath "$(dirname "$(realpath "$(dirname "$0")")")")"
+FINANCES_DIR="${GIT_LOCATION}/julia/Finances/"
 
 # source required scripts
 # shellcheck disable=SC1090
@@ -31,13 +37,14 @@ display_help() {
     help_start 'scripts [option...]' 'The present script will take you to the scripts directory and by default list its content.  See `~/scripts/python/ls.py`.'
     help_commands '-l' '--listless' '1' 'Supresses' 'l' 'isting' 'directory contents.'
     help_commands '-i' '--issues' '2' 'Prints' 'i' 'ssues' 'currently open.'
+	help_commands '-f' '--finances' '1' 'Takes you to the' 'f' 'inances' 'subdirectory within the scripts directory'
     help_help '2'
     clean-exit
 }
 
 
 issues() {
-    cd "${BASH_DIR}/.." || clean-exit
+    cd "${GIT_LOCATION}/" || clean-exit
     if [[ -z "${*}" ]]
     then
         ghi list -N "depricated pdfsearch"
@@ -49,16 +56,24 @@ issues() {
 
 
 opt_l() {
-    cd "${BASH_DIR}/.." || clean-exit
+    cd "${GIT_LOCATION}/" || clean-exit
     clean-exit
+}
+
+finance_func() {
+	cd "${FINANCES_DIR}/" || clean-exit
+    "${GIT_LOCATION}/c/compiled/Darwin/64/ls.o" "${FINANCES_DIR}/" 3 # depth level = 3
+	clean-exit
 }
 
 ### Sourcing the script will make getopts to re-execute in the same shell many times.  It starts to misbehave the second time, because getopts remembers where it left off the first time. Resetting variable OPTIND to 1 will force it to rescan arguments.
 OPTIND=1
-while getopts ":-:ilhd" OPTION; do
+while getopts ":-:filhd" OPTION; do
         case $OPTION in
                 -)
                     case $OPTARG in
+						finances)
+							finance_func ;;
                         issues)
                             issues "${@:2}" ;;
                         listless)
@@ -68,6 +83,8 @@ while getopts ":-:ilhd" OPTION; do
                         *)
                             opt_err ;;
                     esac ;;
+				f)
+					finance_func ;;
                 i)
                     issues "${@:2}" ;;
                 l)
@@ -79,10 +96,12 @@ while getopts ":-:ilhd" OPTION; do
         esac
 done
 
-
-# List if no options parsed
-if [[ -z $1 ]]
-then
+# checks to see if first argument begins with a minus (i.e., is an option) as we cannot assess $OPTIND before options are called
+if [[ "${1}" =~ ^\-.+ ]]; then
+	:
+else
+	# List if no options parsed
+	echo "Hello"
     cd "${GIT_LOCATION}/" || clean-exit
     "${GIT_LOCATION}/c/compiled/Darwin/64/ls.o" "${GIT_LOCATION}/" 3 # depth level = 3
 fi
