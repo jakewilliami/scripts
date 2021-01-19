@@ -1,0 +1,5 @@
+#! /usr/bin/env bash
+
+trap "exit" INT
+AOC_HOME="${HOME}/projects/scripts/julia/Other/advent_of_code/2020/"
+julia --project="${AOC_HOME}" "${AOC_HOME}/day${1}.jl"
