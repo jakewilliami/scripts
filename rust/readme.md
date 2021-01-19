@@ -27,7 +27,14 @@ sudo pacman -S rust
 ```
 
 ## Notes on use of Rust
+### Small standalone
+Sometimes I feel that projects are overkill.  Simply do
+```bash
+emacs main.rs # write some code
+rustc main.rs && ./main
+```
 
+### Project
 To create a new Rust project, you should run
 ```bash
 PROJNAME="<name of project>" && \
