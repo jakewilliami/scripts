@@ -22,7 +22,7 @@ elif [[ $(uname -m) =~ ^.*32$ ]]; then
 else
     echo "Warning: Unknown system architecture"
     ARCH="$(uname -m)"
-    mkdir -p "${COMPILEDIR}/${SYSIER}/${ARCH}"
+    mkdir -p "${COMPILEDIR}/${SYSDER}/${ARCH}"
 fi
 
 files=( "countmedia.c" "ls.c" "mktex.c" )
