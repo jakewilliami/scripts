@@ -1,0 +1,58 @@
+{quit}	C-x C-c
+{save}	C-x C-s
+{open, open file}	C-x C-f
+{switch buffer}	C-x b <buffer name>
+{close buffer}	C-x k
+{exec, execute command, run command}	M-x
+{new line}	C-m, C-o ;; C-o will insert a new line after cursor
+{find, search}	M-s w <word/search term>, C-s <word/search term> ;; C-s will take you to the word; do C-s again to take you to the next instance
+{goto, line, go to line}	M-g M-g <line number>
+{undo}	C-x u, C-/
+{move}	Type "move left", "move right", "move up", and "move down"
+{move left}	C-b
+{move right}	C-f
+{move up}	C-p
+{move down}	C-n
+{start of line, sol}	M-a
+{end of line, eol}	M-e
+{start of sentence}	M-a
+{end of sentence}	M-e
+{start of paragraph}	M-{
+{end of paragraph}	M-}
+{forward word}	M-f
+{back word}	M-b
+{goto character, goto char, char, character}	M-g c <char number on line>
+{help}	C-h C-h
+{hello}	C-h h
+{tutorial}	C-h t
+{mode}	C-h m
+{manual}	C-h i m emacs
+{start, sof, start of file}	C-x [
+{eof, end, end of file}	C-x ]
+{forward delete, forward kill character, forward kill}	C-d, M-d
+{forward kill line, forward delete line}	C-k
+{delete blank, delete blank lines, delete all but one consecutive blank lines}	C-x C-o
+{delete word behind}	M-BCKSPCE
+{mark par, mark paragraph}	M-h
+{cancel, stop, cancel command}	C-g
+{set mark, mark}	C-SPC
+{exchange mark, exchange mark and point}	C-x C-x
+{mark buffer}	C-x h
+{transpose, switch, transpose characters, switch characters}	C-t
+{indent region}	C-M-\
+{indent}	C-x tab
+{comment, toggle comment region}	M-/
+{toggle comment region}	M-;
+{move rest of line vertically down, move line remaining}	C-M-o
+{upper, uppercase, uppercase rest of word}	M-u
+{lower, lowercase, lowercase rest of word}	M-u
+{cut, cut mark}	C-w
+{copy, copy mark}	M-w
+{paste, paste mark}	C-y
+{replace, find and replace, find replace, find and replace mark}	M-%
+{transpose words, switch words}	M-t
+{transpose lines, transpose current line with above}	C-x C-t
+{spellcheck, spell check}	M-$
+{page down}	C-v
+{page up}	M-v
+{center, center page, centre page}	C-l
