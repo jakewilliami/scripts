@@ -338,6 +338,7 @@ def rgb2short(rgb):
         i = 0
         while i < len(incs)-1:
             s, b = incs[i], incs[i+1]  # smaller, bigger
+            # sys.stdout.write("%s %s\n" % (s, b))
             if s <= part <= b:
                 s1 = abs(s - part)
                 b1 = abs(b - part)
@@ -350,6 +351,7 @@ def rgb2short(rgb):
     res = ''.join([ ('%02.x' % i) for i in res ])
     equiv = RGB2SHORT_DICT[ res ]
     #print '***', res, equiv
+    print equiv
     return equiv, res
 
 RGB2SHORT_DICT, SHORT2RGB_DICT = _create_dicts()
@@ -371,3 +373,4 @@ if __name__ == '__main__':
         short, rgb = rgb2short(arg)
         sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s (%s)' % (arg, short, short, rgb))
         sys.stdout.write("\033[0m\n")
+# print rgb2short('ffffff')
