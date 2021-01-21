@@ -190,7 +190,9 @@ do
                         filter-issues)
                             opt_filtered_i "${@:2}" ;;
                         languages)
-                            print_language_breakdown ;;
+							# deprecared
+                            # print_language_breakdown ;;
+							$(realpath "$(dirname "${BASH_DIR}")")/rust/gl/target/debug/gl ;;
                         help)
                             display_help ;;
                         *)
@@ -211,7 +213,9 @@ do
                 f)
                     opt_filtered_i "${@:2}" ;;
                 l)
-                    print_language_breakdown ;;
+					# deprecated
+                    # print_language_breakdown ;;
+					$(realpath "$(dirname "${BASH_DIR}")")/rust/gl/target/debug/gl ;;
                 h)
                     display_help ;;
                 *)
