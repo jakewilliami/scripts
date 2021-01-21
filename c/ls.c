@@ -129,11 +129,11 @@ const char *get_file_print_modifier(const char *ext) {
         // char* print_colour = JAVASCRIPT;
         return JAVASCRIPT;
     }
-    else if ((!strcmp(ext, "pl")) || (!strcmp(ext, "pyc"))) {
+    else if (!strcmp(ext, "pl")) {
         // char* print_colour = PERL;
         return PERL;
     }
-    else if (!strcmp(ext, "py")) {
+    else if ((!strcmp(ext, "py")) || (!strcmp(ext, "pyc")) || (!strcmp(ext, "pytxcode"))) {
         // char* print_colour = PERL;
         return PYTHON;
     }
@@ -209,7 +209,7 @@ const char *get_file_print_modifier(const char *ext) {
         return MARKDOWN;
     }
     else if (!strcmp(ext, "applescript")) {
-        return MARKDOWN;
+        return APPLESCRIPT;
     }
     // else if ((!strcmp(ext, "pdf")) || (!strcmp(ext, "txt")) || (!strcmp(ext, "png")) || (!strcmp(ext, "dvi")) || (!strcmp(ext, "zip")) || (!strcmp(ext, "xls")) || (!strcmp(ext, "xlsx")) || (!strcmp(ext, "csv")) || (!strcmp(ext, "doc")) || (!strcmp(ext, "docx")) || (!strcmp(ext, "dot")) || (!strcmp(ext, "eml")) || (!strcmp(ext, "flv")) || (!strcmp(ext, "gif")) || (!strcmp(ext, "iso")) || (!strcmp(ext, "jpg")) || (!strcmp(ext, "jpeg")) || (!strcmp(ext, "m4a")) || (!strcmp(ext, "mov")) || (!strcmp(ext, "mp3")) || (!strcmp(ext, "mkv")) || (!strcmp(ext, "mp4")) || (!strcmp(ext, "ppt")) || (!strcmp(ext, "pptx")) || (!strcmp(ext, "rar")) || (!strcmp(ext, "gz")) || (!strcmp(ext, "tar")) || (!strcmp(ext, "rtf")) || (!strcmp(ext, "tif")) || (!strcmp(ext, "tiff")) || (!strcmp(ext, "wav")) || (!strcmp(ext, "xls")) || (!strcmp(ext, "mid")) || (!strcmp(ext, "midi")) || (!strcmp(ext, "cda")) || (!strcmp(ext, "aif")) || (!strcmp(ext, "mpa")) || (!strcmp(ext, "ogg")) || (!strcmp(ext, "wma")) || (!strcmp(ext, "wpl")) || (!strcmp(ext, "pgm")) || (!strcmp(ext, "aux")) || (!strcmp(ext, "log")) || (!strcmp(ext, "fls")) || (!strcmp(ext, "fdb_latexmk")) || (!strcmp(ext, "hd")) || (!strcmp(ext, "out")) || (!strcmp(ext, "bbl")) || (!strcmp(ext, "bib")) || (!strcmp(ext, "blb")) || (!strcmp(ext, "avi")) || (!strcmp(ext, "crt")) || (!strcmp(ext, "cer")) || (!strcmp(ext, "svg")) || (!strcmp(ext, "epub")) || (!strcmp(ext, "djvu")) || (!strcmp(ext, "blg")) || (!strcmp(ext, "numbers")) || (!strcmp(ext, "pages"))|| (!strcmp(ext, "key")) || (!strcmp(ext, "toc")) || (!strcmp(ext, "textclipping")) || (!strcmp(ext, "synctex")) || (!strcmp(ext, "synctex(busy)")) || (!strcmp(ext, "xwm")) || (!strcmp(ext, "pytxcode")) || (!strcmp(ext, "ps")) || (!strcmp(ext, "ent")) || (!strcmp(ext, "dat")) || (!strcmp(ext, "ocw")) || (!strcmp(ext, "thm")) || (!strcmp(ext, "mol")) || (!strcmp(ext, "eps")) || (!strcmp(ext, "xref")) || (!strcmp(ext, "idv")) || (!strcmp(ext, "tmp")) || (!strcmp(ext, "lg")) || (!strcmp(ext, "4ct")) || (!strcmp(ext, "rmd")) || (!strcmp(ext, "download")) || (!strcmp(ext, "enl")) || (!strcmp(ext, "frm")) || (!strcmp(ext, "myd")) || (!strcmp(ext, "opt")) || (!strcmp(ext, "myi")) || (!strcmp(ext, "pdb")) || (!strcmp(ext, "webp")) || (!strcmp(ext, "inp")) || (!strcmp(ext, "sav")) || (!strcmp(ext, "dgm")) || (!strcmp(ext, "bcf")) || (!strcmp(ext, "jasp")) || (!strcmp(ext, "aspx")) || (!strcmp(ext, "jdx")) || (!strcmp(ext, "ent")) || (!strcmp(ext, "idx")) || (!strcmp(ext, "xlsb")) || (!strcmp(ext, "icns")) || (!strcmp(ext, "chm")) || (!strcmp(ext, "x86")) || (!strcmp(ext, "nib")) || (!strcmp(ext, "strings")) || (!strcmp(ext, "pbxproj")) || (!strcmp(ext, "ppc")) || (!strcmp(ext, "pbxuser")) || (!strcmp(ext, "patch")) || (!strcmp(ext, "pyw")) || (!strcmp(ext, "d11")) || (!strcmp(ext, "sylib")) || (!strcmp(ext, "so")) || (!strcmp(ext, "k4i")) || (!strcmp(ext, "rsrc"))) {
     //     return TEXT;
