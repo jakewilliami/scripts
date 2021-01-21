@@ -65,7 +65,7 @@ function main_exact(i::String)
 end
 function main_approx(i::String)
     short, rgb = rgb2short(i)
-    println("RGB $(i) -> xterm color approx \033[38;5;$(short)m$(short) ($(rgb))")
+    println("RGB $(i) -> xterm color approx \033[38;5;$(short)m$(short) ($(rgb))\033[0m\033[0m")
     return nothing
 end
 
