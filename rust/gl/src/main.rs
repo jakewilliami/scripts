@@ -1,15 +1,17 @@
-use std::fs;
-use json;
+mod languages;
 
-// fn get_languages() -> Result<()> {
-	// let parsed = json::parse("/Users/jakeireland/projects/scripts/bash/colours/textcolours.json");
-	// return parsed;
-// }
+// use std::collections::HashMap;
 
 fn main() {
-	let parsed = 
-		json::parse(&fs::read_to_string("/Users/jakeireland/projects/scripts/bash/colours/textcolours.json").unwrap());
-	// let parsed = get_languages();
-	let green_val = &parsed.unwrap()["BGREEN"].to_string();
-	println!("{:?}", green_val);
+	// map
+	// 	.iter()
+	// 	.map(|(key, val)| key);
+	
+	// println!("{:?}", map == text_colours);
+	// println!("{:?}", map);
+	let git_languages = languages::parse_language_data();
+	
+	// println!("{:?}", modifier);
+	
+	// println!("{:?}", git_languages);
 }
