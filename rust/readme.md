@@ -67,11 +67,11 @@ cargo add <package you want to add to your rust project>
 ```
 To run a project, either run
 ```bash
-cargo run && ./main
+cargo run src/main.rs
 ```
 or 
 ```bash
-cargo build && ./main
+cargo build && ./target/debug/main
 ```
 or
 ```
