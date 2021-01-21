@@ -4,7 +4,6 @@ use std::collections::HashMap;
 use json;
 use std::process::{Command, Stdio};
 use regex::Regex;
-use titlecase::titlecase;
 // use std::char::ToUppercase;
 
 // fn get_languages() -> Result<()> {
@@ -156,12 +155,13 @@ pub fn parse_language_data() {
 		// lang.is_empty() && continue;
 		let re = Regex::new("%[ ]+").unwrap();
 		let mat: Vec<&str> = re.split(lang).collect();
-		let prop = mat[0];
-		let lang_name = mat[1].to_uppercase().replace(' ', "");
+		let prop = format!("{}{}", mat[0], "%");
+		let lang_name = mat[1];
+		let lang_name_uc = lang_name.to_uppercase().replace(' ', "");
 		// let modifier: &String = get_lang_modifier("jl", &map).unwrap();
-		let modifier = map.get(&lang_name).unwrap();
+		let modifier = map.get(&lang_name_uc).unwrap();
 		// println!("{:?}", lang_name);
-		println!("{0: <0}{1: <8}{2: <0}\u{001b}[0;38m", modifier, format!("{}{}", prop, "%"), titlecase(&lang_name));
+		println!("{0: <0}{1: <8}{2: <0}\u{001b}[0;38m", modifier, prop, lang_name);
 	}
 		
 	// println!("{:?}", languages);
