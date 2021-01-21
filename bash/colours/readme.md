@@ -1,4 +1,4 @@
-`textcolours_old.json` is the old text colours file, which I found from finding the RGB from an analysis tool, from GitHub, and comparing them with the output of 
+`textcolours_old.json` is the old text colours file, which I found from finding the RGB from an analysis tool, from GitHub, and comparing them with the output of
 ```bash
 for colour in {1..225}; do echo -en "\033[38;5;${colour}m38;5;${colour} \n"; done | column -x
 ```
@@ -14,3 +14,8 @@ There are some exceptions though:
   - Programmatically, `TEX` should be `58` but I changed it to `22`;
   - Programmatically, `YACC` and `CUDA` should both be `59` but I changed them to `107` and `101` respectively;
   - I somehow made a colour for `SMPL` but cannot find that colour on GitHub any longer, so I am keeping the old one.
+
+You can also programmatically find their colours, as I rewrote the above python script in Julia:
+```bash
+curl https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml > languages.yml; julia -E '; import Pkg; Pkg.add.(["YAML", "OrderedCollections", "Colors"]); using YAML; include("$(homedir())/projects/scripts/python/rgb2iterm256.jl"); f = YAML.load_file("languages.yml"); for k in keys(f); col = get(f[k], "color", ""); if !isempty(col); print(k, ":\t\t"); main(col); end; end'; rm languages.yml
+```
