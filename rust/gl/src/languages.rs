@@ -76,7 +76,8 @@ fn get_lang_modifier<'a>(ext: &'a str, map: &'a HashMap<String, String>) -> Opti
 		"md" | "sgml" => "MARKDOWN",
 		"sed" => "SED",
 		"awk" => "AWK",
-		"htm" | "html" | "h5" | "ipynb" => "HTML",
+		"htm" | "html" | "h5" => "HTML",
+		"ipynb" => "JUPYTERNOTEBOOK",
 		"m" => "MATLAB",
 		"css" => "CSS",
 		"hs" => "HASKELL",
@@ -148,18 +149,23 @@ pub fn parse_language_data() {
 		.split('\n')
 		.filter(|s| !s.is_empty())
 		.collect::<Vec<&str>>();
-	let n = languages.len();
 	
-	for i in 0..n {
-		let lang = languages[i];
+	for lang in languages {
 		// lang.is_empty() && continue;
 		let re = Regex::new("%[ ]+").unwrap();
-		let mat: Vec<&str> = re.split(lang).collect();
+		let mat: Vec<&str> = re.split(lang)
+			.collect();
 		let prop = format!("{}{}", mat[0], "%");
 		let lang_name = mat[1];
-		let lang_name_uc = lang_name.to_uppercase().replace(' ', "");
-		// let modifier: &String = get_lang_modifier("jl", &map).unwrap();
-		let modifier = map.get(&lang_name_uc).unwrap();
+		let lang_name_transformed = lang_name
+			.to_uppercase()
+			.replace(' ', "")
+			.replace('+', "P")
+			.replace('#', "SHARP");
+		let modifier = match map.get(&lang_name_transformed) {
+			Some(x) => x,
+			None => map.get("TEXT").unwrap(),
+		};
 		// println!("{:?}", lang_name);
 		println!("{0: <0}{1: <8}{2: <0}\u{001b}[0;38m", modifier, prop, lang_name);
 	}

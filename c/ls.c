@@ -69,6 +69,14 @@
 #define OCAML          "\e[1;38;5;77m"
 #define OBJECTIVECPP   "\e[1;38;5;63m"
 #define APPLESCRIPT    "\e[1;38;5;16m"
+#define VUE            "\e[1;38;5;23m"
+#define JUPYTERNOTEBOOK"\e[1;38;5;166m"
+#define DOCKERFILE     "\e[1;38;5;59m"
+#define HACK           "\e[1;38;5;102m"
+#define CLOJURE        "\e[1;38;5;167m"
+#define TSQL           "\e[1;38;5;188m"
+#define SQL            "\e[1;38;5;188m"
+#define ELM            "\e[1;38;5;74m"
 
 #define RESET			NORM
 
@@ -189,9 +197,13 @@ const char *get_file_print_modifier(const char *ext) {
         // char* print_colour = AWK;
         return AWK;
     }
-    else if ((!strcmp(ext, "htm")) || (!strcmp(ext, "html")) || (!strcmp(ext, "h5")) || (!strcmp(ext, "ipynb"))) {
+    else if ((!strcmp(ext, "htm")) || (!strcmp(ext, "html")) || (!strcmp(ext, "h5"))) {
         // char* print_colour = HTML;
         return HTML;
+    }
+    else if (!strcmp(ext, "ipynb")) {
+        // char* print_colour = AWK;
+        return JUPYTERNOTEBOOK;
     }
     else if (!strcmp(ext, "m")) {
         return MATLAB;
