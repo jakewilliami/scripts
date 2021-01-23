@@ -77,6 +77,7 @@ main(i1::String, i2::String, i3::String) = main(parse.(Real, (i1, i2, i3))...)
 main(i...) = length(i) < 4 ? main(i...) : error("It's \"RGB\", not \"$("RGB" * join(map(_ -> rand("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 1:(length(i) - 3))))\"")
 
 # main("123456")
+# main(123456)
 # main("ffffff")
 # main(100, 200, 32)
 # main(100, 200, 32, 30, 2, 1)
