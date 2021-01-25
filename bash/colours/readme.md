@@ -21,5 +21,5 @@ curl https://raw.githubusercontent.com/github/linguist/master/lib/linguist/langu
 ```
 Or if you already have `YAML`, `OrderedCollections`, or `Colors` installed via `Julia`, simply run
 ```bash
-curl https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml > languages.yml; julia -E 'using YAML; include("$(homedir())/projects/scripts/python/rgb2iterm256.jl"); f = YAML.load_file("languages.yml"); for k in keys(f); col = get(f[k], "color", ""); if !isempty(col); print(k, ":\t\t"); main(col); end; end' | egrep -i 'rich'; rm languages.yml
+curl https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml > languages.yml; julia -E 'using YAML; include("$(homedir())/projects/scripts/python/rgb2iterm256.jl"); f = YAML.load_file("languages.yml"); for k in keys(f); col = get(f[k], "color", ""); if !isempty(col); print(k, ":\t\t"); main(col); end; end'; rm languages.yml
 ```
