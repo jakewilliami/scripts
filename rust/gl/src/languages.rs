@@ -157,9 +157,11 @@ pub fn parse_language_data() {
 			.collect();
 		let prop = format!("{}{}", mat[0], "%");
 		let lang_name = mat[1];
+		// This is where we transform the language obtained by git-linguist
+		// To better match the languages in the language hashmap (i.e., the json file)
 		let lang_name_transformed = lang_name
 			.to_uppercase()
-			.replace(' ', "")
+			.replace(&[' ', '-'][..], "")
 			.replace('+', "P")
 			.replace('#', "SHARP");
 		let modifier = match map.get(&lang_name_transformed) {
