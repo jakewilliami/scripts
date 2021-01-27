@@ -15,10 +15,12 @@ use regex::Regex;
 //     println!("{}", std::any::type_name::<T>())
 // }
 
+static BASE_DIR: &str = "/Users/jakeireland/projects/";
+
 // Result<json::value::JsonValue, json::error::Error>
 pub fn parse_textcolours() -> json::JsonValue {
 	let parsed =
-		json::parse(&read_to_string("/Users/jakeireland/projects/scripts/bash/colours/textcolours.json").unwrap()).unwrap();
+		json::parse(&read_to_string(format!("{}/scripts/bash/colours/textcolours.json", BASE_DIR)).unwrap()).unwrap();
 	// let parsed = get_languages();
 	// let green_val = &parsed.unwrap()["BGREEN"].to_string();
 	// println!("{:?}", parsed);

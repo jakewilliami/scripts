@@ -1,0 +1,11 @@
+scripts
+tex-macros
+media-scripts
+FaceDetection.jl
+ComputabilityTheory.jl
+CodingTheory.jl
+SpelledOut.jl
+MultidimensionalTools.jl
+EyeTrackingUtils.jl
+LinearShiftRegisters.jl
+BestApproximation.jl
