@@ -85,7 +85,7 @@ fn main() {
 	};
 	
 	if matches.is_present("GLOBAL") {
-		status::parse_global();
+		status::global_status();
 	};
 	
 	// println!("{:?}", git_languages);
