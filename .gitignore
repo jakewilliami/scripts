@@ -1,3 +1,6 @@
+# data files
+data*.csv
+
 # Silly macOS stuff
 **/.DS_Store
 

@@ -2,6 +2,7 @@
 ANOVA = "0825541b-7374-5e1e-93bd-72e337c8a986"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+DataFramesMeta = "1313f7d8-7da2-5740-9ea0-a2ca25f37964"
 DetectionTheory = "21f26bdd-93a7-5c22-aaad-c68df1035b25"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 FreqTables = "da1fdf0e-e0ff-5433-a45f-9bb5ff651cb1"
