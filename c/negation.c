@@ -1,6 +1,8 @@
 # include <stdio.h>
 # include <stdint.h>
 
+// This is an interesting way of negating x (i.e., x becomes -x)
+// Something about bitwise and with negative zero?
 int main(int argc, char *argv[]) {
 	double x = 69.0;
 	double mz = -0.0;
