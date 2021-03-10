@@ -1,6 +1,9 @@
 # data files
 data*.csv
 
+# backup files
+**/backup-webserver/
+
 # Silly macOS stuff
 **/.DS_Store
 
