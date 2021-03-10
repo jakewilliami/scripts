@@ -7,7 +7,7 @@ int main(int argc, char *argv[]) {
 /* int main(int argc, char** argv) */
 	// first element is invalid, so we start counting from one
 	for (int i = 1; i < argc; ++i){
-		// casting to double
+		// https://stackoverflow.com/questions/13424265/convert-a-char-to-double/13424364
 		/* double x = atof(argv[i]); */
 		/* double x = (double)argv[i]; */
 		double x = strtod(argv[i], NULL);
