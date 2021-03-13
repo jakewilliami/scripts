@@ -179,7 +179,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  ${BWHITE}Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
             case $yn in
                 [Yy]*)
-                        brew cask upgrade --greedy
+                        brew upgrade --cask --greedy
                         break   ;;
                 [Nn]*)
                         while true; do
@@ -188,7 +188,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
                             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
                             case $yn in
                                 [Yy]*)
-                                        brew cask upgrade
+                                        brew upgrade --cask
                                         break   ;;
                                 [Nn]*)
                                         break  ;;
@@ -212,7 +212,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
         echo
         echo -e "${BWHITE}${BIG_LINE}${NORM}"
         echo -e "${ITYELLOW}Running Homebrew Doctor for potential problems${NORM}"
-        brew cask doctor
+        brew doctor --cask
         brew doctor  # Check system for potential problems; https://github.com/Homebrew/legacy-homebrew/issues/20598#issuecomment-19686090
         echo
         echo -e "${BWHITE}${BIG_LINE}${NORM}"
