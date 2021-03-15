@@ -46,7 +46,7 @@
 {move rest of line vertically down, move line remaining}	C-M-o
 {upper, uppercase, uppercase rest of word}	M-u
 {lower, lowercase, lowercase rest of word}	M-u
-{cut, cut mark}	C-w
+{cut, cut mark, delete}	C-w
 {copy, copy mark}	M-w
 {paste, paste mark}	C-y
 {replace, find and replace, find replace, find and replace mark}	M-%
