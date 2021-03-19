@@ -5,6 +5,7 @@
     =#
 
 using Dates
+using Crayons
 using Printf: @sprintf
 
 import Base.show
@@ -157,6 +158,7 @@ function show(io::IO, ::MIME"text/plain", C::Calendar3)
 	# println(io, center("$(monthname(x.day)) $(year(x.day))", " ", 21))
 	# print year
 	_today = today()
+	days_last_month = daysinmonth(_today - Month(1))
 	day_today = day(_today)
 	days_in_month = daysinmonth(_today)
 	
@@ -166,12 +168,14 @@ function show(io::IO, ::MIME"text/plain", C::Calendar3)
 	
 	printstyled(io, (" Su Mo Tu We Th Fr Sa  " ^ 3) * "\n")
 	
+	# [println(i) for i in zip(C.days...)]; return nothing
+	
 	these_weeks = NTuple{3, Int}[]
 	for (index, days_zipped) in enumerate(zip(C.days...))
 		push!(these_weeks, days_zipped)
 		
 		# we have one line of weeks
-		if index % 7 == 0
+		if index % 7 == 0 || index == length(zip(C.days...))
 			# iterate through number of months there are
 			for i in 1:3
 				# update number of days in month
@@ -184,29 +188,29 @@ function show(io::IO, ::MIME"text/plain", C::Calendar3)
 				# iterate through weeks of months
 				for (i_m, monthly_week) in enumerate(getindex.(these_weeks, i))
 					# iterate through days of week
+					# println(monthly_week)
 					for (i_d, d) in enumerate(monthly_week)
 						str = format(d)
 						
 						# spaces between months
-						if i_m % 7 == 0
-							str = str * " "
+						if (i_m % 7 == 0)
+							str = str * (" "^2)
 						end
 						
-						# println(i_m)
-						# println(mod((mod1(index, 7) * 7) + i_m, days_in_month)) #+ (i_m % days_in_month))
-						# println(mod1(((index ÷ 7)) + i_m, days_in_month))
-						week_multiplier = index ÷ 7
-						# println(mod(i_m * week_multiplier, days_in_month) + i_m)
-						println((i_m * week_multiplier) + i_m)
-						if i == 2 && (i_m * i_d) == day_today
-							# printstyled(io, str, color = :reverse)
-							# new line after last month
-							# (i_m % 7 == 0 && i == 3) && println()
-						else
-							# printstyled(io, str)
-							# new line after last month
-							# (i_m % 7 == 0 && i == 3) && println()
+						if (i_m == 6 && index == length(zip(C.days...)))
+							str = str * (" "^5)
 						end
+						
+						# if we are printing today!
+						if (i == 2 && mod1(index + i_m, days_last_month) == day_today)
+							str = match(r"\s*", str).match * string(Crayon(negative = true)) * strip(str)
+						end
+						
+						# print day
+						printstyled(io, str)
+						
+						# new line after last month
+						(i_m % 7 == 0 && i == 3) && println()
 					end
 				end
 			end
