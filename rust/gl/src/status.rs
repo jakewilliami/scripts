@@ -42,7 +42,7 @@ pub fn git_diff_exit_code(dir: &OsString) {
 	cmd.arg("--quiet");
 	cmd.arg("HEAD");
 	cmd.arg("--");
-	
+
 	let output = cmd
 		.stdout(Stdio::piped())
 		.output()
