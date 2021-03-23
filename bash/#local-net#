@@ -1,0 +1,413 @@
+#! /bin/bash
+
+trap "exit" INT
+
+# define bash directory
+BASH_DIR="$(realpath $(dirname $0))"
+
+# Immediately exits script if nothing is passed to it
+if [[ -z "${@}" ]]
+then
+    HELP="\033[1;33m You must have at least one argument.  Use -h for help. \033[0;38m"
+    echo -e "${HELP}"
+    exit $?
+fi
+
+# source required scripts
+source ${BASH_DIR}/dependencies/source-dependencies.sh
+
+
+# Help
+display_help() {
+    help_start 'local-net [option...]' 'The present script will ping local machines using different tools (see options).  Also see the command `cstatus`.'
+    help_commands '-a' '--arp' '2' 'Prints' 'a' 'rp' 'results.'
+    help_commands '-A' '--minimal-arp' '1' 'Prints a' 'M' 'inimal arp' 'output.'
+    help_commands '-g' '--geo-location' '1' 'Shows' 'g' 'eo-location' 'information based on one\x27s (public) IP address.'
+    help_commands '-H' '--Hostnames' '1' '[OPTION IN DEVELOPMENT] Finds' 'H' 'ostnames' 'within the local network.'
+    help_commands '-l' '--local' '2' 'Returns' 'l' 'ocal' 'IP address of present computer.'
+    help_commands '-m' '--malware' '2' 'Check the present computer for' 'm' 'alware' '(in the form of rootkits).'
+    help_commands '-n' '--nmap' '2' 'Prints' 'n' 'map' 'results.'
+    help_commands '-p' '--ping' '2' 'Prints' 'p' 'ing' '\bed results.'
+    help_commands '-P' '--Public' '2' 'Returns' 'P' 'ublic' 'IP address of the present local network.'
+    help_commands '-q' '--query-server' '1' '\b' 'Q' 'uery server' '\bs on the local network.'
+    help_commands '-s' '--sniff' '2' '\b' 'S' 'niff' '\bs packages exchanged through the local network.'
+    help_commands '-S' '--sniff-alt' '1' '\b' 'S' 'niff' '\bs using alternate method.'
+    help_commands '-v' '--verbose-sniff' '1' '\b' 'V' 'erbosely sniff' '\bs packages exchanged through the local network.'
+    help_commands '-V' '--verbose-sniff-alt' '1' '\b' 'V' 'erbosely sniff' '\bs using alternate methods'
+    help_commands '-x' '--arp-poisoning' '1' '\b' 'DO NOT USE.' ' \b' 'Begins ARP-poisoning the local network.'
+    help_help '2'
+    clean-exit
+}
+
+
+# set wireless interfaces to save script time when needing to check
+HOSTNAME=$(hostname)
+case ${HOSTNAME%%.*} in
+    jake-imac2008) WIRELESS_DEVICE='wls4' ;;
+    jake-macbook2007) WIRELESS_DEVICE='eth0' ;;
+    jake-mbp2017) WIRELESS_DEVICE='en0' ;;
+    jake-hp-pavilion2012) WIRELESS_DEVICE='wlo1' ;;
+esac
+
+
+
+ping_function() {
+    for i in $(seq 1 254); do
+        (ping -c 1 192.168.1.$i | grep "bytes from" &) #& at end makes it run parallel
+    done
+    sleep 1
+}
+
+
+rootkits() {
+    # get os-specific dependencies
+    case $OS in
+        debian)
+            is-command-then-install "${ROOTKITHUNT}"
+            ;;
+        fedora)
+            is-command-then-install "${ROOTKITHUNT}"
+            ;;
+    esac
+
+    if [[ $KERNEL == "Darwin" || $OS == "arch" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch Linux.${NORM}"
+    else
+        sudo rkhunter --check
+    fi
+}
+
+
+query_server() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+
+    sudo dhcping -s 192.168.1.1 #ask this separately to avoid getting asked for password 254 times
+    for i in $(seq 2 254); do
+        (sudo dhcping -s 192.168.1.${i} > /dev/null 2>&1 && echo "Response from 192.168.1.${i}" &)
+    done
+}
+
+
+arp_function() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+    
+    sudo arp-scan -l
+}
+
+
+
+sniff_alternative() {
+    # get os-specific dependencies
+    case $OS in
+        debian)
+            is-command-then-install "${SNIFF_ALT}"
+            ;;
+        fedora)
+            is-library-then-install "${SNIFF_ALT}"
+            ;;
+    esac
+
+    if [[ $OS == "debian" || $OS == "fedora" ]]
+    then
+        sudo tshark
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Arch.${NORM}"
+    fi
+}
+
+
+nmap_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}" "${NMAP}"
+            ;;
+        arch)
+            is-command-then-install "${NMAP}"
+            ;;
+        fedora)
+            is-command-then-install "${NMAP}"
+            ;;
+    esac
+
+#    IP=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`
+    if [[ $OS == "debian" ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Debian.${NORM}"
+    else
+        SUBNET=$(echo `ifconfig  | grep 'Mask:'| grep -v '127.0.0.1' | cut -d: -f4 | awk '{print $1}' | grep -o 255 | wc -l`*8 | bc)
+        #fping -a -g $IP/$SUBNET
+        nmap -sP $IP/$SUBNET
+    fi
+}
+
+
+sniff_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}"
+            ;;
+        arch)
+            is-library-then-install "${NETSNIFF}"
+            ;;
+    esac
+
+    if [[ $OS == 'macos' || $OS == 'arch' ]]
+    then
+        sudo sniffglue -vv "${WIRELESS_DEVICE}"
+    elif [[ $OS == 'debian' || $OS == 'fedora' ]]
+    then
+        echo -e "${BYELLOW}This option is not currently supported for Debian or Fedora.  Check out the \`-S\` option though.${NORM}"
+    fi
+}
+
+
+verbose_sniff() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${NETSNIFF}"
+            ;;
+    esac
+    # get os-specific dependencies
+    case $OS in
+        macos)
+            is-command-then-install "${SNIFF}"
+            ;;
+    esac
+
+    if [[ ${KERNEL} == "Linux" ]]
+    then
+        sudo netsniff-ng
+    else
+        sudo sniffglue -vvvv "${WIRELESS_DEVICE}"
+    fi
+}
+
+verbose_sniff_alt() {
+    # get kernel-specific dependencies
+    case $KERNEL in
+        Linux)
+            is-library-then-install "${V_SNIFF}"
+            ;;
+    esac
+
+    if [[ ${KERNEL} == "Linux" ]]
+    then
+        sudo tcpdump
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS.${NORM}"
+    fi
+}
+
+
+dhcp_function() {
+    # get os-specific dependencies
+    case $OS in
+        macos)
+             is-library-then-install "${DHCP}"
+            ;;
+        debian)
+            is-library-then-install "${DHCP}"
+            ;;
+        arch)
+            aur_install "${DHCP}" 'https://aur.archlinux.org/cgit/aur.git/snapshot/dhcpdump.tar.gz'
+            ;;
+    esac
+
+    sudo dhcpdump -i "${WIRELESS_DEVICE}" | grep -B2 'Host name'
+}
+
+
+arp_poisoning() {
+    if [[ $OS == "arch" ]]
+    then
+        while true; do
+        read -p "${BRED}Are you sure you want to begin ARP-Poisoning the local network? https://doubleoctopus.com/security-wiki/threats-and-tools/address-resolution-protocol-poisoning/${NORM}" yn
+        case $yn in
+            [Yy]*)
+                    sudo ettercap -T -M arp:oneway /192.168.1.1//
+                    break   ;;
+            [Nn]*)
+                    break  ;;
+            *)
+                    echo -e "${BYELLOW}Please answer [y]es or [n]o.${NORM}";;
+        esac
+    done
+    else
+        echo -e "${BYELLOW}This option is not currently supported for macOS or Debian.${NORM}"
+    fi
+}
+
+
+local_ip() {
+    if [[ $KERNEL == "Darwin" ]]
+    then
+        #DEVICE="echo ${WIRELESS_DEVICE}"
+        #LOCAL_IP=$(ipconfig getifaddr $(eval "${DEVICE}"))
+        #LOCAL_IP="$(ipconfig getifaddr en0)"
+        #[[ -z "${LOCAL_IP}" ]] && LOCAL_IP="$(ipconfig getifaddr en1)"
+        EN_DEVICES="$(ifconfig -a | grep -E 'en[[:digit:]]*:' | awk -F'[n:]' '{print $2}')"
+	for i in ${EN_DEVICES}
+	do
+	    if [[ ! -z "$(ipconfig getifaddr en"${i}")" ]]
+	    then
+		LOCAL_IP="$(ipconfig getifaddr en"${i}")"
+	    fi
+	done
+    elif [[ $KERNEL == "Linux" ]]
+    then
+        #ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'
+        LOCAL_IP=$(ip route get 1 | awk -F'src' '{print $2; exit}')
+        LOCAL_IP=${LOCAL_IP/uid*}
+        [[ -z "${LOCAL_IP}" ]] && LOCAL_IP="$(/sbin/ifconfig -a | awk '/broadcast/ {print $2; exit}')"
+    fi
+    echo "${LOCAL_IP}"
+}
+
+
+public_ip() {
+    # Get public IP
+    PUBLIC_IP=$(curl -s ipinfo.io/ip)
+    echo "${PUBLIC_IP}"
+}
+
+
+ip_specs() {
+    output_type="${1}"  # Can interpret json, xml, and csv
+    curl -s "https://freegeoip.app/${output_type}/${2}" | jq .
+}
+
+
+geo_ip_public() {
+    myip=$(curl -s ipinfo.io/ip | sed 's/[a-zA-Z<>/ :]//g')  # Get ip address
+    ip_specs "json" "${myip}"
+}
+
+
+minimal_arp() {
+    # get dependencies regardless of kernel and os
+    is-library-then-install "${ARPSCAN}"
+
+    arp -a
+}
+
+
+# Options
+while getopts ":-:aAnphlHPsSgVmqvVx" OPTION; do
+        case $OPTION in
+                -)
+                    case $OPTARG in
+                        arp-poisoning)
+                            arp_poisoning
+                            clean-exit ;;
+                        malware)
+                            rootkits
+                            clean-exit ;;
+                        query-server)
+                            query_server
+                            clean-exit ;;
+                        arp)
+                            arp_function
+                            clean-exit ;;
+                        minimal-arp)
+                            minimal_arp
+                            clean-exit ;;
+                        nmap)
+                            nmap_function
+                            clean-exit ;;
+                        ping)
+                            ping_function
+                            clean-exit ;;
+                        sniff)
+                            sniff_function
+                            clean-exit ;;
+                        verbose-sniff)
+                            verbose_sniff
+                            clean-exit ;;
+                        verbose-sniff-alt)
+                            verbose_sniff_alt
+                            clean-exit ;;
+                        sniff-alt)
+                            sniff_alternative
+                            clean-exit ;;
+                        Hostnames)
+                            dhcp_function
+                            clean-exit ;;
+                        local)
+                            local_ip
+                            clean-exit ;;
+                        Public)
+                            public_ip
+                            clean-exit ;;
+                        geo-location)
+                            geo_ip_public
+                            clean-exit ;;
+                        help)
+                            display_help ;;
+                        *)
+                            opt_err ;;
+                    esac ;;
+                m)
+                    rootkits
+                    clean-exit ;;
+                A)
+                    minimal_arp
+                    clean-exit ;;
+                q)
+                    query_server
+                    clean-exit ;;
+                a)
+                    arp_function
+                    clean-exit ;;
+                n)
+                    nmap_function
+                    clean-exit ;;
+                p)
+                    ping_function
+                    clean-exit ;;
+                s)
+                    sniff_function
+                    clean-exit ;;
+                S)
+                    sniff_alternative
+                    clean-exit ;;
+                v)
+                    verbose_sniff
+                    clean-exit ;;
+                V)
+                    verbose_sniff_alt
+                    clean-exit ;;
+                H)
+                    dhcp_function
+                    clean-exit ;;
+                l)
+                    local_ip
+                    clean-exit ;;
+                P)
+                    public_ip
+                    clean-exit ;;
+                g)
+                    geo_ip_public
+                    clean-exit ;;
+                x)
+                    arp_poisoning
+                    clean-exit ;;
+                h)
+                    display_help ;;
+                *)
+                    opt_err ;;
+        esac
+done
+
+
+# If no options
+[[ -z $1 ]] && echo -e "${BYELLOW}Please specify an option.  Use option -h for help.${NORM}"
+
+
+# Clean up
+clean-exit
