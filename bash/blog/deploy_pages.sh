@@ -12,12 +12,43 @@ SCRIPTS_DIR="$HOME/projects/scripts/"
 BLOG_BIN_DIR="$SCRIPTS_DIR/bash/blog/"
 BACKUP_DIR="$BLOG_BIN_DIR/backup-webserver/"
 
+COMMIT_MESSAGE=""
+if [[ -z "$1" ]]; then
+	COMMIT_MESSAGE="Automatic master update"
+else
+	COMMIT_MESSAGE="$1"
+fi
+
 function notify_user() {
 	echo -e "\u001b[1;34m===> \u001b[0;38m\u001b[1;38m$1\u001b[0;38m"
 }
 
-notify_user "Ensure you have gsed installed..."
-sleep 5
+function notify_user_error() {
+	echo -e "\u001b[1;38m===> \u001b[0;38m\u001b[1;31m$1\u001b[0;38m"
+}
+
+if [[ -z "$(git config --list | grep github.user)" ]]; then
+	notify_user_error "Git credentials not set.  Please run"
+	echo -e '\tgit config --global user.email "user@example.com"; git config --global user.name "username"'
+	exit
+fi
+
+if [[ -z "$(command -v gsed)" ]]; then
+	notify_user_error "Ensure you have gsed installed.  Exiting."
+	exit
+fi
+
+if [[ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]]; then
+	SUCCESS=TRUE
+	notify_user "Branch is not master; switching to master"
+	git switch master || SUCCESS=FALSE
+	if ! $SUCCESS; then
+		notify_user_error "Could not switch branch to master.  Please do so manually."
+		exit
+	fi
+	
+	sleep 5
+fi
 
 notify_user "Moving current post data to separate backup dir"
 CURRENT_MAX=$(ls "$BACKUP_DIR" | sort -nr | head -n1)
@@ -93,9 +124,13 @@ else
 	SUCCESS=TRUE
 	notify_user "Pushing changes to master"
     git add . || SUCCESS=FALSE
-	git commit -am "Automatic master update" || SUCCESS=FALSE
+	git commit -am "$COMMIT_MESSAGE" || SUCCESS=FALSE
 	git push || SUCCESS=FALSE
-	$SUCCESS && notify_user "Successfully updated master"
+	if $SUCCESS; then
+		notify_user "Successfully updated master"
+	else
+		notify_user_error "Something went wrong..."
+	fi
 fi
 # setup and deploy
 notify_user "Setting up to deploy pages"
