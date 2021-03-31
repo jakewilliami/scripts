@@ -1,7 +1,7 @@
 {quit}	C-x C-c
 {save}	C-x C-s
 {open, open file}	C-x C-f
-{switch buffer}	C-x b <buffer name>
+{switch, switch buffer}	C-x b <buffer name or RET>, C-x <left>, C-x <right>
 {close buffer}	C-x k
 {exec, execute command, run command}	M-x
 {new line}	C-m, C-o ;; C-o will insert a new line after cursor
@@ -38,9 +38,10 @@
 {set mark, mark}	C-SPC
 {exchange mark, exchange mark and point}	C-x C-x
 {mark buffer}	C-x h
-{transpose, switch, transpose characters, switch characters}	C-t
+{transpose, transpose characters, switch characters}	C-t
 {indent region}	C-M-\
 {indent}	C-x tab
+{unindent region, un-indent region, undent region, unindent, un-indent, undent}	C-u -4 C-x TAB
 {comment, toggle comment region}	M-/
 {toggle comment region}	M-;
 {move rest of line vertically down, move line remaining}	C-M-o
@@ -49,10 +50,11 @@
 {cut, cut mark, delete}	C-w
 {copy, copy mark}	M-w
 {paste, paste mark}	C-y
-{replace, find and replace, find replace, find and replace mark}	M-%
+{replace, find and replace, find replace, find and replace mark, regex}	M-% ;; `C-M-%` will replace within a region ;; `M-x replace-regexp` will replace within a region using regex
 {transpose words, switch words}	M-t
 {transpose lines, transpose current line with above}	C-x C-t
 {spellcheck, spell check}	M-$
 {page down}	C-v
 {page up}	M-v
 {center, center page, centre page}	C-l
+{shell, command, command line, bash, zsh}	M-x shell ;; I don't know how to switch buffers back!

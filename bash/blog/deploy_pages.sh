@@ -27,6 +27,11 @@ function notify_user_error() {
 	echo -e "\u001b[1;38m===> \u001b[0;38m\u001b[1;31m$1\u001b[0;38m"
 }
 
+if [[ "${PWD##*/}" != "jakewilliami.github.io" ]]; then
+	notify_user_error "You need to be inside of your blog directory"
+	exit
+fi
+
 if [[ -z "$(git config --list | grep github.user)" ]]; then
 	notify_user_error "Git credentials not set.  Please run"
 	echo -e '\tgit config --global user.email "user@example.com"; git config --global user.name "username"'
