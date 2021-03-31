@@ -104,7 +104,7 @@ public class CountMap{
 	public static int findMostFrequentInteger(int[] values) {
 		int max = Integer.MIN_VALUE;
 		
-		for (int i = 0; i < (values.length + 1); i++) {
+		for (int i = 0; i < values.length; i++) {
 			if (values[i] > max) {
 				max = values[i];
 			} // end if
@@ -112,7 +112,7 @@ public class CountMap{
 
 		int[] B = new int[max + 1];
 		
-		for (int i = 0; i < (values.length + 1); i++) {
+		for (int i = 0; i < values.length; i++) {
 			B[values[i]]++;
 		} // end for
 
@@ -123,5 +123,5 @@ public class CountMap{
 		} // end for
 		
 		return 0; // something went wrong
-	} // https://pastebin.com/naUxCibt
+	} // found randomly at https://pastebin.com/naUxCibt.  It was on the "suggested" side-bar, but it actually did what we were trying to do!
 } // end CountMap class
