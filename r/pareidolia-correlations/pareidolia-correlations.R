@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # install.packages("pacman")
-
+library(pacman)
 pacman::p_load(readxl, plyr, dplyr, tidyr, Rmisc, ggplot2)
 
 # read the first worksheet in the excel file
@@ -21,31 +21,20 @@ colnames(df_gist_T) <- cn
 write.csv(df_gist_T, "out_transposed.csv", row.names = FALSE)
 
 # select columns starting with "F"
+pic_groups <- c("F", "C", "LF", "HF")
 col_starts_with <- function(df, str) select(df, starts_with(str))
-
-df_gist_T_F  <- col_starts_with(df_gist_T, "F")
-df_gist_T_C  <- col_starts_with(df_gist_T, "C")
-df_gist_T_LF <- col_starts_with(df_gist_T, "LF")
-df_gist_T_HF <- col_starts_with(df_gist_T, "HF")
+df_starts_with <- lapply(pic_groups, col_starts_with, df = df_gist_T)
+names(df_starts_with) <- pic_groups
 
 # get the average face gist
-face_avg_gist <- rowMeans(df_gist_T_F, na.rm = TRUE)
+face_avg_gist <- rowMeans(df_starts_with$F, na.rm = TRUE)
 
 # get correlations
 cor_with_avg <- function(mat, x) apply(mat, 2, cor, y = x)
+cor_with_avg_df <- function(df, nm, x) tibble(tt = nm, val = cor_with_avg(df[[nm]], x))
 
-corr_F  <- cor_with_avg(df_gist_T_F,  face_avg_gist)
-corr_C  <- cor_with_avg(df_gist_T_C,  face_avg_gist)
-corr_LF <- cor_with_avg(df_gist_T_LF, face_avg_gist)
-corr_HF <- cor_with_avg(df_gist_T_HF, face_avg_gist)
-
-# construct a long dataframe with all correlations and discrete types
-all_corrs <- bind_rows(
-  tibble(tt = "F", val = corr_F),
-  tibble(tt = "C", val = corr_C),
-  tibble(tt = "LF", val = corr_LF),
-  tibble(tt = "HF", val = corr_HF)
-)
+all_corrs <- lapply(pic_groups, cor_with_avg_df, df = df_starts_with, x = face_avg_gist) %>%
+    do.call(what = bind_rows)
 
 # construct summary for cross bars used in plot
 all_corrs_summary <- Rmisc::summarySE(all_corrs, measurevar = "val", groupvars = "tt")
