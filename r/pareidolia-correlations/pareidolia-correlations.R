@@ -1,57 +1,60 @@
 #!/usr/bin/env Rscript
 
 # install.packages("pacman")
-library(pacman)
 
 pacman::p_load(readxl, plyr, dplyr, tidyr, Rmisc, ggplot2)
 
 # read the first worksheet in the excel file
-df.gist <- tibble::as_tibble(read_excel("GISTdata.xlsx"))
+df_gist <- read_excel("GISTdata.xlsx", col_names = FALSE)
+cn <- gsub("'", "", df_gist$`...1`)
 
 # Transpose table you want
-df.gist.T <- t(df.gist[, 2:ncol(df.gist)])
+df_gist_T <- df_gist %>%
+  select(-`...1`) %>%
+  t() %>%
+  as_tibble()
 
 # Set the column headings from the first column in the original table
-colnames(df.gist.T) <- gsub("'", '', t(df.gist[,1])) # note that this outputs a matrix!
-
-# make nice dataframe
-df.gist.T <- tibble::as_tibble(as.data.frame(df.gist.T))
+colnames(df_gist_T) <- cn
 
 # write to CSV the transposed data
-write.csv(df.gist.T, "out_transposed.csv", row.names = FALSE)
+write.csv(df_gist_T, "out_transposed.csv", row.names = FALSE)
 
 # select columns starting with "F"
-df.gist.T.F <- df.gist.T %>% dplyr::select(dplyr::matches("^F"))
+col_starts_with <- function(df, str) select(df, starts_with(str))
 
-# by the same logic, collect other image categories
-df.gist.T.C <- df.gist.T %>% select(matches("^C"))
-df.gist.T.LF <- df.gist.T %>% select(matches("^LF"))
-df.gist.T.HF <- df.gist.T %>% select(matches("^HF"))
+df_gist_T_F  <- col_starts_with(df_gist_T, "F")
+df_gist_T_C  <- col_starts_with(df_gist_T, "C")
+df_gist_T_LF <- col_starts_with(df_gist_T, "LF")
+df_gist_T_HF <- col_starts_with(df_gist_T, "HF")
 
 # get the average face gist
-face_avg_gist <- apply(X = df.gist.T.F, MARGIN = 1, FUN = mean, na.rm = TRUE)
+face_avg_gist <- rowMeans(df_gist_T_F, na.rm = TRUE)
 
 # get correlations
-corr_F <- apply(X = df.gist.T.F, MARGIN = 2, FUN = cor, y = face_avg_gist)
-corr_C <- apply(X = df.gist.T.C, MARGIN = 2, FUN = cor, y = face_avg_gist)
-corr_LF <- apply(X = df.gist.T.LF, MARGIN = 2, FUN = cor, y = face_avg_gist)
-corr_HF <- apply(X = df.gist.T.HF, MARGIN = 2, FUN = cor, y = face_avg_gist)
+cor_with_avg <- function(mat, x) apply(mat, 2, cor, y = x)
+
+corr_F  <- cor_with_avg(df_gist_T_F,  face_avg_gist)
+corr_C  <- cor_with_avg(df_gist_T_C,  face_avg_gist)
+corr_LF <- cor_with_avg(df_gist_T_LF, face_avg_gist)
+corr_HF <- cor_with_avg(df_gist_T_HF, face_avg_gist)
 
 # construct a long dataframe with all correlations and discrete types
-all_corrs <- data.frame(tt = rep("F", length(corr_F)), val = corr_F)
-all_corrs <- rbind(all_corrs, data.frame(tt = rep("C", length(corr_C)), val = corr_C))
-all_corrs <- rbind(all_corrs, data.frame(tt = rep("LF", length(corr_LF)), val = corr_LF))
-all_corrs <- rbind(all_corrs, data.frame(tt = rep("HF", length(corr_HF)), val = corr_HF))
-all_corrs <- as.data.frame(all_corrs)
+all_corrs <- bind_rows(
+  tibble(tt = "F", val = corr_F),
+  tibble(tt = "C", val = corr_C),
+  tibble(tt = "LF", val = corr_LF),
+  tibble(tt = "HF", val = corr_HF)
+)
 
 # construct summary for cross bars used in plot
 all_corrs_summary <- Rmisc::summarySE(all_corrs, measurevar = "val", groupvars = "tt")
 
 # construct plot!
-ggplot()+
-    geom_jitter(aes(tt, val), data = all_corrs, colour = I("red"), 
-                position = position_jitter(width = 0.05)) +
-    geom_crossbar(data = all_corrs_summary, aes(x = tt, ymin = val, ymax = val, y = val, group = tt), width = 0.5) +
-    labs(y = "Correlation to Faces", x = "Image Type") # +
-  ## scale_x_continuous(breaks = c("F", "C", "LF", "HF"), labels = c("Faces", "Cars", "High-face Pareidolia", "Low-face Pareidolia"))
-
+all_corrs %>%
+  ggplot(aes(x = tt, y = val)) +
+  geom_jitter(colour = "red", width = 0.05) +
+  geom_crossbar(data = all_corrs_summary, inherit.aes = FALSE,
+                aes(x = tt, y = val, ymin = val, ymax = val, group = tt),
+                width = 0.5) +
+  labs(y = "Correlation to Faces", x = "Image Type")
