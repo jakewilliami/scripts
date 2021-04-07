@@ -1,5 +1,7 @@
 # data files
 data*.csv
+GISTdata.xlsx
+out_transposed.csv
 
 # backup files
 **/backup-webserver/

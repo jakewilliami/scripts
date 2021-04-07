@@ -1,6 +1,7 @@
 {quit}	C-x C-c
 {save}	C-x C-s
-{open, open file}	C-x C-f
+{open, open file, file, create file}	C-x C-f
+{directory, create directory, create dir, dir}	+ ;; once you are in the directory view
 {switch, switch buffer}	C-x b <buffer name or RET>, C-x <left>, C-x <right>
 {close buffer}	C-x k
 {exec, execute command, run command}	M-x
