@@ -74,6 +74,14 @@ fn main() {
 	// let f = map
 	// 	.iter()
     //     .find_map(|(key, &val)| if &val == a { Some(key) } else { None });
+	if args.contains(&"all".to_string()) {
+		// println!("{:?}", input);
+		for line in input.split('\n').filter(|s| !s.is_empty()) {
+			println!("{}", line);
+		}
+		return;
+	}
+	
 	let n = args.len();
 	for i in 1..n {
 		let a = &args[i];
