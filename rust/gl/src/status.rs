@@ -4,7 +4,13 @@ use std::ffi::OsString;
 
 static BASE_DIR: &str = "/Users/jakeireland/projects/";
 
-pub fn git_status(dir: &OsString) -> String {
+pub fn get_git_status() {
+	let curr_dir: PathBuf = std::env::current_dir().unwrap();
+	let status: String = git_status(&curr_dir.into_os_string());
+	println!("{:?}", status);
+}
+
+fn git_status(dir: &OsString) -> String {
 	// let mut os_string: OsString = "git -C ".into();
     // os_string.push(&dir);
     // os_string.push(" status --short --branch");
@@ -33,7 +39,7 @@ pub fn git_status(dir: &OsString) -> String {
 	}
 }
 
-pub fn git_diff_exit_code(dir: &OsString) {
+fn git_diff_exit_code(dir: &OsString) {
 	// git diff-index --quiet HEAD --;
 	let mut cmd = Command::new("git");
 	cmd.arg("-C");

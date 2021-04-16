@@ -81,7 +81,7 @@ fn main() {
 	};
 	
 	if matches.is_present("STATUS") {
-		// println!("{:?}", status::get_status());
+		status::get_git_status();
 	};
 	
 	if matches.is_present("GLOBAL") {
