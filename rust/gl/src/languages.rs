@@ -17,8 +17,43 @@ use regex::Regex;
 
 static BASE_DIR: &str = "/Users/jakeireland/projects/";
 
+pub fn parse_language_data() {
+	let text_colours: json::JsonValue = parse_textcolours();
+	let map: HashMap<String, String> = construct_hashmap(text_colours);
+	let lang_data = get_languages();
+	let languages = lang_data
+		.split('\n')
+		.filter(|s| !s.is_empty())
+		.collect::<Vec<&str>>();
+	
+	for lang in languages {
+		// lang.is_empty() && continue;
+		let re = Regex::new("%[ ]+").unwrap();
+		let mat: Vec<&str> = re.split(lang)
+			.collect();
+		let prop = format!("{}{}", mat[0], "%");
+		let lang_name = mat[1];
+		// This is where we transform the language obtained by git-linguist
+		// To better match the languages in the language hashmap (i.e., the json file)
+		let lang_name_transformed = lang_name
+			.to_uppercase()
+			.replace(&[' ', '-'][..], "")
+			.replace('+', "P")
+			.replace('#', "SHARP");
+		let modifier = match map.get(&lang_name_transformed) {
+			Some(x) => x,
+			None => map.get("TEXT").unwrap(),
+		};
+		// println!("{:?}", lang_name);
+		println!("{0: <0}{1: <8}{2: <0}\u{001b}[0;38m", modifier, prop, lang_name);
+	}
+		
+	// println!("{:?}", languages);
+}
+
+
 // Result<json::value::JsonValue, json::error::Error>
-pub fn parse_textcolours() -> json::JsonValue {
+fn parse_textcolours() -> json::JsonValue {
 	let parsed =
 		json::parse(&read_to_string(format!("{}/scripts/bash/colours/textcolours.json", BASE_DIR)).unwrap()).unwrap();
 	// let parsed = get_languages();
@@ -141,38 +176,4 @@ fn get_languages() -> String {
 		// return String::from_utf8_lossy(b"");
 		return "".to_string();
 	}
-}
-
-pub fn parse_language_data() {
-	let text_colours: json::JsonValue = parse_textcolours();
-	let map: HashMap<String, String> = construct_hashmap(text_colours);
-	let lang_data = get_languages();
-	let languages = lang_data
-		.split('\n')
-		.filter(|s| !s.is_empty())
-		.collect::<Vec<&str>>();
-	
-	for lang in languages {
-		// lang.is_empty() && continue;
-		let re = Regex::new("%[ ]+").unwrap();
-		let mat: Vec<&str> = re.split(lang)
-			.collect();
-		let prop = format!("{}{}", mat[0], "%");
-		let lang_name = mat[1];
-		// This is where we transform the language obtained by git-linguist
-		// To better match the languages in the language hashmap (i.e., the json file)
-		let lang_name_transformed = lang_name
-			.to_uppercase()
-			.replace(&[' ', '-'][..], "")
-			.replace('+', "P")
-			.replace('#', "SHARP");
-		let modifier = match map.get(&lang_name_transformed) {
-			Some(x) => x,
-			None => map.get("TEXT").unwrap(),
-		};
-		// println!("{:?}", lang_name);
-		println!("{0: <0}{1: <8}{2: <0}\u{001b}[0;38m", modifier, prop, lang_name);
-	}
-		
-	// println!("{:?}", languages);
 }
