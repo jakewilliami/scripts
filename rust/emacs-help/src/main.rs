@@ -3,6 +3,15 @@ use std::iter::Iterator;
 // use std::path::{Path, PathBuf};
 // use std::env;
 
+// TODO
+// check that a tab follows every }
+// parse options like a good boy (like a good command line tool)
+
+extern crate clap;
+use clap::{Arg, App, SubCommand};
+
+
+
 // #[warn(dead_code)]
 // fn get_home_dir() {
 //   let mut path: PathBuf = get_app_dir();
@@ -39,9 +48,44 @@ fn find_value(map: &HashMap<Vec<String>, String>, value: String) -> Option<&str>
 }
 
 fn main() {
-	let input = std::fs::read_to_string("/Users/jakeireland/projects/scripts/rust/emacs-help/help.txt")
-		.expect("Something went wrong reading the input file");
-	let v: Vec<&str> = input
+	let args: Vec<String> = std::env::args().collect();
+
+	let matches = App::new("emacs-help")
+                       .version("v1.1")
+                       .author("Jake W. Ireland. <jakewilliami@icloud.com>")
+                       .about("A simply utility to help me with emacs commands")
+						// .arg(Arg::with_name("help")
+						// 	.short("h")
+						// 	.long("help")
+						// 	// .value_name("FILE")
+						// 	.help("Shows help (present output).")
+						// 	.takes_value(false)
+						// 	.required(false)
+						// 	.multiple(false)
+					   	// )
+						.arg(Arg::with_name("ALL")
+							.short("a")
+							.long("all")
+							// .value_name("FILE")
+							.help("Displays all help options")
+							.takes_value(false)
+							.required(false)
+							.multiple(false)
+					   	)
+						.get_matches();
+
+	// let srcfile = file!();
+	// let srcdir = std::fs::read_dir(srcfile);
+	// let helpfile = srcdir.unwrap().path().join("help.txt");
+	let helpfile: &str = "/Users/jakeireland/projects/scripts/rust/emacs-help/src/help.txt";
+	let helpdata = std::fs::read_to_string(helpfile)
+		.expect(&format!("Something went wrong reading the help file at {}", helpfile).as_str());
+
+	// let helpdata = std::fs::read_to_string(helpfile)
+				// .expect(&format!("Something went wrong reading the help file at {}", helpfile).as_str());
+
+	// read helpdata as vector
+	let v: Vec<&str> = helpdata
 		.split('\n')
 		.filter(|s| !s.is_empty())
 		.collect::<Vec<&str>>();
@@ -50,6 +94,8 @@ fn main() {
 	// // .map(|i| (i + i, i * i)) // equiv to Julia's Dict(i+i => i*i for i in range(1, 5))
 	// .map(|i| i.split('\t'))
 	// .collect::<std::collections::HashMap<_, _>>();
+
+	// construct hashmap
 	let mut map = HashMap::<Vec<String>, String>::new();
     for i in v {
 		let s: Vec<&str> = i.split('\t').collect::<Vec<&str>>();
@@ -65,7 +111,7 @@ fn main() {
     }
 	// println!{"{:?}", hashm}
 	
-	let args: Vec<String> = std::env::args().collect();
+	// let args: Vec<String> = std::env::args().collect();
 	
 	// let f = args.map(|a| map.find(|&&i| i == a));
 	// let f = map(|a| find_key_for_value(&map, a)).collect();
@@ -74,29 +120,40 @@ fn main() {
 	// let f = map
 	// 	.iter()
     //     .find_map(|(key, &val)| if &val == a { Some(key) } else { None });
-	if args.contains(&"all".to_string()) {
+
+	// if args.contains(&"all".to_string()) {
 		// println!("{:?}", input);
-		for line in input.split('\n').filter(|s| !s.is_empty()) {
-			println!("{}", line);
-		}
-		return;
-	}
-	
-	let n = args.len();
-	for i in 1..n {
-		let a = &args[i];
-		let f = find_value(&map, a.to_string());
-		
-		if f != None {
-			println!("{}: {}", a, f.unwrap());
-		}
-		else {
-			println!("{:?}", f)
-		}
-	}
+		// for line in helpdata.split('\n').filter(|s| !s.is_empty()) {
+			// println!("{}", line);
+		// }
+		// return;
+	// }
+
+
 	
 	// println!("{:?}", get_app_dir());
-	
+
+	if matches.is_present("ALL") {
+		// println!("{:?}", input);
+		for line in helpdata.split('\n').filter(|s| !s.is_empty()) {
+			println!("{}", line);
+		}
+	} else {
+		// suppose we haven't got the command line argument
+		let n = args.len();
+		for i in 1..n {
+			let a = &args[i];
+			let f = find_value(&map, a.to_string());
+			
+			if f != None {
+				println!("{}: {}", a, f.unwrap());
+			}
+			else {
+				println!("{:?}", f)
+			}
+		}
+	};
+		
 	return;
 }
 
