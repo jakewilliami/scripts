@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# https://bbs.archlinux.org/viewtopic.php?pid=1034553#p1034553
 
 import os,re, datetime
 d = '/var/lib/pacman/local'
+os.mkdir('/var/lib/pacman/OLD')
 
 packages = os.listdir(d)
 packages.sort()
