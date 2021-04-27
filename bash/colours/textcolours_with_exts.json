@@ -1,0 +1,367 @@
+{
+    "bgreen": {
+        "name": "BGREEN",
+        "code": "\u001b[1;38;5;2m",
+        "exts": []
+    },
+    "uline": {
+        "name": "ULINE",
+        "code": "\u001b[1;4m",
+        "exts": []
+    },
+    "it": {
+        "name": "IT",
+        "code": "\u001b[0;3m",
+        "exts": []
+    },
+    "dull": {
+        "name": "DULL",
+        "code": "\u001b[1;2m",
+        "exts": []
+    },
+    "flashing": {
+        "name": "FLASHING",
+        "code": "\u001b[1;5m",
+        "exts": []
+    },
+    "bwhite": {
+        "name": "BWHITE",
+        "code": "\u001b[1;38m",
+        "exts": []
+    },
+    "itwhite": {
+        "name": "ITWHITE",
+        "code": "\u001b[0;3;38m",
+        "exts": []
+    },
+    "byellow": {
+        "name": "BYELLOW",
+        "code": "\u001b[1;33m",
+        "exts": []
+    },
+    "ityellow": {
+        "name": "ITYELLOW",
+        "code": "\u001b[0;3;33m",
+        "exts": []
+    },
+    "bred": {
+        "name": "BRED",
+        "code": "\u001b[1;31m",
+        "exts": []
+    },
+    "itred": {
+        "name": "ITRED",
+        "code": "\u001b[0;3;31m",
+        "exts": []
+    },
+    "bblue": {
+        "name": "BBLUE",
+        "code": "\u001b[1;34m",
+        "exts": []
+    },
+    "darkbblue": {
+        "name": "DARKBBLUE",
+        "code": "\u001b[1;38;5;26m",
+        "exts": []
+    },
+    "norm": {
+        "name": "NORM",
+        "code": "\u001b[0;38m",
+        "exts": []
+    },
+    "julia": {
+        "name": "JULIA",
+        "code": "\u001b[1;38;5;133m",
+        "exts": ["jl"]
+    },
+    "python": {
+        "name": "PYTHON",
+        "code": "\u001b[1;38;5;26m",
+        "exts": ["py", "pyc", "pytxcode"]
+    },
+    "java": {
+        "name": "JAVA",
+        "code": "\u001b[1;38;5;130m",
+        "exts": ["java"]
+    },
+    "rust": {
+        "name": "RUST",
+        "code": "\u001b[1;38;5;180m",
+        "exts": ["rs"]
+    },
+    "haskell": {
+        "name": "HASKELL",
+        "code": "\u001b[1;38;5;60m",
+        "exts": ["hs"]
+    },
+    "shell": {
+        "name": "SHELL",
+        "code": "\u001b[1;38;5;113m",
+        "exts": ["", "sh", "ahk", "script", "scpt", "bash", "ksh"]
+    },
+    "perl": {
+        "name": "PERL",
+        "code": "\u001b[1;38;5;32m",
+        "exts": ["pl"]
+    },
+    "ruby": {
+        "name": "RUBY",
+        "code": "\u001b[1;38;5;52m",
+        "exts": ["rb"]
+    },
+    "elixir": {
+        "name": "ELIXIR",
+        "code": "\u001b[1;38;5;60m",
+        "exts": ["ex"]
+    },
+    "commonlisp": {
+        "name": "COMMONLISP",
+        "code": "\u001b[1;38;5;72m",
+        "exts": ["clisp"]
+    },
+    "lisp": {
+        "name": "LISP",
+        "code": "\u001b[1;38;5;72m",
+        "exts": ["lisp"]
+    },
+    "emacslisp": {
+        "name": "EMACSLISP",
+        "code": "\u001b[1;38;5;134m",
+        "exts": ["elisp"]
+    },
+    "lua": {
+        "name": "LUA",
+        "code": "\u001b[1;38;5;18m",
+        "exts": ["lua"]
+    },
+    "c": {
+        "name": "C",
+        "code": "\u001b[1;38;5;59m",
+        "exts": ["c", "h", "h1", "h2", "1", "3", "8", "in", "out", "o"]
+    },
+    "cpp": {
+        "name": "CPP",
+        "code": "\u001b[1;38;5;204m",
+        "exts": ["cpp", "cc", "dox", "cmake", "template", "dtd"]
+    },
+    "csharp": {
+        "name": "CSHARP",
+        "code": "\u001b[1;38;5;28m",
+        "exts": []
+    },
+    "r": {
+        "name": "R",
+        "code": "\u001b[1;38;5;32m",
+        "exts": ["r", "rscript"]
+    },
+    "javascript": {
+        "name": "JAVASCRIPT",
+        "code": "\u001b[1;38;5;221m",
+        "exts": ["json", "js"]
+    },
+    "batchfile": {
+        "name": "BATCHFILE",
+        "code": "\u001b[1;38;5;154m",
+        "exts": ["bat"]
+    },
+    "tex": {
+        "name": "TEX",
+        "code": "\u001b[1;38;5;22m",
+        "exts": ["tex", "cls", "sty"]
+    },
+    "text": {
+        "name": "TEXT",
+        "code": "\u001b[0;38m",
+        "exts": []
+    },
+    "markdown": {
+        "name": "MARKDOWN",
+        "code": "\u001b[1;38;5;249m",
+        "exts": ["md", "sgml", "plist", "xml", "toml"]
+    },
+    "objectivec": {
+        "name": "OBJECTIVEC",
+        "code": "\u001b[1;38;5;69m",
+        "exts": []
+    },
+    "assembly": {
+        "name": "ASSEMBLY",
+        "code": "\u001b[1;38;5;58m",
+        "exts": []
+    },
+    "roff": {
+        "name": "ROFF",
+        "code": "\u001b[1;38;5;223m",
+        "exts": []
+    },
+    "makefile": {
+        "name": "MAKEFILE",
+        "code": "\u001b[1;38;5;64m",
+        "exts": []
+    },
+    "swift": {
+        "name": "SWIFT",
+        "code": "\u001b[1;38;5;215m",
+        "exts": []
+    },
+    "yacc": {
+        "name": "YACC",
+        "code": "\u001b[1;38;5;107m",
+        "exts": []
+    },
+    "awk": {
+        "name": "AWK",
+        "code": "\u001b[1;38;5;188m",
+        "exts": ["awk"]
+    },
+    "smpl": {
+        "name": "SMPL",
+        "code": "\u001b[1;38;5;197m",
+        "exts": []
+    },
+    "sed": {
+        "name": "SED",
+        "code": "\u001b[1;38;5;71m",
+        "exts": ["sed"]
+    },
+    "lex": {
+        "name": "LEX",
+        "code": "\u001b[1;38;5;184m",
+        "exts": []
+    },
+    "d": {
+        "name": "D",
+        "code": "\u001b[1;38;5;131m",
+        "exts": []
+    },
+    "coffeescript": {
+        "name": "COFFEESCRIPT",
+        "code": "\u001b[1;38;5;24m",
+        "exts": []
+    },
+    "erlang": {
+        "name": "ERLANG",
+        "code": "\u001b[1;38;5;132m",
+        "exts": []
+    },
+    "html": {
+        "name": "HTML",
+        "code": "\u001b[1;38;5;166m",
+        "exts": ["htm", "html", "h5"]
+    },
+    "go": {
+        "name": "GO",
+        "code": "\u001b[1;38;5;38m",
+        "exts": ["go"]
+    },
+    "scheme": {
+        "name": "SCHEME",
+        "code": "\u001b[1;38;5;27m",
+        "exts": []
+    },
+    "typescript": {
+        "name": "TYPESCRIPT",
+        "code": "\u001b[1;38;5;30m",
+        "exts": []
+    },
+    "powershell": {
+        "name": "POWERSHELL",
+        "code": "\u001b[1;38;5;17m",
+        "exts": []
+    },
+    "php": {
+        "name": "PHP",
+        "code": "\u001b[1;38;5;60m",
+        "exts": []
+    },
+    "dtrace": {
+        "name": "DTRACE",
+        "code": "\u001b[1;38;5;188m",
+        "exts": []
+    },
+    "css": {
+        "name": "CSS",
+        "code": "\u001b[1;38;5;60m",
+        "exts": ["css"]
+    },
+    "fsharp": {
+        "name": "FSHARP",
+        "code": "\u001b[1;38;5;135m",
+        "exts": []
+    },
+    "matlab": {
+        "name": "MATLAB",
+        "code": "\u001b[1;38;5;167m",
+        "exts": ["m"]
+    },
+    "cuda": {
+        "name": "CUDA",
+        "code": "\u001b[1;38;5;101m",
+        "exts": []
+    },
+    "ocaml": {
+        "name": "OCAML",
+        "code": "\u001b[1;38;5;77m",
+        "exts": []
+    },
+    "objectivecpp": {
+        "name": "OBJECTIVECPP",
+        "code": "\u001b[1;38;5;63m",
+        "exts": []
+    },
+    "applescript": {
+        "name": "APPLESCRIPT",
+        "code": "\u001b[1;38;5;16m",
+        "exts": ["applescript"]
+    },
+    "vue": {
+        "name": "VUE",
+        "code": "\u001b[1;38;5;23m",
+        "exts": []
+    },
+    "jupyternotebook": {
+        "name": "JUPYTERNOTEBOOK",
+        "code": "\u001b[1;38;5;166m",
+        "exts": ["ipynb"]
+    },
+    "dockerfile": {
+        "name": "DOCKERFILE",
+        "code": "\u001b[1;38;5;59m",
+        "exts": []
+    },
+    "hack": {
+        "name": "HACK",
+        "code": "\u001b[1;38;5;102m",
+        "exts": []
+    },
+    "clojure": {
+        "name": "CLOJURE",
+        "code": "\u001b[1;38;5;167m",
+        "exts": []
+    },
+    "tsql": {
+        "name": "TSQL",
+        "code": "\u001b[1;38;5;188m",
+        "exts": []
+    },
+    "sql": {
+        "name": "SQL",
+        "code": "\u001b[1;38;5;188m",
+        "exts": []
+    },
+    "elm": {
+        "name": "ELM",
+        "code": "\u001b[1;38;5;74m",
+        "exts": []
+    },
+    "llvm": {
+        "name": "LLVM",
+        "code": "\u001b[1;38;5;22m",
+        "exts": []
+    },
+    "vimscript": {
+        "name": "VIMSCRIPT",
+        "code": "\u001b[1;38;5;35m",
+        "exts": []
+    }
+}
