@@ -1,4 +1,4 @@
-mod unordered_pairs;
+mod unordered_pair;
 
 fn main() {
     println!("Hello, world!");
