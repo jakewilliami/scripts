@@ -6,7 +6,7 @@ Scripts for Rust
 ## Description
 I have created a separate directory for [Rust](https://www.wikiwand.com/en/Rust_(programming_language)) in order to make gitignores a little bit easier (as I don't want to count the `make` files in my language breakdown&mdash;see also `gl -l`).
 
-I have renamed `rusty_ls/main.rs` to `rusty_ls/ls.rs`.  I first started using Rust in early October, 2019.
+I have renamed `rusty_ls/main.rs` to `rusty_ls/ls.rs`.  I first started using Rust in early October, 2019.  `rusty_ls` is my starting project (as I have tried to do in python and c), and `pere` (short for *перечислять* [*perechislyat'*]) is my second attempt at the project.
 
 ## Getting Started
 On macOS, run
