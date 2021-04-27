@@ -25,7 +25,7 @@ else
     mkdir -p "${COMPILEDIR}/${SYSDER}/${ARCH}"
 fi
 
-files=( "countmedia.c" "ls.c" "mktex.c" "negation.c" )
+files=( "countmedia.c" "ls.c" "mktex.c" "negation.c" "buffer-overflow-vulnerable.c")
 # files=( "ls.c" )
 
 for file in "${files[@]}"; do
