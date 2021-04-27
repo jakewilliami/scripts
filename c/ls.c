@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+/* #include <stdbool.h> */
+/* #include <stdio.h> */
+/* #include <stdlib.h> */
+#include <unistd.h>
+#include <limits.h>
 
 #define BGREEN         "\e[1;38;5;2m"
 #define ULINE          "\e[1;4m"
@@ -77,8 +82,67 @@
 #define TSQL           "\e[1;38;5;188m"
 #define SQL            "\e[1;38;5;188m"
 #define ELM            "\e[1;38;5;74m"
+#define LLVM           "\e[1;38;5;22m"
+#define VIMSCRIPT      "\e[1;38;5;35m"
 
 #define RESET			NORM
+
+int main(int argc, char** argv) {
+    int depth;
+    
+    // default depth should be 1 if not given
+    // if (!strcmp(argv[2], "")) {
+        // convert second argument (depth) to an integer
+        sscanf(argv[2], "%d", &depth);
+    // }
+    // else {
+    //     int depth = 1;
+    // }
+
+	// get cwd
+	char cwd[PATH_MAX];
+
+	int opt;
+
+	enum { HELP_MODE, DIR_MODE, DEPTH_MODE } mode = DEFAULT_MODE;
+
+	while ((opt = getopt(argc, argv, "ha")) != -1) {
+		switch (opt) {
+			case 'h': mode = HELP_MODE; break;
+			case 'a': depth = 1; break;
+			case 'd': mode = DIR_MODE;
+			default: mode = DEFAULT_MODE;
+		} // end switch
+	} // end while
+
+	// check that, if dir is not specified, we need to check that the current working directory is obtained
+	if (!DIR_MODE) {
+		if (getcwd(cwd, sizeof(cwd)) == NULL) {
+			perror("getcwd() error");
+			return 1
+		}
+	}
+
+	/* if (!strcmp(argv[1], "-h")) { */
+		// then display help
+		/* usage(); */
+		/* return 0; */
+	/* } else if (!strcmp(argv[1], "-a")) { */
+		// display all
+	/* } */
+    
+    recurse_dirs(argv[1], depth, 0);
+    return 0;
+}
+
+void usage() {
+    /* fprintf(stderr, "usage: uname [-amnprsv]\n"); */
+    /* exit(EXIT_FAILURE); */
+	printf("usage: ls.c [-adLh]\n"
+       "    -h | --help   display help (present output)\n"
+	   "    -L | --level  specify a level"
+       "    -a | --all    display any depth in given directory\n");
+}
 
 char *string_repeat(const char *s, int n) {
   size_t slen = strlen(s);
@@ -125,7 +189,7 @@ const char *get_file_print_modifier(const char *ext) {
         // char* print_colour = C;
         return C;
     }
-    else if ((!strcmp(ext, "")) || (!strcmp(ext, "sh")) || (!strcmp(ext, "ahk")) || (!strcmp(ext, "script")) || (!strcmp(ext, "scpt"))) {
+    else if ((!strcmp(ext, "")) || (!strcmp(ext, "sh")) || (!strcmp(ext, "ahk")) || (!strcmp(ext, "script")) || (!strcmp(ext, "scpt")) || (!strcmp(ext, "bash")) || (!strcmp(ext, "ksh"))) {
         // char* print_colour = SHELL;
         return SHELL;
     }
@@ -303,22 +367,6 @@ void recurse_dirs(char *name, int depth, int indent)
         }
     }
     closedir(dir);
-}
-
-int main(int argc, char** argv) {
-    int depth;
-    
-    // default depth should be 1 if not given
-    // if (!strcmp(argv[2], "")) {
-        // convert second argument (depth) to an integer
-        sscanf(argv[2], "%d", &depth);
-    // }
-    // else {
-    //     int depth = 1;
-    // }
-    
-    recurse_dirs(argv[1], depth, 0);
-    return 0;
 }
 
 // #include <stdio.h>
