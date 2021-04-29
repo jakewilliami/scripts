@@ -20,9 +20,12 @@ use walkdir::WalkDir;
 
 // static BASE_DIR: &str = "/Users/jakeireland/projects/";
 static LANGUAGE_FILE: &str = "/Users/jakeireland/projects/scripts/rust/pere/src/languages.yml";
-static DIRNAME: &str = ".";
 
 fn main () {
+	// defaults
+	// let dirname: &str = ".";
+	// let level: usize = 3;
+	
 	let matches = App::new("pere")
                       .version("1.0")
                       .author("Jake W. Ireland. <jakewilliami@icloud.com>")
@@ -36,6 +39,15 @@ fn main () {
 							// 	.required(false)
 							// 	.multiple(false)
 						   	// )
+							.arg(Arg::with_name("ALL")
+								.short("a")
+								.long("all")
+								// .value_name("FILE")
+								.help("Descend all levels from specified directory")
+								.takes_value(false)
+								.required(false)
+								.multiple(false)
+						   	)
 							.arg(Arg::with_name("DIR")
 								.short("d")
 								.long("dir")
@@ -89,13 +101,39 @@ fn main () {
 	// 	println!("{:?}", ccode);
 	// }
 	
-	for entry in WalkDir::new(DIRNAME).into_iter().filter_map(|e| e.ok()) {
-		let pathname = entry.path();
-		let isdir: bool = metadata(pathname).unwrap().is_dir();
-		println!("{:?}", isdir);
-    	// println!("{}", entry?.path().display());
+	// default to current directory
+	let dirname: &str = matches.value_of("DIR").unwrap_or(".");
+	// default to 3 levels
+	let level: usize = matches.value_of("LEVEL").unwrap_or("3").parse().unwrap();
+	
+	// if matches.is_present("DIR") {
+	// }
+	
+	if matches.is_present("ALL") {
+		// if all is present the we no longer care about the level argument
+		// walkdir all the way
+		for entry in WalkDir::new(dirname).into_iter().filter_map(|e| e.ok()) {
+			let pathname = entry.path();
+			let isdir: bool = metadata(pathname).unwrap().is_dir();
+			println!("{:?}", pathname);
+	    	// println!("{}", entry?.path().display());
+		}
+	} else {
+		for entry in WalkDir::new(dirname).max_depth(level).into_iter().filter_map(|e| e.ok()) {
+			let pathname = entry.path();
+			let isdir: bool = metadata(pathname).unwrap().is_dir();
+			println!("{:?}", pathname);
+	    	// println!("{}", entry?.path().display());
+		}
 	}
 	
+	
+	// for entry in WalkDir::new(DIRNAME).into_iter().filter_map(|e| e.ok()) {
+	// 	let pathname = entry.path();
+	// 	let isdir: bool = metadata(pathname).unwrap().is_dir();
+	// 	println!("{:?}", isdir);
+    // 	// println!("{}", entry?.path().display());
+	// }
 	
 	// println!("{:?}", language_names);
 	// println!("{:?}", language_data["."]["extensions"]);
