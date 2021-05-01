@@ -5,8 +5,8 @@
 # dependencies: nano
 
 # set emacs to default editor
-export EDITOR='emacs'
-export VISUAL='emacs'
+export EDITOR='emacs -nw'
+export VISUAL='emacs -nw'
 
 
 # get current branch in git repo
@@ -75,9 +75,9 @@ alias sudo-ods="sudo /Applications/OmniDiskSweeper.app/Contents/MacOS/OmniDiskSw
 alias get-ip="ipconfig getifaddr en0"
 alias get-public-ip="curl ipinfo.io/ip"
 alias system-data="system_profiler SPSoftwareDataType"
-alias open-dir-dl='wget --recursive --level=inf --no-parent --reject "index.html*"' #Use the -P option to set an output directory
+alias open-dir-dl='wget --recursive --level=0 --no-parent --continue --reject "index.html*"' #Use the -P option to set an output directory
 # Alternatively use, if robot not behaving: 
-alias open-dir-dl-alt='wget --recursive --level=inf --no-parent --reject="index.html*" --no-clobber --convert-links --random-wait --adjust-extension --execute robots=off --user-agent=mozilla' # to behave like a person # https://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.html
+alias open-dir-dl-alt='wget --recursive --continue --level=0 --no-parent --reject="index.html*" --no-clobber --convert-links --random-wait --adjust-extension --execute robots=off --user-agent=mozilla' # to behave like a person # https://www.tupp.me/2014/06/how-to-crawl-website-with-linux-wget.html
 alias this-tri="cd ${HOME}'/Desktop/Study/Victoria University/2020/Trimester 2'"
 alias fbcli="facebook-cli"
 alias Sammu="echo -e '\u001b[1;34m===>\t\u001b[0;38m\u001b[1;38mShutting down machine\u001b[0;38m'; sleep 5; sync; sudo systemctl poweroff" # Sammu; Finnish: Shutdown
@@ -95,9 +95,13 @@ alias gtime="gdate | awk '{print $4}'"
 alias ssh-converter="ssh jakeireland@192.168.1.203 -p 24"
 alias ssh-plex="ssh jakeireland@192.168.1.202 -p 24"
 alias ssh-server="ssh jakeireland@192.168.1.100"
-alias conda="/usr/local/anaconda3/bin/conda"
 alias aoc="cd $HOME/projects/scripts/julia/Other/advent_of_code/2020"
 alias gl.rs="$HOME/projects/scripts/rust/gl/target/debug/gl"
+alias shuffle="sort -R"
+alias pythong="python"
+alias emacsc="emacsclient"
+alias compile.rs="cargo build && cp -f ./target/debug/$(basename $PWD) ./"
+alias ls.rs="$HOME/projects/scripts/rust/pere/target/debug/pere"
 
 function pdfsearch.rs() {
 	PATH_TO_PROJECT="${HOME}"/projects/scripts/pdfsearches/pdfsearch.rs/
@@ -123,6 +127,8 @@ function view-md() {
 function get-status() {
 	curl -s -o /dev/null -w "%{http_code}" $1; echo
 }
+
+alias http-status-code="get-status"
 
 eval "$(thefuck --alias)"
 # You can use whatever you want as an alias, like for Mondays:
