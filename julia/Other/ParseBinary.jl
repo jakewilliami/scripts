@@ -29,4 +29,4 @@ end
 =#
 
 # You can also do this inline
-# parsebin(binstr::AbstractString) = sum((2 ^ (i - 1)) * (binstr[j] == '1' ? 1 : 0) for (i, j) in enumerate(length(binstr):-1:1))
+parsebin2(binstr::AbstractString) = sum((2 ^ (i - 1)) * (binstr[j] == '1' ? 1 : 0) for (i, j) in enumerate(length(binstr):-1:1))
