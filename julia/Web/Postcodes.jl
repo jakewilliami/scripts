@@ -26,9 +26,11 @@ function get_id(postcode::S) where {S <: AbstractString}
 	    "$URL"`)
 	command_out = split(read(cmd, String), "\n")
     j = JSON.parse(command_out[end])
-	return j["addresses"][1]["UniqueId"]
+	j_addr = j["addresses"]
+	return isempty(j_addr) ? nothing : j_addr[1]["UniqueId"]
 end
 get_id(postcode::Integer) = get_id(lpad(postcode, 4, "0"))
+get_id(::Nothing) = nothing
 
 function get_location_info(ID::S) where {S <: Union{AbstractString, Integer}}
     URL = "$(intoURL(tools2))?unique_id=$(ID)"
@@ -48,7 +50,9 @@ function get_location_info(ID::S) where {S <: Union{AbstractString, Integer}}
 		"$URL"`)
 	command_out = split(read(cmd, String), "\n")
 	j = JSON.parse(command_out[end])
-    return j["details"][1]["CityTown"]
+	j_info = j["details"]
+    return isempty(j_info) ? nothing : j_info[1]["CityTown"]
 end
+get_location_info(::Nothing) = nothing
 
 println(get_location_info(get_id(6021)))
