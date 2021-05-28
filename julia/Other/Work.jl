@@ -44,7 +44,9 @@ const _start_dates = Date[
 	Date(2021, Feb, 24),
 	Date(2021, Mar, 24),
 	Date(2021, Apr, 21),
+	Date(2021, Apr, 28),
 	Date(2021, May, 19),
+	Date(2021, May, 26),
 	Date(2021, Jun, 16),
     Date(2021, Jul, 7),
 	Date(2021, Aug, 4),
@@ -225,12 +227,12 @@ function format(d::Date)
 	return string(Dates.dayname(d), ", ", Dates.day(d), " ", Dates.monthname(d), " ", Dates.year(d))
 end
 
-function findnearest(A::AbstractArray, t::Date)
+function Base.findnext(A::AbstractArray{<:Date}, t::Date)
 	A = sort(A)
 	
-	for i in A
-	   	i < t && continue
-		return i # first element in A that is greater than today
+	for (i, a) in enumerate(A)
+	   	a < t && continue
+		return (i, a) # first element in A that is greater than today
 	end
 
 	return nothing
@@ -240,7 +242,9 @@ function main_text(io::IO)
 	_today = today()
 	_now = now()
 	
-	_next_on_call = findnearest(_start_dates, _today + Week(1))
+	_next_on_call = _start_dates[findnext(_start_dates, _today)[1]]
+	# _next_on_call = nothing
+	# _current_date_idx = findfirst(x -> x == findnearest(_start_dates, _today), )
 
 	if isnothing(_next_on_call)
 		printstyled(
@@ -296,4 +300,4 @@ main_cal() = main_cal(stdout)
 
 main_text()
 
-display(Calendar3())
+# display(Calendar3())
