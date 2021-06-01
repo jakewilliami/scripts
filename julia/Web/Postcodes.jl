@@ -1,6 +1,6 @@
 module PCall
 
-using JSON, HTTP, Base64
+using JSON, HTTP, Base64, Libz#, TranscodingStreams, CodecZlib
 
 export suggest_locations,
 	get_suggested_addresses,
@@ -68,6 +68,7 @@ function pcall(URL::S) where {S <: AbstractString}
 			"Sec-Ch-Ua-Mobile" => "?0",
 			"User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
 			"Origin" => "$GLOB_BASE$BASE_PUBLIC_URI",
+            "Accept-Encoding" => "gzip, deflate",
 			"Sec-Fetch-Site" => "same-site",
 			"Sec-Fetch-Mode" => "cors",
 			"Sec-Fetch-Dest" => "empty",
@@ -81,7 +82,9 @@ end
 
 function pcall(URL::S, responsekey::S) where {S <: AbstractString}
 	r = pcall(URL)
-    j = JSON.parse(String(r.body))
+    # j = JSON.parse(String(r.body))
+    # j = JSON.parse(String(transcode(GzipDecompressor, r.body)))
+    j = JSON.parse(String(read(ZlibInflateInputStream(r.body))))
 	error_if_unsuccessful(j)
 	
 	return j[responsekey]
@@ -205,8 +208,30 @@ end # end module
 
 # using .PCall
 
-println(PCall.suggest_locations(704))
-println(PCall.get_region_from_postcode(6021))
-println(PCall.get_region_from_postcode(0666)) # invalid postcode
-println(PCall.get_postcode_from_addr("21 St Michaels Cres"))
-println(PCall.get_coordinates_from_addr("21 St Michaels Cres"))
+# println(PCall.suggest_locations(704))
+# println(PCall.get_region_from_postcode(6021))
+# println(PCall.get_region_from_postcode(0666)) # invalid postcode
+# println(PCall.get_postcode_from_addr("21 St Michaels Cres"))
+# println(PCall.get_coordinates_from_addr("21 St Michaels Cres"))
+
+using .PCall, Test
+
+p1 = PCall.suggest_locations(704)
+p1_out = Any[Dict{String, Any}("UniqueId" => 3001387, "FullPartial" => "7045"), Dict{String, Any}("UniqueId" => 3001388, "FullPartial" => "7047"), Dict{String, Any}("UniqueId" => 3001389, "FullPartial" => "7043"), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Dominion Road, Mount Eden, Auckland 1041", "DPID" => 1546480), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 East Coast Road, Pinehill, Auckland 0632", "DPID" => 1327087), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Great North Road, Grey Lynn, Auckland 1021", "DPID" => 80244), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Huia Road, Parau, Auckland 0604", "DPID" => 2565175), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Mount Eden Road, Mount Eden, Auckland 1024", "DPID" => 355007), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 New North Road, Mount Albert, Auckland 1022", "DPID" => 81197), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Remuera Road, Remuera, Auckland 1050", "DPID" => 1357548), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Sandringham Road Extension, Wesley, Auckland 1041", "DPID" => 2614828), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 South Titirangi Road, Titirangi, Auckland 0604", "DPID" => 565340), Dict{String, Any}("SourceDesc" => "Postal\\Physical", "FullAddress" => "704 Swanson Road, Swanson, Auckland 0612", "DPID" => 1043026)]
+p2 = PCall.get_region_from_postcode(6021)
+p2_out = "Wellington"
+p3 = PCall.get_region_from_postcode(0666) # invalid postcode should return nothing
+p3_out = nothing
+p4 = PCall.get_postcode_from_addr("21 St Michaels Cres")
+p4_out = "6012"
+p5 = PCall.get_coordinates_from_addr("21 St Michaels Cres")
+p5_out = (-41.289891, 174.762686)
+
+@testset "PCall" begin
+    for i in 1:5
+        pi = Symbol("p$(i)")
+        pi_out = Symbol("p$(i)_out")
+        @test @eval $pi == $pi_out
+    end
+end
+
