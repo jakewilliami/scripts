@@ -3,7 +3,9 @@ module PCall
 using JSON, HTTP, Base64, Libz#, TranscodingStreams, CodecZlib
 
 export suggest_locations,
+	get_suggested_postcodes,
 	get_suggested_addresses,
+	get_postcode_details,
 	get_address_details
 
 # Encoded constants
@@ -59,6 +61,9 @@ const UID_KEY = intoURI(UID_KEY_ENCODED)
 const PC_KEY = intoURI(PC_KEY_ENCODED)
 const REGION_KEY = intoURI(REGION_KEY_ENCODED)
 
+"""
+Main request function.
+"""
 function pcall(URL::S) where {S <: AbstractString}
 	r = HTTP.request("GET", URL,
 		[
@@ -110,6 +115,12 @@ end
 
 ### Locator methods
 
+"""
+```julia
+get_suggested_postcodes(postcode) -> Vector{Dict{String, Any}}
+```
+Sends a request to get matching postcodes based on your input query.  Each returned dictionary contains the keys `"UniqueID"` and `"FullPartial"`.  `UniqueID` is used by `get_postcode_details`.
+"""
 function get_suggested_postcodes(postcode::T) where {T <: Union{AbstractString, Integer}}
 	baseURL = "$API_URI$UID_QUERY"
 	responsekey = "addresses"
@@ -117,6 +128,12 @@ function get_suggested_postcodes(postcode::T) where {T <: Union{AbstractString, 
 	return pcall(baseURL, postcode, LOCATOR_SUFFIX, responsekey)
 end
 
+"""
+```julia
+get_suggested_addresses(addr) -> Vector{Dict{String, Any}}
+```
+Sends a request to get matching addresses based on your input query.  Each returned dictionary contains the keys `"SourceDesc"`, `"FullAddress"`, and `"DPID"`.  `DPID` is used by `get_address_details`.
+"""
 function get_suggested_addresses(addr::T) where {T <: Union{AbstractString, Integer}}
 	baseURL = "$API_URI$DPID_QUERY"
 	responsekey = "addresses"
@@ -124,6 +141,12 @@ function get_suggested_addresses(addr::T) where {T <: Union{AbstractString, Inte
 	return pcall(baseURL, addr, LOCATOR_SUFFIX, responsekey)
 end
 
+"""
+```julia
+suggest_locations(query) -> Vector{Dict{String, Any}}
+```
+Sends a request to get matching postcodes and addresses based on your input query.  This is similar to NZP's address/postcode finder, but see `PCall.nzp_search` for a more specific replication of the website.
+"""
 function suggest_locations(query::T) where {T <: Union{AbstractString, Integer}}
 	possible_postcodes = get_suggested_postcodes(query)
 	possible_addresses = get_suggested_addresses(query)
@@ -204,6 +227,21 @@ function get_coordinates_from_addr(addr::S) where {S <: AbstractString}
 	return (coordinates[2], coordinates[1])
 end
 
+function nzp_search(query::S) where {S <: AbstractString}
+    possible_postcodes = get_suggested_postcodes(query)
+    possible_addresses = get_suggested_addresses(query)
+
+    results = Pair{Any, Any}[]
+    for p in possible_postcodes
+        push!(results, nothing => p["FullPartial"])
+    end
+    for a in possible_addresses
+        push!(results, a["FullAddress"] => get_address_details(a["DPID"])[1]["Postcode"])
+    end
+
+    return results
+end
+
 end # end module
 
 # using .PCall
@@ -234,4 +272,3 @@ p5_out = (-41.289891, 174.762686)
         @test @eval $pi == $pi_out
     end
 end
-
