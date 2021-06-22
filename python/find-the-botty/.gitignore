@@ -1,0 +1,77 @@
+### Ignore data files ###
+data/
+
+### Silly macOS stuff ###
+**/.DS_Store
+
+### Silly VSCode stuff ###
+**/.vscode/
+
+# astro data files
+**/Leap_Second.dat
+**/de421.bsp
+**/de430.bsp
+**/deltat.data
+**/deltat.preds
+**/inpop13c_TDB_m100_p100_tt.dat
+
+### Django ###
+*.log
+**/*.log
+*.pot
+**/*.pot
+*.pyc
+**/*.pyc
+__pycache__/
+**/__pycache__/
+local_settings.py
+**/local_settings.py
+db.sqlite3
+**/db.sqlite3
+media
+**/media
+
+### Virtualenv ###
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+**/.Python
+**/[Bb]in
+**/[Ii]nclude
+**/[Ll]ib
+**/[Ll]ib64
+**/[Ll]ocal
+**/[Ss]cripts
+**/pyvenv.cfg
+**/.venv
+**/pip-selfcheck.json
+
+### Axios ###
+**/*.iml
+**/.idea
+**/.tscache
+**/.DS_Store
+**/node_modules/
+**/typings/
+**/coverage/
+**/test/typescript/axios.js*
+**/sauce_connect.log
+**/package-lock.json
+
+### Vue ###
+**/.DS_Store
+**/node_modules
+**/*.log
+**/explorations
+**/TODOs.md
+**/dist/*.gz
+**/dist/*.map
+**/dist/vue.common.min.js
+**/test/e2e/reports
+**/test/e2e/screenshots
+**/coverage
+**/RELEASE_NOTE*.md
+**/dist/*.js
+**/packages/vue-server-renderer/basic.js
+**/packages/vue-server-renderer/build.js
+**/packages/vue-server-renderer/server-plugin.js
+**/packages/vue-server-renderer/client-plugin.js
+**/packages/vue-template-compiler/build.js
