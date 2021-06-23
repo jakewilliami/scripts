@@ -1,5 +1,6 @@
 ### Ignore data files ###
 data/
+*.wav
 
 ### Silly macOS stuff ###
 **/.DS_Store
