@@ -1,6 +1,5 @@
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"
-BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 ClassicalCiphers = "ecf26e93-935c-5e64-9b21-bc8ac81b4723"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
