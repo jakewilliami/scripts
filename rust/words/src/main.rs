@@ -17,18 +17,19 @@ use std::{
     path::Path,
 };
 
-static WORDLIST_PATH: impl AsRef<Path> = "/Users/jakeireland/projects/scripts/rust/words/src/wordlist.txt";
+static WORDLIST_PATH: &str = "/Users/jakeireland/projects/scripts/rust/words/src/wordlist.txt";
 static LONGEST_PALINDROME: &str = "tattarrattat";
 
 fn main() {
-    println!("Hello, world!");
+    println!("{:?}", anagrams::get_anagram_map("a   nna".to_string(), "nana".to_string()));
+    // println!("{:?}", read_wordlist(WORDLIST_PATH));
 }
 
 fn read_wordlist(filename: impl AsRef<Path>) -> Vec<String> {
     let file = File::open(filename).expect("No such file");
     let buf = BufReader::new(file);
     let readlines: Vec<String> = buf.lines()
-        .map(|l| l.expect("Counld not parse line"))
+        .map(|l| l.expect("Could not parse line"))
         .collect();
     
     return readlines;
