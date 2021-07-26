@@ -1,6 +1,6 @@
 scripts
 tex-macros
-media-scripts
+# media-scripts
 FaceDetection.jl
 ComputabilityTheory.jl
 CodingTheory.jl

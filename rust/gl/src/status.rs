@@ -1,13 +1,32 @@
+extern crate colored;
+use colored::*;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::ffi::OsString;
+use std::str;
 
 static BASE_DIR: &str = "/Users/jakeireland/projects/";
 
 pub fn get_git_status() {
+	// let red = "\u001b[0;31m";
 	let curr_dir: PathBuf = std::env::current_dir().unwrap();
 	let status: String = git_status(&curr_dir.into_os_string());
-	println!("{:?}", status);
+	// println!("{:?}", status);
+	for (i, s) in status.split_terminator('\n').enumerate() {
+		let mut print_str = String::new();
+		if i == 0 {
+			// ## master...origin/master
+			let s_split: Vec<&str> = s.split_terminator("...").collect();
+			print_str.push_str(&s_split[0][..3]);
+			print_str.push_str(&s_split[0][3..].green().to_string());
+			print_str.push_str("...");
+			print_str.push_str(&s_split[1].red().to_string());
+		} else {
+			print_str.push_str(&s[..2].red().to_string());
+			print_str.push_str(&s[2..]);
+		}
+		println!("{}", print_str);
+	}
 }
 
 fn git_status(dir: &OsString) -> String {
@@ -22,7 +41,7 @@ fn git_status(dir: &OsString) -> String {
 	cmd.arg("status");
 	cmd.arg("--short");
 	cmd.arg("--branch");
-	println!("{:?}", cmd);
+	// println!("{:?}", cmd);
 	let output = cmd
 		.stdout(Stdio::piped())
 		.output()
@@ -76,6 +95,7 @@ pub fn global_status() {
     let v: Vec<&str> = input
         .split('\n')
         .filter(|s| !s.is_empty())
+		.filter(|s| s.get(..1).unwrap() != "#")
         .collect::<Vec<&str>>();
 	
 	// let path: PathBuf = [r"C:\", "windows", "system32.dll"].iter().collect();
@@ -83,15 +103,42 @@ pub fn global_status() {
 	// println!("{:?}", v);
 	
 	for r in v {
-		
 		let mut constructed_path: OsString = BASE_DIR.into();
 		constructed_path.push("/");
 		constructed_path.push(r);
 		constructed_path.push("/");
+		// println!("Going to {:?}", constructed_path);
 		// let git_repo: PathBuf = PathBuf::from(constructed_path);//.as_os_str();
 		// let git_repo: PathBuf = PathBuf::from(format!());//.as_os_str();
 		// println!("{:?}", git_repo);
-		println!("{:?}", git_status(&constructed_path));
+		// println!("{:?}", git_status(&constructed_path));
+		let status = git_status(&constructed_path);
+		// let split_status = status.split_terminator('\n');
+		let length_of_output: usize = status.split_terminator('\n').count(); // can also use .len()
+		if length_of_output == (1 as usize) {
+			// nothing to report
+			continue;
+		}
+		// println!("We are looking at {}", constructed_path.to_str().unwrap());
+		println!("We are looking at {}", r);
+		for (i, s) in status.split_terminator('\n').enumerate() {
+			let mut print_str = String::new();
+			if i == 0 {
+				// ## master...origin/master
+				let s_split: Vec<&str> = s.split_terminator("...").collect();
+				print_str.push_str(&s_split[0][..3]);
+				print_str.push_str(&s_split[0][3..].green().to_string());
+				print_str.push_str("...");
+				print_str.push_str(&s_split[1].red().to_string());
+			} else {
+				print_str.push_str(&s[..2].red().to_string());
+				print_str.push_str(&s[2..]);
+			}
+			if i == (length_of_output - 1) {
+				print_str.push_str("\n");
+			}
+			println!("{}", print_str);
+		}
 	};
 }
 
