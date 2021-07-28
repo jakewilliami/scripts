@@ -1,6 +1,6 @@
 extern crate base64;
 // extern crate reqwest;
-use hyper::{Client, Uri, HeaderMap};
+use hyper::{Client, Uri, HeaderMap, Request};
 // use std::str;
 extern crate lazy_static;
 use lazy_static::lazy_static;
@@ -34,8 +34,15 @@ pub const REGION_KEY_ENCODED: &str = "Q2l0eVRvd24=";
 lazy_static!{
     // static ref STATE: Mutex<MyState> = Mutex::new(MyState::whatever());
     
+    // AS URIs
     static ref GLOB_BASE: Uri = into_uri(GLOB_BASE_ENCODED);
     static ref BASE_PUBLIC_URI: Uri = into_uri(BASE_PUBLIC_URI_ENCODED);
+    static ref FULL_BASE_PUBLIC_URI: Uri = into_uri(
+        format!("{}{}",
+            base64_into_str(GLOB_BASE_ENCODED),
+            base64_into_str(BASE_PUBLIC_URI_ENCODED)
+        ).as_str()
+    );
     // static ref PUBLIC_URI: String = GLOB_BASE
     //     .push_str(into_uri(BASE_PUBLIC_URI_ENCODED))
     //     .push_str(into_uri(PUBLIC_URI_ENCODED));
@@ -65,6 +72,32 @@ lazy_static!{
     static ref UID_KEY: Uri = into_uri(UID_KEY_ENCODED);
     static ref PC_KEY: Uri = into_uri(PC_KEY_ENCODED);
     static ref REGION_KEY: Uri = into_uri(REGION_KEY_ENCODED);
+    
+    // AS STRINGS
+    static ref GLOB_BASE_STR: String = base64_into_str(GLOB_BASE_ENCODED);
+    static ref BASE_PUBLIC_URI_STR: String = base64_into_str(BASE_PUBLIC_URI_ENCODED);
+    static ref FULL_BASE_PUBLIC_URI_STR: String = format!("{}{}",
+        base64_into_str(GLOB_BASE_ENCODED),
+        base64_into_str(BASE_PUBLIC_URI_ENCODED)
+    );
+    static ref PUBLIC_URI_STR: String = format!("{}{}{}",
+        base64_into_str(GLOB_BASE_ENCODED),
+        base64_into_str(BASE_PUBLIC_URI_ENCODED),
+        base64_into_str(PUBLIC_URI_ENCODED)
+    );
+    static ref BASE_API_URI_STR: String = base64_into_str(BASE_API_URI_ENCODED);
+    static ref API_URI_STR: String = base64_into_str(API_URI_ENCODED);
+    
+    static ref LOCATOR_SUFFIX_STR: String = base64_into_str(LOCATOR_SUFFIX_ENCODED);
+    static ref UID_QUERY_STR: String = base64_into_str(UID_QUERY_ENCODED);
+    static ref DPID_QUERY_STR: String = base64_into_str(DPID_QUERY_ENCODED);
+    static ref PC_QUERY_STR: String = base64_into_str(PC_QUERY_ENCODED);
+    static ref ADDR_QUERY_STR: String = base64_into_str(ADDR_QUERY_ENCODED);
+    
+    static ref COORD_KEY_STR: String = base64_into_str(COORD_KEY_ENCODED);
+    static ref UID_KEY_STR: String = base64_into_str(UID_KEY_ENCODED);
+    static ref PC_KEY_STR: String = base64_into_str(PC_KEY_ENCODED);
+    static ref REGION_KEY_STR: String = base64_into_str(REGION_KEY_ENCODED);
 }
 
 // fn str2base64(str: String) {
@@ -112,11 +145,48 @@ pub async fn make_request(url: Uri) {
     // let mut headers = header
     // let mut headers = reqwest::header::HeaderMap::new(); headers.insert(reqwest::header::USER_AGENT,reqwest::header::HeaderValue::from_static("curl"));
     let mut headers = HeaderMap::new();
-    headers.append(HOST, "world".parse().unwrap())
+    
+    //// const reqwest header names
+    // headers.append(HOST, BASE_API_URI_STR.parse().unwrap());
+    // // headers.append("Sec-Ch-Ua", "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"90\"".parse().unwrap());
+    // headers.append(ACCEPT, "application/json".parse().unwrap());
+    // // headers.append("Sec-Ch-Ua-Mobile", "?0".parse().unwrap());
+    // headers.append(USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36".parse().unwrap());
+    // headers.append(ORIGIN, FULL_BASE_PUBLIC_URI_STR.parse().unwrap());
+    // // WE CAN IMPLEMENT THIS SOON // headers.append(ACCEPT_ENCODING, "gzip, deflate".parse().unwrap());
+    // // headers.append("Sec-Fetch-Site", "same-site".parse().unwrap());
+    // // headers.append("Sec-Fetch-Mode", "cors".parse().unwrap());
+    // // headers.append("Sec-Fetch-Dest", "empty".parse().unwrap());
+    // headers.append(REFERER, PUBLIC_URI_STR.parse().unwrap());
+    // headers.append(ACCEPT_LANGUAGE, "en-GB,en-US;q=0.9,en;q=0.8".parse().unwrap());
+    // headers.append(CONNECTION, "close".parse().unwrap());
+    
+    //// string-based header names
+    // headers.append("host", BASE_API_URI_STR.parse().unwrap());
+    // // headers.append("Sec-Ch-Ua", "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"90\"".parse().unwrap());
+    // headers.append("accept", "application/json".parse().unwrap());
+    // // headers.append("Sec-Ch-Ua-Mobile", "?0".parse().unwrap());
+    // headers.append("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36".parse().unwrap());
+    // headers.append("origin", FULL_BASE_PUBLIC_URI_STR.parse().unwrap());
+    // // WE CAN IMPLEMENT THIS SOON // headers.append(ACCEPT_ENCODING, "gzip, deflate".parse().unwrap());
+    // // headers.append("Sec-Fetch-Site", "same-site".parse().unwrap());
+    // // headers.append("Sec-Fetch-Mode", "cors".parse().unwrap());
+    // // headers.append("Sec-Fetch-Dest", "empty".parse().unwrap());
+    // headers.append("referer", PUBLIC_URI_STR.parse().unwrap());
+    // headers.append("accept-language", "en-GB,en-US;q=0.9,en;q=0.8".parse().unwrap());
+    // headers.append("connection", "close".parse().unwrap());
     let res = client
         .get(url)
-        .header()
-        .await
+        // .headers(headers)
+        .headers_mut()
+        .insert("host", BASE_API_URI_STR.parse().unwrap())
+        .insert("accept", "application/json".parse().unwrap())
+        .insert("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36".parse().unwrap())
+        .insert("origin", FULL_BASE_PUBLIC_URI_STR.parse().unwrap())
+        .insert("referer", PUBLIC_URI_STR.parse().unwrap())
+        .insert("accept-language", "en-GB,en-US;q=0.9,en;q=0.8".parse().unwrap())
+        .insert("connection", "close".parse().unwrap())
+        .await;
     match res { // .await
         Ok(res) => println!("Resp: {}", res.status()),
         Err(err) => println!("Error: {}", err),
