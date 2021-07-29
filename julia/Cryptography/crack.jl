@@ -1,6 +1,7 @@
 using ClassicalCiphers, Combinatorics
 
 include(joinpath(homedir(), "projects", "scripts", "julia", "Other", "Words.jl", "src", "Anagrams.jl"))
+include(joinpath(homedir(), "projects", "scripts", "julia", "Cryptography", "GetVigenereKey.jl"))
 
 function print_results(str::String)
 	println("Result from best guess at a Caesar shift:")
@@ -65,4 +66,17 @@ function main2()
     end
 end
 
-main2()
+# main2()
+
+function main3()
+    axolotyl = ['L', 'M', 'V', 'C', 'C', 'I', 'B', 'K', 'X']
+    wordlist = readlines(joinpath(homedir(), "projects", "scripts", "julia", "Other", "Words.jl", "src", "wordlist.txt"))
+    for str in lowercase.(join.(collect(permutations(axolotyl))))
+        possible_key = get_vigenere_key("asteroids", str)
+        if possible_key ∈ wordlist
+            println("Found possible key: \"$possible_key\"")
+        end
+    end
+end
+
+main3()
