@@ -17,10 +17,17 @@ pub fn get_git_status() {
 		if i == 0 {
 			// ## master...origin/master
 			let s_split: Vec<&str> = s.split_terminator("...").collect();
+			let branch_name = &s_split[0][3..].green().to_string(); // e.g., master
+			let rest_of_line: Vec<&str> = s_split[1].split_terminator("/").collect();
+			// let origin_and_branch: Vec<&str> = rest_of_line.;
+			
+			let origin_and_branch = &s_split[1].red().to_string(); // e.g., origin/master
+			
 			print_str.push_str(&s_split[0][..3]);
-			print_str.push_str(&s_split[0][3..].green().to_string());
+			print_str.push_str(branch_name);
 			print_str.push_str("...");
-			print_str.push_str(&s_split[1].red().to_string());
+			
+			print_str.push_str(origin_and_branch);
 		} else {
 			print_str.push_str(&s[..2].red().to_string());
 			print_str.push_str(&s[2..]);
