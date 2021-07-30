@@ -1,3 +1,3 @@
 cargo build
-strip ./target/debug/words
-cp -f ./target/debug/words ./
+strip ./target/debug/$(basename "$PWD")
+cp -f ./target/debug/$(basename "$PWD") ./

@@ -1,3 +1,3 @@
 cargo build
-strip ./target/debug/gl
-cp -f ./target/debug/gl ./
+strip ./target/debug/$(basename "$PWD")
+cp -f ./target/debug/$(basename "$PWD") ./
