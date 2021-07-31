@@ -1,5 +1,5 @@
-extern crate colored;
-use colored::*;
+// extern crate colored;
+// use colored::*;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::ffi::OsString;
@@ -12,28 +12,30 @@ pub fn get_git_status() {
 	let curr_dir: PathBuf = std::env::current_dir().unwrap();
 	let status: String = git_status(&curr_dir.into_os_string());
 	// println!("{:?}", status);
-	for (i, s) in status.split_terminator('\n').enumerate() {
-		let mut print_str = String::new();
-		if i == 0 {
-			// ## master...origin/master
-			let s_split: Vec<&str> = s.split_terminator("...").collect();
-			let branch_name = &s_split[0][3..].green().to_string(); // e.g., master
-			let rest_of_line: Vec<&str> = s_split[1].split_terminator("/").collect();
-			// let origin_and_branch: Vec<&str> = rest_of_line.;
-			
-			let origin_and_branch = &s_split[1].red().to_string(); // e.g., origin/master
-			
-			print_str.push_str(&s_split[0][..3]);
-			print_str.push_str(branch_name);
-			print_str.push_str("...");
-			
-			print_str.push_str(origin_and_branch);
-		} else {
-			print_str.push_str(&s[..2].red().to_string());
-			print_str.push_str(&s[2..]);
-		}
-		println!("{}", print_str);
-	}
+	// THE FOLLOWING IS OUTDATED CODE, BEFORE I COULD CAPTURE THE COLOUR OUTPUT
+	// for (i, s) in status.split_terminator('\n').enumerate() {
+	// 	let mut print_str = String::new();
+	// 	if i == 0 {
+	// 		// ## master...origin/master
+	// 		let s_split: Vec<&str> = s.split_terminator("...").collect();
+	// 		let branch_name = &s_split[0][3..].green().to_string(); // e.g., master
+	// 		let rest_of_line: Vec<&str> = s_split[1].split_terminator("/").collect();
+	// 		// let origin_and_branch: Vec<&str> = rest_of_line.;
+	//
+	// 		let origin_and_branch = &s_split[1].red().to_string(); // e.g., origin/master
+	//
+	// 		print_str.push_str(&s_split[0][..3]);
+	// 		print_str.push_str(branch_name);
+	// 		print_str.push_str("...");
+	//
+	// 		print_str.push_str(origin_and_branch);
+	// 	} else {
+	// 		print_str.push_str(&s[..2].red().to_string());
+	// 		print_str.push_str(&s[2..]);
+	// 	}
+	// 	println!("{}", print_str);
+	// }
+	println!("{}", status)
 }
 
 fn git_status(dir: &OsString) -> String {
@@ -43,6 +45,8 @@ fn git_status(dir: &OsString) -> String {
     // let mut cmd = Command::new(os_string);
 	// println!("{:?}", cmd);
 	let mut cmd = Command::new("git");
+	cmd.arg("-c");
+	cmd.arg("color.status=always");
 	cmd.arg("-C");
 	cmd.arg(dir);
 	cmd.arg("status");
@@ -68,6 +72,8 @@ fn git_status(dir: &OsString) -> String {
 fn git_diff_exit_code(dir: &OsString) {
 	// git diff-index --quiet HEAD --;
 	let mut cmd = Command::new("git");
+	// cmd.arg("-c");
+	// cmd.arg("color.diff-index=always");
 	cmd.arg("-C");
 	cmd.arg(dir);
 	cmd.arg("diff-index");
@@ -126,26 +132,28 @@ pub fn global_status() {
 			// nothing to report
 			continue;
 		}
-		// println!("We are looking at {}", constructed_path.to_str().unwrap());
-		println!("We are looking at {}", r);
-		for (i, s) in status.split_terminator('\n').enumerate() {
-			let mut print_str = String::new();
-			if i == 0 {
-				// ## master...origin/master
-				let s_split: Vec<&str> = s.split_terminator("...").collect();
-				print_str.push_str(&s_split[0][..3]);
-				print_str.push_str(&s_split[0][3..].green().to_string());
-				print_str.push_str("...");
-				print_str.push_str(&s_split[1].red().to_string());
-			} else {
-				print_str.push_str(&s[..2].red().to_string());
-				print_str.push_str(&s[2..]);
-			}
-			if i == (length_of_output - 1) {
-				print_str.push_str("\n");
-			}
-			println!("{}", print_str);
-		}
+		println!("We are looking at {}", constructed_path.to_str().unwrap());
+		println!("{}", status)
+		// THE FOLLOWING IS OUTDATED, WHEN I DIDN'T REALISE WE COULD CAPTURE THE COLOUR OUTPUT OF STATUS
+		// println!("We are looking at {}", r);
+		// for (i, s) in status.split_terminator('\n').enumerate() {
+		// 	let mut print_str = String::new();
+		// 	if i == 0 {
+		// 		// ## master...origin/master
+		// 		let s_split: Vec<&str> = s.split_terminator("...").collect();
+		// 		print_str.push_str(&s_split[0][..3]);
+		// 		print_str.push_str(&s_split[0][3..].green().to_string());
+		// 		print_str.push_str("...");
+		// 		print_str.push_str(&s_split[1].red().to_string());
+		// 	} else {
+		// 		print_str.push_str(&s[..2].red().to_string());
+		// 		print_str.push_str(&s[2..]);
+		// 	}
+		// 	if i == (length_of_output - 1) {
+		// 		print_str.push_str("\n");
+		// 	}
+		// 	println!("{}", print_str);
+		// }
 	};
 }
 
