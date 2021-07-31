@@ -1,3 +1,3 @@
 cargo build
-strip ./target/debug/pcall
-cp -f ./target/debug/pcall ./
+strip ./target/debug/$(basename "$PWD")
+cp -f ./target/debug/$(basename "$PDW") ./
