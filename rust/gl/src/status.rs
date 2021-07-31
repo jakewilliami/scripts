@@ -133,7 +133,7 @@ pub fn global_status() {
 			continue;
 		}
 		println!("We are looking at {}", constructed_path.to_str().unwrap());
-		println!("{}", status)
+		println!("{}", status);
 		// THE FOLLOWING IS OUTDATED, WHEN I DIDN'T REALISE WE COULD CAPTURE THE COLOUR OUTPUT OF STATUS
 		// println!("We are looking at {}", r);
 		// for (i, s) in status.split_terminator('\n').enumerate() {
