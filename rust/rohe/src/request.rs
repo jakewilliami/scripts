@@ -1,9 +1,17 @@
+// #[path = "postcodes.rs"] mod postcodes;
+use super::postcodes::Postcode;
+
+use super::response::*;
+
+// use postcodes::Postcode;
+
 extern crate base64;
 // extern crate hyper;
 // extern crate futures;
 // extern crate
 extern crate reqwest;
 use reqwest::header::*;
+// use reqwest::Url
 // use hyper::{Client, Uri, HeaderMap, Request};
 use hyper::Uri;
 // use std::str;
@@ -13,6 +21,10 @@ use lazy_static::lazy_static;
 // use bytes::Bytes;
 
 extern crate serde_json;
+
+fn print_type_of<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>())
+}
 
 pub const TOOLS0: &str = "dG9vbHMubnpwb3N0LmNvLm56";
 pub const TOOLS1: &str = "aHR0cHM6Ly90b29scy5uenBvc3QuY28ubnovbGVnYWN5L2FwaS9zdWdnZXN0X3BhcnRpYWw=";
@@ -109,6 +121,14 @@ lazy_static!{
     pub static ref TEST_URI: Uri = "https://httpbin.org/ip".parse().unwrap();
 }
 
+// #[repr(C)]
+// union PostCode {
+//     I: isize,
+//     S: String
+// }
+
+// FUNCTIONS BEGIN HERE
+
 // fn str2base64(str: String) {
 //     return base64::encode(str.as_bytes());
 //     // return str.as_bytes().to_base64(base64::STANDARD);
@@ -147,9 +167,24 @@ fn into_uri(base64str: &str) -> Uri {
     return uri;
 }
 
+// fn error_if_unsuccessful(j: serde_json::Value) {
+// 	if j["success"] || () {
+// 		let err = String::new();
+// 		err.push_str(j["error"]["message"]);
+// 		err.push_str("; error code");
+// 		err.push_str(j["error"]["code"].to_string());
+//
+// 	}
+// }
+//
+// error_if_unsuccessful(j::D) where {D <: Dict} =
+// 	j["success"] || error(j["error"]["message"] * "; error code " * string(j["error"]["code"]))
+
 // #[tokio::main]
 // async url: Uri
-pub async fn make_request(uri: &str) -> serde_json::Value {
+pub async fn make_request(uri: &str) -> serde_json::Map<String, serde_json::Value> {
+// pub async fn make_request(uri: &str) -> String {
+// pub async fn make_request(uri: &str) -> impl Future<Output = serde_json::Value> {
     // build the client using the builder pattern
     let client = reqwest::Client::new();
     //     .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
@@ -192,7 +227,7 @@ pub async fn make_request(uri: &str) -> serde_json::Value {
     headers.append("accept-language", "en-GB,en-US;q=0.9,en;q=0.8".parse().unwrap());
     headers.append("connection", "close".parse().unwrap());
     
-    println!("Requesting from: {}", uri);
+    // println!("Requesting from: {}", uri);
     
     // let uri: Uri = postcode_uri.parse().unwrap();
     
@@ -226,8 +261,69 @@ pub async fn make_request(uri: &str) -> serde_json::Value {
     println!("Resp: {}", body);
     
     let data: serde_json::Value = serde_json::from_str(&body).expect("The JSON response was not well defined");
+    let map: serde_json::Map<String, serde_json::Value> = data.as_object().unwrap().clone();
     
-    return data;
+    return map;
+    // return body;
+}
+
+// I have made the decision to use Option rather than Result because I don't actually want anything to error if it doesn't find anything, just want it to silently return.
+// pub async fn get_suggested_postcodes(postcode: Postcode) -> Result<serde_json::Value, &'static serde_json::Value> {
+// pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<&'static serde_json::Value> {
+pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostcode>> {
+    let mut base_URL: String = String::new();
+    base_URL.push_str(&API_URI_STR);
+    base_URL.push_str(&UID_QUERY_STR);
+    base_URL.push_str(postcode.postcode.as_str());
+    
+    let data: serde_json::Map<String, serde_json::Value> = make_request(base_URL.as_str()).await;
+    // let data = make_request(base_URL.as_str()).await;
+    // let deserialised: PostcodeResponse = serde_json::from_str(data.as_str()).unwrap();
+    // println!("{}", base_URL);
+    // let resp = make_request(base_URL.as_str());
+    // print_type_of(&resp);
+    
+    let is_success = &data["success"];
+    // let is_success: bool = deserialised.success;
+    if is_success != true {
+        // let err = String::new();
+		// err.push_str(data["error"]["message"].as_str().unwrap());
+		// err.push_str("; error code");
+		// err.push_str(data["error"]["code"].as_str());
+		// return Err(err);
+        // let err = &data["error"]["message"];
+        // let err = serde_json::from_value(json["subtree"][0].take())?
+        // return Err(err);
+        return None;
+	}
+    
+    let deserialised: PostcodeSearchResponse = serde_json::value::from_value(data["addresses"]).unwrap();
+    
+    println!("{:?}", deserialised);
+    
+    // let response_key = "addresses";
+    
+    // match res { // .await
+    //     Ok(res) => println!("Resp: {}", res.status()),
+    //     Err(err) => println!("Error: {}", err),
+    // }
+    
+    // return Ok(data[response_key]);
+    // let potential_postcodes = data.get(response_key);
+    // return potential_postcodes;
+    // let potential_postcodes = &data[response_key];
+    
+    // return Some(potential_postcodes);
+    return Some(deserialised.addresses)
+    // return Some(potential_postcodes);
+    
+    // if potential_postcodes.is_some() {
+    //     // return Some(potential_postcodes.unwrap())
+    //     return potential_postcodes;
+    // } else {
+    //     return None;
+    // }
+    // return Some(data.get(response_key).unwrap())
 }
 
 // pub fn make_
