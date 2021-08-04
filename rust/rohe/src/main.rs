@@ -1,6 +1,8 @@
 mod postcodes;
 mod request;
 mod response;
+mod constants;
+mod utils;
 
 use postcodes::*;
 use response::*;
@@ -117,4 +119,15 @@ async fn main() {
 	// println!("Body:\n{}", body);
 	//
 	// Ok(())
+	
+	if matches.is_present("ADDR") {
+		// get value of address
+		let addr = matches.value_of("ADDR").unwrap();
+		// println!("{:?}", addr);
+		let resp: Option<Vec<EachAddress>> = request::get_suggested_addresses(addr.to_string()).await;
+		println!("{:?}", resp);
+		// println!("{}", postcode_uri);
+		// request::make_request(postcode_uri.as_str()).await;
+		// println!("{:}", resp[]);
+	}
 }

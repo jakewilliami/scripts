@@ -1,11 +1,10 @@
 // #[path = "postcodes.rs"] mod postcodes;
 use super::postcodes::Postcode;
-
 use super::response::*;
+use super::constants::*;
+// use super::utils::*;
 
-// use postcodes::Postcode;
-
-extern crate base64;
+// extern crate base64;
 // extern crate hyper;
 // extern crate futures;
 // extern crate
@@ -13,170 +12,16 @@ extern crate reqwest;
 use reqwest::header::*;
 // use reqwest::Url
 // use hyper::{Client, Uri, HeaderMap, Request};
-use hyper::Uri;
+// use hyper::Uri;
 // use std::str;
-extern crate lazy_static;
-use lazy_static::lazy_static;
 // extern crate bytes;
 // use bytes::Bytes;
 
 extern crate serde_json;
 
-fn print_type_of<T>(_: &T) {
-    println!("{}", std::any::type_name::<T>())
-}
-
-pub const TOOLS0: &str = "dG9vbHMubnpwb3N0LmNvLm56";
-pub const TOOLS1: &str = "aHR0cHM6Ly90b29scy5uenBvc3QuY28ubnovbGVnYWN5L2FwaS9zdWdnZXN0X3BhcnRpYWw=";
-pub const TOOLS2: &str = "aHR0cHM6Ly90b29scy5uenBvc3QuY28ubnovbGVnYWN5L2FwaS9wYXJ0aWFsX2RldGFpbHM=";
-pub const BASE0: &str = "aHR0cHM6Ly93d3cubnpwb3N0LmNvLm56";
-pub const BASE1: &str = "aHR0cHM6Ly93d3cubnpwb3N0LmNvLm56L3Rvb2xzL2FkZHJlc3MtcG9zdGNvZGUtZmluZGVy";
-
-pub const GLOB_BASE_ENCODED: &str = "aHR0cHM6Ly93d3cu";
-const BASE_PUBLIC_URI_ENCODED: &str = "bnpwb3N0LmNvLm56";
-// const PUBLIC_URI_ENCODED = "aHR0cHM6Ly93d3cubnpwb3N0LmNvLm56L3Rvb2xzL2FkZHJlc3MtcG9zdGNvZGUtZmluZGVy";
-pub const PUBLIC_URI_ENCODED: &str = "L3Rvb2xzL2FkZHJlc3MtcG9zdGNvZGUtZmluZGVy";
-pub const BASE_API_URI_ENCODED: &str = "dG9vbHMubnpwb3N0LmNvLm56";
-pub const API_URI_ENCODED: &str = "aHR0cHM6Ly90b29scy5uenBvc3QuY28ubnovbGVnYWN5L2FwaS8=";
-
-pub const LOCATOR_SUFFIX_ENCODED: &str = "Jk1heERhdGE9bWF4JTNBMTA=";
-pub const UID_QUERY_ENCODED: &str = "L3N1Z2dlc3RfcGFydGlhbD9xPQ==";
-pub const DPID_QUERY_ENCODED: &str = "L3N1Z2dlc3Q/cT0=";
-pub const PC_QUERY_ENCODED: &str = "L3BhcnRpYWxfZGV0YWlscz91bmlxdWVfaWQ9";
-pub const ADDR_QUERY_ENCODED: &str = "L2RldGFpbHM/ZHBpZD0=";
-
-pub const COORD_KEY_ENCODED: &str = "TlpHRDJrQ29vcmQ=";
-pub const UID_KEY_ENCODED: &str = "VW5pcXVlSWQ=";
-pub const PC_KEY_ENCODED: &str = "RnVsbFBhcnRpYWw=";
-pub const REGION_KEY_ENCODED: &str = "Q2l0eVRvd24=";
-
-lazy_static!{
-    // static ref STATE: Mutex<MyState> = Mutex::new(MyState::whatever());
-    
-    // AS URIs
-    static ref GLOB_BASE: Uri = into_uri(GLOB_BASE_ENCODED);
-    static ref BASE_PUBLIC_URI: Uri = into_uri(BASE_PUBLIC_URI_ENCODED);
-    static ref FULL_BASE_PUBLIC_URI: Uri = into_uri(
-        format!("{}{}",
-            base64_into_str(GLOB_BASE_ENCODED),
-            base64_into_str(BASE_PUBLIC_URI_ENCODED)
-        ).as_str()
-    );
-    // static ref PUBLIC_URI: String = GLOB_BASE
-    //     .push_str(into_uri(BASE_PUBLIC_URI_ENCODED))
-    //     .push_str(into_uri(PUBLIC_URI_ENCODED));
-    static ref PUBLIC_URI: Uri = into_uri(
-        format!("{}{}{}",
-            base64_into_str(GLOB_BASE_ENCODED),
-            base64_into_str(BASE_PUBLIC_URI_ENCODED),
-            base64_into_str(PUBLIC_URI_ENCODED)
-        ).as_str()
-    );
-    // static ref PUBLIC_URI: String = String::new()
-    //     .push_str(&GLOB_BASE)
-    //     .push_str(&into_uri(BASE_PUBLIC_URI_ENCODED))
-    //     .push_str(&into_uri(PUBLIC_URI_ENCODED));
-    // PUBLIC_URI.push_str(into_uri(BASE_PUBLIC_URI_ENCODED));
-    // PUBLIC_URI.push_str(into_uri(PUBLIC_URI_ENCODED));
-    static ref BASE_API_URI: Uri = into_uri(BASE_API_URI_ENCODED);
-    static ref API_URI: Uri = into_uri(API_URI_ENCODED);
-    
-    static ref LOCATOR_SUFFIX: Uri = into_uri(LOCATOR_SUFFIX_ENCODED);
-    static ref UID_QUERY: Uri = into_uri(UID_QUERY_ENCODED);
-    static ref DPID_QUERY: Uri = into_uri(DPID_QUERY_ENCODED);
-    static ref PC_QUERY: Uri = into_uri(PC_QUERY_ENCODED);
-    static ref ADDR_QUERY: Uri = into_uri(ADDR_QUERY_ENCODED);
-    
-    static ref COORD_KEY: Uri = into_uri(COORD_KEY_ENCODED);
-    static ref UID_KEY: Uri = into_uri(UID_KEY_ENCODED);
-    static ref PC_KEY: Uri = into_uri(PC_KEY_ENCODED);
-    static ref REGION_KEY: Uri = into_uri(REGION_KEY_ENCODED);
-    
-    // AS STRINGS
-    static ref GLOB_BASE_STR: String = base64_into_str(GLOB_BASE_ENCODED);
-    static ref BASE_PUBLIC_URI_STR: String = base64_into_str(BASE_PUBLIC_URI_ENCODED);
-    static ref FULL_BASE_PUBLIC_URI_STR: String = format!("{}{}",
-        base64_into_str(GLOB_BASE_ENCODED),
-        base64_into_str(BASE_PUBLIC_URI_ENCODED)
-    );
-    static ref PUBLIC_URI_STR: String = format!("{}{}{}",
-        base64_into_str(GLOB_BASE_ENCODED),
-        base64_into_str(BASE_PUBLIC_URI_ENCODED),
-        base64_into_str(PUBLIC_URI_ENCODED)
-    );
-    static ref BASE_API_URI_STR: String = base64_into_str(BASE_API_URI_ENCODED);
-    static ref API_URI_STR: String = base64_into_str(API_URI_ENCODED);
-    
-    static ref LOCATOR_SUFFIX_STR: String = base64_into_str(LOCATOR_SUFFIX_ENCODED);
-    static ref UID_QUERY_STR: String = base64_into_str(UID_QUERY_ENCODED);
-    static ref DPID_QUERY_STR: String = base64_into_str(DPID_QUERY_ENCODED);
-    static ref PC_QUERY_STR: String = base64_into_str(PC_QUERY_ENCODED);
-    static ref ADDR_QUERY_STR: String = base64_into_str(ADDR_QUERY_ENCODED);
-    
-    static ref COORD_KEY_STR: String = base64_into_str(COORD_KEY_ENCODED);
-    static ref UID_KEY_STR: String = base64_into_str(UID_KEY_ENCODED);
-    static ref PC_KEY_STR: String = base64_into_str(PC_KEY_ENCODED);
-    static ref REGION_KEY_STR: String = base64_into_str(REGION_KEY_ENCODED);
-}
-
-// #[repr(C)]
-// union PostCode {
-//     I: isize,
-//     S: String
-// }
-
-// FUNCTIONS BEGIN HERE
-
-// fn str2base64(str: String) {
-//     return base64::encode(str.as_bytes());
-//     // return str.as_bytes().to_base64(base64::STANDARD);
-// }
-
-fn base64_into_str(base64str: &str) -> String {
-    // let bytes = base64::decode(Bytes::from(base64str)).unwrap();
-    let bytes = base64::decode(base64str).unwrap();
-    return String::from_utf8(bytes).expect("Invalid UTF-8 byte sequence");
-}
-
-// fn into_uri(base64str: &str) -> Uri {
-//     let bytes = base64::decode(base64str).unwrap();
-//     return String::from_utf8(bytes)
-//         .expect("Invalid UTF-8 byte sequence")
-//         .parse()
-//         .unwrap();
-// }
-
-fn into_uri(base64str: &str) -> Uri {
-    let bytes = base64::decode(base64str).unwrap();
-    // return String::from_utf8(bytes)
-    //     .expect("Invalid UTF-8 byte sequence")
-    //     .parse()
-    //     .unwrap();
-    //     let bytes = Bytes::from("http://example.com/foo");
-    // let uri = Uri::from_shared(bytes).unwrap();
-    // return base64::decode(base64str)
-    //     .unwrap()
-    //     .Uri::from_shared(bytes)
-    //     .unwrap()
-    let uri: Uri = String::from_utf8(bytes)
-        .expect("Invalid UTF-8 byte sequence")
-        .parse()
-        .unwrap();
-    return uri;
-}
-
-// fn error_if_unsuccessful(j: serde_json::Value) {
-// 	if j["success"] || () {
-// 		let err = String::new();
-// 		err.push_str(j["error"]["message"]);
-// 		err.push_str("; error code");
-// 		err.push_str(j["error"]["code"].to_string());
-//
-// 	}
-// }
-//
-// error_if_unsuccessful(j::D) where {D <: Dict} =
-// 	j["success"] || error(j["error"]["message"] * "; error code " * string(j["error"]["code"]))
+/*
+=== Main request method ===
+*/
 
 // #[tokio::main]
 // async url: Uri
@@ -265,6 +110,17 @@ pub async fn make_request(uri: &str) -> serde_json::Map<String, serde_json::Valu
     // return body;
 }
 
+/*
+=== Locator methods ===
+*/
+
+/***
+```
+get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostcode>>
+```
+
+Sends a request to get matching postcodes based on your input query.  Each returned dictionary contains the keys `"UniqueID"` and `"FullPartial"`.  `UniqueID` is used by `get_postcode_details`.
+***/
 // I have made the decision to use Option rather than Result because I don't actually want anything to error if it doesn't find anything, just want it to silently return.
 // pub async fn get_suggested_postcodes(postcode: Postcode) -> Result<serde_json::Value, &'static serde_json::Value> {
 // pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<&'static serde_json::Value> {
@@ -331,4 +187,34 @@ pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostc
     // return Some(data.get(response_key).unwrap())
 }
 
-// pub fn make_
+/***
+```
+get_suggested_addresses(addr: String) -> Option<Vec<EachAddress>>
+```
+
+Sends a request to get matching addresses based on your input query.  Each returned dictionary contains the keys `"SourceDesc"`, `"FullAddress"`, and `"DPID"`.  `DPID` is used by `get_address_details`.
+***/
+pub async fn get_suggested_addresses(addr: String) -> Option<Vec<EachAddress>> {
+    let mut base_URL: String = String::new();
+    base_URL.push_str(&API_URI_STR);
+    base_URL.push_str(&DPID_QUERY_STR);
+    base_URL.push_str(addr.as_str());
+    
+    let data: serde_json::Map<String, serde_json::Value> = make_request(base_URL.as_str()).await;
+    
+    let is_success = &data["success"];
+    if is_success != true {
+        return None;
+	}
+    
+    let res = &data["addresses"];
+    let potential_postcodes: Vec<EachAddress> = serde_json::value::from_value(res.to_owned()).unwrap();
+    
+    return Some(potential_postcodes);
+}
+
+/*
+=== Details methods ===
+*/
+
+// fn get_postcode_details(unique_id: )

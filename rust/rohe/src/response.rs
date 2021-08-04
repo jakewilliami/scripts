@@ -22,7 +22,6 @@ pub struct PostcodeSearchResponse {
 
 // successful address response
 
-/*
 #[derive(Serialize, Deserialize, Debug)]
 pub struct EachAddress {
     pub SourceDesc: String,
@@ -37,6 +36,7 @@ pub struct AddressSearchResponse {
     pub success: bool,
 }
 
+/*
 #[derive(Serialize, Deserialize, Debug)]
 pub struct GeoProperties {
     pub code: String,
