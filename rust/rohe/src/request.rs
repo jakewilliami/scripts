@@ -117,8 +117,6 @@ lazy_static!{
     static ref UID_KEY_STR: String = base64_into_str(UID_KEY_ENCODED);
     static ref PC_KEY_STR: String = base64_into_str(PC_KEY_ENCODED);
     static ref REGION_KEY_STR: String = base64_into_str(REGION_KEY_ENCODED);
-    
-    pub static ref TEST_URI: Uri = "https://httpbin.org/ip".parse().unwrap();
 }
 
 // #[repr(C)]
@@ -258,7 +256,7 @@ pub async fn make_request(uri: &str) -> serde_json::Map<String, serde_json::Valu
 		.await
 		.expect("Failed to retrieve body of response");
     
-    println!("Resp: {}", body);
+    // println!("Resp: {}", body);
     
     let data: serde_json::Value = serde_json::from_str(&body).expect("The JSON response was not well defined");
     let map: serde_json::Map<String, serde_json::Value> = data.as_object().unwrap().clone();
@@ -270,6 +268,8 @@ pub async fn make_request(uri: &str) -> serde_json::Map<String, serde_json::Valu
 // I have made the decision to use Option rather than Result because I don't actually want anything to error if it doesn't find anything, just want it to silently return.
 // pub async fn get_suggested_postcodes(postcode: Postcode) -> Result<serde_json::Value, &'static serde_json::Value> {
 // pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<&'static serde_json::Value> {
+// pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostcode>> {
+// pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<serde_json::Map<String, serde_json::Value>> {
 pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostcode>> {
     let mut base_URL: String = String::new();
     base_URL.push_str(&API_URI_STR);
@@ -297,9 +297,13 @@ pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostc
         return None;
 	}
     
-    let deserialised: PostcodeSearchResponse = serde_json::value::from_value(data["addresses"]).unwrap();
+    // let deserialised: PostcodeSearchResponse = serde_json::value::from_value(data["addresses"]).unwrap();
+    let res = &data["addresses"];
+    // let potential_postcodes: serde_json::Map<String, serde_json::Value> = res.as_object().unwrap().clone();
+    let potential_postcodes: Vec<EachPostcode> = serde_json::value::from_value(res.to_owned()).unwrap();
     
-    println!("{:?}", deserialised);
+    // println!("{:?}", deserialised);
+    // println!("{:?}", potential_postcodes);
     
     // let response_key = "addresses";
     
@@ -313,8 +317,9 @@ pub async fn get_suggested_postcodes(postcode: Postcode) -> Option<Vec<EachPostc
     // return potential_postcodes;
     // let potential_postcodes = &data[response_key];
     
+    return Some(potential_postcodes);
     // return Some(potential_postcodes);
-    return Some(deserialised.addresses)
+    // return Some(deserialised.addresses)
     // return Some(potential_postcodes);
     
     // if potential_postcodes.is_some() {

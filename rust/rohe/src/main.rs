@@ -1,11 +1,18 @@
+mod postcodes;
 mod request;
+mod response;
+
+use postcodes::*;
+use response::*;
 
 extern crate clap;
-use clap::{Arg, App, SubCommand};
+use clap::{Arg, App};//, SubCommand};
 
-extern crate reqwest;
+// extern crate reqwest;
+// use reqwest;
 
-#[async_std::main]
+// #[async_std::main]
+#[tokio::main]
 async fn main() {
     // println!("Hello, world!");
     // println!("{}", request::into_URI(request::TOOLS0))
@@ -35,7 +42,7 @@ async fn main() {
 							)
 							.arg(Arg::with_name("POSTCODE")
 								.short("p")
-								.long("all")
+								.long("postcode")
 								// .value_name("FILE")
 								.help("Takes postcode as input.  Default return value is the postcode's associated region.")
 								.takes_value(true)
@@ -72,9 +79,25 @@ async fn main() {
 	
 	
 	// URIs as strings
+    // let mut address_uri: String = String::new();
+    
+    // postcode_uri.push_str("6021");
 	
+    // request::make_request(postcode_uri.as_str()).await;
 	
-    request::make_request(postcode_uri.as_str()).await;
+	if matches.is_present("POSTCODE") {
+		// get value of postcode
+		let postcode = matches.value_of("POSTCODE").unwrap().parse_postcode();
+		// println!("{:?}", postcode);
+		// construct postcode uri
+		// let mut postcode_uri: String = String::new();
+		// postcode_uri.push_str(postcode);
+		let resp: Option<Vec<EachPostcode>> = request::get_suggested_postcodes(postcode).await;
+		println!("{:?}", resp);
+		// println!("{}", postcode_uri);
+		// request::make_request(postcode_uri.as_str()).await;
+		// println!("{:}", resp[]);
+	}
 	
 	// let client = reqwest::Client::new();
 	// let res = client

@@ -5,6 +5,7 @@ pub struct Postcode {
 
 pub trait PostcodeConstructor {
 	fn parse_postcode(&self) -> Postcode;
+	// fn to_string(&self) -> String;
 }
 
 impl PostcodeConstructor for i64 {
@@ -38,3 +39,9 @@ impl PostcodeConstructor for String {
 		};
 	}
 }
+
+// impl PostcodeConstructor for Postcode {
+// 	fn to_string(&self) -> String {
+// 		return Postcode.postcode;
+// 	}
+// }
