@@ -217,4 +217,9 @@ pub async fn get_suggested_addresses(addr: String) -> Option<Vec<EachAddress>> {
 === Details methods ===
 */
 
-// fn get_postcode_details(unique_id: )
+async fn get_postcode_details(unique_id: i64) -> Option<> {
+	let mut base_URL: String = String::new();
+    base_URL.push_str(&API_URI_STR);
+    base_URL.push_str(&PC_QUERY_STR);
+    base_URL.push_str(unique_id.as_str());
+}
