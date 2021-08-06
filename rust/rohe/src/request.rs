@@ -217,9 +217,41 @@ pub async fn get_suggested_addresses(addr: String) -> Option<Vec<EachAddress>> {
 === Details methods ===
 */
 
-async fn get_postcode_details(unique_id: i64) -> Option<> {
+// NOTE
+// THIS OUTPUT OF -p IS PROBABLY WRONG
+/*
+./rohe -p 20
+2010 ∈ Auckland
+2012 ∈ Auckland
+2013 ∈ Auckland
+State Highway 20, Point Chevalier, Auckland 1022 ∈ Auckland
+State Highway 20, Waterview, Auckland 1026 ∈ Auckland
+*/
+// Why is "State Highway 20, Point Chevalier, Auckland 1022" the "full partial" for a post code?
+
+pub async fn get_postcode_details(unique_id: i64) -> Option<serde_json::Map<String, serde_json::Value>> {
 	let mut base_URL: String = String::new();
     base_URL.push_str(&API_URI_STR);
     base_URL.push_str(&PC_QUERY_STR);
-    base_URL.push_str(unique_id.as_str());
+    base_URL.push_str(unique_id.to_string().as_str());
+	
+	let data: serde_json::Map<String, serde_json::Value> = make_request(base_URL.as_str()).await;
+	
+	let is_success = &data["success"];
+	if is_success != true {
+		return None;
+	}
+	
+	let res = &data["details"];
+	// println!("{:?}", res);
+	// let details: serde_json::Value = serde_json::value::from_value(res.to_owned()).unwrap();
+	
+	let map: serde_json::Map<String, serde_json::Value> = res[0].to_owned().as_object().unwrap().clone();
+	
+	return Some(map);
+	
+	// "FullPartial"
+	// "CityTown"
+	
+	// return Some(details);
 }

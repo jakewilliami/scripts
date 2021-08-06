@@ -88,17 +88,52 @@ async fn main() {
     // request::make_request(postcode_uri.as_str()).await;
 	
 	if matches.is_present("POSTCODE") {
+		let bad_response: &str = "There was no postcode in the database that matched your input.";
+		
 		// get value of postcode
 		let postcode = matches.value_of("POSTCODE").unwrap().parse_postcode();
-		// println!("{:?}", postcode);
-		// construct postcode uri
-		// let mut postcode_uri: String = String::new();
-		// postcode_uri.push_str(postcode);
-		let resp: Option<Vec<EachPostcode>> = request::get_suggested_postcodes(postcode).await;
-		println!("{:?}", resp);
-		// println!("{}", postcode_uri);
-		// request::make_request(postcode_uri.as_str()).await;
-		// println!("{:}", resp[]);
+		
+		// request postcodes from the API
+		let matched_postcodes: Option<Vec<EachPostcode>> = request::get_suggested_postcodes(postcode).await;
+		
+		// initialise the response string
+		let mut resp = String::new();
+		if matched_postcodes.as_ref().is_none() || matched_postcodes.as_ref().unwrap().len() == 0 {
+			resp.push_str(bad_response);
+		} else {
+			let postcodes = &matched_postcodes.unwrap();
+			for i in 0..postcodes.len() {
+				// choose the first postcode and get its unique ID
+				let chosen_postcode: &EachPostcode = &postcodes[i];
+				// let chosen_postcodes =
+				let unique_id: &i64 = &chosen_postcode.UniqueId;
+				let full_partial: &str = &chosen_postcode.FullPartial;
+				
+				// send the unique ID for the chosen postcode to the API
+				let details: Option<serde_json::Map<String, serde_json::Value>> = request::get_postcode_details(*unique_id).await;
+				
+				// construct the response string
+				if details.is_none() {
+					resp.push_str(bad_response);
+				} else {
+					/*
+					resp.push_str("The best match to your input is '");
+					resp.push_str(full_partial);
+					resp.push_str("'.\nThis is for the area '");
+					resp.push_str(details.unwrap()["CityTown"].as_str().unwrap());
+					resp.push_str("'.");
+					*/
+					resp.push_str(full_partial);
+					resp.push_str(" ∈ ");
+					resp.push_str(details.unwrap()["CityTown"].as_str().unwrap());
+					if i != (postcodes.len() - 1) {
+						resp.push_str("\n")
+					}
+				}
+			}
+		}
+		
+		println!("{}", resp);
 	}
 	
 	// let client = reqwest::Client::new();
