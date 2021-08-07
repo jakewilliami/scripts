@@ -127,7 +127,7 @@ async fn main() {
 					resp.push_str(" ∈ ");
 					resp.push_str(details.unwrap()["CityTown"].as_str().unwrap());
 					if i != (postcodes.len() - 1) {
-						resp.push_str("\n")
+						resp.push_str("\n") 
 					}
 				}
 			}
