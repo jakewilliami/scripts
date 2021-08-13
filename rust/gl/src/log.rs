@@ -1,12 +1,55 @@
 use std::process::{Command, Stdio};
+use colored::*;
+use regex::Regex;
 
 pub fn get_git_log(n: usize) {
 	let log: String = git_log(n);
+	let colourised: Vec<String> = colourise_git_log(log);
 	
-	
-	for i in log.split_terminator("\n") {
-		println!("{}", i.replace("\"", ""));
+	// for i in colourised.split_terminator("\n") {
+	// 	println!("{}", i.replace("\"", ""));
+	// }
+	for l in colourised {
+		println!("{}", l);
 	}
+}
+
+fn colourise_git_log(log: String) -> Vec<String> {
+	let re_named = Regex::new(r"<(?P<author>[^>]*)>").unwrap();
+	let re = Regex::new(r"<([^>]*)>").unwrap();
+	let mut out_log: Vec<String> = Vec::new();
+	for l in log.split_terminator("\n") {
+		let cleaned_l: String = l.replace("\"", "");
+		let auth = re_named
+			.captures(&cleaned_l)
+			.unwrap()
+			.name("author") // using named groups
+			.unwrap()
+			.as_str()
+			.to_string();
+			// .unwrap();
+		// let re2 = Regex::new(r"<(?P<author>[^>]*)>").unwrap();
+		// let new_auth = re2.replace(&cleaned_l, "<$author>".red());
+		// TODO: do I need to use more regex here?  Can I not replace the regex to just match with the author's name (which we already obtained)?
+		if auth == "jakewilliami" || auth == "Jake Ireland" || auth == "Jake W. Ireland" {
+			// let re = Regex::new(r"<([^>]*)>").unwrap();
+			let colourised_l = &re.replace(&cleaned_l, |caps: &regex::Captures| {
+	    		format!("{}{}{}{}",
+					"".normal().white(), // need this to clear the current line of any colours
+					"<".truecolor(192, 207, 227), // this is the light blue colour I have, defined by \e[0m\e[36m$&\e[39m\e[0m
+					&caps[1].truecolor(192, 207, 227),
+					">".truecolor(192, 207, 227)
+				)
+			});
+			out_log.push(colourised_l.to_string());
+		} else {
+			out_log.push(cleaned_l.to_string());
+		}
+		// let auth_colourised = new_auth.red();
+		// l = &re2.replace(&l, "$author");
+	}
+	// let matched = re.find("phone: 111-222-3333").unwrap();
+	return out_log;
 }
 
 fn git_log(n: usize) -> String {

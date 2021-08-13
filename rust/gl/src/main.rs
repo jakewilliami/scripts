@@ -7,6 +7,10 @@ use std::env;
 extern crate clap;
 use clap::{Arg, App, SubCommand};
 
+// needed for log.rs
+extern crate colored;
+extern crate regex;
+
 fn main() {
 	// map
 	// 	.iter()
