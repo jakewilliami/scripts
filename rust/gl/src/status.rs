@@ -35,7 +35,7 @@ pub fn get_git_status() {
 	// 	}
 	// 	println!("{}", print_str);
 	// }
-	println!("{}", status.trim_right())
+	println!("{}", status.trim_end())
 }
 
 fn git_status(dir: &OsString) -> String {
@@ -191,7 +191,7 @@ pub fn global_status() {
 // 56     fi
 // 57 }
 
-// use s.trim_right() instead
+// use s.trim_end() instead
 // fn trim_newline(s: &mut String) {
 // 	if s.ends_with('\n') {
 // 		s.pop();
