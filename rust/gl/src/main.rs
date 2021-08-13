@@ -1,5 +1,6 @@
 mod languages;
 mod status;
+mod log;
 
 use std::env;
 
@@ -90,6 +91,12 @@ fn main() {
 	if matches.is_present("GLOBAL") {
 		status::global_status();
 	};
+	
+	// ArgMatches { args: {}, subcommand: None, usage: Some("USAGE:\n    gl [FLAGS]") }
+	if matches.args.len() == 0 {
+		let n: usize = 10;
+		log::get_git_log(n);
+	}
 	
 	// println!("{:?}", git_languages);
 	
