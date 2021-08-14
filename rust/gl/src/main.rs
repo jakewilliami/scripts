@@ -95,6 +95,15 @@ fn main() {
 								.required(false)
 								.multiple(false)
 						   	)
+							.arg(Arg::with_name("BRANCHES")
+								.short("B")
+								.long("branches")
+								// .value_name("FILE")
+								.help("Prints all branches in the current repository")
+								.takes_value(false)
+								.required(false)
+								.multiple(false)
+						   	)
 							.arg(Arg::with_name("COMMITCOUNT")
 								.short("c")
 								.long("commit-count")
@@ -152,10 +161,15 @@ fn main() {
 	
 	// show branch name
 	if matches.is_present("BRANCH") {
-		let branch_name: Option<String> = branch::current_branch_name();
-		if !branch_name.is_none() {
-			println!("{}", branch_name.unwrap());
+		let current_branch = branch::current_branch();
+		if !current_branch.is_none() {
+			println!("{}", current_branch.unwrap());
 		}
+	}
+	
+	// show branches
+	if matches.is_present("BRANCHES") {
+		branch::get_branch_names();
 	}
 	
 	// show commit count
