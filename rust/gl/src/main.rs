@@ -1,6 +1,8 @@
 mod languages;
 mod status;
 mod log;
+mod branch;
+mod commitcount;
 
 use std::env;
 
@@ -10,6 +12,16 @@ use clap::{Arg, App, SubCommand, value_t};
 // needed for log.rs
 extern crate colored;
 extern crate regex;
+
+// TODO list (delete help commands as I go)
+// -c | --commit-count	Prints the current commit count on working branch in the past 24 hours
+// -i | --issues		Prints currently open issues in present repository.
+// -b | --branch		Lists local branches of current repository; highlights current branch.
+// -t | --tags | --labels	Lists this repository's issues' tags/labels .
+// -f | --filtered-issues	Prints filtered issues by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.
+// -e | --exclude-issues	Prints issues excluding issues that are tagged with "depricated" and "pdfsearch" unless stated otherwise.
+// -h | --help		Shows help (present output).
+// Also, I have notes on github-linguist which I could add to this app, maybe under a `help` subcommand?
 
 fn main() {
 	// map
@@ -21,11 +33,6 @@ fn main() {
 	
 	let args: Vec<String> = env::args().collect();
 	// println!("{:?}", args);
-	
-	
-	
-	
-	
 	
 	let matches = App::new("gl")
                             .version("2.0")
@@ -79,6 +86,24 @@ fn main() {
 								.required(false)
 								.multiple(false)
 						   	)
+							.arg(Arg::with_name("BRANCH")
+								.short("b")
+								.long("branch")
+								// .value_name("FILE")
+								.help("Prints the current branch")
+								.takes_value(false)
+								.required(false)
+								.multiple(false)
+						   	)
+							.arg(Arg::with_name("COMMITCOUNT")
+								.short("c")
+								.long("commit-count")
+								// .value_name("FILE")
+								.help("Counts the number of commits for the day")
+								.takes_value(false)
+								.required(false)
+								.multiple(false)
+						   	)
 							// .subcommand(SubCommand::with_name("test")
 							// 			.about("controls testing features")
 							// 			.version("1.3")
@@ -124,6 +149,40 @@ fn main() {
 	if matches.is_present("GLOBAL") {
 		status::global_status();
 	};
+	
+	// show branch name
+	if matches.is_present("BRANCH") {
+		let branch_name: Option<String> = branch::current_branch_name();
+		if !branch_name.is_none() {
+			println!("{}", branch_name.unwrap());
+		}
+	}
+	
+	// show commit count
+	if matches.is_present("COMMITCOUNT") {
+		let days_ago: usize;
+		let days_ago_end: usize;
+		let input_raw = matches.value_of("LOGNUMBER");
+		
+		// if the argument is not given any value, then we default to the previous day
+		if input_raw.is_none() {
+			days_ago = 1;
+			days_ago_end = 0;
+		} else {
+			let input = input_raw.unwrap();
+			if &input == &"today" {
+				days_ago = 1;
+				days_ago_end = 0;
+			} else if &input == &"yesterday" {
+				days_ago = 2;
+				days_ago_end = 1;
+			} else {
+				days_ago = 1;
+				days_ago_end = 0;
+			}
+		}
+		commitcount::get_commit_count(days_ago, days_ago_end);
+	}
 	
 	// ArgMatches { args: {}, subcommand: None, usage: Some("USAGE:\n    gl [FLAGS]") }
 	
