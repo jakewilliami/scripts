@@ -5,7 +5,7 @@ mod log;
 use std::env;
 
 extern crate clap;
-use clap::{Arg, App, SubCommand};
+use clap::{Arg, App, SubCommand, value_t};
 
 // needed for log.rs
 extern crate colored;
@@ -41,10 +41,13 @@ fn main() {
 							// 	.multiple(false)
 						   	// )
 							.arg(Arg::with_name("LOGNUMBER")
-								.short("n")
-								.long("number")
+								// TODO: as well as -n we should also be able to do -10, -100, -3, etc
+								// .short("n")
+								// .long("number")
 								// .value_name("FILE")
 								.help("Given a number, will print the last n commits nicely.")
+								// .index(1)
+								// .default_value("10")
 								.takes_value(true)
 								.required(false)
 								.multiple(false)
@@ -96,8 +99,10 @@ fn main() {
 		return;
 	}
 	if matches.is_present("LOGNUMBER") {
-		let n: usize = matches.value_of("LOGNUMBER").unwrap()
-			.parse().unwrap();
+		// let n: usize = matches.value_of("LOGNUMBER").unwrap()
+		// 	.parse().unwrap();
+		let n = value_t!(matches, "LOGNUMBER", usize)
+			.unwrap_or(10);
 		log::get_git_log(n);
 	}
 	
