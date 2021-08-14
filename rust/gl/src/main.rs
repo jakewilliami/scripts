@@ -14,6 +14,10 @@ use clap::{Arg, App, SubCommand, value_t};
 extern crate colored;
 extern crate regex;
 
+// needed for commitcount
+extern crate chrono;
+// use chrono::prelude::*;
+
 // TODO list (delete help commands as I go)
 // -c | --commit-count	Prints the current commit count on working branch in the past 24 hours
 // -i | --issues		Prints currently open issues in present repository.
@@ -119,9 +123,22 @@ fn main() {
 								.long("commit-count")
 								// .value_name("FILE")
 								.help("Counts the number of commits for the day")
-								.takes_value(false)
+								// .takes_value(true)
 								.required(false)
 								.multiple(false)
+								.conflicts_with("COMMITCOUNTWHEN")
+						   	)
+							.arg(Arg::with_name("COMMITCOUNTWHEN")
+								.short("C")
+								.long("commit-count-when")
+								// .value_name("FILE")
+								.help("Counts the number of commits for a specified day.  Takes values \"today\" (see -c), \"yesterday\", or some number of days ago.")
+								// TODO:
+								//   If you give it 2 numbers, it will show the number of commits since the first number but before the second number (days ago).  E.g., given 5, 2, it will get the number of commits since 5 days ago, but before 2 days ago.  Given 5 and 1, it will get the number of commits in the last 5 days ago, no including anything since yesterday.  This can be done by calculating commits_since(5) - commits_since(2), etc.  To do this I need to figure out how to use multiple arguments, otherwise I will have to create a separate flag
+								.takes_value(true)
+								.required(false)
+								// .multiple(true)
+								.conflicts_with("COMMITCOUNT")
 						   	)
 							// .subcommand(SubCommand::with_name("test")
 							// 			.about("controls testing features")
@@ -146,8 +163,10 @@ fn main() {
 		// let n: usize = matches.value_of("LOGNUMBER").unwrap()
 		// 	.parse().unwrap();
 		let n = value_t!(matches, "LOGNUMBER", usize)
-			.unwrap_or(10);
-		log::get_git_log(n);
+			.unwrap_or(0);
+		if n != 0 {
+			log::get_git_log(n);
+		}
 	}
 	
 	// show languages
@@ -191,28 +210,27 @@ fn main() {
 	
 	// show commit count
 	if matches.is_present("COMMITCOUNT") {
-		let days_ago: usize;
-		let days_ago_end: usize;
-		let input_raw = matches.value_of("LOGNUMBER");
+		commitcount::get_commit_count("today");
+	}
+	
+	if matches.is_present("COMMITCOUNTWHEN") {
+		// let since: isize;
+		// let before: isize;
+		let input_raw = matches.value_of("COMMITCOUNTWHEN");
 		
-		// if the argument is not given any value, then we default to the previous day
-		if input_raw.is_none() {
-			days_ago = 1;
-			days_ago_end = 0;
-		} else {
-			let input = input_raw.unwrap();
-			if &input == &"today" {
-				days_ago = 1;
-				days_ago_end = 0;
-			} else if &input == &"yesterday" {
-				days_ago = 2;
-				days_ago_end = 1;
-			} else {
-				days_ago = 1;
-				days_ago_end = 0;
-			}
-		}
-		commitcount::get_commit_count(days_ago, days_ago_end);
+		let input = input_raw.unwrap();
+		// if &input == &"today" {
+		// 	since = 0;
+		// 	before = 0;
+		// 	commitcount::get_commit_count(since, before, &input);
+		// } else if &input == &"yesterday" {
+		// 	since = 1;
+		// 	before = 0;
+		// 	commitcount::get_commit_count(since, before, &input);
+		// } else {
+		// 	println!("{:?}", input);
+		// }
+		commitcount::get_commit_count(&input);
 	}
 	
 	// ArgMatches { args: {}, subcommand: None, usage: Some("USAGE:\n    gl [FLAGS]") }
