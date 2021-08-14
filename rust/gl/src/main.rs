@@ -30,7 +30,7 @@ fn main() {
 	let matches = App::new("gl")
                             .version("2.0")
                             .author("Jake W. Ireland. <jakewilliami@icloud.com>")
-                            .about("Git log and other personalised git utilities")
+                            .about("Git log and other personalised git utilities.  By default (i.e., without any arguments), it will print the last 10 commits nicely.")
 							// .arg(Arg::with_name("help")
 							// 	.short("h")
 							// 	.long("help")
@@ -40,6 +40,15 @@ fn main() {
 							// 	.required(false)
 							// 	.multiple(false)
 						   	// )
+							.arg(Arg::with_name("LOGNUMBER")
+								.short("n")
+								.long("number")
+								// .value_name("FILE")
+								.help("Given a number, will print the last n commits nicely.")
+								.takes_value(true)
+								.required(false)
+								.multiple(false)
+						   	)
 							.arg(Arg::with_name("LANGUAGES")
 								.short("l")
 								.long("languages")
@@ -80,11 +89,25 @@ fn main() {
 	//
 	// println!("{:?}", matches);
 	
+	// show the git log
+	if matches.args.len() == 0 {
+		let n: usize = 10;
+		log::get_git_log(n);
+		return;
+	}
+	if matches.is_present("LOGNUMBER") {
+		let n: usize = matches.value_of("LOGNUMBER").unwrap()
+			.parse().unwrap();
+		log::get_git_log(n);
+	}
+	
+	// show languages
 	if matches.is_present("LANGUAGES") {
 		// This parses _and_ prints the language output
 		languages::parse_language_data();
 	};
 	
+	// show status of git repo
 	if matches.is_present("STATUS") {
 		status::get_git_status();
 		// for i in s.iter() {
@@ -92,15 +115,12 @@ fn main() {
 		// }
 	};
 	
+	// show statuses of predefined git repos
 	if matches.is_present("GLOBAL") {
 		status::global_status();
 	};
 	
 	// ArgMatches { args: {}, subcommand: None, usage: Some("USAGE:\n    gl [FLAGS]") }
-	if matches.args.len() == 0 {
-		let n: usize = 10;
-		log::get_git_log(n);
-	}
 	
 	// println!("{:?}", git_languages);
 	
