@@ -1,6 +1,10 @@
 [deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
+Cascadia = "54eefc05-d75b-58de-a785-1a3403f0919f"
 CodecZlib = "944b1d66-785c-5afd-91f1-9de20f533193"
+Gumbo = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
 HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+HttpCommon = "77172c1b-203f-54ac-aa54-3f1198fe9f90"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 Libz = "2ec943e9-cfe8-584d-b93d-64dcb6d567b7"
 TranscodingStreams = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
