@@ -19,13 +19,10 @@ extern crate chrono;
 // use chrono::prelude::*;
 
 // TODO list (delete help commands as I go)
-// -c | --commit-count	Prints the current commit count on working branch in the past 24 hours
 // -i | --issues		Prints currently open issues in present repository.
-// -b | --branch		Lists local branches of current repository; highlights current branch.
 // -t | --tags | --labels	Lists this repository's issues' tags/labels .
 // -f | --filtered-issues	Prints filtered issues by tag.  By default, prints issues tagged with "enhancement" unless stated otherwise.
 // -e | --exclude-issues	Prints issues excluding issues that are tagged with "depricated" and "pdfsearch" unless stated otherwise.
-// -h | --help		Shows help (present output).
 // Also, I have notes on github-linguist which I could add to this app, maybe under a `help` subcommand?
 
 fn main() {
@@ -95,7 +92,7 @@ fn main() {
 								.short("b")
 								.long("branch")
 								// .value_name("FILE")
-								.help("Prints the current branch")
+								.help("Prints the current branch name")
 								.takes_value(false)
 								.required(false)
 								.multiple(false)
@@ -122,7 +119,7 @@ fn main() {
 								.short("c")
 								.long("commit-count")
 								// .value_name("FILE")
-								.help("Counts the number of commits for the day")
+								.help("Counts the current number of commits on working branch on the current day")
 								// .takes_value(true)
 								.required(false)
 								.multiple(false)
