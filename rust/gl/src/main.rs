@@ -2,6 +2,7 @@ mod languages;
 mod status;
 mod log;
 mod branch;
+mod repo;
 mod commitcount;
 
 use std::env;
@@ -104,6 +105,15 @@ fn main() {
 								.required(false)
 								.multiple(false)
 						   	)
+							.arg(Arg::with_name("REPO")
+								.short("r")
+								.long("repo")
+								// .value_name("FILE")
+								.help("Prints the name of the current repository")
+								.takes_value(false)
+								.required(false)
+								.multiple(false)
+						   	)
 							.arg(Arg::with_name("COMMITCOUNT")
 								.short("c")
 								.long("commit-count")
@@ -170,6 +180,13 @@ fn main() {
 	// show branches
 	if matches.is_present("BRANCHES") {
 		branch::get_branch_names();
+	}
+	
+	if matches.is_present("REPO") {
+		let current_repo = repo::current_repository();
+		if !current_repo.is_none() {
+			println!("{}", current_repo.unwrap());
+		}
 	}
 	
 	// show commit count
