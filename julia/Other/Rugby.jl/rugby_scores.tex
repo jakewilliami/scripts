@@ -1,0 +1,94 @@
+% !TEX TS-program = pdflatexmk.py
+\documentclass{arteacle}
+%use the option bib-apa to use apa-style referencing
+
+% To change any options that are being overwritten by the class,
+% You will have to put this in an \AtEndPreamble statement
+
+\title{What is a ``valid'' score in the game of rugby?}
+\author{Jake W. Ireland}
+
+\begin{document}
+
+\subsubsection*{Context}
+
+There are three ways you can get points in the game of rugby:
+\begin{enumerate}
+	\item A ``try'' is worth five points;
+	\item A ``conversion'' is worth two points, but must be scored after a try;
+	\item A non-conversion kick (often called, but not limited to, a ``penalty'') is worth three points.
+\end{enumerate}
+
+Let the set of individual scores be $S$, where
+\begin{equation}
+	S = \{2, 3, 5\}.
+\end{equation}
+
+Let us also say that the set of all valid scores in rugby $S^\prime$ is exactly $\{\naturals\union 0\}$ (i.e., no negative numbers).
+
+\prop{
+We want to prove that the only scores that are impossible to obtain in this game are scores of 1, 2, and 4.
+}
+
+\subsubsection*{Zero}
+
+We start with the base case: you can get zero points, as everyone starts with zero points at the start of the game.  The lack of scoring anything will leave you with zero points.
+
+\subsubsection*{One}
+
+We can also not score 1 because
+\begin{equation}
+	1 < s\;\forall s\in S.
+\end{equation}
+
+\subsubsection*{Two}
+
+We cannot obtain a score of 2, because we can only score a conversion under the condition that we score a try first.
+
+\subsubsection*{Three}
+
+Scoring a 3 is as ``simple'' as kicking the ball over the H-looking thing at the correct end of the field.
+
+\subsubsection*{Four}
+
+The only permutation of $S$ that makes is two of the score 2.  By the same logic as the score 2, we cannot obtain this because we can only score a conversion by first scoring a try.
+
+\subsubsection*{Five}
+
+We can score 5 points by \emph{committing} a try.
+
+\subsubsection*{Six}
+
+The score 6 can be obtained by scoring 3 twice.
+
+\subsubsection*{Seven}
+
+Score a try, and successfully convert the ball over the H thing.
+
+\subsubsection*{Induction Step}
+
+By induction, we can score 8 by scoring 5 (defined above) and scoring another 3 (also defined above).  We can score 9 by scoring 6 and scoring another 3.  We can score 10 by scoring 7 and scoring another 3.  
+
+In general, we can write a recursive function $s$ of the score $n$ such that:
+%\begin{equation}
+%	s(n) = \begin{cases}
+%		s(n - 3) + 3&\text{ where }n>7\\
+%		5 + 2&\text{ where }n=7\\
+%		3+3&\text{ where }n=6\\
+%		5&\text{ where }n=5\\
+%		3&\text{ where }n=3
+%	\end{cases}
+%\end{equation}
+\begin{equation}
+	s(n) = \begin{cases}
+		s(n - 3) + 3,&\text{if }n>7\\
+		a+b,&\text{if }n\leq 7\text{, with }a,b\in\{S\union 0\}
+	\end{cases}.
+\end{equation}
+
+Hence, the only scores we cannot obtain are 1, 2, and 4, and by induction every other score is possible:
+\begin{equation}
+i \notin S^\prime \;\forall i \in \{1, 2, 4\}.
+\end{equation}
+
+\end{document}
