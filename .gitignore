@@ -10,7 +10,7 @@ out_transposed.csv
 **/.DS_Store
 
 # Rusty stuff
-**/Cargo*
+**/Cargo.lock
 **/target/
 **/*.rs.bk
 
