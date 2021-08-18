@@ -124,3 +124,69 @@ end
 function make_anagramatic_name(str::S) where {S <: AbstractString}
     # for this function, we need to figure out a way to make a word which *sounds like* a word...NLP...
 end
+
+function make_anagram_with_tree(str::S, tree::Dict) where {S <: AbstractString}
+    Logging.@warn "This is an elegant function, and will likely be very slow."
+    
+    function _find_anagrams(tree::Dict, s::String, start_i::Int, str_len::Int)
+        tree_current = tree
+        _anagrams = String[]
+        # anagram = ""
+        multiple_words = String[]
+        savepoint = Tuple{Int, Int, Dict}[]
+        # savepoint = Stack{Tuple{Int, Int, Dict}}()
+        i = 0
+        while true
+            i += 1
+            i > str_len && break
+            c = s[i]
+            possible_value = get(tree_current, c, Dict())
+            if get(possible_value, :is_word, false)
+                if i == str_len
+                    push!(multiple_words, s[(start_i):end])
+                    push!(_anagrams, join(multiple_words, ' '))
+                    Logging.@info "Anagram found: $s -> $(join(multiple_words, ' '))"
+                    empty!(multiple_words)
+                    tree_current = tree
+                    start_i = 1
+                else
+                    push!(savepoint, (start_i, i, tree_current[c]))
+                    push!(multiple_words, s[start_i:i])
+                    tree_current = tree
+                    start_i = i + 1
+                end
+            else
+                if (isempty(possible_value) || i == str_len) && !isempty(savepoint)
+                    start_i, i, tree_current = pop!(savepoint)
+                    multiple_words = multiple_words[1:(end - 1)]
+                else
+                    tree_current = get(tree_current, c, Dict())
+                end
+            end
+        end
+        
+        return _anagrams
+        # return anagram
+    end
+    # 156.411 μs (1353 allocations: 152.09 KiB)
+    
+    str_stripped = lowercase(_skipblanks(str))
+    anagrams = []
+    start_i = 1
+    str_len = length(str_stripped)
+    
+    for s in Combinatorics.permutations(str_stripped)
+        s = join(s)
+        _anagrams = _find_anagrams(tree, s, start_i, str_len)
+        if !iszero(length(_anagrams)) && _anagrams ∉ anagrams
+            push!(anagrams, _anagrams)
+        end
+    end
+        
+    return anagrams
+end
+
+# idea for results
+# result = "david peck"
+# result = ["david", "peck"]
+# alphabetised
