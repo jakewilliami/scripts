@@ -1,10 +1,90 @@
 using Logging
-using Combinatorics
+using Combinatorics: permutations
+using DataStructures: Trie
+using AbstractTrees
+
+export WORDLIST, WORDLIST_AS_TREE
+export areanagrams, find_anagrams
+
+function _make_tree_from_wordlist(wordlist::Vector{S}) where {S <: AbstractString}
+    tree = Dict()
+
+    function _add_to_tree!(tree::Dict, w_rem::AbstractString)
+        c = w_rem[1]
+        tree[c] = get(tree, c, Dict())
+        if isone(length(w_rem))
+            tree[c][:is_word] = true
+            tree[c][nothing] = nothing
+        else
+            tree[c] = _add_to_tree!(tree[c], w_rem[2:end])
+        end
+        return tree
+    end
+
+    for wᵢ in wordlist
+        _add_to_tree!(tree, lowercase(wᵢ))
+    end
+
+    return tree
+end
+
+# t = Trie{Int}()
+# t["Rob"] = 42
+# t["Roger"] = 24
+# haskey(t, "Rob")  # true
+# get(t, "Rob", nothing)  # 42
+# keys(t)  # "Rob", "Roger"
+# keys(subtrie(t, "Ro"))  # "b", "ger"
+
+function _make_trie_from_wordlist(wordlist::Vector{S}) where {S <: AbstractString}
+    T = Trie{Char}()
+    
+    for wᵢ in wordlist
+        wᵢ = lowercase(wᵢ)
+        c = w_rem[1]
+        T[c] = get(T, c, Dict())
+        if isone(length(w_rem))
+            tree[c][:is_word] = true
+            # tree[c][nothing] = nothing
+        else
+            T[c] = _add_to_tree!(tree[c], w_rem[2:end])
+        end
+    end
+    
+    # function _add_to_tree!(tree::Dict, w_rem::AbstractString)
+    #     c = w_rem[1]
+    #     tree[c] = get(tree, c, Dict())
+    #     if isone(length(w_rem))
+    #         tree[c][:is_word] = true
+    #         # tree[c][nothing] = nothing
+    #     else
+    #         tree[c] = _add_to_tree!(tree[c], w_rem[2:end])
+    #     end
+    #     return tree
+    # end
+    #
+    # for wᵢ in wordlist
+    #     _add_to_tree!(tree, lowercase(wᵢ))
+    # end
+
+    return T
+end
+
+const WORDLIST_PATH = realpath(joinpath(@__DIR__, "wordlist.txt"))
+const WORDLIST = readlines(WORDLIST_PATH)
+const WORDLIST_AS_TREE = _make_tree_from_wordlist(WORDLIST)
 
 function _skipblanks(str::S) where {S <: AbstractString}
     return filter(c -> c != ' ', str)
 end
 
+"""
+```julia
+areanagrams(str1::AbstractString, str2::AbstractString) -> Bool
+```
+
+Given 2 words, checks if they are anagrams of each other.
+"""
 function areanagrams(str1::S1, str2::S2) where {S1 <: AbstractString, S2 <: AbstractString}
     length(str1) != length(str2) && return false
     
@@ -41,117 +121,51 @@ end
 
 """
 ```julia
-make_anagram_extended(str::AbstractString, wordlist::Vector{<:AbstractString}) -> Vector{<:AbstractString}
+make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true) -> Vector{<:AbstractString}
+find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true)  -> Vector{<:AbstractString}
+find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; verbose::Bool = true)  -> Vector{<:AbstractString}
 ```
 
 Find anagrams of `str` given a `wordlist`.
 
-This method is possibly not optimised, and will search for every combination of words.  I.e., given wordlist `["a", "b", "c"]`, will check all of
-```julia
-["a", "b", "c", "aa", "ba", "ca", "ab", "bb", "cb", "ac", "bc", "cc", "aaa", "baa", "caa", "aba", "bba", "cba", "aca", "bca", "cca", "aab", "bab", "cab", "abb", "bbb", "cbb", "acb", "bcb", "ccb", "aac", "bac", "cac", "abc", "bbc", "cbc", "acc", "bcc", "ccc"]
-```
+Given a word, will check if every permutation of the characters in the word can create some (potentially multi-word) phrase in the wordlist.
 """
-function make_anagram_extended(str::S1, wordlist::Vector{S2}) where {S1 <: AbstractString, S2 <: AbstractString}
-    Logging.@warn "This is a brute-force function, and will likely be very slow."
-    str_stipped = lowercase(_skipblanks(str))
-    anagrams = String[]
-    shortest_in_list = minimum(length(w) for w in wordlist)
-    i = 0
-    while true
-        # if the length of the string is less than the number of words
-        # multiplied by the shortest in the list, then there is no way
-        # we can make your string.  Break
-        if length(str) < (i * shortest_in_list)
-            return nothing
-        end
-        # check every combination of 1, 2, 3, ... i words from the list
-        for wᵢ in Base.Iterators.product([wordlist for _ in 1:i]...)
-            this_sentence = join(wᵢ, " ")
-            this_sentence_stripped = lowercase(_skipblanks(this_sentence))
-            if areanagrams(str_stipped, this_sentence_stripped)
-                push!(anagrams, this_sentence)
-                println(this_sentence)
-            end
-        end
-        # increment word counter
-        i += 1
-        # break if you have reached the maximum number of words in your lost
-        if i > length(wordlist)
-            return nothing
-        end
-    end
-end
-
-"""
-```julia
-make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}) -> Vector{<:AbstractString}
-```
-
-Find anagrams of `str` given a `wordlist`.
-
-Given wordlist `["a", "b", "c"]`, will check all of
-```julia
-["a", "b", "c", "ab", "ac", "bc", "abc"]
-```
-Because we don't care about order; if we found that "ab" is an anagram of `str`, then of course "ba" would be too—we don't need to check it again.
-"""
-function make_anagram(str::S1, wordlist::Vector{S2}) where {S1 <: AbstractString, S2 <: AbstractString}
-    Logging.@warn "This is a brute-force function, and will likely be very slow."
+function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: AbstractString}
     str_stripped = lowercase(_skipblanks(str))
-    anagrams = String[]
-    shortest_in_list = minimum(length(w) for w in wordlist)
-    str_len = length(str)
-    for wᵢ in Combinatorics.combinations(wordlist)
-        # if the length of the string is less than the number of words
-        # multiplied by the shortest in the list, then there is no way
-        # we can make your string.  Break
-        if str_len < (length(wᵢ) * shortest_in_list)
-            return nothing
-        end
-        if sum(length, wᵢ) > str_len
-            continue
-        end
-        this_sentence = join(wᵢ, " ")
-        this_sentence_stripped = lowercase(_skipblanks(this_sentence))
-        if areanagrams(str_stripped, this_sentence_stripped)
-            push!(anagrams, this_sentence)
-            Logging.@info this_sentence
-        end
-    end
-end
-# 128.346 s (2058903677 allocations: 122.72 GiB)
-
-function make_anagramatic_name(str::S) where {S <: AbstractString}
-    # for this function, we need to figure out a way to make a word which *sounds like* a word...NLP...
-end
-
-function make_anagram_with_tree(str::S, tree::Dict) where {S <: AbstractString}
-    Logging.@warn "This is an elegant function, and will likely be very slow."
+    str_len = length(str_stripped)
+    start_i = 1
     
-    function _find_anagrams(tree::Dict, s::String, start_i::Int, str_len::Int)
+    anagrams = Vector{String}[] # each vector contains at least one word that creats the anagram
+    
+    for sⱼ in permutations(str_stripped)
         tree_current = tree
-        _anagrams = String[]
-        # anagram = ""
-        multiple_words = String[]
+        multiple_words = Vector{Char}[] # each vector of characters is a word
+        # savepoint = Stack{Tuple{Int, Int, Dict}}() # using DataStructures' Stack slows the programme down substantially (by 100 ms on an 8-letter word)
         savepoint = Tuple{Int, Int, Dict}[]
-        # savepoint = Stack{Tuple{Int, Int, Dict}}()
         i = 0
         while true
             i += 1
             i > str_len && break
-            c = s[i]
+            c = sⱼ[i]
             possible_value = get(tree_current, c, Dict())
             if get(possible_value, :is_word, false)
                 if i == str_len
-                    push!(multiple_words, s[(start_i):end])
-                    push!(_anagrams, join(multiple_words, ' '))
-                    Logging.@info "Anagram found: $s -> $(join(multiple_words, ' '))"
+                    push!(multiple_words, sⱼ[(start_i):end])
+                    this_sentence = String[join(w) for w in multiple_words]
+                    # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
+                    sort!(this_sentence)
+                    if this_sentence ∉ anagrams
+                        push!(anagrams, this_sentence)
+                        if verbose
+                            Logging.@info "Anagram found: \"$(join(this_sentence, ' '))\""
+                        end
+                    end
                     empty!(multiple_words)
                     tree_current = tree
                     start_i = 1
                 else
                     push!(savepoint, (start_i, i, tree_current[c]))
-                    push!(multiple_words, s[start_i:i])
+                    push!(multiple_words, sⱼ[start_i:i])
                     tree_current = tree
                     start_i = i + 1
                 end
@@ -164,29 +178,20 @@ function make_anagram_with_tree(str::S, tree::Dict) where {S <: AbstractString}
                 end
             end
         end
-        
-        return _anagrams
-        # return anagram
-    end
-    # 156.411 μs (1353 allocations: 152.09 KiB)
-    
-    str_stripped = lowercase(_skipblanks(str))
-    anagrams = []
-    start_i = 1
-    str_len = length(str_stripped)
-    
-    for s in Combinatorics.permutations(str_stripped)
-        s = join(s)
-        _anagrams = _find_anagrams(tree, s, start_i, str_len)
-        if !iszero(length(_anagrams)) && _anagrams ∉ anagrams
-            push!(anagrams, _anagrams)
-        end
     end
         
     return anagrams
 end
+function find_anagrams(str::S1, wordlist::Vector{S2}; verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+    tree = _make_tree_from_wordlist(wordlist)
+    return find_anagrams(str, tree; verbose = verbose)
+end
+function find_anagrams(str::S1, path_to_wordlist::S2; verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+    wordlist = readlines(path_to_wordlist)
+    tree = _make_tree_from_wordlist(wordlist)
+    return find_anagrams(str, tree; verbose = verbose)
+end
 
-# idea for results
-# result = "david peck"
-# result = ["david", "peck"]
-# alphabetised
+function make_anagramatic_name(str::S) where {S <: AbstractString}
+    # for this function, we need to figure out a way to make a word which *sounds like* a word...NLP...
+end
