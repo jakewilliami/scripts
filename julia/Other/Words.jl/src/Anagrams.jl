@@ -1,3 +1,7 @@
+# TODO
+#   - Ensure non-duplication is optimised (currently I don't think it is) — this is because "david" and "david" are different because we switched the 'd's around.  Need to unique-ify permutations - unique works best - DONE
+#   - Implement a word limit (i.e., "james collins" cannot return "cones jam sill") if word limit is 2
+
 using Logging
 using Combinatorics: permutations
 using DataStructures: Trie
@@ -129,7 +133,7 @@ function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: Abs
     
     anagrams = Vector{String}[] # each vector contains at least one word that creats the anagram
     
-    for sⱼ in permutations(str_stripped)
+    for sⱼ in unique(permutations(str_stripped))
         tree_current = tree
         multiple_words = Vector{Char}[] # each vector of characters is a word
         # savepoint = Stack{Tuple{Int, Int, Dict}}() # using DataStructures' Stack slows the programme down substantially (by 100 ms on an 8-letter word)
