@@ -28,14 +28,6 @@ function _make_tree_from_wordlist(wordlist::Vector{S}) where {S <: AbstractStrin
     return tree
 end
 
-# t = Trie{Int}()
-# t["Rob"] = 42
-# t["Roger"] = 24
-# haskey(t, "Rob")  # true
-# get(t, "Rob", nothing)  # 42
-# keys(t)  # "Rob", "Roger"
-# keys(subtrie(t, "Ro"))  # "b", "ger"
-
 function _make_trie_from_wordlist(wordlist::Vector{S}) where {S <: AbstractString}
     T = Trie{Char}()
     
