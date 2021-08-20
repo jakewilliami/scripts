@@ -160,8 +160,16 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
     has_limit = !isnothing(nwords)
     
     anagrams = AnagramaticSentence[]
+    past_first = false
     for sⱼ in IterTools.distinct(Combinatorics.permutations(str_stripped))
-        counter += 1
+        # skip first element in list, because the first element of any permutation is the input
+        # alternative would be to enumerate iterator and check if index was 1 (continue if so)
+        # but we don't care about index after that, so I wanted a better way
+        if !past_first
+            past_first = true
+            continue
+        end
+        # initialise current tree, and some useful temporary structures
         tree_current = tree
         multiple_words = Vector{Char}[] # each vector of characters is a word
         # savepoint = Stack{Tuple{Int, Int, Dict}}() # using DataStructures' Stack slows the programme down substantially (by 100 ms on an 8-letter word)
@@ -185,7 +193,9 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
                     end
                     # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
                     sort!(this_sentence)
-                    if this_sentence ∉ anagrams
+                    # also ensure that this sentence is not the same as the first
+                    # we can't just skip the first word because "potter harry" is still "harry potter", sorted
+                    if this_sentence ∉ (w.words for w in anagrams) && join(this_sentence) != str_stripped
                         push!(anagrams, AnagramaticSentence(this_sentence))
                         # if verbose, say we found something
                         if verbose
