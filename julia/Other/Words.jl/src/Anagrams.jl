@@ -1,10 +1,10 @@
 # TODO
 #   - Implement a word limit (i.e., "james collins" cannot return "cones jam sill") if word limit is 2
 #   - Implement tree struct using AbstractTrees, DataStructures, or LightGraphs—*or* use Dictionaries.jl
+#   - MIN_WORD_SIZE
 
 using Logging
 using Combinatorics
-using IterTools
 using DataStructures: Trie
 using AbstractTrees
 
@@ -160,15 +160,7 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
     has_limit = !isnothing(nwords)
     
     anagrams = AnagramaticSentence[]
-    past_first = false
-    for sⱼ in IterTools.distinct(Combinatorics.permutations(str_stripped))
-        # skip first element in list, because the first element of any permutation is the input
-        # alternative would be to enumerate iterator and check if index was 1 (continue if so)
-        # but we don't care about index after that, so I wanted a better way
-        if !past_first
-            past_first = true
-            continue
-        end
+    for sⱼ in Combinatorics.multiset_permutations(str_stripped, str_len)
         # initialise current tree, and some useful temporary structures
         tree_current = tree
         multiple_words = Vector{Char}[] # each vector of characters is a word
@@ -195,7 +187,7 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
                     sort!(this_sentence)
                     # also ensure that this sentence is not the same as the first
                     # we can't just skip the first word because "potter harry" is still "harry potter", sorted
-                    if this_sentence ∉ (w.words for w in anagrams) && join(this_sentence) != str_stripped
+                    if this_sentence ∉ (w.words for w in anagrams) #&& join(this_sentence) != str_stripped
                         push!(anagrams, AnagramaticSentence(this_sentence))
                         # if verbose, say we found something
                         if verbose
@@ -207,6 +199,7 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
                     tree_current = tree
                     start_i = 1
                 else
+                    # potential start of a phrase.  log information
                     push!(savepoint, (start_i, i, tree_current[c]))
                     push!(multiple_words, sⱼ[start_i:i])
                     tree_current = tree
