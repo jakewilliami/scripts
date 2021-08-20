@@ -185,7 +185,7 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
                     end
                     # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
                     sort!(this_sentence)
-                    # also ensure that this sentence is not the same as the first
+                    # also ensure that this sentence is not the same as the input
                     # we can't just skip the first word because "potter harry" is still "harry potter", sorted
                     if this_sentence ∉ (w.words for w in anagrams) #&& join(this_sentence) != str_stripped
                         push!(anagrams, AnagramaticSentence(this_sentence))
