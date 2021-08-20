@@ -4,6 +4,7 @@
 
 using Logging
 using Combinatorics
+using IterTools
 using DataStructures: Trie
 using AbstractTrees
 
@@ -159,8 +160,8 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
     has_limit = !isnothing(nwords)
     
     anagrams = AnagramaticSentence[]
-    
-    for sⱼ in unique(Combinatorics.permutations(str_stripped))
+    for sⱼ in IterTools.distinct(Combinatorics.permutations(str_stripped))
+        counter += 1
         tree_current = tree
         multiple_words = Vector{Char}[] # each vector of characters is a word
         # savepoint = Stack{Tuple{Int, Int, Dict}}() # using DataStructures' Stack slows the programme down substantially (by 100 ms on an 8-letter word)
