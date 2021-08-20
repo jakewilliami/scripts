@@ -141,19 +141,22 @@ end
 
 """
 ```julia
-make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true) -> Vector{AnagramaticSentence}
-find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true)  -> Vector{AnagramaticSentence}
-find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; verbose::Bool = true)  -> Vector{AnagramaticSentence}
+make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true)  -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true)  -> Vector{AnagramaticSentence}
 ```
 
 Find anagrams of `str` given a `wordlist`.
 
 Given a word, will check if every permutation of the characters in the word can create some (potentially multi-word) phrase in the wordlist.
+
+The `nwords` keyword argument will limit the number of resulting words your anagram can be.
 """
-function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: AbstractString}
+function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S <: AbstractString}
     str_stripped = normalise(_skipblanks(str))
     str_len = length(str_stripped)
     start_i = 1
+    has_limit = !isnothing(nwords)
     
     anagrams = AnagramaticSentence[]
     
@@ -173,14 +176,22 @@ function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: Abs
                 if i == str_len
                     push!(multiple_words, sⱼ[(start_i):end])
                     this_sentence = String[join(w) for w in multiple_words]
+                    # skip if it doesn't fit into the constraint on the number of words
+                    if has_limit
+                        if nwords ≤ length(this_sentence)
+                            break
+                        end
+                    end
                     # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
                     sort!(this_sentence)
                     if this_sentence ∉ anagrams
                         push!(anagrams, AnagramaticSentence(this_sentence))
+                        # if verbose, say we found something
                         if verbose
                             Logging.@info "Anagram found: \"$(join(this_sentence, ' '))\""
                         end
                     end
+                    # empty the multiple_words vector and start again
                     empty!(multiple_words)
                     tree_current = tree
                     start_i = 1
@@ -203,12 +214,12 @@ function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: Abs
         
     return anagrams
 end
-function find_anagrams(str::S1, wordlist::Vector{S2}; verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+function find_anagrams(str::S1, wordlist::Vector{S2}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
     tree = _make_tree_from_wordlist(wordlist)
-    return find_anagrams(str, tree; verbose = verbose)
+    return find_anagrams(str, tree; nwords = nwords, verbose = verbose)
 end
-function find_anagrams(str::S1, path_to_wordlist::S2; verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+function find_anagrams(str::S1, path_to_wordlist::S2; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
     wordlist = readlines(path_to_wordlist)
     tree = _make_tree_from_wordlist(wordlist)
-    return find_anagrams(str, tree; verbose = verbose)
+    return find_anagrams(str, tree; nwords = nwords, verbose = verbose)
 end
