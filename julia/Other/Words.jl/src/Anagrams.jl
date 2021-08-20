@@ -1,14 +1,70 @@
 # TODO
-#   - Ensure non-duplication is optimised (currently I don't think it is) — this is because "david" and "david" are different because we switched the 'd's around.  Need to unique-ify permutations - unique works best - DONE
 #   - Implement a word limit (i.e., "james collins" cannot return "cones jam sill") if word limit is 2
+#   - Implement tree struct using AbstractTrees, DataStructures, or LightGraphs—*or* use Dictionaries.jl
 
 using Logging
-using Combinatorics: permutations
+using Combinatorics
 using DataStructures: Trie
 using AbstractTrees
 
 export WORDLIST, WORDLIST_AS_TREE
+export WORDLIST_BIG, WORDLIST_AS_TREE_BIG
+export AnagramaticSentence
 export areanagrams, find_anagrams
+
+abstract type AbstractAnagramaticSentance end
+
+struct AnagramaticSentence <: AbstractAnagramaticSentance
+    words::Vector{String}
+    permutations::Combinatorics.Permutations{Vector{String}}
+    
+    function AnagramaticSentence(words::Vector{String}, permutations::Combinatorics.Permutations{Vector{String}})
+        return new(words, permutations)
+    end
+end
+function AnagramaticSentence(words::Vector{String})
+    AnagramaticSentence(words, Combinatorics.permutations(words))
+end
+Base.show(io::IO, S::AnagramaticSentence) = print(io, join(S.words, ' '))
+
+# NOTE
+# I have no idea what I'm doing with this tree structure
+# abstract type AbstractWordlistTree end
+#
+# mutable struct WordlistTreeNode{T <: AbstractChar}
+#     parent::Union{Char, T, Nothing}
+#     children::Union{WordlistTreeNode{T}, Nothing}
+# end
+#
+# mutable struct WordlistTree{T <: AbstractChar} <: AbstractWordlistTree
+#     keys::Vector{Char}
+#     values::Vector{WordlistTreeNode{T}}
+# end
+#
+# WordlistTree{Char}(
+#     ['c'],
+#     WordlistTreeNode('c', [
+#         WordlistTreeNode('a',
+#             WordlistTreeNode('t',
+#                 WordlistTreeNode(nothing, nothing)
+#             )
+#         )
+#         ])
+#     )
+# children(W::WordlistTree) = ()
+
+# helper functions for normalisation of strings
+nopunct(s::AbstractString) = filter(c -> !ispunct(c), s)
+nopunct(s) = nopunct(string(s))
+nfcl(s::AbstractString) = Base.Unicode.normalize(s, decompose=true, compat=true, casefold=true, stripmark=true, stripignore=true)
+canonicalise(s::AbstractString) = nopunct(nfcl(s))
+normalise(s::AbstractString) = lowercase(strip(canonicalise(s)))
+
+# struct Dictionary
+#     parent::Char
+#     finished::Bool
+#     children::Dict{Char, Dictionary}
+# end
 
 function _make_tree_from_wordlist(wordlist::Vector{S}) where {S <: AbstractString}
     tree = Dict()
@@ -18,7 +74,6 @@ function _make_tree_from_wordlist(wordlist::Vector{S}) where {S <: AbstractStrin
         tree[c] = get(tree, c, Dict())
         if isone(length(w_rem))
             tree[c][:is_word] = true
-            tree[c][nothing] = nothing
         else
             tree[c] = _add_to_tree!(tree[c], w_rem[2:end])
         end
@@ -26,49 +81,18 @@ function _make_tree_from_wordlist(wordlist::Vector{S}) where {S <: AbstractStrin
     end
 
     for wᵢ in wordlist
-        _add_to_tree!(tree, lowercase(wᵢ))
+        _add_to_tree!(tree, normalise(wᵢ))
     end
 
     return tree
 end
 
-function _make_trie_from_wordlist(wordlist::Vector{S}) where {S <: AbstractString}
-    T = Trie{Char}()
-    
-    for wᵢ in wordlist
-        wᵢ = lowercase(wᵢ)
-        c = w_rem[1]
-        T[c] = get(T, c, Dict())
-        if isone(length(w_rem))
-            tree[c][:is_word] = true
-            # tree[c][nothing] = nothing
-        else
-            T[c] = _add_to_tree!(tree[c], w_rem[2:end])
-        end
-    end
-    
-    # function _add_to_tree!(tree::Dict, w_rem::AbstractString)
-    #     c = w_rem[1]
-    #     tree[c] = get(tree, c, Dict())
-    #     if isone(length(w_rem))
-    #         tree[c][:is_word] = true
-    #         # tree[c][nothing] = nothing
-    #     else
-    #         tree[c] = _add_to_tree!(tree[c], w_rem[2:end])
-    #     end
-    #     return tree
-    # end
-    #
-    # for wᵢ in wordlist
-    #     _add_to_tree!(tree, lowercase(wᵢ))
-    # end
-
-    return T
-end
-
 const WORDLIST_PATH = realpath(joinpath(@__DIR__, "wordlist.txt"))
-const WORDLIST = readlines(WORDLIST_PATH)
+const WORDLIST_PATH_BIG = realpath(joinpath(@__DIR__, "wordlist_big.txt"))
+const WORDLIST =  String[normalise(w) for w in readlines(WORDLIST_PATH)]
+const WORDLIST_BIG = String[normalise(w) for w in readlines(WORDLIST_PATH_BIG) if length(w) > 1]
 const WORDLIST_AS_TREE = _make_tree_from_wordlist(WORDLIST)
+const WORDLIST_AS_TREE_BIG = _make_tree_from_wordlist(WORDLIST_BIG)
 
 function _skipblanks(str::S) where {S <: AbstractString}
     return filter(c -> c != ' ', str)
@@ -117,9 +141,9 @@ end
 
 """
 ```julia
-make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true) -> Vector{<:AbstractString}
-find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true)  -> Vector{<:AbstractString}
-find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; verbose::Bool = true)  -> Vector{<:AbstractString}
+make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true) -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; verbose::Bool = true)  -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; verbose::Bool = true)  -> Vector{AnagramaticSentence}
 ```
 
 Find anagrams of `str` given a `wordlist`.
@@ -127,13 +151,13 @@ Find anagrams of `str` given a `wordlist`.
 Given a word, will check if every permutation of the characters in the word can create some (potentially multi-word) phrase in the wordlist.
 """
 function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: AbstractString}
-    str_stripped = lowercase(_skipblanks(str))
+    str_stripped = normalise(_skipblanks(str))
     str_len = length(str_stripped)
     start_i = 1
     
-    anagrams = Vector{String}[] # each vector contains at least one word that creats the anagram
+    anagrams = AnagramaticSentence[]
     
-    for sⱼ in unique(permutations(str_stripped))
+    for sⱼ in unique(Combinatorics.permutations(str_stripped))
         tree_current = tree
         multiple_words = Vector{Char}[] # each vector of characters is a word
         # savepoint = Stack{Tuple{Int, Int, Dict}}() # using DataStructures' Stack slows the programme down substantially (by 100 ms on an 8-letter word)
@@ -145,13 +169,14 @@ function find_anagrams(str::S, tree::Dict; verbose::Bool = true) where {S <: Abs
             c = sⱼ[i]
             possible_value = get(tree_current, c, Dict())
             if get(possible_value, :is_word, false)
+            # if isnothing(get(possible_value, nothing, "something"))
                 if i == str_len
                     push!(multiple_words, sⱼ[(start_i):end])
                     this_sentence = String[join(w) for w in multiple_words]
                     # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
                     sort!(this_sentence)
                     if this_sentence ∉ anagrams
-                        push!(anagrams, this_sentence)
+                        push!(anagrams, AnagramaticSentence(this_sentence))
                         if verbose
                             Logging.@info "Anagram found: \"$(join(this_sentence, ' '))\""
                         end
@@ -186,8 +211,4 @@ function find_anagrams(str::S1, path_to_wordlist::S2; verbose::Bool = true) wher
     wordlist = readlines(path_to_wordlist)
     tree = _make_tree_from_wordlist(wordlist)
     return find_anagrams(str, tree; verbose = verbose)
-end
-
-function make_anagramatic_name(str::S) where {S <: AbstractString}
-    # for this function, we need to figure out a way to make a word which *sounds like* a word...NLP...
 end
