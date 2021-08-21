@@ -1,7 +1,5 @@
 # TODO
-#   - Implement a word limit (i.e., "james collins" cannot return "cones jam sill") if word limit is 2
 #   - Implement tree struct using AbstractTrees, DataStructures, or LightGraphs—*or* use Dictionaries.jl
-#   - MIN_WORD_SIZE
 
 using Logging
 using Combinatorics
@@ -142,9 +140,9 @@ end
 
 """
 ```julia
-make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) -> Vector{AnagramaticSentence}
-find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true)  -> Vector{AnagramaticSentence}
-find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true)  -> Vector{AnagramaticSentence}
+make_anagram(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true) -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, wordlist::Vector{<:AbstractString}; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true)  -> Vector{AnagramaticSentence}
+find_anagrams(str::AbstractString, path_to_wordlist::AbstractString; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true)  -> Vector{AnagramaticSentence}
 ```
 
 Find anagrams of `str` given a `wordlist`.
@@ -152,12 +150,15 @@ Find anagrams of `str` given a `wordlist`.
 Given a word, will check if every permutation of the characters in the word can create some (potentially multi-word) phrase in the wordlist.
 
 The `nwords` keyword argument will limit the number of resulting words your anagram can be.
+
+The `min_word_size` keyword argument will only obtain `AnagramaticSentence`s contain words of length greater than or equal to `min_word_size`.
 """
-function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S <: AbstractString}
+function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true) where {S <: AbstractString}
     str_stripped = normalise(_skipblanks(str))
     str_len = length(str_stripped)
     start_i = 1
     has_limit = !isnothing(nwords)
+    constrain_word = !isnothing(min_word_size)
     
     anagrams = AnagramaticSentence[]
     for sⱼ in Combinatorics.multiset_permutations(str_stripped, str_len)
@@ -183,15 +184,26 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
                             break
                         end
                     end
+                    # ensure the minimum word size constraint is acknowledged
+                    if constrain_word
+                        if !all(length(w) ≥ min_word_size for w in this_sentence)
+                        # for w in this_sentence
+                            # if length(w) ≤ min_word_size
+                            break
+                            # end
+                        end
+                    end
                     # sort so that result ["a", "b"] does not appear if ["b", "a"] is already in the list
                     sort!(this_sentence)
-                    # also ensure that this sentence is not the same as the input
-                    # we can't just skip the first word because "potter harry" is still "harry potter", sorted
-                    if this_sentence ∉ (w.words for w in anagrams) #&& join(this_sentence) != str_stripped
-                        push!(anagrams, AnagramaticSentence(this_sentence))
-                        # if verbose, say we found something
-                        if verbose
-                            Logging.@info "Anagram found: \"$(join(this_sentence, ' '))\""
+                    if this_sentence ∉ (w.words for w in anagrams)
+                        # also ensure that this sentence is not the same as the input
+                        # we can't just skip the first word because "potter harry" is still "harry potter", sorted
+                        if allow_identity || (!allow_identity && join(this_sentence) != str_stripped)
+                            push!(anagrams, AnagramaticSentence(this_sentence))
+                            # if verbose, say we found something
+                            if verbose
+                                Logging.@info "Anagram found: \"$(join(this_sentence, ' '))\""
+                            end
                         end
                     end
                     # empty the multiple_words vector and start again
@@ -218,12 +230,12 @@ function find_anagrams(str::S, tree::Dict; nwords::Union{Int, Nothing} = nothing
         
     return anagrams
 end
-function find_anagrams(str::S1, wordlist::Vector{S2}; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+function find_anagrams(str::S1, wordlist::Vector{S2}; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
     tree = _make_tree_from_wordlist(wordlist)
-    return find_anagrams(str, tree; nwords = nwords, verbose = verbose)
+    return find_anagrams(str, tree; nwords = nwords, min_word_size = min_word_size, allow_identity = allow_identity, verbose = verbose)
 end
-function find_anagrams(str::S1, path_to_wordlist::S2; nwords::Union{Int, Nothing} = nothing, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
+function find_anagrams(str::S1, path_to_wordlist::S2; nwords::Union{Int, Nothing} = nothing, min_word_size::Union{Int, Nothing} = nothing, allow_identity::Bool = false, verbose::Bool = true) where {S1 <: AbstractString, S2 <: AbstractString}
     wordlist = readlines(path_to_wordlist)
     tree = _make_tree_from_wordlist(wordlist)
-    return find_anagrams(str, tree; nwords = nwords, verbose = verbose)
+    return find_anagrams(str, tree; nwords = nwords, min_word_size = min_word_size, allow_identity = allow_identity, verbose = verbose)
 end
