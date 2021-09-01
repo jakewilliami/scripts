@@ -73,3 +73,24 @@ fn parse_input(input: &str) -> String {
 	
 	return out;
 }
+
+
+
+/*
+julia> R = ccall(:jl_gf_invoke_lookup_worlds, Any,
+               (Any, UInt, Ptr{Csize_t}, Ptr{Csize_t}),
+               Tuple{typeof(length), Array},
+			   ccall(:jl_get_world_counter, UInt, ()),
+			   Base.RefValue{UInt}(typemin(UInt)),
+			   Base.RefValue{UInt}(typemax(UInt)))
+length(a::Array) in Base at array.jl:197
+
+julia> R.module
+Base
+
+julia> R.file
+Symbol("array.jl")
+
+julia> R.line
+197
+*/
