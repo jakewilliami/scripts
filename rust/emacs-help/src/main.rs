@@ -63,6 +63,12 @@ fn main() {
 						// 	.required(false)
 						// 	.multiple(false)
 					   	// )
+						.arg(Arg::with_name("INPUT")
+							.help("Takes in your help search input")
+							.takes_value(true)
+							.required(false)
+							.multiple(true)
+						)
 						.arg(Arg::with_name("ALL")
 							.short("a")
 							.long("all")
@@ -138,21 +144,31 @@ fn main() {
 		for line in helpdata.split('\n').filter(|s| !s.is_empty()) {
 			println!("{}", line);
 		}
-	} else {
-		// suppose we haven't got the command line argument
-		let n = args.len();
-		for i in 1..n {
-			let a = &args[i];
+	}
+	if matches.is_present("INPUT") {
+		let input = matches.value_of("INPUT");
+		// let n = args.len();
+		// for i in 1..n {
+		//	let a = &args[i];
+		//	let f = find_value(&map, a.to_string());
+		//	
+		//	if f != None {
+		//		println!("{}: {}", a, f.unwrap());
+		//	}
+		//	else {
+		//		println!("{:?}", f)
+		// 	}
+		// }
+		for a in &input.split(' ') {
 			let f = find_value(&map, a.to_string());
 			
-			if f != None {
-				println!("{}: {}", a, f.unwrap());
-			}
-			else {
+			if f.is_none() {
 				println!("{:?}", f)
+			} else {
+				println!("{}: {}", a, f.unwrap())
 			}
 		}
-	};
+	}
 		
 	return;
 }
