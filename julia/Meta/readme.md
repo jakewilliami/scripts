@@ -173,4 +173,43 @@ Hence, there is a very convenient macro which can be used: `Base.@locals`.  This
 
 ## Applications
 
-The problem that prompted me to learn a lot of the above: How might one get a function's 
+The problem that prompted me to learn a lot of the above: How might one get a function's parameters (and those parameter's values).  Here's what I wrote:
+```julia
+function foobar(...)
+    this_method = Base.StackTraces.stacktrace()[1].linfo.def
+    nkwargs = this_method.nkw
+    slotnames = Base.uncompressed_ir(this_method).slotnames
+    local params::Vector{Symbol}
+    if nkwargs > 0
+        kwargs = slotnames[2:(nkwargs + 1)]
+        args = slotnames[(nkwargs + 3):this_method.nargs]
+        params = vcat(kwargs, args)
+    else
+        params = slotnames[2:this_method.nargs]
+    end
+    local_vars = Base.@locals
+    return Dict{Symbol, Union{this_method.sig.parameters[2:end]...}}(p => local_vars[p] for p in params)
+end
+```
+
+So for example we have
+```julia
+julia> function foobar(hello::Int; kwa1::UInt8 = 0x2, another_kwarg:String = "string")
+	# ...
+end
+foo (generic function with 1 method)
+
+julia> foobar(13, another_kwarg = "this is a string")
+Dict{Symbol, Union{typeof(foobar), Int64, UInt8, String}} with 3 entries:
+  :kwa1          => 0x02
+  :hello         => 13
+  :another_kwarg => "this is a string"
+```
+
+The only thing to consider is, you will see within the function that you need to handle the case of keyword arguments separately to normal arguments.  This is because the value of `Base.uncompressed_ir(...).slotnames` is as follows:
+  - Without keyword arguments:
+    - `foobar(::Int64, ::String)` &longmapsto; `Tuple{typeof(foobar), Int64, String}`
+  - With keyword arguments:
+    - `foobar(::Int64, ::String; kwa_1::UInt8 = 0x2, kwa_2::Symbol = :hi)` &longmapsto; `Tuple{var"##foobar#38", UInt8, Symbol, typeof(foobar), Int64, String}`
+
+So in the case of keyword arguments, you will have to handle that separately.
