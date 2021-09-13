@@ -3,6 +3,6 @@
 | Problem number | Problem name | Done |
 | --- | ----------- | --- |
 | 1 | Encoding | &check; |
-| 2 | XOR |  |
-| 3 | Mathematics |  |
-| 4 | Data Formats |  |
+| 2 | XOR | &cross; |
+| 3 | Mathematics | &check; |
+| 4 | Data Formats | &cross; |
