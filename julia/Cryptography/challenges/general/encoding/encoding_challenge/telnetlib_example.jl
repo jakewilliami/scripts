@@ -36,28 +36,15 @@ end
 # ===========================================
 
 tn = connect(HOST, PORT)
-received = json_recv(tn)
-
-println("Received type: ")
-println(received["type"])
-println("Received encoded value: ")
-println(received["encoded"])
-
-decoded = decode_response(received)
-println("Decoded response: ")
-println(decoded)
-
-to_send = Dict("decoded" => decoded)
-json_send(tn, to_send)
-
-println()
-
-response = json_recv(tn)
-println("Response type: ")
-println(response["type"])
-println("Response encoded: ")
-println(response["encoded"])
-
-decoded2 = decode_response(response)
-println("Response decoded: ")
-println(decoded2)
+while true
+    received = json_recv(tn)
+    
+    if haskey(received, "flag")
+        println(received["flag"])
+        break
+    else
+        decoded = decode_response(received)
+        to_send = Dict("decoded" => decoded)
+        json_send(tn, to_send)
+    end
+end
