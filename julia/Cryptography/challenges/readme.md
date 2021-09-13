@@ -2,7 +2,7 @@
 
 | Problem number | Problem name | Done |
 | --- | ----------- | --- |
-| 1 | Introduction | - [x] |
+| 1 | Introduction | &#10003; |
 | 2 | General | &#10003; |
-| 3 | Mathematics | <ul><li>[ ]</li></ul> |
-| 4 | Block Ciphers | <ul><li>[ ]</li></ul> |
+| 3 | Mathematics |  |
+| 4 | Block Ciphers |  |
