@@ -6,4 +6,4 @@
 | 2 | XOR Properties | &check; |
 | 3 | Favourite byte | &check; |
 | 4 | You either know, XOR you don't | &check; |
-| 5 | Lemur XOR | &cross; |
+| 5 | Lemur XOR | &xor; |
