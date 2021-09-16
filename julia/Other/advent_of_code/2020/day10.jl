@@ -122,3 +122,28 @@ BenchmarkTools.Trial:
   samples:          10000
   evals/sample:     1
 =#
+
+function count_adaptor_permutations(xs::Vector{Int})
+    dp = Int[]
+    push!(dp, 1)
+    for i in 2:length(xs)
+        push!(dp, 0)
+        for j in (i - 1):-1:1
+            if xs[i] - xs[j] > 3
+                break
+            end
+            dp[i] += dp[j]
+        end
+    end
+    return dp[end]
+end
+
+using BenchmarkTools
+xs = load_file(datafile)
+res1 = @btime count_adaptor_permutations(xs)
+println(res1)
+sort!(xs)
+insert!(xs, 1, 0)
+push!(xs, xs[end] + 3)
+res2 = @btime main(xs)
+println(res2)
