@@ -51,7 +51,7 @@ async fn main() {
 								.required(false)
 								.multiple(false)
 						   	)
-							.arg(Arg::with_name("COORDS")
+							.arg(Arg::with_name("ADDR_FOR_COORDS")
 								.short("c")
 								.long("coordinates")
 								// .value_name("FILE")
@@ -127,7 +127,7 @@ async fn main() {
 					resp.push_str(" ∈ ");
 					resp.push_str(details.unwrap()["CityTown"].as_str().unwrap());
 					if i != (postcodes.len() - 1) {
-						resp.push_str("\n") 
+						resp.push_str("\n")
 					}
 				}
 			}
