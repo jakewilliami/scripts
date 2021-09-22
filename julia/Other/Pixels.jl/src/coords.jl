@@ -1,3 +1,5 @@
+export AbstractCoordinate, Coordinate
+
 abstract type AbstractCoordinate end
 
 """
