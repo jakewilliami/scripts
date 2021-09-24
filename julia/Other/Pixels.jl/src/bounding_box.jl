@@ -1,3 +1,5 @@
+export BoundingBox
+
 """
 ```julia
 BoundingBox{T <: Number}(mins::Coordinate{T}, maxs::Coordinate{T}, points::Vector{Coordinate{T}})
