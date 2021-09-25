@@ -1,3 +1,5 @@
+export BlockSpace
+
 """
 ```julia
 BlockSpace{T <: Number}(points::Vector{Coordinate{T}}, BoundingBox{T})
