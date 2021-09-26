@@ -1,8 +1,9 @@
 module Pixels
 
 include("coords.jl")
-include("bounding_box.jl")
-include("")
+include("bounding_box.jl") # BoundingBox uses Coordinate
+include("block_space.jl") # BlockSpace uses BoundingBox and Coordinate
+include("point_grid.jl") # PointGrid uses BlockSpace and Coordinate
 
 # block1 = Coordinate(1, 5, 7)
 # block2 = Coordinate(5, 2, 4)
