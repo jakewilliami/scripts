@@ -47,13 +47,13 @@ fn invert_tree<T: Clone>(root: NodeRef<T>) -> NodeRef<T> {
 fn print_tree<T: Display>(root: &NodeRef<T>, level: usize) {
 	match root {
 		Some(node) => {
-			print_tree(&node.left, level + 1);
+			print_tree(&node.right, level + 1);
 			// indent
 			for _ in 0..level {
 				print!("  ");
 			}
 			println!("{}", node.value);
-			print_tree(&node.right, level + 1);
+			print_tree(&node.left, level + 1);
 		}
 		None => {}
 	}
