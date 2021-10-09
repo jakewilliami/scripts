@@ -29,7 +29,8 @@ fn generate_tree(level: usize, counter: &mut isize) -> NodeRef<isize> {
 
 // make sure we are able to copy the contents of the tree, 
 // so need the generic to be clonable
-fn invert_tree<T: Clone>(root: NodeRef<T>) -> NodeRef<T> {
+// fn invert_tree<T: Clone>(root: NodeRef<T>) -> NodeRef<T> {
+fn invert_tree<T>(root: NodeRef<T>) -> NodeRef<T> {
 	match root {
 		Some(node) => {
 			let node = Node {
