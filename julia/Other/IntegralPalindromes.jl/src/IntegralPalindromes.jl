@@ -1,5 +1,6 @@
 using Combinatorics
 
+# TODO: only need to go to the middle of the digts
 function ispalindrome(n::Integer)
     _digits = digits(n)
     n_digits = length(_digits) # ndigits(n)
@@ -20,20 +21,17 @@ function largest_palindrome(n::Int, m::Int)
     # get the lower and upper bound of 
     upper = 10^n - 1
     lower = 10^(n - 1)
-    
-    A = Vector{Vector{Int}}()
-    for a in combinations(lower:upper, m)
-        # as we need to sort by prod, as well as check prod for 
-        # palindromeness, we should just add prod to the vector
-        push!(A, vcat(a, prod(a)))
-    end
+
+    # as we need to sort by prod, as well as check prod for 
+    # palindromeness, we should just add prod to the vector    
+    A = Vector{Int}[vcat(a, prod(a)) for a in with_replacement_combinations(1:n, m)]
+
     # sort the combinations so that we can efficiently start from the top
-    sort!(A, by = last)
+    # we need to sort in reverse order to get the largest palindrome
+    sort!(A, by = last, rev = true)
     
     # iterate over the combinations and check if it's a palindrome or not
-    # we need to iterate in reverse order to get the largest palindrome
-    for i in length(A):-1:1
-        a = A[i]
+    for a in A
         if ispalindrome(a[end])
             return (ntuple(j -> a[j], length(a) - 1)..., a[end])
         end
