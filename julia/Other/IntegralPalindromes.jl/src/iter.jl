@@ -4,6 +4,8 @@ using Combinatorics
 # A helper function to enqueue something if and only if it doesn't already exist
 _try_enqueue!(pq::PriorityQueue{K, V}, k::K, v::V) where {K, V} = k in keys(pq) ? pq : enqueue!(pq, k, v)
 
+# TODO: rename upper => k, and m => r
+
 struct ProdIter
     lower::Int
     upper::Int
@@ -93,8 +95,51 @@ function approxeq(t1::NTuple{3, Int}, t2::NTuple{3, Int})
     return eq
 end
 
+function Base.count(::Type{ProdIter2}, lower::Int, upper::Int)
+    i = 0
+    for _ in ProdIter2(lower, upper)
+        i += 1
+    end
+    return i
+end
+Base.count(::Type{ProdIter2}, R::UnitRange{Int}) = count(ProdIter2, R.start, R.stop)
+
 R = 1:5
 m = 2
-for (i, j) in zip(ProdIter2(R.start, R.stop), reviter(R.start, R.stop, m))
-    println(i, " — ", j, " — ", approxeq(i, Tuple(j)))
+# for (i, j) in zip(ProdIter2(R.start, R.stop), reviter(R.start, R.stop, m))
+#     println(i, " — ", j, " — ", approxeq(i, Tuple(j)))
+# end
+
+# println(count(ProdIter2, R))
+
+function len(n::Int, m::Int)
+    if m == 1
+        return n
+    end
+    # f = Int[sum(c == x for c in 1:n) for x in unique(1:n)]
+    f = ones(Int, n) # if it's always a range, then this is fine
+    local g::Vector{Integer}
+    if m > 20
+        g = [factorial(big(i)) for i in 0:m]
+    else
+        g = [factorial(i) for i in 0:m]
+    end
+    p = vcat(g[m + 1], zeros(Float64, m))
+    for (i, a) in enumerate(f)
+        if i == 1
+            for j in 1:min(a, m)
+                p[j + 1] = g[m + 1] / g[j + 1]
+            end
+        else
+            for j in m:-1:1
+                q = 0
+                for k in (j + 1):-1:max(1, j - a + 1)
+                    q += p[k] / g[j - k + 2]
+                end
+                p[j + 1] = q
+            end
+        end
+    end
+    return round(Int, p[m+1]) + n
 end
+println(len(20, 2))
