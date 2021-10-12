@@ -1,6 +1,22 @@
+module IntegralPalindromes
+
 using Combinatorics
+using DataStructures
+
+include("iter.jl")
+
+export ispalindrome, largest_palindrome
+export ProdIter, ProdIter2
 
 # TODO: only need to go to the middle of the digts
+"""
+```julia
+ispalindrome(n::Integer) -> Bool
+```
+Returns a boolean value depending on whether or not the number is a palindrome.
+
+For example, the number `9009` is a palindrome, because (just like the palindrome strings) can be read forward and backwards the same way.
+"""
 function ispalindrome(n::Integer)
     _digits = digits(n)
     n_digits = length(_digits) # ndigits(n)
@@ -12,23 +28,38 @@ function ispalindrome(n::Integer)
     return true
 end
 
+function _prod_iter(lower::Int, upper::Int, m::Int)
+    # sort!([a for a in Combinatorics.with_replacement_combinations(lower:upper, m)], by = prod, rev = true)
+    A = collect(Combinatorics.multiset_permutations(lower:upper, m))
+    for i in lower:upper
+        push!(A, [i, i])
+    end
+    A = Vector{Int}[vcat(a, prod(a)) for a in A]
+    return sort!(A, by = last, rev = true)
+end
+
 """
-Largest palindrome from the product of m `n`-digit numbers
-for example, the largest palindrome from the product of 2 2-digit numbers
-is 91 × 99 == 9009
+```julia
+larget_palindrome(n::Int, m::Int) -> (Int..., Int)
+```
+Computes the largest palindrome integer that is a product of m n-digit numbers.  Will return an (m + 1)-tuple, with the numbers whose product is a palindrome, and the product of such numbers in the last position of the tuple.
+
+For example, with n = 2 and m = 2, the largest palindrome that is the product of two 2-digit numbers is 91 × 99 = 9009, so the function will return `(91, 99, 9009)`.
 """
 function largest_palindrome(n::Int, m::Int)
-    # get the lower and upper bound of 
+    # get the lower and upper bound of
     upper = 10^n - 1
     lower = 10^(n - 1)
 
-    # as we need to sort by prod, as well as check prod for 
-    # palindromeness, we should just add prod to the vector    
-    A = Vector{Int}[vcat(a, prod(a)) for a in with_replacement_combinations(1:n, m)]
+    # as we need to sort by prod, as well as check prod for
+    # palindromeness, we should just add prod to the vector
+    # A = Vector{Int}[vcat(a, prod(a)) for a in with_replacement_combinations(1:n, m)]
+    A = _prod_iter(1, n, m)
+    println(A)
 
     # sort the combinations so that we can efficiently start from the top
     # we need to sort in reverse order to get the largest palindrome
-    sort!(A, by = last, rev = true)
+    # sort!(A, by = last, rev = true)
     
     # iterate over the combinations and check if it's a palindrome or not
     for a in A
@@ -40,10 +71,4 @@ function largest_palindrome(n::Int, m::Int)
     return ntuple(0, m + 1) # default to zero as answer for type stability
 end
 
-for i in 1:4
-    println(i, " => ", largest_palindrome(i, 2))
 end
-
-@assert ispalindrome(9009)
-@assert largest_palindrome(2, 2) == (91, 99, 9009)
-@assert largest_palindrome(3, 2) == (913, 993, 906609)
