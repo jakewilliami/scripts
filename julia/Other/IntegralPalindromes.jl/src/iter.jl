@@ -1,3 +1,4 @@
+using DataStructures
 using Combinatorics
 using ResumableFunctions
 
@@ -27,43 +28,40 @@ function Base.iterate(iter::ProdIter, state = (ntuple(iter.upper, iter.m)..., it
 end
 
 # Base case
+# Base.iterate(iter::ProdIter2) = 
+#     ((iter.upper, iter.upper, iter.upper^2), ((iter.upper, iter.upper), iter.upper^2, NTuple{3, Int}[]))
 Base.iterate(iter::ProdIter2) = 
-    ((iter.upper, iter.upper, iter.upper^2), ((iter.upper, iter.upper), iter.upper^2, NTuple{3, Int}[]))
+    ((iter.upper, iter.upper, iter.upper^2), ((iter.upper, iter.upper), iter.upper^2, PriorityQueue{NTuple{2, Int}, Int}(Base.Order.Reverse))) # or Base.Order.Forward, if we wanted to get the lowest element first
 
 # Induction step
-function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Vector{NTuple{3, Int}}}) # the state has ((xs...), prod, queue)
+# function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Vector{NTuple{3, Int}}}) # the state has ((xs...), prod, queue)
+function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, PriorityQueue{NTuple{2, Int}, Int}}) # the state has ((xs...), prod, queue)
     a, b = first(state)
-    _, product, queue = state
+    _, product, pq = state
     
     # stop if either value is
-    # if xor(((i - 1) == 0 for i in state[1:iter.m])...)
-    # if (a - 1) == 0 ⊻ (b - 1) == 0
-    # if xor(((i - 1) == 0 for i in first(state))...)
-    # if (a-1) == (iter.lower-1) ⊻ (b-1) == (iter.lower-1)
-    # if (a-1) == (iter.lower-1) ⊻ (b-1) == (iter.lower-1)
-    # if (a-1 == iter.lower-1) && (b-1 == iter.lower-1)
     if all((i - 1) == iter.lower_bound for i in first(state))
-    # if xor(((i - 1) == 0 for i in [a, b])...)
-    # if xor((b - 1) == 0, (a - 1) == 0)
-    # if (a == 0 ⊻ b == 0) && !(a == 0 && b == 0)
-    # if ((a - 1) == 0) ⊻ ((b - 1) == 0)
         return nothing
     end
     
     c = (a - 1)b
     d = (b - 1)a
-    
-    for (k, item) in enumerate(queue)
-        i, j, qprod = item
+
+    if !isempty(pq)
+        k, qprod = peek(pq)
         if qprod > c || qprod > d
-            deleteat!(queue, k)
-            return (i, j, qprod), ((i, j), qprod, queue)
+            delete!(pq, k)
+            i, j = k
+            return (i, j, qprod), ((i, j), qprod, pq)
         end
     end
+    
     if c > d
-        return (a - 1, b, c), ((a - 1, b), c, push!(queue, (a, b - 1, d)))
+        enqueue!(pq, (a, b - 1), d)
+        return (a - 1, b, c), ((a - 1, b), c, pq)
     else
-        return (a, b - 1, d), ((a, b - 1), d, push!(queue, (a - 1, b, c)))
+        enqueue!(pq, (a - 1, b), c)
+        return (a, b - 1, d), ((a, b - 1), d, pq)
     end
 end
 
