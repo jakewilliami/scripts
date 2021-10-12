@@ -2,6 +2,7 @@
 
 This problem came about when I saw the [fourth Euler problem](https://projecteuler.net/problem=4):
 > A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+>
 > Find the largest palindrome made from the product of two 3-digit numbers.
 
 The solution was obvious to me: get all combinations of two 3-digit numbers, sort them by their product, and choose the first one which is a palindrome.  (And checking for a palindrome is relatively trivial).  
