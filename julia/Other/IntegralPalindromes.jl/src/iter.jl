@@ -19,25 +19,13 @@ struct ProdIter2
 end
 ProdIter2(lower::Int, upper::Int) = ProdIter2(lower, upper, lower - 1)
 
-function Base.iterate(iter::ProdIter, state = (ntuple(iter.upper, iter.m)..., iter.upper^m, NTuple{iter.m + 1, Int}[]))
-    xs = ntuple(i -> state[i], m)
-    
-    if all(x > upper for x in xs)
-        return nothing
-    end
-end
-
-# Base case
-# Base.iterate(iter::ProdIter2) = 
-#     ((iter.upper, iter.upper, iter.upper^2), ((iter.upper, iter.upper), iter.upper^2, NTuple{3, Int}[]))
 Base.iterate(iter::ProdIter2) = 
     ((iter.upper, iter.upper, iter.upper^2), ((iter.upper, iter.upper), iter.upper^2, PriorityQueue{NTuple{2, Int}, Int}(Base.Order.Reverse))) # or Base.Order.Forward, if we wanted to get the lowest element first
 
 # Induction step
-# function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Vector{NTuple{3, Int}}}) # the state has ((xs...), prod, queue)
 function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, PriorityQueue{NTuple{2, Int}, Int}}) # the state has ((xs...), prod, queue)
-    a, b = first(state)
-    _, product, pq = state
+    t, product, pq = state
+    a, b = t
     
     # stop if either value is
     if all((i - 1) == iter.lower_bound for i in first(state))
@@ -86,26 +74,3 @@ end
 for (i, j) in zip(ProdIter2(1, 5), reviter(1, 5, 2))
     println(i, " — ", j)
 end
-
-#=
-@resumable function rev_iter(lower::Int, upper::Int, m::Int)
-    if m < 1
-        return nothing
-    elseif m == 1
-        for i in lower:upper
-            @yield (i, )
-        end
-    end
-    
-    for i in lower:upper
-        for n in rev_iter(lower, upper, m - 1)
-            @yield (i, n...)
-        end
-    end
-    return nothing
-end
-
-for i in rev_iter(1, 5, 2)
-    println(i)
-end
-=#
