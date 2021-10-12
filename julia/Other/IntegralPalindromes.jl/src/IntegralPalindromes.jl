@@ -47,19 +47,22 @@ Computes the largest palindrome integer that is a product of m n-digit numbers. 
 For example, with n = 2 and m = 2, the largest palindrome that is the product of two 2-digit numbers is 91 × 99 = 9009, so the function will return `(91, 99, 9009)`.
 """
 function largest_palindrome(n::Int, m::Int)
-    # get the lower and upper bound of
+    # get the lower and upper bound of n-digit numbers
     upper = 10^n - 1
     lower = 10^(n - 1)
-
+    
+    A = collect(Combinatorics.multiset_permutations(lower:upper, m))
+    # We also need to add the pairs (i, i) for i in lower:upper, as
+    # those are not included in multiset_permutations
+    for i in lower:upper
+        push!(A, [i, i])
+    end
     # as we need to sort by prod, as well as check prod for
     # palindromeness, we should just add prod to the vector
-    # A = Vector{Int}[vcat(a, prod(a)) for a in with_replacement_combinations(1:n, m)]
-    A = _prod_iter(1, n, m)
-    println(A)
-
+    A = Vector{Int}[vcat(a, prod(a)) for a in A]
     # sort the combinations so that we can efficiently start from the top
     # we need to sort in reverse order to get the largest palindrome
-    # sort!(A, by = last, rev = true)
+    sort!(A, by = last, rev = true)
     
     # iterate over the combinations and check if it's a palindrome or not
     for a in A
@@ -69,6 +72,19 @@ function largest_palindrome(n::Int, m::Int)
     end
     
     return ntuple(0, m + 1) # default to zero as answer for type stability
+end
+
+function largest_palindrome_iter(n::Int, m::Int)
+    if m == 2
+        # get the lower and upper bound of n-digit numbers
+        upper = 10^n - 1
+        lower = 10^(n - 1)
+        
+        for a in ProdIter2(lower, upper, m)
+        end
+    else
+        return largest_palindrome(n, m)
+    end
 end
 
 end
