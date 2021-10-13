@@ -9,6 +9,78 @@ end
 # A helper function to enqueue something if and only if it doesn't already exist
 _try_enqueue!(pq::PriorityQueue{K, V}, k::K, v::V) where {K, V} = k in keys(pq) ? pq : enqueue!(pq, k, v)
 
+
+function Base.iterate(iter::ProdIter)
+    base_val = ntuple(_ -> iter.upper, iter.m)
+    base_prod = iter.upper^iter.m
+    base_iter = (base_val..., base_prod)
+    base_stack = (base_val, base_prod, PriorityQueue{NTuple{iter.m, Int}, Int}(Base.Order.Reverse)) # or Base.Order.Forward, if we wanted to get the lowest element first
+    return base_iter, base_stack
+end
+
+# Induction step
+# TODO: generalise to m > 2
+function Base.iterate(iter::ProdIter, state::Tuple{NTuple{N, Int}, Int, PriorityQueue{NTuple{N, Int}, Int}}) where N # the state has ((xs...), prod, queue)
+    t, product, pq = state # change product => _ ?
+    a, b = t
+    
+    # stop if either value is
+    if all((i - 1) < iter.lower for i in t)
+        return nothing
+    end
+    
+    current_options = (ntuple(j -> i == j ? t[j] - 1 : t[j], iter.m) for i in 1:iter.m)
+    current_options_prod = (prod(i == j ? t[j] - 1 : t[j] for j in 1:iter.m) for i in 1:iter.m)
+
+    if !isempty(pq)
+        k, qprod = peek(pq)
+        if any(qprod > i for i in current_options_prod)
+            # @info "Queue: Found better solution than $((a - 1, b, c)) or $((a, b - 1, d)) in $pq for key $k"
+            for (decr_val, opt, opt_prod) in zip(t, current_options, current_options_prod)
+                if (decr_val - 1) ≥ iter.lower
+                    _try_enqueue!(pq, opt, opt_prod)
+                end
+            end
+            # if (a - 1) ≥ iter.lower
+            #     _try_enqueue!(pq, (a - 1, b), c)
+            # end
+            # if (b - 1) ≥ iter.lower
+            #     _try_enqueue!(pq, (a, b - 1), d)
+            # end
+            delete!(pq, k)
+            return (k..., qprod), (k, qprod, pq)
+        end
+    end
+    
+    # max_idx = findmax(collect(current_options_prod))
+    for (decr_val, opt, opt_prod) in zip(t, current_options, current_options_prod)
+        if all(opt_prod ≥ i for i in current_options_prod)
+            # Add the other options to the queue
+            for (other_decr_val, other_opt, other_opt_prod) in zip(t, current_options, current_options_prod)
+                if (other_opt != opt) && ((other_decr_val - 1) ≥ iter.lower)
+                    _try_enqueue!(pq, other_opt, other_opt_prod)
+                end
+            end
+            return (opt..., opt_prod), (opt, opt_prod, pq)
+        end
+    end
+    
+    # if c > d
+    #     # @info "c > d: Found solution $((a - 1, b, c)) to be good.  Queueing $((a, b - 1, d)).  Queue currently $(isempty(pq) ? "empty" : pq)"
+    #     if (b - 1) ≥ iter.lower
+    #         _try_enqueue!(pq, (a, b - 1), d)
+    #     end
+    #     return (a - 1, b, c), ((a - 1, b), c, pq)
+    # else
+    #     # @info "c ≤ d: Found solution $((a, b - 1, d)) to be good.  Queueing $((a - 1, b, c)).  Queue currently $(isempty(pq) ? "empty" : pq)"
+    #     if (a - 1) ≥ iter.lower
+    #         _try_enqueue!(pq, (a - 1, b), c)
+    #     end
+    #     return (a, b - 1, d), ((a, b - 1), d, pq)
+    # end
+end
+
+
 struct ProdIter2
     lower::Int
     upper::Int
@@ -59,11 +131,15 @@ function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Priorit
     
     if c > d
         @info "c > d: Found solution $((a - 1, b, c)) to be good.  Queueing $((a, b - 1, d)).  Queue currently $(isempty(pq) ? "empty" : pq)"
-        _try_enqueue!(pq, (a, b - 1), d)
+        if (b - 1) ≥ iter.lower
+            _try_enqueue!(pq, (a, b - 1), d)
+        end
         return (a - 1, b, c), ((a - 1, b), c, pq)
     else
         @info "c ≤ d: Found solution $((a, b - 1, d)) to be good.  Queueing $((a - 1, b, c)).  Queue currently $(isempty(pq) ? "empty" : pq)"
-        _try_enqueue!(pq, (a - 1, b), c)
+        if (a - 1) ≥ iter.lower
+            _try_enqueue!(pq, (a - 1, b), c)
+        end
         return (a, b - 1, d), ((a, b - 1), d, pq)
     end
 end
