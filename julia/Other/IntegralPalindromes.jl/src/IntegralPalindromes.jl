@@ -80,7 +80,10 @@ function largest_palindrome_iter(n::Int, m::Int)
         upper = 10^n - 1
         lower = 10^(n - 1)
         
-        for a in ProdIter2(lower, upper, m)
+        for a in ProdIter2(lower, upper)
+            if ispalindrome(last(a))
+                return a
+            end
         end
     else
         return largest_palindrome(n, m)
