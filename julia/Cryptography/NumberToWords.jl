@@ -2,7 +2,7 @@ using Combinatorics
 
 """
 ```julia
-numbers_to_letters(n::Integer)
+decode_number(n::Integer)
 ```
 This function converts a number into a series of characters.
 
@@ -10,7 +10,7 @@ For example, if we map `1 => a`, `2 => b`, and so on, then giving this function 
 
 However, the number `123` can be parsed as having the characters `[12, 3]`, and `[1, 23]`.  However, the number `678` can only be parsed in one way: `[6, 7, 8]`, as the numbers `67` and `78` are out of the range of the standard alphabet.
 """
-function numbers_to_letters(n::Integer)
+function decode_number(n::Integer)
     _digits = reverse(digits(n))
     _ndigits = length(_digits)
     res = String[]
@@ -53,5 +53,3 @@ function numbers_to_letters(n::Integer)
     
     return res
 end
-
-numbers_to_letters(123)
