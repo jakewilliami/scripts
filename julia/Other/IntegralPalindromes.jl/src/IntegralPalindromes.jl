@@ -91,3 +91,16 @@ function largest_palindrome_iter(n::Int, m::Int)
 end
 
 end
+
+for a in 99:-1:1
+    for b in 99:-1:1
+        
+    end
+end
+
+99, 99
+99, 98
+99, 97
+99, 96 <-
+...
+98, 98 <-

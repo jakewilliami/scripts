@@ -31,7 +31,7 @@ function Base.iterate(iter::ProdIter, state::Tuple{NTuple{N, Int}, Int, Priority
     
     current_options = (ntuple(j -> i == j ? t[j] - 1 : t[j], iter.m) for i in 1:iter.m)
     current_options_prod = (prod(i == j ? t[j] - 1 : t[j] for j in 1:iter.m) for i in 1:iter.m)
-
+    
     if !isempty(pq)
         k, qprod = peek(pq)
         if any(qprod > i for i in current_options_prod)
@@ -41,12 +41,6 @@ function Base.iterate(iter::ProdIter, state::Tuple{NTuple{N, Int}, Int, Priority
                     _try_enqueue!(pq, opt, opt_prod)
                 end
             end
-            # if (a - 1) ≥ iter.lower
-            #     _try_enqueue!(pq, (a - 1, b), c)
-            # end
-            # if (b - 1) ≥ iter.lower
-            #     _try_enqueue!(pq, (a, b - 1), d)
-            # end
             delete!(pq, k)
             return (k..., qprod), (k, qprod, pq)
         end
@@ -64,21 +58,12 @@ function Base.iterate(iter::ProdIter, state::Tuple{NTuple{N, Int}, Int, Priority
             return (opt..., opt_prod), (opt, opt_prod, pq)
         end
     end
-    
-    # if c > d
-    #     # @info "c > d: Found solution $((a - 1, b, c)) to be good.  Queueing $((a, b - 1, d)).  Queue currently $(isempty(pq) ? "empty" : pq)"
-    #     if (b - 1) ≥ iter.lower
-    #         _try_enqueue!(pq, (a, b - 1), d)
-    #     end
-    #     return (a - 1, b, c), ((a - 1, b), c, pq)
-    # else
-    #     # @info "c ≤ d: Found solution $((a, b - 1, d)) to be good.  Queueing $((a - 1, b, c)).  Queue currently $(isempty(pq) ? "empty" : pq)"
-    #     if (a - 1) ≥ iter.lower
-    #         _try_enqueue!(pq, (a - 1, b), c)
-    #     end
-    #     return (a, b - 1, d), ((a, b - 1), d, pq)
-    # end
 end
+
+
+# Add one to m to account for the product at the end of the tuple
+Base.eltype(iter::ProdIter) = NTuple{iter.m + 1, Int}
+Base.length(iter::ProdIter) = _prod_iter_len(iter.upper - iter.lower + 1, iter.m)
 
 
 struct ProdIter2
@@ -116,7 +101,7 @@ function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Priorit
     if !isempty(pq)
         k, qprod = peek(pq)
         if qprod > c || qprod > d # any(qprod > i for i in [c, d])
-            @info "Queue: Found better solution than $((a - 1, b, c)) or $((a, b - 1, d)) in $pq for key $k"
+            # @info "Queue: Found better solution than $((a - 1, b, c)) or $((a, b - 1, d)) in $pq for key $k"
             if (a - 1) ≥ iter.lower
                 _try_enqueue!(pq, (a - 1, b), c)
             end
@@ -129,14 +114,29 @@ function Base.iterate(iter::ProdIter2, state::Tuple{NTuple{2, Int}, Int, Priorit
         end
     end
     
+    
+    current_options = ((a - 1, b), (a, b - 1))
+    current_options_prod = (c, d)
+    
+    # for (decr_val, opt, opt_prod) in zip(t, current_options, current_options_prod)
+    #     if all(opt_prod ≥ i for i in current_options_prod)
+    #         for (other_decr_val, other_opt, other_opt_prod) in zip(t, current_options, current_options_prod)
+    #             if (other_opt != opt) && ((other_decr_val - 1) ≥ iter.lower)
+    #                 _try_enqueue!(pq, other_opt, other_opt_prod)
+    #             end
+    #         end
+    #         return (opt..., opt_prod), (opt, opt_prod, pq)
+    #     end
+    # end
+    
     if c > d
-        @info "c > d: Found solution $((a - 1, b, c)) to be good.  Queueing $((a, b - 1, d)).  Queue currently $(isempty(pq) ? "empty" : pq)"
+        # @info "c > d: Found solution $((a - 1, b, c)) to be good.  Queueing $((a, b - 1, d)).  Queue currently $(isempty(pq) ? "empty" : pq)"
         if (b - 1) ≥ iter.lower
             _try_enqueue!(pq, (a, b - 1), d)
         end
         return (a - 1, b, c), ((a - 1, b), c, pq)
     else
-        @info "c ≤ d: Found solution $((a, b - 1, d)) to be good.  Queueing $((a - 1, b, c)).  Queue currently $(isempty(pq) ? "empty" : pq)"
+        # @info "c ≤ d: Found solution $((a, b - 1, d)) to be good.  Queueing $((a - 1, b, c)).  Queue currently $(isempty(pq) ? "empty" : pq)"
         if (a - 1) ≥ iter.lower
             _try_enqueue!(pq, (a - 1, b), c)
         end
@@ -176,11 +176,7 @@ function _prod_iter_len(n::Int, m::Int)
     return round(Int, p[m+1]) + n
 end
 
-
-Base.eltype(iter::ProdIter) = NTuple{iter.m, Int}
-Base.length(iter::ProdIter) = _prod_iter_len(iter.upper - iter.lower + 1, iter.m)
-
-Base.eltype(iter::ProdIter2) = NTuple{2, Int}
+Base.eltype(iter::ProdIter2) = NTuple{2 + 1, Int}
 Base.length(iter::ProdIter2) = _prod_iter_len(iter.upper - iter.lower + 1, 2)
 
 # function approxeq(t1::NTuple{3, Int}, t2::NTuple{3, Int})
