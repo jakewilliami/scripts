@@ -141,3 +141,9 @@ julia> @btime [Base.Iterators.repeated(['0', '1'], 3)...];
 julia> @btime [Vector{Char}[['0', '1'] for _ in 1:3]...];
   273.446 ns (5 allocations: 512 bytes)
 ```
+
+### Day 17
+
+This one took my a long time.  I borrowed a lot of code from Day 11 for this one, and couldn't for the life of me get it working.  I came back to it in October, 2021 (only 9 months later...) and did a bunch of refactoring/slight optimisations and finally figured it out.  One of the problems was the examples were confusingly laid out.
+
+Part 2 was remarkably simple, as I had written part 1 to work multidimensionally, so that was nice.  I mean, much slower as you add more dimensions...but nice nonetheless that it worked.
