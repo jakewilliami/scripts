@@ -1,11 +1,3 @@
-AbstractIndex{N} = Union{NTuple{N, T}, CartesianIndex{N}} where {T <: Integer}
-AbstractIndices{N}  = Union{AbstractArray{I, M}, NTuple{M, I}, CartesianIndices{N, NTuple{N, Base.OneTo{T}}}} where {I <: AbstractIndex{N}, T <: Integer, M}
-AbstractIndexOrIndices{N} = Union{AbstractIndex{N}, AbstractIndices{N}}
-
-n_adjacencies(dim::Integer) = 3^dim - 1
-n_adjacencies(M::AbstractArray{T, N}) where {T, N} = n_adjacencies(ndims(M))
-n_adjacencies(I::AbstractIndexOrIndices{N}) where {N} = n_adjacencies(length(first(I)))
-
 function append_n_times(M::AbstractArray{T, N}, n::Integer, fill_elem::T; dims::Integer = 1) where {T, N}
     sz = ntuple(d -> d == dims ? n : size(M, d), max(N, dims))
     return cat(M, fill(fill_elem, sz); dims = dims)
@@ -41,8 +33,9 @@ function part1(iterations::Int, layout::Array{Char, N}) where N
             layout = append_n_times_backwards(layout, 1, inactive, dims = i)
         end
         
+        # As we need to change all cubes simultaneously, we
+        # must make a copy and use as reference
         layout_clone = copy(layout)
-        indices_checked = CartesianIndex{N}[]
         
         for i in CartesianIndices(layout_clone)
             # count number of active, adjacent cells
@@ -52,9 +45,6 @@ function part1(iterations::Int, layout::Array{Char, N}) where N
                 a = checkbounds(Bool, layout_clone, k) ? layout_clone[k] : inactive
                 if a == active
                     n_active += 1
-                else
-                    # if the index is out of bounds, be sure to push it so that we know where to expand by
-                    i ∈ indices_checked || push!(indices_checked, i)
                 end
             end
             
@@ -72,8 +62,6 @@ function part1(iterations::Int, layout::Array{Char, N}) where N
                 end
             end
         end
-        
-        
     end
     
     return layout
@@ -86,3 +74,18 @@ part1(iterations::Int, datafile::String) =
 @assert count(==('#'), part1(6, "inputs/test.txt")) == 112
 @info "Running algorithm on puzzle input"
 count(==('#'), part1(6, "inputs/data17.txt"))
+
+#=
+julia> @benchmark part1(6, "inputs/data17.txt")
+BenchmarkTools.Trial:
+  memory estimate:  133.00 MiB
+  allocs estimate:  2609189
+  --------------
+  minimum time:     273.586 ms (3.14% GC)
+  median time:      281.505 ms (3.33% GC)
+  mean time:        283.308 ms (3.50% GC)
+  maximum time:     311.833 ms (3.56% GC)
+  --------------
+  samples:          18
+  evals/sample:     1
+=#
