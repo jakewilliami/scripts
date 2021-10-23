@@ -36,8 +36,8 @@ Day | Time | Memory | Allocations | Name
 15.2 | 2.272 s | 269.21 MiB | 112 | Rambunctious Recitation
 16.1 | 3.604 ms | 9.98 MiB | 12042 | Ticket Translation
 16.2 | 77.730 ms | 13.62 MiB | 16260 | Ticket Translation
-17.1 | 266.901 ms | 133.00 MiB | 2609189 | Conway Cubes
-17.2 | 10.532 s | 6.77 GiB | 97365215 | Conway Cubes
+17.1 | 99.054 ms | 26.53 MiB | 840070 | Conway Cubes
+17.2 | 4.080 s | 1.35 GiB | 30002377 | Conway Cubes
 <!-- 18.1 |  |  |  | Operation Order
 18.2 |  |  |  | Operation Order
 19.1 |  |  |  | Monster Messages

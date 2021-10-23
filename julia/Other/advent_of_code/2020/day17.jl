@@ -24,7 +24,7 @@ end
 
 function solve(iterations::Int, layout::Array{Char, N}) where N
     origin = ntuple(_ -> 0, N)
-    direction_multipliers = (CartesianIndex(i) for i in Iterators.product([-1:1 for _ in 1:N]...) if i != origin)
+    direction_multipliers = (CartesianIndex(i) for i in Iterators.product((-1:1 for _ in 1:N)...) if i != origin)
     
     for _ in 1:iterations
         # expand array
@@ -79,15 +79,15 @@ part1(iterations::Int, datafile::String) =
 #=
 julia> @benchmark part1(6, "inputs/data17.txt")
 BenchmarkTools.Trial:
-  memory estimate:  133.00 MiB
-  allocs estimate:  2609189
+  memory estimate:  26.53 MiB
+  allocs estimate:  840070
   --------------
-  minimum time:     273.586 ms (3.14% GC)
-  median time:      281.505 ms (3.33% GC)
-  mean time:        283.308 ms (3.50% GC)
-  maximum time:     311.833 ms (3.56% GC)
+  minimum time:     97.996 ms (0.00% GC)
+  median time:      102.515 ms (1.54% GC)
+  mean time:        103.916 ms (1.03% GC)
+  maximum time:     126.496 ms (1.28% GC)
   --------------
-  samples:          18
+  samples:          49
   evals/sample:     1
 =#
 
@@ -96,7 +96,7 @@ julia> @btime solve(3, 6); # Tom Kwong's one (using dictionaries somehow!)
   182.944 ms (1793200 allocations: 91.51 MiB)
 
 julia> @btime part1(6, "inputs/data17.txt"); # My one
-  266.901 ms (2609189 allocations: 133.00 MiB)
+  99.054 ms (840070 allocations: 26.53 MiB)
 =#
 
 part2(iterations::Int, layout::Vector{String}) =
@@ -109,25 +109,24 @@ part2(iterations::Int, datafile::String) =
 @assert part2(6, "inputs/data17.txt") == 2224
 
 #=
+julia> @benchmark part2(6, "inputs/data17.txt")
 BenchmarkTools.Trial:
-  memory estimate:  6.77 GiB
-  allocs estimate:  97365215
+  memory estimate:  1.35 GiB
+  allocs estimate:  30002377
   --------------
-  minimum time:     10.620 s (3.62% GC)
-  median time:      10.620 s (3.62% GC)
-  mean time:        10.620 s (3.62% GC)
-  maximum time:     10.620 s (3.62% GC)
+  minimum time:     4.066 s (1.11% GC)
+  median time:      4.080 s (1.18% GC)
+  mean time:        4.080 s (1.18% GC)
+  maximum time:     4.094 s (1.26% GC)
   --------------
-  samples:          1
+  samples:          2
   evals/sample:     1
 =#
 
 #=
 julia> @btime solve(4, 6); # Tom Kwong's one
   6.025 s (53922357 allocations: 3.57 GiB)
-2224
 
 julia> @btime part2(6, "inputs/data17.txt"); # My one
-  10.532 s (97365215 allocations: 6.77 GiB)
-2224
+  4.212 s (30002377 allocations: 1.35 GiB)
 =#
