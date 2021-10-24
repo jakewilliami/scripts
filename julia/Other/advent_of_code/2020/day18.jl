@@ -177,7 +177,22 @@ part1(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P1)
 
 println(part1("inputs/data18.txt"))
 
-# Part two
+#=
+julia> @benchmark part1(input)
+BenchmarkTools.Trial:
+  memory estimate:  9.78 MiB
+  allocs estimate:  56689
+  --------------
+  minimum time:     5.611 ms (0.00% GC)
+  median time:      6.559 ms (0.00% GC)
+  mean time:        7.901 ms (16.08% GC)
+  maximum time:     22.550 ms (0.00% GC)
+  --------------
+  samples:          633
+  evals/sample:     1
+=#
+
+### Part two
 
 PRECEDENCE_TABLE_P2 = Dict{Operator, Int}(
     plus => 2,
@@ -194,3 +209,18 @@ part2(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P2)
 @assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340
 
 println(part2("inputs/data18.txt"))
+
+#=
+julia> @benchmark part2(input)
+BenchmarkTools.Trial:
+  memory estimate:  9.80 MiB
+  allocs estimate:  57821
+  --------------
+  minimum time:     5.796 ms (0.00% GC)
+  median time:      6.644 ms (0.00% GC)
+  mean time:        8.005 ms (15.48% GC)
+  maximum time:     18.401 ms (0.00% GC)
+  --------------
+  samples:          626
+  evals/sample:     1
+=#

@@ -38,9 +38,9 @@ Day | Time | Memory | Allocations | Name
 16.2 | 77.730 ms | 13.62 MiB | 16260 | Ticket Translation
 17.1 | 99.054 ms | 26.53 MiB | 840070 | Conway Cubes
 17.2 | 4.080 s | 1.35 GiB | 30002377 | Conway Cubes
-<!-- 18.1 |  |  |  | Operation Order
-18.2 |  |  |  | Operation Order
-19.1 |  |  |  | Monster Messages
+18.1 | 5.789 ms | 9.78 MiB | 56689 | Operation Order
+18.2 | 5.787 ms | 9.80 MiB | 57821 | Operation Order
+<!-- 19.1 |  |  |  | Monster Messages
 19.2 |  |  |  | Monster Messages
 20.1 |  |  |  | Jurassic Jigsaw
 20.2 |  |  |  | Jurassic Jigsaw
@@ -147,3 +147,11 @@ julia> @btime [Vector{Char}[['0', '1'] for _ in 1:3]...];
 This one took my a long time.  I borrowed a lot of code from Day 11 for this one, and couldn't for the life of me get it working.  I came back to it in October, 2021 (only 9 months later...) and did a bunch of refactoring/slight optimisations and finally figured it out.  One of the problems was the examples were confusingly laid out.
 
 Part 2 was remarkably simple, as I had written part 1 to work multidimensionally, so that was nice.  I mean, much slower as you add more dimensions...but nice nonetheless that it worked.
+
+### Day 18
+
+I _really_ enjoyed this day's challenge.  I have recently been watching Alexey Kutepov's Porth development, from which I have been getting an understanding of tokenising and Reverse Polish Notation, but I had never actually used this concept in any of my own programming problems.
+
+The algorithm I used to solve this problem&mdash;the [Shunting-yard algorithm](https://www.wikiwand.com/en/Shunting-yard_algorithm)&mdash; I did have to Google briefly to find (though I did find it in the first search result).  However, the evaluation function I did purely from recalling how Alexey did it in his implementation.
+
+As I say, I found this super enjoyable.  10/10 problem, would solve again.
