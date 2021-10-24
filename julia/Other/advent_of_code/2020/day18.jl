@@ -3,9 +3,8 @@ using DataStructures # for efficient queue and stack
 @enum Operator begin
     plus
     times
-    # left_parenthesis
-    # right_parenthesis
 end
+
 @enum Parentheses begin
     left_parenthesis
     right_parenthesis
@@ -20,6 +19,8 @@ OPERATORS = Dict{Char, Union{Operator, Parentheses}}(
 
 @assert (length(instances(Operator)) + length(instances(Parentheses))) == length(OPERATORS) "Exhaustive handling of operators"
 
+### Helper functions
+
 function insert_if_valid!(V::AbstractVector{T}, i::Int, v::T) where {T}
     (isnothing(v) || isempty(v)) || insert!(V, i, v)
     return V
@@ -31,6 +32,8 @@ function surrounding_substrings(str::S, ch::Char) where {S <: AbstractString}
     k, l = surrounding_indices(str, j)
     return SubString(str, 1, k), SubString(str, l)
 end
+
+### Main parsing functions
 
 function tokenise_line(line::String)
     tokens = split(line)
@@ -70,12 +73,12 @@ function tokenise_line(line::String)
     return tokens
 end
 
-function parse_tokens(tokens::Vector{S}) where {S <: AbstractString}
+function parse_tokens(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString}
     # put everything on a stack and parse as reverse Polish notation (postfix)
     # I will use the Shunting-yard algorithm:
     # https://stackoverflow.com/a/2969583/12069968
     # https://www.wikiwand.com/en/Shunting-yard_algorithm
-    output_queue = Queue{Union{Int, Operator, Parentheses}}()
+    output_queue = Queue{Union{Int, Operator}}()
     op_stack = Stack{Union{Operator, Parentheses}}()
     
     while !isempty(tokens)
@@ -84,7 +87,7 @@ function parse_tokens(tokens::Vector{S}) where {S <: AbstractString}
             enqueue!(output_queue, parse(Int, token))
         # elseif token ∈ keys(FUNCTIONS) # token is a function
         elseif length(token) == 1 && only(token) ∈ keys(OPERATORS) && OPERATORS[only(token)] isa Operator # token is an operator o1
-            while !isempty(op_stack) && first(op_stack) != OPERATORS['('] # && (o2 has greater precedence than o1 *or* they have the same precedence and o1 is left-associative)
+            while !isempty(op_stack) && first(op_stack) != OPERATORS['('] && precedence_table[first(op_stack)] >= precedence_table[OPERATORS[only(token)]] # && o1 is left-associative
                 op₂ = pop!(op_stack)
                 enqueue!(output_queue, op₂)
             end
@@ -147,17 +150,47 @@ function evaluate(q::Queue{Union{Int, Operator}})
     @assert length(s) == 1 "Outstanding tokens in queue which need to be handled"
     return pop!(s)
 end
-evaluate(tokens::Vector{S}) where {S <: AbstractString} = evaluate(parse_tokens(tokens))
-evaluate(line::String) = evaluate(parse_tokens(tokenise_line(line)))
+evaluate(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString} =
+    evaluate(parse_tokens(tokens, precedence_table))
+evaluate(line::String, precedence_table::Dict{Operator, Int}) =
+    evaluate(parse_tokens(tokenise_line(line), precedence_table))
 
-part1(lines::Vector{String}) = sum(evaluate(line) for line in lines)
-part1(path::String) = part1(readlines(path))
+partn(lines::Vector{String}, precedence_table::Dict{Operator, Int}) =
+    sum(evaluate(line, precedence_table) for line in lines)
+partn(path::String, precedence_table::Dict{Operator, Int}) = partn(readlines(path), precedence_table)
 
-@assert evaluate("1 + 2 * 3 + 4 * 5 + 6") == 71
-@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))") == 51
-@assert evaluate("2 * 3 + (4 * 5)") == 26
-@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)") == 437
-@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))") == 12240
-@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2") == 13632
+### Part one
 
-part1("inputs/data18.txt")
+PRECEDENCE_TABLE_P1 = Dict{Operator, Int}(
+    plus => 1,
+    times => 1
+)
+
+part1(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P1)
+
+@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P1) == 71
+@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P1) == 51
+@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P1) == 26
+@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P1) == 437
+@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P1) == 12240
+@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P1) == 13632
+
+println(part1("inputs/data18.txt"))
+
+# Part two
+
+PRECEDENCE_TABLE_P2 = Dict{Operator, Int}(
+    plus => 2,
+    times => 1
+)
+
+part2(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P2)
+
+@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P2) == 231
+@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P2) == 51
+@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P2) == 46
+@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P2) == 1445
+@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2) == 669060
+@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340
+
+println(part2("inputs/data18.txt"))
