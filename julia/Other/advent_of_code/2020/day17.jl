@@ -1,3 +1,6 @@
+const testfile = "inputs/test17.txt"
+const datafile = "inputs/data17.jl"
+
 ACTIVE, INACTIVE = '#', '.'
 
 function append_n_times(M::AbstractArray{T, N}, n::Integer, fill_elem::T; dims::Integer = 1) where {T, N}
@@ -72,9 +75,9 @@ part1(iterations::Int, layout::Vector{String}) =
 part1(iterations::Int, datafile::String) =
     part1(6, readlines(datafile))
 
-@assert part1(6, "inputs/test.txt") == 112
+@assert part1(6, testfile) == 112
 @info "Running algorithm on puzzle input for part 1"
-@assert part1(6, "inputs/data17.txt") == 401
+@assert part1(6, datafile) == 401
 
 #=
 julia> @benchmark part1(6, "inputs/data17.txt")

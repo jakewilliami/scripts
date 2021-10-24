@@ -1,5 +1,7 @@
 using DataStructures # for efficient queue and stack
 
+const datafile = "inputs/data18.jl"
+
 @enum Operator begin
     plus
     times
@@ -175,7 +177,7 @@ part1(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P1)
 @assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P1) == 12240
 @assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P1) == 13632
 
-println(part1("inputs/data18.txt"))
+println(part1(datafile))
 
 #=
 julia> @benchmark part1(input)
@@ -208,7 +210,7 @@ part2(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P2)
 @assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2) == 669060
 @assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340
 
-println(part2("inputs/data18.txt"))
+println(part2(datafile))
 
 #=
 julia> @benchmark part2(input)
