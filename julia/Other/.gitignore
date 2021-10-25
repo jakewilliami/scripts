@@ -1,4 +1,4 @@
 *.rtf
 plots/
-*.txt
 *.pdf
+passwords.txt
