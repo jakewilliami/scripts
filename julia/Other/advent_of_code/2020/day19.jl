@@ -111,6 +111,21 @@ end
 @assert part1("inputs/test19d.txt") == 3
 println("Part One: ", part1(datafile))
 
+#=
+julia> @benchmark part1($datafile)
+BenchmarkTools.Trial:
+  memory estimate:  14.83 MiB
+  allocs estimate:  195927
+  --------------
+  minimum time:     21.685 ms (0.00% GC)
+  median time:      26.248 ms (0.00% GC)
+  mean time:        28.904 ms (4.10% GC)
+  maximum time:     66.555 ms (5.33% GC)
+  --------------
+  samples:          173
+  evals/sample:     1
+=#
+
 ### Part Two
 
 function part2(input_path::String)
@@ -124,3 +139,18 @@ end
 
 @assert part2("inputs/test19d.txt") == 12
 println("Part Two: ", part2(datafile))
+
+#=
+julia> @benchmark part2($datafile)
+BenchmarkTools.Trial:
+  memory estimate:  52.69 MiB
+  allocs estimate:  653404
+  --------------
+  minimum time:     78.754 ms (3.60% GC)
+  median time:      97.748 ms (3.53% GC)
+  mean time:        102.857 ms (4.16% GC)
+  maximum time:     196.395 ms (2.78% GC)
+  --------------
+  samples:          49
+  evals/sample:     1
+=#

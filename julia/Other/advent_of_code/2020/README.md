@@ -40,9 +40,9 @@ Day | Time | Memory | Allocations | Name
 17.2 | 4.080 s | 1.35 GiB | 30002377 | Conway Cubes
 18.1 | 5.789 ms | 9.78 MiB | 56689 | Operation Order
 18.2 | 5.787 ms | 9.80 MiB | 57821 | Operation Order
-<!-- 19.1 |  |  |  | Monster Messages
-19.2 |  |  |  | Monster Messages
-20.1 |  |  |  | Jurassic Jigsaw
+19.1 | 24.001 ms | 195927 | 14.83 MiB | Monster Messages
+19.2 | 84.613 ms | 653404 | 52.69 MiB | Monster Messages
+<!-- 20.1 |  |  |  | Jurassic Jigsaw
 20.2 |  |  |  | Jurassic Jigsaw
 21.1 |  |  |  | Allergen Assessment
 21.2 |  |  |  | Allergen Assessment
