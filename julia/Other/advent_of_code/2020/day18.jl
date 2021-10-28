@@ -227,5 +227,3 @@ BenchmarkTools.Trial:
   evals/sample:     1
 =#
 
-tokens = tokenise_line("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2")
-tokens_parsed = parse_tokens!(tokens, PRECEDENCE_TABLE_P1)
