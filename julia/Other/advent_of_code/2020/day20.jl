@@ -3,162 +3,21 @@ using Combinatorics: permutations
 
 ### Helper structs
 
-struct Tile
+mutable struct Tile
     id::Int
-    pixels::Matrix{Char}
+    left::Vector{Char}
+    right::Vector{Char}
+    top::Vector{Char}
+    bottom::Vector{Char}
+    sz::Tuple{Int, Int}
 end
-Base.size(t::Tile) = size(t.pixels)
-Base.size(t::Tile, d::Int) = size(t.pixels, d)
+Base.size(t::Tile) = t.sz
+Base.size(t::Tile, d::Int) = size(t)[d]
 
-struct TilePermutation
-    tiles::Matrix{Tile}
-    function TilePermutation(tiles::Matrix{Tile})
-        sz1 = size(first(tiles))
-        @assert all(size(tiles[i]) == sz1 for i in eachindex(tiles)) "All tiles must have the same size"
-        return new(tiles)
-    end
+mutable struct TilePermutation
+    edges::OrderedDict{Int, Vector{Int}}
+    tilemap::Dict{Int, NTuple{4, Int}}
 end
-function TilePermutation(tiles::Vector{Tile})
-    nrows = isqrt(size(first(tiles), 1))
-    @assert mod1(length(tiles), nrows) == nrows "Cannot produce a square formation from $(length(tiles)) tiles"
-    return TilePermutation(reshape(tiles, nrows, nrows))
-end
-TilePermutation(tiles_raw::Array{Matrix{Char}, N}) where {N} =
-    TilePermutation(Tile[Tile(0, pixels) for pixels in tiles_raw])
-
-Base.size(t::TilePermutation) = size(t.tiles)
-Base.size(t::TilePermutation, d::Int) = size(t.tiles, d)
-Base.length(t::TilePermutation) = length(t.tiles)
-Base.eltype(t::TilePermutation) = Tile
-
-function Base.show(io::IO, tiles::TilePermutation)
-    M = tiles.tiles
-    nrows = size(M, 1)
-    ncols = size(first(M).pixels, 2)
-    for (i, r1) in enumerate(eachrow(M))
-        for j in 1:ncols
-            for k in 1:length(r1)
-                print(io, join(r1[k].pixels[j, :]), " ")
-            end
-            (i == nrows && j == ncols) || println(io)
-        end
-        i == nrows || println(io)
-    end
-end
-
-### Parsing functions
-
-function parse_input(input::String)
-    title_re = r"^\w*\s(\d*):$"
-    tiles_raw = split(input, "\n\n")
-    tiles = Tile[]
-    for tile_raw in tiles_raw
-        tile_components = split(tile_raw, '\n')
-        title_match = match(title_re, popfirst!(tile_components))
-        @assert (!isnothing(title_match) && length(title_match.captures) == 1) "Malformed title format in tile"
-        id = parse(Int, only(title_match.captures))
-        pixels = reduce(vcat, permutedims(collect(s)) for s in tile_components if !isempty(s))
-        push!(tiles, Tile(id, pixels))
-    end
-    return tiles
-end
-
-### Check permutation is valid
-
-# Very efficient method for checking if a permutation of tiles is valid
-# I.e., if they line up correctly
-function Base.isvalid(tiles::TilePermutation, nrows::Int)
-    tile_matrix = tiles.tiles
-    tile_nrows, tile_ncols = size(first(tile_matrix))
-    
-    # iterate over the rows of the tile matrix and check that
-    # each tile matches the end of the tile above it
-    # with the exception of the first row, which does not need
-    # to match anything
-    for (i, indices) in enumerate(eachrow(CartesianIndices(tile_matrix)))
-        i == 1 && continue
-        for j in indices
-            row_tile = tile_matrix[j]
-            
-            # check the previous row of tiles
-            top_of_tile = view(row_tile.pixels, 1, :)
-            bottom_of_tile_above = view(tile_matrix[j - CartesianIndex(1, 0)].pixels, tile_nrows, :)
-            top_of_tile != bottom_of_tile_above && return false
-        end
-    end
-    
-    # do the same as above, over the columns of the tile matrix
-    # leaving out the first column, as we are checking the tiles in
-    # the column to the left
-    for (i, indices) in enumerate(eachcol(CartesianIndices(tile_matrix)))
-        i == 1 && continue
-        for j in indices
-            col_tile = tile_matrix[j]
-            
-            # check the previous column of tiles
-            leftmost_column_of_tile = view(col_tile.pixels, :, 1)
-            rightmost_column_of_tile_to_the_left = view(tile_matrix[j - CartesianIndex(0, 1)].pixels, :, tile_nrows)
-            leftmost_column_of_tile != rightmost_column_of_tile_to_the_left && return false
-        end
-    end
-    
-    # We have not failed yet, so this permutation works
-    return true
-end
-Base.isvalid(tiles::TilePermutation) = isvalid(tiles, size(tiles, 1))
-
-### Solve for the desired permutation
-
-function solve_tile_order(tiles::Vector{Tile}, ntiles::Int, nrows::Int)
-    tile_perms = permutations(1:ntiles)
-    rot_perms = Iterators.product((0:3 for _ in 1:9)...)
-    
-    for tile_order in tile_perms
-        for rot_perm in rot_perms
-            new_tile_permutation = Tile[r == 0 ? tiles[i] : Tile(tiles[i].id, rotr90(tiles[i].pixels, r))
-                for (i, r) in zip(tile_order, rot_perm)]
-            tile_perm = TilePermutation(new_tile_permutation)
-            if isvalid(tile_perm, nrows)
-                return tile_perm
-            end
-        end
-    end
-    
-    return nothing
-end
-
-### Part One
-
-function part1(input_path::String)
-    input = read(input_path, String)
-    tiles = parse_input(input)
-    
-    # Calculate the length of each side of the tile square
-    ntiles = length(tiles)
-    nrows = isqrt(ntiles)
-    @assert mod1(ntiles, nrows) == nrows "Cannot produce a square formation from $ntiles tiles"
-    
-    # Find the correct permutation and return the product result
-    correct_tile_permutation = solve_tile_order(tiles, ntiles, nrows)
-    if !isnothing(correct_tile_permutation)
-        # correct_tile_permutation = reshape(correct_tile_permutation, nrows, nrows)
-        # corner_indices = (1, nrows, nrows^2 - nrows + 1, nrows^2)
-        println([tile.id for tile in correct_tile_permutation])
-        corner_indices = (CartesianIndex(1, 1), CartesianIndex(1, nrows), CartesianIndex(nrows, 1), CartesianIndex(nrows, nrows))
-        return prod(correct_tile_permutation[i].id for i in corner_indices)
-    else
-        return 0
-    end
-end
-
-# part1("inputs/test20a1.txt")
-
-# M = TilePermutation(reshape(Matrix{Char}[reduce(vcat, permutedims(collect(s)) for s in split(t)) for t in split(read("inputs/test20a2.txt", String), "\n\n")], 3, 3))
-# isvalid(M)
-
-##################################################################################################
-
-DEFAULT_M = 10
 
 function flip(n::Int, m::Int)
     res = 0
@@ -171,13 +30,110 @@ function flip(n::Int, m::Int)
     end
     return res
 end
-flip(n::Int) = flip(n, DEFAULT_M)
+flip(n::Int) = flip(n, 10)
 
-edge_id(n::Int) = min(n, flip(n))
+### Parsing functions
 
+function parse_input(input::String)
+    title_re = r"^\w*\s(\d*):$"
+    
+    # split input into tiles
+    tiles_raw = split(strip(input), "\n\n")
+    ntiles = length(tiles_raw)
+    tiles = Vector{Tile}(undef, ntiles)
+    
+    for i in 1:ntiles
+        tile_raw = tiles_raw[i]
+        # split each tile into rows of pixels
+        tile_components = split(strip(tile_raw), '\n')
+        # get tile ID
+        title_match = match(title_re, popfirst!(tile_components))
+        @assert (!isnothing(title_match) && length(title_match.captures) == 1) "Malformed title format in tile"
+        id = parse(Int, only(title_match.captures))
+        # get tile edges
+        nrows = length(tile_components)
+        left, right = Vector{Char}(undef, nrows), Vector{Char}(undef, nrows)
+        for j in 1:nrows
+            tile_row = tile_components[j]
+            left[j] = tile_row[1]
+            right[j] = tile_row[end]
+        end
+        top, bottom = collect(tile_components[1]), collect(tile_components[end])
+        # put the constructed tile into the list of tiles
+        tiles[i] = Tile(id, left, right, top, bottom, (nrows, length(top)))
+    end
+    
+    return tiles
+end
 
+### Solve tile order
 
-function part1(tiles::Vector{<:AbstractString})
+function solve_tile_order(tiles::Vector{Tile})
+    tile_perm = TilePermutation(
+        OrderedDict{Int, Vector{Int}}(),
+        Dict{Int, NTuple{4, Int}}()
+    )
+    
+    for tile in tiles
+        l, r = 0, 0
+        for (l_char, r_char) in zip(tile.left, tile.right)
+            l <<= 1
+            r <<= 1
+            l |= Int(l_char == '#')
+            r |= Int(r_char == '#')
+        end
+        
+        t, b = 0, 0
+        for (t_char, b_char) in zip(tile.top, tile.bottom)
+            t <<= 1
+            b <<= 1
+            t |= Int(t_char == '#')
+            b |= Int(b_char == '#')
+        end
+        
+        l, r, t, b = (min(v, flip(v)) for v in (l, r, t, b)) # Tuple?
+        
+        tile_perm.tilemap[tile.id] = (t, l, b, r)
+        for v in (t, l, b, r)
+            tile_perm.edges[v] = push!(get(tile_perm.edges, v, Int[]), tile.id)
+        end
+    end
+    
+    return tile_perm
+end
+
+function get_corners(tile_perm::TilePermutation)
+    corners = Int[]
+    init_edge = nothing
+    
+    for (tile_id, tile) in tile_perm.tilemap
+        match_cnt = 0
+        unused = -1
+        
+        for edge in tile
+            if length(tile_perm.edges[edge]) == 2
+                match_cnt += 1
+            elseif length(tile_perm.edges[edge]) == 1
+                unused = edge
+            end
+        end
+        
+        @assert match_cnt >= 2
+        
+        if match_cnt == 2
+            push!(corners, tile_id)
+            if isnothing(init_edge)
+                init_edge = unused
+            end
+        end
+    end
+    
+    return corners
+end
+
+### Part One
+
+function part1_old(tiles::Vector{<:AbstractString})
     orig_tiles = Dict()
     # edges = DefaultDict([])
     edges = OrderedDict()
@@ -207,7 +163,7 @@ function part1(tiles::Vector{<:AbstractString})
             b |= (img[end][i] == '#' ? 1 : 0)
         end
         
-        l, r, t, b = (edge_id(v) for v in (l, r, t, b)) # Tuple?
+        l, r, t, b = (min(v, flip(v)) for v in (l, r, t, b)) # Tuple?
         
         # @info tile_id, string(l, base = 2), string(r, base = 2), string(t, base = 2), string(b, base = 2)
         
@@ -247,9 +203,21 @@ function part1(tiles::Vector{<:AbstractString})
         end
     end
     
+    return prod(corners)
+end
+part1_old(filename::String) = part1_old(split(read(filename, String), "\n\n"))
+
+function part1(input_path::String)
+    input = read(input_path, String)
+    tiles = parse_input(input)
+    
+    tile_perm = solve_tile_order(tiles)
+    corners = get_corners(tile_perm)
     
     return prod(corners)
 end
-part1(filename::String) = part1(split(read(filename, String), "\n\n"))
 
-@assert part1("inputs/test20a1.txt") == 20899048083289
+@assert part1_old("inputs/test20a1.txt") == 20899048083289
+part1("inputs/test20a1.txt")
+
+
