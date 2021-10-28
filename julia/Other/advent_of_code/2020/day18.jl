@@ -1,6 +1,6 @@
 using DataStructures # for efficient queue and stack
 
-const datafile = "inputs/data18.jl"
+const datafile = "inputs/data18.txt"
 
 @enum Operator begin
     plus
@@ -75,7 +75,7 @@ function tokenise_line(line::String)
     return tokens
 end
 
-function parse_tokens(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString}
+function parse_tokens!(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString}
     # put everything on a stack and parse as reverse Polish notation (postfix)
     # I will use the Shunting-yard algorithm:
     # https://stackoverflow.com/a/2969583/12069968
@@ -109,7 +109,7 @@ function parse_tokens(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) 
             pop!(op_stack)
             # if there is a function token at the top of the operator stack, then:
             #     pop the function from the operator stack into the output queue
-            # if !isempty(op_stack) && first(op_stack) isa Operator
+            # if !isempty(op_stack) && first(op_stack) isa Function
             #     op = pop!(op_stack)
             #     enqueue!(output_queue, op)
             # end
@@ -127,7 +127,7 @@ function parse_tokens(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) 
     return output_queue
 end
 
-function evaluate(q::Queue{Union{Int, Operator}})
+function evaluate!(q::Queue{Union{Int, Operator}})
     # We need to maintain a stack for reverse polish notation to work
     # it is actually super easy to evaluate the queue in this way
     s = Stack{Int}()
@@ -152,10 +152,10 @@ function evaluate(q::Queue{Union{Int, Operator}})
     @assert length(s) == 1 "Outstanding tokens in queue which need to be handled"
     return pop!(s)
 end
-evaluate(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString} =
-    evaluate(parse_tokens(tokens, precedence_table))
+evaluate!(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString} =
+    evaluate!(parse_tokens!(tokens, precedence_table))
 evaluate(line::String, precedence_table::Dict{Operator, Int}) =
-    evaluate(parse_tokens(tokenise_line(line), precedence_table))
+    evaluate!(tokenise_line(line), precedence_table)
 
 partn(lines::Vector{String}, precedence_table::Dict{Operator, Int}) =
     sum(evaluate(line, precedence_table) for line in lines)
@@ -226,3 +226,6 @@ BenchmarkTools.Trial:
   samples:          626
   evals/sample:     1
 =#
+
+tokens = tokenise_line("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2")
+tokens_parsed = parse_tokens!(tokens, PRECEDENCE_TABLE_P1)
