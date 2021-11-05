@@ -163,19 +163,14 @@ partn(path::String, precedence_table::Dict{Operator, Int}) = partn(readlines(pat
 
 ### Part one
 
-PRECEDENCE_TABLE_P1 = Dict{Operator, Int}(
-    plus => 1,
-    times => 1
-)
+part1(input::Union{String, Vector{String}}) = partn(input, Dict{Operator, Int}(op => 1 for op in instances(Operator))) # part one has precedence left -> right
 
-part1(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P1)
-
-@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P1) == 71
-@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P1) == 51
-@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P1) == 26
-@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P1) == 437
-@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P1) == 12240
-@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P1) == 13632
+@assert evaluate("1 + 2 * 3 + 4 * 5 + 6")                           == 71
+@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))")                     == 51
+@assert evaluate("2 * 3 + (4 * 5)")                                 == 26
+@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)")                     == 437
+@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))")       == 12240
+@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2") == 13632
 
 println(part1(datafile))
 
@@ -203,11 +198,11 @@ PRECEDENCE_TABLE_P2 = Dict{Operator, Int}(
 
 part2(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P2)
 
-@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P2) == 231
-@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P2) == 51
-@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P2) == 46
-@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P2) == 1445
-@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2) == 669060
+@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P2)                           == 231
+@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P2)                     == 51
+@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P2)                                 == 46
+@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P2)                     == 1445
+@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2)       == 669060
 @assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340
 
 println(part2(datafile))
