@@ -19,7 +19,7 @@ OPERATORS = Dict{Char, Union{Operator, Parentheses}}(
     ')' => right_parenthesis
 )
 
-@assert (length(instances(Operator)) + length(instances(Parentheses))) == length(OPERATORS) "Exhaustive handling of operators"
+@assert((length(instances(Operator)) + length(instances(Parentheses))) == length(OPERATORS), "Exhaustive handling of operators")
 
 ### Helper functions
 
@@ -38,39 +38,30 @@ end
 ### Main parsing functions
 
 function tokenise_line(line::String)
-    tokens = split(line)
-    
-    # No extra handling required if the line does not contain parentheses
-    (contains(line, '(') || contains(line, ')')) || return tokens
-    
-    # handle parentheses correctly
+    tokens = SubString{String}[]
     i = 1
-    while i <= length(tokens)
-        token = tokens[i]
-        while contains(token, '(') && i <= length(tokens)
-            deleteat!(tokens, i)
-            a, b = surrounding_substrings(token, '(')
-            insert_if_valid!(tokens, i, b)
-            insert_if_valid!(tokens, i, a)
-            insert!(tokens, i, SubString("("))
+    while i <= length(line)
+        token_char = line[i]
+        if isspace(token_char)
             i += 1
-            if i <= length(tokens)
-                token = tokens[i]
-            end
+            continue
         end
-        while contains(token, ')') && i <= length(tokens)
-            deleteat!(tokens, i)
-            a, b = surrounding_substrings(token, ')')
-            insert!(tokens, i, SubString(")"))
-            insert_if_valid!(tokens, i, b)
-            insert_if_valid!(tokens, i, a)
-            i += 1
-            if i <= length(tokens)
-                token = tokens[i]
+        if isdigit(token_char)
+            j = i
+            while i <= length(line) && isdigit(line[i])
+                i += 1
             end
+            i -= 1
+            push!(tokens, SubString(line, j, i))
+        else
+            push!(tokens, SubString(string(token_char)))
         end
         i += 1
     end
+    
+    # Assert that all the tokens that aren't numbers are known
+    # NOTE: this will currently fail if OPERATORS' keys are not Chars
+    @assert(all(only(t) ∈ keys(OPERATORS) for t in tokens if !all(isdigit, t)), "Unknown symbols in line; currently only support $(collect(keys(OPERATORS))); got $(tokens[findfirst(t -> t ∉ keys(OPERATORS), Char[only(t) for t in tokens if !all(isdigit, t)])])")
     
     return tokens
 end
@@ -101,11 +92,11 @@ function parse_tokens!(tokens::Vector{S}, precedence_table::Dict{Operator, Int})
         elseif length(token) == 1 && only(token) == ')' # token is a right parenthesis
             while !isempty(op_stack) && first(op_stack) != OPERATORS['(']
                 # If the stack runs out without finding a left parenthesis, then there are mismatched parentheses
-                @assert !isempty(op_stack) "Mismatched parentheses"
+                @assert(!isempty(op_stack), "Mismatched parentheses")
                 op = pop!(op_stack)
                 enqueue!(output_queue, op)
             end
-            @assert first(op_stack) == OPERATORS['(']
+            @assert(first(op_stack) == OPERATORS['('])
             pop!(op_stack)
             # if there is a function token at the top of the operator stack, then:
             #     pop the function from the operator stack into the output queue
@@ -120,7 +111,7 @@ function parse_tokens!(tokens::Vector{S}, precedence_table::Dict{Operator, Int})
         # pop the operator from the operator stack onto the output queue
         op = pop!(op_stack)
         # If the operator token on the top of the stack is a parenthesis, then there are mismatched parentheses.
-        @assert op != OPERATORS['('] "Mismatched parentheses"
+        @assert(op != OPERATORS['('], "Mismatched parentheses")
         enqueue!(output_queue, op)
     end
     
@@ -149,7 +140,7 @@ function evaluate!(q::Queue{Union{Int, Operator}})
             error("Exhaustive handling of operators")
         end
     end
-    @assert length(s) == 1 "Outstanding tokens in queue which need to be handled"
+    @assert(length(s) == 1, "Outstanding tokens in queue which need to be handled")
     return pop!(s)
 end
 evaluate!(tokens::Vector{S}, precedence_table::Dict{Operator, Int}) where {S <: AbstractString} =
@@ -170,12 +161,12 @@ PRECEDENCE_TABLE_P1 = Dict{Operator, Int}(
 
 part1(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P1)
 
-@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P1) == 71
-@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P1) == 51
-@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P1) == 26
-@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P1) == 437
-@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P1) == 12240
-@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P1) == 13632
+@assert(evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P1) == 71)
+@assert(evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P1) == 51)
+@assert(evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P1) == 26)
+@assert(evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P1) == 437)
+@assert(evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P1) == 12240)
+@assert(evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P1) == 13632)
 
 println(part1(datafile))
 
@@ -203,12 +194,12 @@ PRECEDENCE_TABLE_P2 = Dict{Operator, Int}(
 
 part2(input::Union{String, Vector{String}}) = partn(input, PRECEDENCE_TABLE_P2)
 
-@assert evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P2) == 231
-@assert evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P2) == 51
-@assert evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P2) == 46
-@assert evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P2) == 1445
-@assert evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2) == 669060
-@assert evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340
+@assert(evaluate("1 + 2 * 3 + 4 * 5 + 6", PRECEDENCE_TABLE_P2) == 231)
+@assert(evaluate("1 + (2 * 3) + (4 * (5 + 6))", PRECEDENCE_TABLE_P2) == 51)
+@assert(evaluate("2 * 3 + (4 * 5)", PRECEDENCE_TABLE_P2) == 46)
+@assert(evaluate("5 + (8 * 3 + 9 + 3 * 4 * 3)", PRECEDENCE_TABLE_P2) == 1445)
+@assert(evaluate("5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))", PRECEDENCE_TABLE_P2) == 669060)
+@assert(evaluate("((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2", PRECEDENCE_TABLE_P2) == 23340)
 
 println(part2(datafile))
 
