@@ -131,6 +131,12 @@ true
 
 julia> hasfield(Foo, :bar) # hasfield checks if the type Foo has the field `bar`
 true
+
+julia> fieldtype(Foo, :bar)
+Any
+
+julia> fieldtype(Foo, 1) # the field `:bar` is the first field in the struct
+Any
 ```
 
 One can also get just the number of fields a `DataType` has:
