@@ -22,7 +22,7 @@ intoURI(base64str::S) where {S <: AbstractString} =
 ### Helper functions
 
 error_if_unsuccessful(j::D) where {D <: Dict} =
-	j["success"] || error(j["error"]["message"] * "; error code " * string(j["error"]["code"]))
+	(println(j); j["success"] || error(j["error"]["message"] * "; error code " * string(j["error"]["code"])))
 
 ### Main request function
 
@@ -263,6 +263,7 @@ p3_out = nothing
 p4 = PCall.get_postcode_from_addr("21 St Michaels Cres")
 p4_out = "6012"
 p5 = PCall.get_coordinates_from_addr("21 St Michaels Cres")
+# (latitude, longitude)
 p5_out = (-41.289891, 174.762686)
 
 @testset "PCall" begin
