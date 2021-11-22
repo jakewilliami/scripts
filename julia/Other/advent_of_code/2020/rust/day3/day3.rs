@@ -1,9 +1,12 @@
 fn main() {
+
+}
+
+fn parse_input(input_file: &str) {
 	// read lines from input and parse as numbers
-	let file_path = "../inputs/data10.txt";
 	let xs = {
-		let mut xs = std::fs::read_to_string(file_path)
-			.expect(&format!("Could not read file `{}`", file_path))
+		let mut xs = std::fs::read_to_string(input_file)
+			.expect(&format!("Could not read file `{}`", input_file))
 			.lines()
 			.map(|line| line.parse::<i64>().expect(&format!("`{}` is not a number!", line)))
 			.collect::<Vec<_>>();
@@ -14,7 +17,11 @@ fn main() {
 		xs.push(xs.last().expect("100% Rust bug not mine") + 3); // we added an element already
 		xs
 	};
-	
+}
+
+fn part1(data) {}
+
+fn part2(data) {
 	// Dynamic programming table
 	// dp[i] is the amount of possible adaptors at the ith adaptor
 	// Usually this depends on the previous amount of adaptors, e.g.
