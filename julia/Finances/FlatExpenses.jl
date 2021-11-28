@@ -1,5 +1,10 @@
 using Dates, CSV, DataFrames, DataFramesMeta, Plots, StatsPlots
 
+# const FILENAME = "Ireland-Christall-1FEB2019-to-14AUG2021.csv"
+const FILENAME = "Ireland-Christall-14FEB2019-to-27NOV2021.csv"
+const PAYEE_NAME = "CONTACT ENERGY LTD"
+const DATES_SHEET = "flat_data.csv"
+
 function add_type!(df::DataFrame, colname::Symbol, appendtypes::Type...)
     df[!, colname] =
         Vector{Union{appendtypes..., Base.uniontypes(eltype(df[!, colname]))...}}(df[!, colname])
@@ -38,10 +43,11 @@ function fill_in_the_blanks!(df::DataFrame)
 end
 
 function get_power!(df::DataFrame)
-	df_all = CSV.read("Ireland-Christall-1FEB2019-to-14AUG2021.csv", DataFrame)
+	df_all = CSV.read(FILENAME, DataFrame)
     add_type!(df, :power, Float64, Missing)
 	i = 1
-    for r in eachrow(@subset(df_all, :Payee .== "CONTACT ENERGY LTD")) # ignore partial (first) month
+    for r in eachrow(@subset(df_all, :Payee .== PAYEE_NAME)) # ignore partial (first) month
+        i <= nrow(df) || break
         d = Date(r.Date, DateFormat("dd/mm/yy")) + Year(2000)
         if Date(year(d), month(d), 1) != df[i, :date]
 			i += 1 # skip month if we have are missing a month in the BNZ spreadsheet
@@ -104,7 +110,7 @@ function plot_power_internet(df::DataFrame)
 	plt = bar(
         dates_human_readable,
 		Float64[ismissing(p) ? 0.0 : p for p in df.power],
-		legend = true,
+		legend = :topleft,
         label = "Power",
         xticks = (0.5:(length(df.date) - 0.5), dates_human_readable),
         xrotation = 45,
@@ -124,7 +130,7 @@ end
 
 function main()
     # read and parse dataframe
-    df = CSV.read("flat_data.csv", DataFrame)
+    df = CSV.read(DATES_SHEET, DataFrame)
     parse_dates!(df)
     # fill_in_the_blanks!(df)
     get_power!(df)
