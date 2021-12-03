@@ -15,15 +15,12 @@ fn main() {
 
 // Structs and such
 
-
-#[derive(Debug)]
 enum Direction {
 	Forward,
 	Down,
 	Up,
 }
 
-#[derive(Debug)]
 struct Command {
 	val: isize,
 	direction: Direction,
