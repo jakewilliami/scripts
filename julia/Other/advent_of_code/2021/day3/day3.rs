@@ -8,10 +8,18 @@ fn main() {
 	let data: Vec<_> = buf.lines()
 		.map(|l| l.expect("Could not parse line"))
 		.collect();
+	let test_data: Vec<String> = vec!["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"].iter().map(|s| s.to_string()).collect();
 	
 	// part 1
+	assert_eq!(part1(&test_data), 198);
 	let part1_solution = part1(&data);
-	println!("{:?}", part1_solution);
+	println!("Part 1: {}", part1_solution);
+	
+	// part 2
+	assert_eq!(part2(&test_data), 230);
+	let part2_solution = part2(&data);
+	println!("Part 2: {}", part2_solution);
+	
 }
 
 // Part 1
@@ -66,4 +74,52 @@ fn invert_bitstring(bitstr: &String) -> String {
 }
 
 // Part 2
+
+enum RatingCriteria {
+	OxygenGenerator,
+	CO2Scrubber,
+}
+
+fn part2(data: &Vec<String>) -> isize {
+	let oxygen_generator_rating_str = get_bit_criteria(data, RatingCriteria::OxygenGenerator);
+	let co2_scrubber_rating_str = get_bit_criteria(data, RatingCriteria::CO2Scrubber);
+	
+	let oxygen_generator_rating = isize::from_str_radix(&oxygen_generator_rating_str, 2).unwrap();
+	let co2_scrubber_rating = isize::from_str_radix(&co2_scrubber_rating_str, 2).unwrap();
+	
+	return oxygen_generator_rating * co2_scrubber_rating;
+}
+
+fn get_bit_criteria(data: &Vec<String>, rating_criteria: RatingCriteria) -> String {
+	let nbits = data[0].len();
+	let mut data_chars: Vec<Vec<char>> = data.iter().map(|bitstr| {
+		bitstr.chars().collect()
+	}).collect();
+	
+	let mut i = 0;
+	while i < nbits && data_chars.len() > 1 {
+		let (mut ones, mut zeros) = (0, 0);
+		for bits in &data_chars {
+			if bits[i] == '1' {
+				ones += 1;
+			} else if bits[i] == '0' {
+				zeros += 1;
+			} else {
+				unreachable!()
+			}
+		}
+		let filter_by_bit = match rating_criteria {
+			RatingCriteria::OxygenGenerator => {
+				if ones >= zeros { '1' } else { '0' } // keep most common
+			},
+			RatingCriteria::CO2Scrubber => {
+				if ones >= zeros { '0' } else { '1' }
+			},
+		};
+		data_chars.retain(|bits| { bits[i] == filter_by_bit }); // filter in place
+		i += 1;
+	}
+	assert!(data_chars.len() == 1);
+	return data_chars[0].iter().collect();
+}
 
