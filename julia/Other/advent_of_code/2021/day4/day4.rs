@@ -96,57 +96,68 @@ fn is_winning_vector(&v: &[BingoNumber; BINGO_BOARD_SIZE]) -> bool {
 }
 */
 
+enum DimType {
+	Row,
+	Col,
+}
+
 trait IsWinner {
-	// fn is_winner(&self) -> Option<Vec<BingoNumber>>;
-	fn is_winner(&self) -> bool;
+	fn is_winner(&self, dim_type: DimType, i: usize) -> bool;
 }
 
 
 impl IsWinner for BingoBoard {
-	// fn is_winner(&self) -> Option<Vec<BingoNumber>> {
-	fn is_winner(&self) -> bool {
-		// check the board for any winning configurations
-		for i in 0..BINGO_BOARD_SIZE {
-			// check the current row
-			if self.data[i].iter().all(|r| { r.obtained }) {
-				// return Some(self.data[i].to_vec());
-				return true;
-			}
-			// check the current column
-			if self.data.iter().all(|r| { r[i].obtained } ) {
-				// return Some(self.data.iter().map(|r| { r[i] }).collect());
-				return true;
-			}
+	fn is_winner(&self, dim_type: DimType, i: usize) -> bool {
+		match dim_type {
+			DimType::Row => {
+				self.data[i].iter().all(|r| { r.obtained })
+			},
+			DimType::Col => {
+				self.data.iter().all(|r| { r[i].obtained })
+			},
 		}
-		
-		// if we have not found any configurations yet, then
-		// this board has not yet won
-		// return None;
-		return false;
 	}
 }
 
 fn simulate_bingo_game(bingo_components: &mut BingoComponents) -> Option<(u16, BingoBoard)> {
 	for n in bingo_components.numbers.iter() {
 		for board in bingo_components.boards.iter_mut() {
-			// mutate board
-			for x in 0..BINGO_BOARD_SIZE {
+			// in a small attempt to optimise my original solution (1f71bf3), 
+			// I realised that I don't have to check all rows and all columns; 
+			// I just have to check the column/row for the position at which the
+			// drawn number has occurred
+			let mut marked_value_positions: Vec<(usize, DimType)> = Vec::new();
+			// mark position on board
+			'outer: for x in 0..BINGO_BOARD_SIZE {
 				for y in 0..BINGO_BOARD_SIZE {
 					if board.data[y][x].val == *n {
+						// update/mark bingo number as obtained
 						board.data[y][x].obtained = true;
-						break;
+						
+						// as per the above note, we add to the list of positions
+						// we have changed on this board
+						marked_value_positions.push((x, DimType::Col));
+						marked_value_positions.push((y, DimType::Row));
+						
+						// we have found the position of the drawn number;
+						// as all numbers in the Bingo board should be
+						// unique, we should stop searching here
+						break 'outer;
 					}
 				}
 			}
 			
-			// check for winner
-			// let winning_vec = board.is_winner();
-			// if !winning_vec.is_none() {
-			if board.is_winner() {
-				return Some((*n, board.clone()));
+			// check for winner from the positions of the numbers
+			// we have marked from this board
+			for (i, dim_type) in marked_value_positions {
+				if board.is_winner(dim_type, i) {
+					return Some((*n, board.clone()));
+				}
 			}
 		}
 	}
+	
+	// if we get here, we have no winner
 	return None;
 }
 
