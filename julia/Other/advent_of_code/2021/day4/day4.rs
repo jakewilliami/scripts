@@ -45,6 +45,25 @@ impl Default for BingoNumber {
 	}
 }
 
+enum DimType {
+	Row,
+	Col,
+}
+
+trait BingoBoardIsWinner {
+	fn is_winner(&self, dim_type: DimType, i: usize) -> bool;
+}
+
+trait BingoBoardScore {
+	fn calculate_score(&self) -> usize;
+}
+
+trait WinningBingoBoard {
+	fn get_winning_board(&mut self) -> Option<(u16, BingoBoard)>;
+}
+
+// trait LosingBingoBoard {}
+
 // Parse input
 
 fn parse_input(data_file: &str) -> BingoComponents {
@@ -90,23 +109,7 @@ fn parse_board(board_rows: Vec<&str>) -> BingoBoard {
 
 // Part 1
 
-/*
-fn is_winning_vector(&v: &[BingoNumber; BINGO_BOARD_SIZE]) -> bool {
-	return v.iter().all(|b| { b.obtained })
-}
-*/
-
-enum DimType {
-	Row,
-	Col,
-}
-
-trait IsWinner {
-	fn is_winner(&self, dim_type: DimType, i: usize) -> bool;
-}
-
-
-impl IsWinner for BingoBoard {
+impl BingoBoardIsWinner for BingoBoard {
 	fn is_winner(&self, dim_type: DimType, i: usize) -> bool {
 		match dim_type {
 			DimType::Row => {
@@ -119,57 +122,66 @@ impl IsWinner for BingoBoard {
 	}
 }
 
-fn simulate_bingo_game(bingo_components: &mut BingoComponents) -> Option<(u16, BingoBoard)> {
-	for n in bingo_components.numbers.iter() {
-		for board in bingo_components.boards.iter_mut() {
-			// in a small attempt to optimise my original solution (1f71bf3), 
-			// I realised that I don't have to check all rows and all columns; 
-			// I just have to check the column/row for the position at which the
-			// drawn number has occurred
-			let mut marked_value_positions: Vec<(usize, DimType)> = Vec::new();
-			// mark position on board
-			'outer: for x in 0..BINGO_BOARD_SIZE {
-				for y in 0..BINGO_BOARD_SIZE {
-					if board.data[y][x].val == *n {
-						// update/mark bingo number as obtained
-						board.data[y][x].obtained = true;
-						
-						// as per the above note, we add to the list of positions
-						// we have changed on this board
-						marked_value_positions.push((x, DimType::Col));
-						marked_value_positions.push((y, DimType::Row));
-						
-						// we have found the position of the drawn number;
-						// as all numbers in the Bingo board should be
-						// unique, we should stop searching here
-						break 'outer;
+impl WinningBingoBoard for BingoComponents {
+	fn get_winning_board(&mut self) -> Option<(u16, BingoBoard)> {
+		for n in self.numbers.iter() {
+			for board in self.boards.iter_mut() {
+				// in a small attempt to optimise my original solution (1f71bf3), 
+				// I realised that I don't have to check all rows and all columns; 
+				// I just have to check the column/row for the position at which the
+				// drawn number has occurred
+				let mut marked_value_positions: Vec<(usize, DimType)> = Vec::new();
+				
+				// mark position on board
+				'outer: for x in 0..BINGO_BOARD_SIZE {
+					for y in 0..BINGO_BOARD_SIZE {
+						if board.data[y][x].val == *n {
+							// update/mark bingo number as obtained
+							board.data[y][x].obtained = true;
+							
+							// as per the above note, we add to the list of positions
+							// we have changed on this board
+							marked_value_positions.push((y, DimType::Row));
+							marked_value_positions.push((x, DimType::Col));
+							
+							// we have found the position of the drawn number;
+							// as all numbers in the Bingo board should be
+							// unique, we should stop searching here
+							break 'outer;
+						}
+					}
+				}
+				
+				// check for winner from the positions of the numbers
+				// we have marked from this board
+				for (i, dim_type) in marked_value_positions {
+					if board.is_winner(dim_type, i) {
+						return Some((*n, board.clone()));
 					}
 				}
 			}
-			
-			// check for winner from the positions of the numbers
-			// we have marked from this board
-			for (i, dim_type) in marked_value_positions {
-				if board.is_winner(dim_type, i) {
-					return Some((*n, board.clone()));
-				}
-			}
 		}
+		
+		// if we get here, we have no winner
+		return None;
 	}
-	
-	// if we get here, we have no winner
-	return None;
+}
+
+impl BingoBoardScore for BingoBoard {
+	fn calculate_score(&self) -> usize {
+		return self.data.iter().map(|r| {
+				r.iter()
+					.filter(|m| { !m.obtained })
+					.map(|m| { m.val as usize })
+					.sum::<usize>()
+			})
+			.sum();
+	}
 }
 
 fn part1(bingo_components_original: &BingoComponents) -> usize {
 	let mut bingo_components = bingo_components_original.clone();
-	let (n, winning_board) = simulate_bingo_game(&mut bingo_components).expect("This game has no winner");
-	let unmarked_sum: usize = winning_board.data.iter().map(|r| {
-			r.iter()
-				.filter(|m| { !m.obtained })
-				.map(|m| { m.val as usize })
-				.sum::<usize>()
-		})
-		.sum();
-	return n as usize * unmarked_sum;
+	let (n, winning_board) = (&mut bingo_components).get_winning_board().expect("This game has no winner");
+	let unmarked_sum: usize = winning_board.calculate_score();
+	return (n as usize) * unmarked_sum;
 }
