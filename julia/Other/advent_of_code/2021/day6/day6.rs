@@ -2,7 +2,8 @@ use std::fs;
 
 const LANTERNFISH_REPRODUCE_PERIOD: usize = 7;
 const LANTERNFISH_MATURING_PERIOD: usize = 2;
-const DAYS_TO_MODEL: usize = 80;
+const PART1_DAYS_TO_MODEL: usize = 80;
+const PART2_DAYS_TO_MODEL: usize = 256;
 
 fn main() {
 	let lanternfish = parse_input("data6.txt");
@@ -10,6 +11,10 @@ fn main() {
 	// part 1
 	let part1_solution = part1(&lanternfish);
 	println!("Part 1: {}", part1_solution);
+	
+	// part 2
+	let part2_solution = part2(&lanternfish);
+	println!("Part 2: {}", part2_solution);
 }
 
 // Structs and such
@@ -45,8 +50,8 @@ fn parse_input(data_file: &str) -> Vec<Lanternfish> {
 
 // Part 1
 
-fn model_lanternfish_ecosystem(lanternfish_population: &mut Vec<Lanternfish>) -> Vec<Lanternfish> {
-	for _ in 0..DAYS_TO_MODEL {
+fn model_lanternfish_ecosystem(lanternfish_population: &mut Vec<Lanternfish>, days_to_model: usize) -> Vec<Lanternfish> {
+	for _ in 0..days_to_model {
 		let current_population_count = lanternfish_population.len();
 		for i in 0..current_population_count {
 			let lanternfish = &lanternfish_population[i].to_owned();
@@ -71,6 +76,30 @@ fn model_lanternfish_ecosystem(lanternfish_population: &mut Vec<Lanternfish>) ->
 
 fn part1(lanternfish_population: &Vec<Lanternfish>) -> usize {
 	let new_lanternfish_population = 
-		model_lanternfish_ecosystem(&mut lanternfish_population.clone());
+		model_lanternfish_ecosystem(&mut lanternfish_population.clone(), PART1_DAYS_TO_MODEL);
 	return new_lanternfish_population.len();
+}
+
+// part 2
+
+fn part2(lanternfish_population: &Vec<Lanternfish>) -> usize {
+	let mut new: Vec<usize> = (0..=(LANTERNFISH_REPRODUCE_PERIOD + 2)).map(|j| {
+		lanternfish_population.iter()
+			.filter(|f| { f.baby_timer == j })
+			.count()
+	})
+	.collect();
+	let mut old: Vec<usize> = vec![0; LANTERNFISH_REPRODUCE_PERIOD + 2];
+	
+	for _ in 0..PART2_DAYS_TO_MODEL {
+		let offspring = new[0] + old[0];
+		// e.g. [0, 1, 2, 3, 4, 5] -> [1, 2, 3, 4, 5, 5]
+		new.copy_within(1..(LANTERNFISH_REPRODUCE_PERIOD + 2), 0);
+		old.copy_within(1..(LANTERNFISH_REPRODUCE_PERIOD + 2), 0);
+		new[LANTERNFISH_REPRODUCE_PERIOD + 1] = offspring;
+		old[LANTERNFISH_REPRODUCE_PERIOD - 1] = offspring;
+		
+	}
+	
+	return new.iter().sum::<usize>() + old.iter().sum::<usize>();
 }
