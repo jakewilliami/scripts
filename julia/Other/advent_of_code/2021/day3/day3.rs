@@ -84,7 +84,7 @@ fn part2(data: &Vec<String>) -> isize {
 	let oxygen_generator_rating_str = get_bit_criteria(data, RatingCriteria::OxygenGenerator);
 	let co2_scrubber_rating_str = get_bit_criteria(data, RatingCriteria::CO2Scrubber);
 	
-	let oxygen_generator_rating = isize::from_str_radix(&oxygen_generator_rating_str, 2).unwrap();
+ 	let oxygen_generator_rating = isize::from_str_radix(&oxygen_generator_rating_str, 2).unwrap();
 	let co2_scrubber_rating = isize::from_str_radix(&co2_scrubber_rating_str, 2).unwrap();
 	
 	return oxygen_generator_rating * co2_scrubber_rating;
