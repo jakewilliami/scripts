@@ -1,46 +1,53 @@
 use std::fs;
-// use std::fs::File;
-// use std::io::{prelude::*, BufReader};
 
 const BINGO_BOARD_SIZE: usize = 5;
 
 fn main() {
 	// parse input
 	let bingo_components = parse_input("data4.txt");
+	// let bingo_components = parse_input("test.txt");
 	
 	// part 1
 	let part1_solution = part1(&bingo_components);
 	println!("Part 1: {}", part1_solution);
 	
 	// part 2
-	// let part2_solution = part2(&bingo_components);
-	// println!("Part 2: {}", part2_solution);	
+	let part2_solution = part2(&bingo_components);
+	println!("Part 2: {}", part2_solution);	
 }
 
 // Structs and such
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct BingoNumber {
-	val: u16,
+	val: u8, // all the numbers are positive and at most 2 digits, so can fit into 8 bits
 	obtained: bool,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 struct BingoBoard {
 	data: [[BingoNumber; BINGO_BOARD_SIZE]; BINGO_BOARD_SIZE],
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 struct BingoComponents {
-	numbers: Vec<u16>,
+	numbers: Vec<u8>,
 	boards: Vec<BingoBoard>,
 }
 
 impl Default for BingoNumber {
 	fn default() -> Self {
 		BingoNumber {
-			val: 0 as u16,
+			val: 0 as u8,
 			obtained: false,
+		}
+	}
+}
+
+impl Default for BingoBoard {
+	fn default() -> Self {
+		BingoBoard {
+			data: [[BingoNumber { ..Default::default() }; BINGO_BOARD_SIZE]; BINGO_BOARD_SIZE],
 		}
 	}
 }
@@ -59,10 +66,12 @@ trait BingoBoardScore {
 }
 
 trait WinningBingoBoard {
-	fn get_winning_board(&mut self) -> Option<(u16, BingoBoard)>;
+	fn get_winning_board(&mut self) -> Option<(u8, BingoBoard)>;
 }
 
-// trait LosingBingoBoard {}
+trait WorstBingoBoard {
+	fn get_worst_board(&mut self) -> Option<(u8, BingoBoard)>;
+}
 
 // Parse input
 
@@ -72,9 +81,9 @@ fn parse_input(data_file: &str) -> BingoComponents {
 	let bingo_components_str: Vec<_> = input.split("\n\n").collect();
 	
 	// parse numbers
-	let numbers: Vec<u16> = bingo_components_str[0].split(",")
+	let numbers: Vec<u8> = bingo_components_str[0].split(",")
 		.map(|n| {
-			n.parse::<u16>().unwrap()
+			n.parse::<u8>().unwrap()
 		})
 		.collect();
 	
@@ -97,7 +106,7 @@ fn parse_board(board_rows: Vec<&str>) -> BingoBoard {
 	let mut board_data = [[BingoNumber { ..Default::default() }; BINGO_BOARD_SIZE]; BINGO_BOARD_SIZE];
 	for (col, bingrow) in board_rows.iter().enumerate() {
 		for (row, bingo_numstr) in bingrow.split_whitespace().enumerate() {
-			let bingo_num = bingo_numstr.trim().parse::<u16>().unwrap();
+			let bingo_num = bingo_numstr.trim().parse::<u8>().unwrap();
 			board_data[col][row].val = bingo_num;
 		}
 	}
@@ -123,7 +132,7 @@ impl BingoBoardIsWinner for BingoBoard {
 }
 
 impl WinningBingoBoard for BingoComponents {
-	fn get_winning_board(&mut self) -> Option<(u16, BingoBoard)> {
+	fn get_winning_board(&mut self) -> Option<(u8, BingoBoard)> {
 		for n in self.numbers.iter() {
 			for board in self.boards.iter_mut() {
 				// in a small attempt to optimise my original solution (1f71bf3), 
@@ -156,7 +165,7 @@ impl WinningBingoBoard for BingoComponents {
 				// we have marked from this board
 				for (i, dim_type) in marked_value_positions {
 					if board.is_winner(dim_type, i) {
-						return Some((*n, board.clone()));
+						return Some((*n, board.to_owned()));
 					}
 				}
 			}
@@ -185,3 +194,77 @@ fn part1(bingo_components_original: &BingoComponents) -> usize {
 	let unmarked_sum: usize = winning_board.calculate_score();
 	return (n as usize) * unmarked_sum;
 }
+
+// Part 2
+
+impl WorstBingoBoard for BingoComponents {
+	fn get_worst_board(&mut self) -> Option<(u8, BingoBoard)> {
+		// some useful metrics
+		let nboards = self.boards.len();
+		
+		// set persistence mutable values to use after simulation of the game
+		let mut previous_winners: Vec<BingoBoard> = Vec::with_capacity(nboards);
+		let mut winning_numbers: Vec<u8> = Vec::with_capacity(nboards);
+		
+		'numbers_outer: for n in self.numbers.iter() {
+			for board in self.boards.iter_mut() {
+				if previous_winners.contains(&board) {
+					continue;
+				}
+				
+				let mut marked_value_positions: Vec<(DimType, usize)> = Vec::new();
+				
+				// mark position on board
+				'idx_outer: for x in 0..BINGO_BOARD_SIZE {
+					for y in 0..BINGO_BOARD_SIZE {
+						if board.data[y][x].val == *n {
+							// update/mark bingo number as obtained
+							board.data[y][x].obtained = true;
+							
+							// add the current position to the marked values
+							marked_value_positions.push((DimType::Row, y));
+							marked_value_positions.push((DimType::Col, x));
+							
+							// stop looking here (board values are unique)
+							break 'idx_outer;
+						}
+					}
+				}
+				
+				// check for winner
+				for (dim_type, j) in marked_value_positions {
+					if board.is_winner(dim_type, j) {
+						let this_board = board.to_owned();
+						previous_winners.push(this_board);
+						winning_numbers.push(*n);
+						break;
+					}
+				}
+				
+				if previous_winners.len() >= nboards {
+					break 'numbers_outer;
+				}
+			}
+		}
+		
+		// return the last winning board, or nothing if no board has won
+		// during the course of this game
+		return match previous_winners.is_empty() {
+			true => { None },
+			false => {
+				// last board to win will have been last updated
+				let last_winning_board = previous_winners.last().unwrap().to_owned();
+				let last_winning_number = winning_numbers.last().unwrap().to_owned();
+				Some((last_winning_number, last_winning_board))
+			},
+		}
+	}
+}
+
+fn part2(bingo_components_original: &BingoComponents) -> usize {
+	let mut bingo_components = bingo_components_original.clone();
+	let (n, worst_board) = (&mut bingo_components).get_worst_board().expect("This game has no winner");
+	let unmarked_sum: usize = worst_board.calculate_score();
+	return (n as usize) * unmarked_sum;
+}
+
