@@ -7,7 +7,11 @@ fn main() {
 	
 	// part 1
 	let part1_solution = part1(&crab_submarines);
-	println!("{}", part1_solution);
+	println!("Part 1: {}", part1_solution);
+	
+	// part 2
+	let part2_solution = part2(&crab_submarines);
+	println!("Part 2: {}", part2_solution);
 }
 
 // Structs and such
@@ -50,4 +54,27 @@ fn part1(crab_submarines: &Vec<CrabSubmarine>) -> usize {
 		})
 		.min()
 		.expect("You have no Crab Submarines.  You have no friends.");
+}
+
+// Part 2
+
+trait CrabAlignmentCostAccumulative {
+	fn get_accumulative_alignment_cost(&self, i: usize) -> usize;
+}
+
+impl CrabAlignmentCostAccumulative for Vec<CrabSubmarine> {
+	fn get_accumulative_alignment_cost(&self, i: usize) -> usize {
+		return self.iter().map(|c| {
+			(1..=((c.xpos as isize - i as isize).abs() as usize)).sum::<usize>()
+		}).sum();
+	}
+}
+
+fn part2(crab_submarines: &Vec<CrabSubmarine>) -> usize {
+	return (0..crab_submarines.len())
+		.map(|i| {
+			crab_submarines.get_accumulative_alignment_cost(i)
+		})
+		.min()
+		.unwrap();
 }
