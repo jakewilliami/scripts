@@ -5,13 +5,17 @@ use std::collections::VecDeque;
 use std::fmt;
 
 fn main() {
-	let octopodes = parse_input("data11.txt");
-	// let octopodes = parse_input("test.txt");
 	// let octopodes = parse_input("small_test.txt");
+	// let octopodes = parse_input("test.txt");
+	let octopodes = parse_input("data11.txt");
 	
 	// part 1
 	let part1_solution = part1(&octopodes, 100);
 	println!("Part 1: {}", part1_solution);
+	
+	// part 2
+	let part2_solution = part2(&octopodes, 0);
+	println!("Part 2: {}", part2_solution);
 }
 
 // Structs and such
@@ -228,9 +232,9 @@ fn simulate_step(octopodes: &mut Octopodes) -> usize {
 	return flash_counter;
 }
 
-fn simulate_steps(octopodes: &mut Octopodes, n: usize) -> (&mut Octopodes, usize) {
+fn simulate_steps(octopodes: &mut Octopodes, nsteps: usize) -> (&mut Octopodes, usize) {
 	let mut flash_counter: usize = 0;
-	for _ in 0..n {
+	for _ in 0..nsteps {
 		flash_counter += simulate_step(octopodes);
 	}
 	return (octopodes, flash_counter);
@@ -247,7 +251,32 @@ fn part1(octopodes: &Octopodes, nsteps: usize) -> usize {
 		}
 		octopodes_final_str.push_str("\n");
 	}
-	println!("Final Octopodes State: \n{}", octopodes_final_str);
+	println!("Final Octopodes State (Part 1): \n{}", octopodes_final_str);
 	return flash_counter;
 }
 
+// Part 2
+
+/*
+fn all_equal_to(octopodes: &Octopodes, n: usize) -> bool {
+	for row in octopodes {
+		for
+	}
+	ret
+}*/
+
+fn find_unanimous_state(octopodes: &mut Octopodes, val: u8) -> (&mut Octopodes, usize) {
+	let mut state_counter: usize = 0;
+	while !octopodes.iter().all(|row| {row.iter().all(|el| { el.energy == val })}) {
+		simulate_step(octopodes);
+		state_counter += 1;
+	}
+	
+	return (octopodes, state_counter);
+}
+
+fn part2(octopodes: &Octopodes, ubiquitous_val: u8) -> usize {
+	let mut octopodes_mutable = octopodes.clone();
+	let (_octopodes_final, flash_counter) = find_unanimous_state(&mut octopodes_mutable, ubiquitous_val);
+	return flash_counter;
+}
