@@ -1,0 +1,4 @@
+/Users/jakeireland/.bash_profile
+/Users/jakeireland/.bashrc
+/Users/jakeireland/.emacs
+/Users/jakeireland/.vimrc
