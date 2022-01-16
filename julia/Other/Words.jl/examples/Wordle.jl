@@ -5,6 +5,7 @@ using DataFrames
 
 
 const FIVE_LETTER_WORDS = String[lowercase(word) for word in filter(w -> length(w) == 5 && !any(ispunct(c) for c in w), WORDLIST)]
+const WORDLIST_TREE = WORDLIST_AS_TREE_ALT
 
 
 mutable struct CharFrequency
@@ -25,7 +26,7 @@ struct FiveLetterWord
 end
 
 
-"Finds the most common characters for each position of a five letter word; returns an `OrderedDict{Char, CharFrequency}`"
+"Finds the most common characters for each position of a five letter word; returns a `Vector{FiveLetterWord}`"
 function construct_frequency_map(wordlist::Vector{String})
     @assert(all(length(w) == 5 for w in wordlist), "All words in the word list should be five letters long")
     
@@ -100,18 +101,43 @@ function find_most_common_wordle(wordlist::Vector{String})
         else
             word_data = popfirst!(candidates)
             word = word_data.word
-            if allunique(word) && word ∈ WORDLIST
-                return word_data.word, word_data.summed_freq
+            if allunique(word) && word ∈ wordlist
+                return word, word_data.summed_freq
             end
         end
     end
+    
+    return nothing
+end
+
+"Similar to `find_most_common_wordle`, but will try to find full-word acronyms as well, returniing a list of those acronyms (`Vector{String}`), and the word's score (`Int`)"
+function find_most_common_wordle_anagram(wordlist::Vector{String})
+    V = construct_frequency_map(wordlist)
+    
+    top_count = 0
+    candidates = FiveLetterWord[]
+    while top_count <= length(V)
+        # Check if all characters are unique and that the anagrams are a single word
+        if isempty(candidates)
+            top_count += 1
+            candidates = previous_word_combinations(V, top_count)
+        else
+            word_data = popfirst!(candidates)
+            word = word_data.word
+            A = String[w for w in anagrams(WORDLIST_TREE, word) if iszero(count(==(' '), w))]
+            if allunique(word) && !isempty(A)
+                return A, word_data.summed_freq
+            end
+        end
+    end
+    
     return nothing
 end
 
 
 "Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
 function _make_naive_words_dataframe(wordlist::Vector{String})
-    V = construct_frequency_map(FIVE_LETTER_WORDS)
+    V = construct_frequency_map(wordlist)
     
     df = DataFrame(c1 = Char[], c1_freq = Int[], c2 = Char[], c2_freq = Int[], c3 = Char[], c3_freq = Int[], c4 = Char[], c4_freq = Int[], c5 = Char[], c5_freq = Int[], word_freq_sum = Int[])
     for i in 1:length(V)
@@ -125,15 +151,51 @@ function _make_naive_words_dataframe(wordlist::Vector{String})
         push!(df_row, freq_sum)
         push!(df, df_row)
     end
+    
     return df
+end
+
+
+"Given a word and a word list, will determine your word's score from the sum of the positional characters' frequencies"
+function get_word_score(word::String, wordlist::Vector{String})
+    V = construct_frequency_map(wordlist)
+    return sum(enumerate(word)) do (i, c)
+        j = findfirst(flw -> flw.letters[i].c == c, V)
+        isnothing(j) ? 0 : V[j].letters[i].freq
+    end
 end
 
 
 function main()
     df = _make_naive_words_dataframe(FIVE_LETTER_WORDS)  # TODO: incorporate anagrams into code
-    word, freq = find_most_common_wordle(FIVE_LETTER_WORDS)
+    score = get_word_score("seary", FIVE_LETTER_WORDS)
     
-    println((word, freq))
+    res1 = find_most_common_wordle(FIVE_LETTER_WORDS)
+    res2 = find_most_common_wordle_anagram(FIVE_LETTER_WORDS)
+    
+    println("Best Wordle words to start with based on frequency analysis:")
+    println("\tPosition-based: \t(frequency score $(res1[2])) \"$(res1[1])\"")
+    println("\tAnagrams: \t\t(frequency score $(res2[2])) \"$(res2[1][1])\"")
+    foreach(i -> println("\t\t\t\t\t\t\t\"$(res2[1][i])\""), 2:length(res2[1]))
 end
 
 main()
+
+#=
+$ julia --project examples/Wordle.jl
+Best Wordle words to start with based on frequency analysis:
+	Position-based: 	(frequency score 2907) "baits"
+	Anagrams: 		(frequency score 3485) "basie"
+
+$ julia --project examples/Wordle.jl # tree alt
+Best Wordle words to start with based on frequency analysis:
+	Position-based: 	(frequency score 2907) "baits"
+	Anagrams: 		(frequency score 3485) "beisa"
+							"abies"
+
+$ julia --project examples/Wordle.jl # tree big
+Best Wordle words to start with based on frequency analysis:
+	Position-based: 	(frequency score 2907) "baits"
+	Anagrams: 		(frequency score 3485) "beisa"
+							"abies"
+=#
