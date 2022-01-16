@@ -4,6 +4,7 @@ using ResumableFunctions # for yeild-like properties
 
 export WORDLIST, WORDLIST_AS_TREE
 export WORDLIST_BIG, WORDLIST_AS_TREE_BIG
+export WORDLIST_ALT, WORDLIST_AS_TREE_ALT
 export areanagrams, get_anagram_map
 export load_dictionary, anagrams
 
@@ -94,8 +95,10 @@ const WORDLIST_PATH = realpath(joinpath(@__DIR__, "wordlist.txt"))
 const WORDLIST_PATH_BIG = realpath(joinpath(@__DIR__, "wordlist_big.txt"))
 const WORDLIST =  String[_normalise(w) for w in readlines(WORDLIST_PATH)]
 const WORDLIST_BIG = String[_normalise(w) for w in readlines(WORDLIST_PATH_BIG)]
+const WORDLIST_ALT = String[_normalise(w) for w in readlines(WORDLIST_PATH_BIG)]
 const WORDLIST_AS_TREE = load_dictionary(WORDLIST)
 const WORDLIST_AS_TREE_BIG = load_dictionary(WORDLIST_BIG)
+const WORDLIST_AS_TREE_ALT = load_dictionary(WORDLIST_ALT)
 
 # main methods
 """
