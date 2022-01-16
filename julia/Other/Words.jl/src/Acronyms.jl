@@ -2,4 +2,8 @@ function acronym(input::Vector{S1}, wordlist::Vector{S2}) where {S1 <: AbstractS
     possible_acronyms = String[]
     
     # ensure to account for lower case of first letters
+    
+    for c in lowercase(input)
+        for
+    end
 end
