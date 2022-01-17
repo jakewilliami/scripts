@@ -6,6 +6,7 @@ using DataFrames
 
 const FIVE_LETTER_WORDS = String[lowercase(word) for word in filter(w -> length(w) == 5 && !any(ispunct(c) for c in w), WORDLIST)]
 const WORDLIST_TREE = WORDLIST_AS_TREE_ALT
+const TOP_N_WORDS = 5
 
 
 mutable struct CharFrequency
@@ -92,7 +93,7 @@ function find_most_common_wordle(wordlist::Vector{String})
     while top_count <= length(V)
         # Check if all characters are unique and that the anagrams are a single word
         if isempty(candidates)
-            top_count += 1
+            top_count += TOP_N_WORDS
             candidates = previous_word_combinations(V, top_count)
         else
             word_data = popfirst!(candidates)
@@ -115,7 +116,7 @@ function find_most_common_wordle_anagram(wordlist::Vector{String})
     while top_count <= length(V)
         # Check if all characters are unique and that the anagrams are a single word
         if isempty(candidates)
-            top_count += 1
+            top_count += TOP_N_WORDS
             candidates = previous_word_combinations(V, top_count)
         else
             word_data = popfirst!(candidates)
