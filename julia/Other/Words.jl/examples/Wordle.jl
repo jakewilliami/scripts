@@ -156,38 +156,38 @@ main()
 #=
 $ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 2907) "baits"
+	Position-based: 	(frequency score 3447) "bares"
 	Anagrams: 		(frequency score 3485) "basie"
 
-$ julia --project examples/Wordle.jl # tree alt
+$ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 2907) "baits"
-	Anagrams: 		(frequency score 3485) "beisa"
+	Position-based: 	(frequency score 3447) "bares"
+	Anagrams: 		(frequency score 3490) "beisa"
 							"abies"
 
-$ julia --project examples/Wordle.jl # tree big
+$ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 2907) "baits"
-	Anagrams: 		(frequency score 3485) "beisa"
+	Position-based: 	(frequency score 3447) "bares"
+	Anagrams: 		(frequency score 3490) "beisa"
 							"abies"
 =#
 
-"Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
-function _make_naive_words_dataframe(wordlist::Vector{String})  # TODO: incorporate anagrams into this code
-    V, _ = construct_frequency_map(wordlist)
-
-    df = DataFrame(c1 = Char[], c1_freq = Int[], c2 = Char[], c2_freq = Int[], c3 = Char[], c3_freq = Int[], c4 = Char[], c4_freq = Int[], c5 = Char[], c5_freq = Int[], word_freq_sum = Int[])
-    for i in 1:length(V)
-        df_row = []
-        freq_sum = 0
-        for j in 1:5
-            cf = V[i].letters[j]
-            push!(df_row, cf.c, cf.freq)
-            freq_sum += cf.freq
-        end
-        push!(df_row, freq_sum)
-        push!(df, df_row)
-    end
-
-    return df
-end
+# "Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
+# function _make_naive_words_dataframe(wordlist::Vector{String})  # TODO: incorporate anagrams into this code
+#     V, _ = construct_frequency_map(wordlist)
+#
+#     df = DataFrame(c1 = Char[], c1_freq = Int[], c2 = Char[], c2_freq = Int[], c3 = Char[], c3_freq = Int[], c4 = Char[], c4_freq = Int[], c5 = Char[], c5_freq = Int[], word_freq_sum = Int[])
+#     for i in 1:length(V)
+#         df_row = []
+#         freq_sum = 0
+#         for j in 1:5
+#             cf = V[i].letters[j]
+#             push!(df_row, cf.c, cf.freq)
+#             freq_sum += cf.freq
+#         end
+#         push!(df_row, freq_sum)
+#         push!(df, df_row)
+#     end
+#
+#     return df
+# end
