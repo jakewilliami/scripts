@@ -9,6 +9,9 @@ const WORDLIST_TREE = WORDLIST_AS_TREE_ALT
 const TOP_N_WORDS = 5
 
 
+const FiveLetterCharFrequencies = NTuple{5, OrderedDict{Char, Int}}
+
+
 mutable struct CharFrequency
     c::Char
     freq::Int
@@ -85,9 +88,7 @@ end
 
 
 "Given a word list, finds the most common word that is a word; returns a tuple of the word itself as a `String` and its summed frequency of letters as an `Int`"
-function find_most_common_wordle(wordlist::Vector{String})
-    V, _ = construct_frequency_map(wordlist)
-    
+function find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{String})
     top_count = 0
     candidates = FiveLetterWord[]
     while top_count <= length(V)
@@ -106,11 +107,11 @@ function find_most_common_wordle(wordlist::Vector{String})
     
     return nothing
 end
+find_most_common_wordle(W::Vector{String}) =
+    find_most_common_wordle(first(construct_frequency_map(W)), W)
 
 "Similar to `find_most_common_wordle`, but will try to find full-word acronyms as well, returniing a list of those acronyms (`Vector{String}`), and the word's score (`Int`)"
-function find_most_common_wordle_anagram(wordlist::Vector{String})
-    V, _ = construct_frequency_map(wordlist)
-    
+function find_most_common_wordle_anagram(V::Vector{FiveLetterWord})
     top_count = 0
     candidates = FiveLetterWord[]
     while top_count <= length(V)
@@ -130,25 +131,31 @@ function find_most_common_wordle_anagram(wordlist::Vector{String})
     
     return nothing
 end
+find_most_common_wordle_anagram(W::Vector{String}) =
+    find_most_common_wordle_anagram(first(construct_frequency_map(W)))
 
 
 "Given a word and a word list, will determine your word's score from the sum of the positional characters' frequencies"
-function get_word_score(word::String, wordlist::Vector{String})
-    _, Q = construct_frequency_map(wordlist)
-    return sum(Q[i][c] for (i, c) in enumerate(word))
-end
+get_word_score(word::String, Q::FiveLetterCharFrequencies) = sum(Q[i][c] for (i, c) in enumerate(word))
+get_word_score(word::String, W::Vector{String}) = get_word_score(last(construct_frequency_map(W)))
 
 
 function main()
-    score = get_word_score("seary", FIVE_LETTER_WORDS) # == 2163 # only have this here to make sure it words
+    # get the frequency information of five-letter words
+    V, Q = construct_frequency_map(FIVE_LETTER_WORDS)
     
-    res1 = find_most_common_wordle(FIVE_LETTER_WORDS)
-    res2 = find_most_common_wordle_anagram(FIVE_LETTER_WORDS)
+    # calculate the score of any given word
+    score = get_word_score("seary", Q) # == 2163 # can also give it a word list
     
+    # Find what we actually want to know
+    res1 = find_most_common_wordle(V, FIVE_LETTER_WORDS)  # can also give it a word list
+    res2 = find_most_common_wordle_anagram(V)  # can also give it a word list
+    
+    # Show results
     println("Best Wordle words to start with based on frequency analysis:")
     println("\tPosition-based: \t(frequency score $(res1[2])) \"$(res1[1])\"")
-    println("\tAnagrams: \t\t(frequency score $(res2[2])) \"$(res2[1][1])\"")
-    foreach(i -> println("\t\t\t\t\t\t\t\"$(res2[1][i])\""), 2:length(res2[1]))
+    println("\tAnagrams: \t\t(frequency score $(res2[2])) $(join((string("\"", w, "\"") for w in res2[1]), ", "))")
+    # foreach(i -> println("\t\t\t\t\t\t\t\"$(res2[1][i])\""), 2:length(res2[1]))
 end
 
 main()
@@ -162,14 +169,12 @@ Best Wordle words to start with based on frequency analysis:
 $ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
 	Position-based: 	(frequency score 3447) "bares"
-	Anagrams: 		(frequency score 3490) "beisa"
-							"abies"
+	Anagrams: 		(frequency score 3490) "beisa", "abies"
 
 $ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
 	Position-based: 	(frequency score 3447) "bares"
-	Anagrams: 		(frequency score 3490) "beisa"
-							"abies"
+	Anagrams: 		(frequency score 3490) "beisa", "abies"
 =#
 
 # "Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
