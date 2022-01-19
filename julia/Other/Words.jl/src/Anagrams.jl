@@ -2,11 +2,13 @@ using Logging
 using IterTools
 using ResumableFunctions # for yeild-like properties
 
+
 export WORDLIST, WORDLIST_AS_TREE
 export WORDLIST_BIG, WORDLIST_AS_TREE_BIG
 export WORDLIST_ALT, WORDLIST_AS_TREE_ALT
 export areanagrams, get_anagram_map
 export load_dictionary, anagrams
+
 
 # helper functions for normalisation of strings
 _skipblanks(s::String) = filter(c -> c != ' ', s)
@@ -15,6 +17,7 @@ _nfcl(s::String) = Base.Unicode.normalize(s, decompose=true, compat=true, casefo
                                         stripmark=true, stripignore=true)
 _canonicalise(s::String) = _nopunct(_nfcl(s))
 _normalise(s::String) = lowercase(_skipblanks(_canonicalise(s)))
+
 
 function remove_first_char(w::String, c::Char)
     io = IOBuffer()
@@ -26,6 +29,7 @@ function remove_first_char(w::String, c::Char)
     end
     return String(take!(io))
 end
+
 
 # Dictionary stuff
 """
@@ -50,9 +54,9 @@ Base.@kwdef mutable struct Dictionary
     end
 end
 
-function get_root(D::Dictionary)
-    return isnothing(D.parent) ? D : get_root(D.parent)
-end
+
+get_root(D::Dictionary) = isnothing(D.parent) ? D : get_root(D.parent)
+
 
 function ingest!(D::Dictionary, word::String)
     if !isempty(word)
@@ -67,12 +71,14 @@ function ingest!(D::Dictionary, word::String)
     return D
 end
 
+
 function ingest_all!(D::Dictionary, words::Vector{String})
     for w in words
         ingest!(D, w)
     end
     return D
 end
+
 
 """
 ```julia
@@ -90,6 +96,7 @@ function load_dictionary(path::String)
 end
 load_dictionary(words::Vector{String}) = ingest_all!(Dictionary(), words)
 
+
 # load constant wordlists
 const WORDLIST_PATH = realpath(joinpath(@__DIR__, "wordlist.txt"))
 const WORDLIST_PATH_BIG = realpath(joinpath(@__DIR__, "wordlist_big.txt"))
@@ -99,6 +106,7 @@ const WORDLIST_ALT = String[_normalise(w) for w in readlines(WORDLIST_PATH_BIG)]
 const WORDLIST_AS_TREE = load_dictionary(WORDLIST)
 const WORDLIST_AS_TREE_BIG = load_dictionary(WORDLIST_BIG)
 const WORDLIST_AS_TREE_ALT = load_dictionary(WORDLIST_ALT)
+
 
 # main methods
 """
@@ -124,6 +132,7 @@ function areanagrams(str1::S1, str2::S2) where {S1 <: AbstractString, S2 <: Abst
     return isempty(str2_arr)
 end
 
+
 """
 ```julia
 get_anagram_map(str1::String, str2::String) -> Dict{Tuple{Char, Int}, Int}
@@ -144,6 +153,7 @@ function get_anagram_map(str1::S1, str2::S2) where {S1 <: AbstractString, S2 <: 
     
     return out_map
 end
+
 
 @resumable function anagrams(D::Dictionary, subject::String)
     subject = _normalise(subject)
@@ -166,6 +176,7 @@ end
         end
     end
 end
+
 
 """
 ```julia
