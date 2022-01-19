@@ -99,7 +99,7 @@ function find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{Str
         else
             word_data = popfirst!(candidates)
             word = word_data.word
-            if allunique(word) && word ∈ wordlist
+            if allunique(word) && word ∈ wordlist && all(c ∉ collect("baes") for c in word)
                 return word, word_data.summed_freq
             end
         end
@@ -109,6 +109,7 @@ function find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{Str
 end
 find_most_common_wordle(W::Vector{String}) =
     find_most_common_wordle(first(construct_frequency_map(W)), W)
+
 
 "Similar to `find_most_common_wordle`, but will try to find full-word acronyms as well, returniing a list of those acronyms (`Vector{String}`), and the word's score (`Int`)"
 function find_most_common_wordle_anagram(V::Vector{FiveLetterWord})
@@ -123,7 +124,7 @@ function find_most_common_wordle_anagram(V::Vector{FiveLetterWord})
             word_data = popfirst!(candidates)
             word = word_data.word
             A = String[w for w in anagrams(WORDLIST_TREE, word) if iszero(count(==(' '), w))]
-            if allunique(word) && !isempty(A)
+            if allunique(word) && !isempty(A)&& all(c ∉ collect("baes") for c in word)
                 return A, word_data.summed_freq
             end
         end
@@ -175,6 +176,16 @@ $ julia --project examples/Wordle.jl # Tree Alt/Big
 Best Wordle words to start with based on frequency analysis:
 	Position-based: 	(frequency score 3447) "bares"
 	Anagrams: 		(frequency score 3490) "beisa", "abies"
+
+$ julia --project examples/Wordle.jl # next most common word not containing any of the characters "bare"
+Best Wordle words to start with based on frequency analysis:
+	Position-based: 	(frequency score 2749) "coins"
+	Anagrams: 		(frequency score 2751) "ostic", "sciot", "stoic"
+
+$ julia --project examples/Wordle.jl # next most common word not containing any of the characters "baes"
+Best Wordle words to start with based on frequency analysis:
+	Position-based: 	(frequency score 1997) "corny"
+	Anagrams: 		(frequency score 2040) "coiny"
 =#
 
 # "Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
