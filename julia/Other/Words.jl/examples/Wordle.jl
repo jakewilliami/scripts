@@ -166,12 +166,12 @@ Best Wordle words to start with based on frequency analysis:
 	Position-based: 	(frequency score 3447) "bares"
 	Anagrams: 		(frequency score 3485) "basie"
 
-$ julia --project examples/Wordle.jl
+$ julia --project examples/Wordle.jl # Alt/Big
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 3447) "bares"
-	Anagrams: 		(frequency score 3490) "beisa", "abies"
+	Position-based: 	(frequency score 5930) "sairy"
+	Anagrams: 		(frequency score 6839) "sayer", "seary", "resay", "reasy"
 
-$ julia --project examples/Wordle.jl
+$ julia --project examples/Wordle.jl # Tree Alt/Big
 Best Wordle words to start with based on frequency analysis:
 	Position-based: 	(frequency score 3447) "bares"
 	Anagrams: 		(frequency score 3490) "beisa", "abies"
