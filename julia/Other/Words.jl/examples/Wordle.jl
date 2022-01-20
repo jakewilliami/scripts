@@ -1,7 +1,14 @@
+module Wordle
+
+
+export CharFrequency, FiveLetterWord, FiveLetterCharFrequencies
+export FIVE_LETTER_WORDS, COMMON_FIVE_LETTER_WORDS_SORTED, COMMON_FIVE_LETTER_WORDS_MAP
+export get_word_score
+export find_most_common_wordle, find_most_common_wordle_anagram
+
+
 include(joinpath(dirname(@__DIR__), "src", "Anagrams.jl")) # WORDLIST_AS_TREE, anagrams_resumable
 using OrderedCollections # for dict sorting
-using Combinatorics
-using DataFrames
 
 
 const FIVE_LETTER_WORDS = String[lowercase(word) for word in filter(w -> length(w) == 5 && !any(ispunct(c) for c in w), WORDLIST)]
@@ -9,6 +16,7 @@ const WORDLIST_TREE = WORDLIST_AS_TREE_ALT
 const TOP_N_WORDS = 5
 
 
+"Simply an alias for a tuple containing a frequency map for characters in each position of a five-letter word."
 const FiveLetterCharFrequencies = NTuple{5, OrderedDict{Char, Int}}
 
 
@@ -21,17 +29,44 @@ end
 struct FiveLetterWord
     word::String
     letters::NTuple{5, CharFrequency}
-    summed_freq::Int
-    
-    function FiveLetterWord(word::String, letters::NTuple{5, CharFrequency}, summed_freq::Int)
-        @assert(sum(l.freq for l in letters) == summed_freq, "The summed frequency of each letters has to add up to the frequency values, summed, in the char frequencies")
-        return new(word, letters, summed_freq)
-    end
 end
 
 
+Base.show(io::IO, flw::FiveLetterWord) = print(io, "flw", "\"", flw.word, "\"")
+
+
+"""
+```julia
+get_word_score(flw::FiveLetterWord, Q::FiveLetterCharFrequencies) -> Float64
+get_word_score(word::String, Q::FiveLetterCharFrequencies) -> Float64
+
+get_word_score(flw::FiveLetterWord, V::Vector{FiveLetterWord}) -> Float64  # Acts the same as above, uses a list of `FiveLetterWord`s (also obtained from `Wordle._construct_frequency_map`).  NOTE: This assumes these five letter words are sorted so that the highest scoring words are at the top!
+get_word_score(word::String, V::Vector{FiveLetterWord}) -> Float64  # WARN: This method is not supported as searching for each character's positional frequency from a list of `FiveLetterWord`s is inefficient without a frequency map.  Consider using method `get_word_score(word::String, Q::FiveLetterCharFrequencies)`, or defining this method yourself (hint: use something like `V[findfirst(flw -> flw.letters[i].c == c, V)].letters[i].freq`)
+
+get_word_score(flw::FiveLetterWord, W::Vector{String}) -> Float  # Will generate the frequency map from a list of words `W`
+# get_word_score(word::String, W::Vector{String}) -> Float64  # ibid.
+
+get_word_score(flw::FiveLetterWord) -> Float64  # defaults to using the generated frequency map, `COMMON_FIVE_LETTER_WORDS_MAP`
+get_word_score(word::String) -> Float64  # ibid.
+```
+Given a word and a frequency map (see `Wordle._previous_word_combinations`), will determine your word's score from the average of the proportion of each character's top positional frequency.  Will return a value between 0 and 1, where 1 is a statistically perfect word, and 0 is statistically terrible.  This rounds to 3 decimal places.
+"""
+get_word_score(flw::FiveLetterWord, Q::FiveLetterCharFrequencies) =
+    round(sum(cf.freq / first(Q[i]).second for (i, cf) in enumerate(flw.letters)) / 5, digits = 3)
+get_word_score(word::String, Q::FiveLetterCharFrequencies) =
+    round(sum(Q[i][c] / first(Q[i]).second for (i, c) in enumerate(word)) / 5, digits = 3)
+    
+get_word_score(flw::FiveLetterWord, V::Vector{FiveLetterWord}) =
+    round(sum(cf.freq / first(V).letters[i].freq for (i, cf) in enumerate(flw.letters)) / 5, digits = 3)
+    
+get_word_score(flw::FiveLetterWord, W::Vector{String}) =
+    get_word_score(flw, last(_construct_frequency_map(W)))
+get_word_score(word::String, W::Vector{String}) =
+    get_word_score(word, last(_construct_frequency_map(W)))
+
+
 "Finds the most common characters for each position of a five letter word; returns a `Vector{FiveLetterWord}`, as well as a `NTuple{5, OrderedDict{Char, Int}}`"
-function construct_frequency_map(wordlist::Vector{String})
+function _construct_frequency_map(wordlist::Vector{String})
     @assert(all(length(w) == 5 for w in wordlist), "All words in the word list should be five letters long")
     
     D = [Dict{Char, Int}(c => 0 for c in 'a':'z') for _ in 1:5]
@@ -41,23 +76,33 @@ function construct_frequency_map(wordlist::Vector{String})
         end
     end
     
-    Q = Tuple(sort(D[i], byvalue = true, rev = true) for i in 1:5)::NTuple{5, OrderedDict{Char, Int}}
+    Q = Tuple(sort(D[i], byvalue = true, rev = true) for i in 1:5)::FiveLetterCharFrequencies
     n = length(Q[1]) # this should be 26 for each element in Q (26 letters of the alphabet)
     V = Vector{FiveLetterWord}(undef, n)
     for i in 1:n
         letters = ntuple(j -> CharFrequency(first(iterate(Q[j], i))...), 5)
         word = join(cf.c for cf in letters)
-        summed_freq = sum(cf.freq for cf in letters)
-        V[i] = FiveLetterWord(word, letters, summed_freq)
+        V[i] = FiveLetterWord(word, letters)
     end
-    sort!(V, by = flw -> flw.summed_freq, rev = true)
+    sort!(V, by = flw -> get_word_score(flw, Q), rev = true)
     
     return V, Q
 end
 
 
+const (COMMON_FIVE_LETTER_WORDS_SORTED, COMMON_FIVE_LETTER_WORDS_MAP) = _construct_frequency_map(FIVE_LETTER_WORDS)
+
+
+get_word_score(flw::FiveLetterWord) = get_word_score(flw, COMMON_FIVE_LETTER_WORDS_MAP)
+get_word_score(word::String) = get_word_score(word, COMMON_FIVE_LETTER_WORDS_MAP)
+
+
 "Given the list of frequent characters in their positions, and a number `n`, this function will find all permutations of common words up to the number n in the list.  Difficult to explain, sorry"
-function previous_word_combinations(words::Vector{FiveLetterWord}, n::Int)
+function _previous_word_combinations(words::Vector{FiveLetterWord}, n::Int)
+    if n > length(words)
+        error("n must be ≤ length(words) when using `_previous_word_combinations`")
+    end
+    
     # Get the top n characters from each position
     M = Matrix{CharFrequency}(undef, n, 5)
     for i in 1:n
@@ -78,85 +123,133 @@ function previous_word_combinations(words::Vector{FiveLetterWord}, n::Int)
     for (i, W) in enumerate(eachrow(M_permutations))
         letters = Tuple(W)
         word = join(cf.c for cf in letters)
-        summed_freq = sum(cf.freq for cf in letters)
-        V[i] = FiveLetterWord(word, letters, summed_freq)
+        V[i] = FiveLetterWord(word, letters)
     end
-    sort!(V, by = flw -> flw.summed_freq, rev = true)
+    sort!(V, by = flw -> get_word_score(flw, words), rev = true)
     
     return V
 end
 
 
-"Given a word list, finds the most common word that is a word; returns a tuple of the word itself as a `String` and its summed frequency of letters as an `Int`"
-function find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{String})
+"""
+```julia
+find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{String}; ignore::Vector{Char} = Char[]) -> FiveLetterWord  # if you give it characters in the `ignore` keyword argument, it will look for words not including those characters
+find_most_common_wordle(W::Vector{String}; default::Bool = true, ignore::Vector{Char} = Char[]) -> FiveLetterWord  # If `default`, will use the pre-generated (default) frequency list; otherwise will generate the list based on your word list
+find_most_common_wordle(; ignore::Vector{Char} = Char[]) -> FiveLetterWord  # Uses default/pre-generated information to generate the best word
+```
+Given a word list, finds the most common word that is a word; returns a tuple of the word itself as a `FiveLetterWord`
+"""
+function find_most_common_wordle(V::Vector{FiveLetterWord}, wordlist::Vector{String}; ignore::Vector{Char} = Char[])
+    chars_to_ignore = !isempty(ignore)
     top_count = 0
     candidates = FiveLetterWord[]
     while top_count <= length(V)
         # Check if all characters are unique and that the anagrams are a single word
         if isempty(candidates)
             top_count += TOP_N_WORDS
-            candidates = previous_word_combinations(V, top_count)
+            candidates = _previous_word_combinations(V, top_count)
         else
             word_data = popfirst!(candidates)
             word = word_data.word
-            if allunique(word) && word ∈ wordlist && all(c ∉ collect("baes") for c in word)
-                return word, word_data.summed_freq
+            if allunique(word) && word ∈ wordlist
+                if chars_to_ignore
+                    all(c ∉ ignore for c in word) || @goto did_not_pass_ignore
+                end
+                return word_data
+                @label did_not_pass_ignore
             end
         end
     end
     
     return nothing
 end
-find_most_common_wordle(W::Vector{String}) =
-    find_most_common_wordle(first(construct_frequency_map(W)), W)
+find_most_common_wordle(W::Vector{String}; default::Bool = true, ignore::Vector{Char} = Char[]) =
+    find_most_common_wordle(default ? COMMON_FIVE_LETTER_WORDS_SORTED : first(_construct_frequency_map(W)), W; ignore = ignore)
+find_most_common_wordle(; ignore::Vector{Char} = Char[]) =
+    find_most_common_wordle(FIVE_LETTER_WORDS; default = true, ignore = ignore)
 
 
-"Similar to `find_most_common_wordle`, but will try to find full-word acronyms as well, returniing a list of those acronyms (`Vector{String}`), and the word's score (`Int`)"
-function find_most_common_wordle_anagram(V::Vector{FiveLetterWord})
+"""
+```julia
+find_most_common_wordle_anagram(V::Vector{FiveLetterWord}; ignore::Vector{Char} = Char[]) -> Vector{FiveLetterWord}  # if you give it characters in the `ignore` keyword argument, it will look for words not including those characters
+find_most_common_wordle_anagram(W::Vector{String}; default::Bool = true, ignore::Vector{Char} = Char[]) -> Vector{FiveLetterWord}  # If `default`, will use the pre-generated (default) frequency list; otherwise will generate the list based on your word list
+find_most_common_wordle_anagram(; ignore::Vector{Char} = Char[]) -> Vector{FiveLetterWord}  # Uses default/pre-generated information to generate the best word
+```
+Similar to `find_most_common_wordle`, but will try to find full-word acronyms as well, returning a list of these words as a `Vector{FiveLetterWord}`
+"""
+function find_most_common_wordle_anagram(V::Vector{FiveLetterWord}; ignore::Vector{Char} = Char[])
+    chars_to_ignore = !isempty(ignore)
     top_count = 0
     candidates = FiveLetterWord[]
     while top_count <= length(V)
         # Check if all characters are unique and that the anagrams are a single word
         if isempty(candidates)
             top_count += TOP_N_WORDS
-            candidates = previous_word_combinations(V, top_count)
+            candidates = _previous_word_combinations(V, top_count)
         else
             word_data = popfirst!(candidates)
             word = word_data.word
             A = String[w for w in anagrams(WORDLIST_TREE, word) if iszero(count(==(' '), w))]
-            if allunique(word) && !isempty(A)&& all(c ∉ collect("baes") for c in word)
-                return A, word_data.summed_freq
+            if allunique(word) && !isempty(A)
+                if chars_to_ignore
+                    all(c ∉ ignore for c in word) || @goto did_not_pass_ignore
+                end
+                anagram_data = Vector{FiveLetterWord}(undef, length(A))
+                for (i, w) in enumerate(A)
+                    letters = Tuple(CharFrequency(c, V[findfirst(flw -> flw.letters[j].c == c, V)].letters[j].freq) for (j, c) in enumerate(w))
+                    anagram_data[i] = FiveLetterWord(w, letters)
+                end
+                return anagram_data
+                @label did_not_pass_ignore
             end
         end
     end
     
     return nothing
 end
-find_most_common_wordle_anagram(W::Vector{String}) =
-    find_most_common_wordle_anagram(first(construct_frequency_map(W)))
+find_most_common_wordle_anagram(W::Vector{String}; default::Bool = true, ignore::Vector{Char} = Char[]) =
+    find_most_common_wordle_anagram(default ? COMMON_FIVE_LETTER_WORDS_SORTED : first(_construct_frequency_map(W)); ignore = ignore)
+find_most_common_wordle_anagram(; ignore::Vector{Char} = Char[]) = find_most_common_wordle_anagram(FIVE_LETTER_WORDS; default = true, ignore = ignore)
 
 
-"Given a word and a word list, will determine your word's score from the sum of the positional characters' frequencies"
-get_word_score(word::String, Q::FiveLetterCharFrequencies) = sum(Q[i][c] for (i, c) in enumerate(word))
-get_word_score(word::String, W::Vector{String}) = get_word_score(last(construct_frequency_map(W)))
+using DataFrames
+"Returns a dataframe of most common letters in each position, and their frequency count.  This is a function just for my own interest; not really any point in it"
+function _make_naive_words_dataframe(wordlist::Vector{String})  # TODO: incorporate anagrams into this code
+    V, Q = _construct_frequency_map(wordlist)
+
+    df = DataFrame(c1 = Char[], c1_freq = Int[], c2 = Char[], c2_freq = Int[], c3 = Char[], c3_freq = Int[], c4 = Char[], c4_freq = Int[], c5 = Char[], c5_freq = Int[], word_score = Float64[])
+    for i in 1:length(V)
+        df_row = []
+        for j in 1:5
+            cf = V[i].letters[j]
+            push!(df_row, cf.c, cf.freq)
+        end
+        push!(df_row, get_word_score(V[i], Q))
+        push!(df, df_row)
+    end
+
+    return df
+end
+
+
+end # end module
+
+
+using .Wordle
 
 
 function main()
-    # get the frequency information of five-letter words
-    V, Q = construct_frequency_map(FIVE_LETTER_WORDS)
-    
     # calculate the score of any given word
-    score = get_word_score("seary", Q) # == 2163 # can also give it a word list
+    score = get_word_score("coiny")  # == 0.665
     
     # Find what we actually want to know
-    res1 = find_most_common_wordle(V, FIVE_LETTER_WORDS)  # can also give it a word list
-    res2 = find_most_common_wordle_anagram(V)  # can also give it a word list
+    flw_wordle = find_most_common_wordle(; ignore = collect("bares"))
+    flws_anagram = find_most_common_wordle_anagram(; ignore = collect("bares"))
     
     # Show results
-    println("Best Wordle words to start with based on frequency analysis:")
-    println("\tPosition-based: \t(frequency score $(res1[2])) \"$(res1[1])\"")
-    println("\tAnagrams: \t\t(frequency score $(res2[2])) $(join((string("\"", w, "\"") for w in res2[1]), ", "))")
-    # foreach(i -> println("\t\t\t\t\t\t\t\"$(res2[1][i])\""), 2:length(res2[1]))
+    println("Best Wordle words to start with based on frequency analysis of ", length(FIVE_LETTER_WORDS), " words:")
+    println("\tPosition-based: \t", "\"", flw_wordle.word, "\" (", get_word_score(flw_wordle), ")")
+    println("\tAnagrams: \t\t", join((string("\"", w.word, "\" (", get_word_score(w.word), ")") for w in flws_anagram), ", "))
 end
 
 main()
@@ -164,46 +257,26 @@ main()
 #=
 $ julia --project examples/Wordle.jl
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 3447) "bares"
-	Anagrams: 		(frequency score 3485) "basie"
+	Position-based: 	"bares" (0.887)
+	Anagrams: 		"basie" (0.555)
 
 $ julia --project examples/Wordle.jl # Alt/Big
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 5930) "sairy"
-	Anagrams: 		(frequency score 6839) "sayer", "seary", "resay", "reasy"
+	Position-based: 	"corey" (0.854)
+	Anagrams: 		"sayer" (0.732), "seary" (0.816), "resay" (0.65), "reasy" (0.675)
 
 $ julia --project examples/Wordle.jl # Tree Alt/Big
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 3447) "bares"
-	Anagrams: 		(frequency score 3490) "beisa", "abies"
+	Position-based: 	"bares" (0.887)
+	Anagrams: 		"beisa" (0.512), "abies" (0.68)
 
 $ julia --project examples/Wordle.jl # next most common word not containing any of the characters "bare"
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 2749) "coins"
-	Anagrams: 		(frequency score 2751) "ostic", "sciot", "stoic"
+	Position-based: 	"coins" (0.726)
+	Anagrams: 		"ostic" (0.178), "sciot" (0.479), "stoic" (0.437)
 
 $ julia --project examples/Wordle.jl # next most common word not containing any of the characters "baes"
 Best Wordle words to start with based on frequency analysis:
-	Position-based: 	(frequency score 1997) "corny"
-	Anagrams: 		(frequency score 2040) "coiny"
+	Position-based: 	"corny" (0.58)
+	Anagrams: 		"coiny" (0.598)
 =#
-
-# "Returns a dataframe of most common letters in each position, and their frequency count; just for my own interest, not really any point in it"
-# function _make_naive_words_dataframe(wordlist::Vector{String})  # TODO: incorporate anagrams into this code
-#     V, _ = construct_frequency_map(wordlist)
-#
-#     df = DataFrame(c1 = Char[], c1_freq = Int[], c2 = Char[], c2_freq = Int[], c3 = Char[], c3_freq = Int[], c4 = Char[], c4_freq = Int[], c5 = Char[], c5_freq = Int[], word_freq_sum = Int[])
-#     for i in 1:length(V)
-#         df_row = []
-#         freq_sum = 0
-#         for j in 1:5
-#             cf = V[i].letters[j]
-#             push!(df_row, cf.c, cf.freq)
-#             freq_sum += cf.freq
-#         end
-#         push!(df_row, freq_sum)
-#         push!(df, df_row)
-#     end
-#
-#     return df
-# end
