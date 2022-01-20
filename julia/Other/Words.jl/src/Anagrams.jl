@@ -5,7 +5,8 @@ using ResumableFunctions # for yeild-like properties
 
 export WORDLIST, WORDLIST_AS_TREE
 export WORDLIST_BIG, WORDLIST_AS_TREE_BIG
-export WORDLIST_ALT, WORDLIST_AS_TREE_ALT
+# export WORDLIST_ALT, WORDLIST_AS_TREE_ALT  # TODO: see below todo
+export WORDLIST_SCRABBLE, WORDLIST_AS_TREE_SCRABBLE
 export areanagrams, get_anagram_map
 export load_dictionary, anagrams
 
@@ -98,14 +99,21 @@ load_dictionary(words::Vector{String}) = ingest_all!(Dictionary(), words)
 
 
 # load constant wordlists
+## TODO: Fix alt wordlist being broken (too big, causing `anagrams` to stack overflow)
+    ## julia> format((length(WORDLIST), length(WORDLIST_BIG), length(WORDLIST_ALT), length(WORDLIST_SCRABBLE)), commas = true)
+    ## ("45,374", "235,886", "354,986", "267,751")
 const WORDLIST_PATH = realpath(joinpath(@__DIR__, "wordlist.txt"))
 const WORDLIST_PATH_BIG = realpath(joinpath(@__DIR__, "wordlist_big.txt"))
+# const WORDLIST_PATH_ALT = realpath(joinpath(@__DIR__, "wordlist_alt.txt"))
+const WORDLIST_PATH_SCRABBLE = realpath(joinpath(@__DIR__, "wordlist_sowpods.txt"))
 const WORDLIST =  String[_normalise(w) for w in readlines(WORDLIST_PATH)]
 const WORDLIST_BIG = String[_normalise(w) for w in readlines(WORDLIST_PATH_BIG)]
-const WORDLIST_ALT = String[_normalise(w) for w in readlines(WORDLIST_PATH_BIG)]
+# const WORDLIST_ALT = String[_normalise(w) for w in readlines(WORDLIST_PATH_ALT)]
+const WORDLIST_SCRABBLE = String[_normalise(w) for w in readlines(WORDLIST_PATH_SCRABBLE)]
 const WORDLIST_AS_TREE = load_dictionary(WORDLIST)
 const WORDLIST_AS_TREE_BIG = load_dictionary(WORDLIST_BIG)
-const WORDLIST_AS_TREE_ALT = load_dictionary(WORDLIST_ALT)
+# const WORDLIST_AS_TREE_ALT = load_dictionary(WORDLIST_ALT)
+const WORDLIST_AS_TREE_SCRABBLE = load_dictionary(WORDLIST_SCRABBLE)
 
 
 # main methods

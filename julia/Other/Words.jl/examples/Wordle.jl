@@ -11,8 +11,8 @@ include(joinpath(dirname(@__DIR__), "src", "Anagrams.jl")) # WORDLIST_AS_TREE, a
 using OrderedCollections # for dict sorting
 
 
-const FIVE_LETTER_WORDS = String[lowercase(word) for word in filter(w -> length(w) == 5 && !any(ispunct(c) for c in w), WORDLIST)]
-const WORDLIST_TREE = WORDLIST_AS_TREE_ALT
+const FIVE_LETTER_WORDS = String[lowercase(word) for word in filter(w -> length(w) == 5 && !any(ispunct(c) for c in w), WORDLIST_SCRABBLE)]
+const WORDLIST_TREE = WORDLIST_AS_TREE_SCRABBLE
 const TOP_N_WORDS = 5
 
 
@@ -20,15 +20,18 @@ const TOP_N_WORDS = 5
 const FiveLetterCharFrequencies = NTuple{5, OrderedDict{Char, Int}}
 
 
-mutable struct CharFrequency
+struct CharFrequency
     c::Char
     freq::Int
+    CharFrequency(c::Char, freq::Int) = new(islowercase(c) ? c : lowercase(c), freq)
 end
 
 
 struct FiveLetterWord
     word::String
     letters::NTuple{5, CharFrequency}
+    FiveLetterWord(word::String, letters::NTuple{5, CharFrequency}) = 
+        new(all(islowercase(c) for c in word) ? word : lowercase(word), letters)
 end
 
 
@@ -54,7 +57,7 @@ Given a word and a frequency map (see `Wordle._previous_word_combinations`), wil
 get_word_score(flw::FiveLetterWord, Q::FiveLetterCharFrequencies) =
     round(sum(cf.freq / first(Q[i]).second for (i, cf) in enumerate(flw.letters)) / 5, digits = 3)
 get_word_score(word::String, Q::FiveLetterCharFrequencies) =
-    round(sum(Q[i][c] / first(Q[i]).second for (i, c) in enumerate(word)) / 5, digits = 3)
+    round(sum(Q[i][c] / first(Q[i]).second for (i, c) in enumerate(lowercase(word))) / 5, digits = 3)
     
 get_word_score(flw::FiveLetterWord, V::Vector{FiveLetterWord}) =
     round(sum(cf.freq / first(V).letters[i].freq for (i, cf) in enumerate(flw.letters)) / 5, digits = 3)
@@ -243,8 +246,8 @@ function main()
     score = get_word_score("coiny")  # == 0.665
     
     # Find what we actually want to know
-    flw_wordle = find_most_common_wordle(; ignore = collect("bares"))
-    flws_anagram = find_most_common_wordle_anagram(; ignore = collect("bares"))
+    flw_wordle = find_most_common_wordle()
+    flws_anagram = find_most_common_wordle_anagram()
     
     # Show results
     println("Best Wordle words to start with based on frequency analysis of ", length(FIVE_LETTER_WORDS), " words:")
