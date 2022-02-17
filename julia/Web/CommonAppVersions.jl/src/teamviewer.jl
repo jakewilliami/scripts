@@ -10,6 +10,5 @@ function get_latest_version(::TeamViewerSingleton)
     body = String(r.body)
     m = match(TEAMVIEWER_REGEX, body)
     v_str = only(m.captures)
-    return VersionNumber(v_str)
-    # doc = parsehtml(String(r.body))
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end

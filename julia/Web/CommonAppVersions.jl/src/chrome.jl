@@ -7,6 +7,6 @@ const Chrome = ChromeSingleton()
 
 function get_latest_version(::ChromeSingleton)
     r = HTTP.get(CHROME_URI)
-    v_str = _reduce_version_major_minor_micro(String(r.body))
-    return VersionNumber(v_str)
+    v_str = String(r.body)
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end

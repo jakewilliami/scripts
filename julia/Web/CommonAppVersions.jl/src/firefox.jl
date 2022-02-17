@@ -7,5 +7,5 @@ function get_latest_version(::FirefoxSingleton)
     r = HTTP.get(FIREFOX_URI)
     doc = parsehtml(String(r.body))
     v_str = doc.root.attributes["data-latest-firefox"]
-    return VersionNumber(v_str)
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
