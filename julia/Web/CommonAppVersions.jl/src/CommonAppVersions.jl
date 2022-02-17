@@ -4,7 +4,7 @@ module CommonAppVersions
 using HTTP, Gumbo
 
 export get_latest_version
-export Firefox
+export Firefox, TeamViewer
 
 abstract type CommonApplication end
 
