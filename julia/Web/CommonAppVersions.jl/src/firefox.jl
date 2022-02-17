@@ -6,5 +6,6 @@ const Firefox = FirefoxSingleton()
 function get_latest_version(::FirefoxSingleton)
     r = HTTP.get(FIREFOX_URI)
     doc = parsehtml(String(r.body))
-    return doc.root.attributes["data-latest-firefox"]
+    v_str = doc.root.attributes["data-latest-firefox"]
+    return VersionNumber(v_str)
 end

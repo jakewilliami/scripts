@@ -9,6 +9,7 @@ function get_latest_version(::TeamViewerSingleton)
     body = String(r.body)
     rx = r"Current version\: ((?:\d+\.)?(?:\d+\.)?(?:\d+))"  # Base.VERSION_REGEX
     m = match(rx, body)
-    return only(m.captures)
+    v_str = only(m.captures)
+    return VersionNumber(v_str)
     # doc = parsehtml(String(r.body))
 end

@@ -14,7 +14,7 @@ include("office.jl")
 include("teamviewer.jl")
 
 """
-    get_latest_version(::CommonApplication)
+    get_latest_version(::CommonApplication)::VersionNumber
 
 Get latest app version for common applications.
 """
