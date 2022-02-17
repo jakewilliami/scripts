@@ -1,0 +1,18 @@
+name = "CommonAppVersions"
+uuid = "53be65e0-69d2-464d-8ed9-744df10f6729"
+authors = ["Jake Ireland <jakewilliami@icloud.com> and contributors"]
+version = "0.1.0"
+
+[deps]
+EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
+Gumbo = "708ec375-b3d6-5a57-a7ce-8257bf98657a"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
