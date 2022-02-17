@@ -11,6 +11,7 @@ abstract type CommonApplication end
 include("firefox.jl")
 include("chrome.jl")
 include("office.jl")
+include("adobe.jl")
 include("teamviewer.jl")
 
 """
