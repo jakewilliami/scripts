@@ -9,6 +9,9 @@ export Firefox
 abstract type CommonApplication end
 
 include("firefox.jl")
+include("chrome.jl")
+include("office.jl")
+include("teamviewer.jl")
 
 """
     get_latest_version(::CommonApplication)
