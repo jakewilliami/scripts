@@ -10,7 +10,7 @@ export COMMON_APPLICATIONS
 abstract type CommonApplication end
 
 # We only care about major, minor, and micro
-function _reduce_version_major_minor_micro(v_str::String)
+function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     n = count('.', v_str)
     n < 3 && return v_str
     i = findfirst('.', v_str)
