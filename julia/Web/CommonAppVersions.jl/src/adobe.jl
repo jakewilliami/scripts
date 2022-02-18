@@ -3,7 +3,7 @@ const ADOBE_URI = "https://www.adobe.com/devnet-docs/acrobatetk/tools/ReleaseNot
 struct AdobeSingleton <: CommonApplication end
 const Adobe = AdobeSingleton()
 
-function get_latest_version(::AdobeSingleton)
+function _get_latest_version(::AdobeSingleton, ::WindowsOperatingSystem)
     r = HTTP.get(ADOBE_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc, "id", "continuous-track-installers")

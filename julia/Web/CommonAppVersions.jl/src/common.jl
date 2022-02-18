@@ -1,10 +1,12 @@
 abstract type CommonApplication end
 
-@enum OperatingSystem begin
-    Windows
-    MacOS
-    Linux
-end
+abstract type OperatingSystem end
+struct WindowsOperatingSystem <: OperatingSystem end
+struct MacOSOperatingSystem <: OperatingSystem end
+struct LinuxOperatingSystem <: OperatingSystem end
+const Windows = WindowsOperatingSystem()
+const MacOS = MacOSOperatingSystem()
+const Linux = LinuxOperatingSystem()
 
 # We only care about major, minor, and micro
 function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}

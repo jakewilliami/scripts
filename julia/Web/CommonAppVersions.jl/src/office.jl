@@ -5,6 +5,7 @@ const OFFICE_2013_URI = "https://docs.microsoft.com/en-us/officeupdates/update-h
 const OFFICE_2016_RETAIL_URI = "https://docs.microsoft.com/en-gb/officeupdates/update-history-office-2019"
 const OFFICE_2016_RETAIL_REGEX = r"Version (?:\d+) \(Build (\d+).(?:\d+)\)"
 const OFFICE_2016_URI = "https://docs.microsoft.com/en-us/officeupdates/office-updates-msi"
+# const OFFICE_365_GUID = "4b323baf-6213-40ab-81b2-aa37d83f7296"
 
 # Office 365
 const OFFICE_365_BUILD_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-microsoft365-apps-by-date/"
@@ -37,7 +38,7 @@ get_latest_version(::Office2007Singleton) = VersionNumber("12.0.6612")  # EOL: 1
 
 get_latest_version(::Office2010Singleton) = VersionNumber("14.0.7261")  # EOL: 13 Oct., 2020
 
-function get_latest_version(::Office2013Singleton)
+function _get_latest_version(::Office2013Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_2013_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc, "id", "center-doc-outline")
@@ -45,7 +46,7 @@ function get_latest_version(::Office2013Singleton)
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
-function _get_latest_retail_version(::Office2016Singleton)
+function _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # Retail version - build major version is the micro version for Office 2016
     # Source: https://github.com/MicrosoftDocs/OfficeDocs-OfficeUpdates/issues/49#issuecomment-423573620
     r = HTTP.get(OFFICE_2016_RETAIL_URI)
@@ -59,7 +60,7 @@ function _get_latest_retail_version(::Office2016Singleton)
     # NO!  This will return the _retail_ stable release.  Should be 16.0.5266 at time of writing
 end
 
-function get_latest_version(::Office2016Singleton)
+function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # MSI version
     error("not implemented")
     
@@ -68,9 +69,10 @@ function get_latest_version(::Office2016Singleton)
     #    Find headers of `Office 2016 updates` and `Office 2013 updates`, and follow the respective links in the `Latest Public Update (PU)` column;
     # 2. This link will be the latest Knowledge Base (KB) version, e.g., `https://support.microsoft.com/en-gb/topic/february-2022-updates-for-microsoft-office-4b323baf-6213-40ab-81b2-aa37d83f7296`. 
     #    From this page, find the correct product section, e.g., `Microsoft Office 2016` under `List of office updates released in February 2022`.
+    # 3. Iterate over table of updated components (for x64) and find the largest number.
 end
 
-function _get_latest_build_version(::Office365Singleton)
+function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_365_BUILD_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc, "id", "supported-versions")
@@ -78,7 +80,7 @@ function _get_latest_build_version(::Office365Singleton)
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
-function get_latest_version(O365::Office365Singleton)
+function _get_latest_version(O365::Office365Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_365_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc, "id", "Platform-supTabControlContent-1")
