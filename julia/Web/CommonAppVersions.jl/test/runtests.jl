@@ -1,29 +1,44 @@
 using CommonAppVersions
 using Test
 
-latest_version_equal(T::U, v::String) where {U <: CommonAppVersions.CommonApplication} = 
-    isequal(get_latest_version(T), VersionNumber(v))
-
 @testset "CommonAppVersions.jl" begin
     @testset "Firefox" begin
-        @test latest_version_equal(Firefox, "97.0.1")
+        firefox_v = get_latest_version(Firefox)
+        expected_firefox_v = VersionNumber("97.0.1")
+        @test firefox_v == expected_firefox_v
+        @test firefox_v isa VersionNumber
     end
     
     @testset "Chrome" begin
-        @test latest_version_equal(Chrome, "98.0.4758")
+        chrome_v = get_latest_version(Chrome)
+        expected_chrome_v = VersionNumber("98.0.4758")
+        @test chrome_v == expected_chrome_v
+        @test chrome_v isa VersionNumber
     end
     
-    @testset "Adobe" begin
-        @test latest_version_equal(TeamViewer, "15.25.8")
-    end
-    
-    #=@testset "TeamViewer" begin
-        @test latest_version_equal(Adobe, "")
+    #=@testset "Adobe" begin
+        adobe_v = get_latest_version(Adobe)
+        expected_adobe_v = VersionNumber("")
+        @test adobe_v == expected_adobe_v
+        @test adobe_v isa VersionNumber
     end=#
     
+    @testset "TeamViewer" begin
+        teamviewer_v = get_latest_version(TeamViewer)
+        expected_teamviewer_v = VersionNumber("15.25.8")
+        @test teamviewer_v == expected_teamviewer_v
+        @test teamviewer_v isa VersionNumber
+    end
+    
     @testset "Microsoft Office" begin
-        @test latest_version_equal(Office365, "16.0.14729")
-        @test CommonAppVersions._get_latest_build_version(Office365) == 
-            VersionNumber("14827.20198.0")
+        # Office 365
+        o365_v = get_latest_version(Office365)
+        expected_o365_v = VersionNumber("16.0.14729")
+        @test o365_v == expected_o365_v
+        @test o365_v isa VersionNumber
+        o365_build_v = CommonAppVersions._get_latest_build_version(Office365)
+        expected_o365_build_v = VersionNumber("14827.20198.0")
+        @test o365_build_v == expected_o365_build_v
+        @test o365_build_v isa VersionNumber
     end
 end
