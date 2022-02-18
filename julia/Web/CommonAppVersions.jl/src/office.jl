@@ -1,6 +1,10 @@
 # Office 2013
 const OFFICE_2013_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-office-2013"
 
+# Office 2016
+const OFFICE_2016_BUILD_URI = "https://docs.microsoft.com/en-gb/officeupdates/update-history-office-2019"
+const OFFICE_2016_REGEX = r"Version (?:\d+) \(Build (\d+).(?:\d+)\)"
+
 # Office 365
 const OFFICE_365_BUILD_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-microsoft365-apps-by-date/"
 const OFFICE_365_NOGUID_URI = "https://support.microsoft.com/en-us/office/what-s-new-in-microsoft-365"
@@ -41,13 +45,29 @@ function get_latest_version(::Office2013Singleton)
 end
 
 function get_latest_version(::Office2016Singleton)
-    error("not implemented")
+    # C2R - build major version is the micro version for Office 2016
+    # Source: https://github.com/MicrosoftDocs/OfficeDocs-OfficeUpdates/issues/49#issuecomment-423573620
+    # NOTE: I dispute this source: it should be "16.0.5173" or something, NOT "16.0.14827"
+    @warn("This method is potentially incorrect; WIP")
+    r = HTTP.get(OFFICE_2016_BUILD_URI)
+    doc = Gumbo.parsehtml(String(r.body))
+    elem = _findfirst_html_id(doc, "retail-versions-of-office-2016-c2r-and-office-2019")
+    versions = elem.parent.children[18].children[2].children
+    unmatched_build_str = versions[1].children[2].children[1].text
+    m = match(OFFICE_2016_REGEX, unmatched_build_str)
+    build_str = only(m.captures)
+    return VersionNumber(_reduce_version_major_minor_micro("16.0." * build_str))
+    
+    # ALT METHOD (MRI - not fully figured out): 
+    # 1. Get page `https://docs.microsoft.com/en-gb/officeupdates/office-updates-msi`
+    #    Find headers of `Office 2016 updates` and `Office 2013 updates`, and follow the respective links in the `Latest Public Update (PU)` column;
+    # 2. This link will be the latest Knowledge Base (KB) version, e.g., `https://support.microsoft.com/en-gb/topic/february-2022-updates-for-microsoft-office-4b323baf-6213-40ab-81b2-aa37d83f7296`. 
+    #    From this page, find the correct product section, e.g., `Microsoft Office 2016` under `List of office updates released in February 2022`.
 end
 
 function _get_latest_build_version(::Office365Singleton)
     r = HTTP.get(OFFICE_365_BUILD_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    # v_str = doc.root.children[2].children[2].children[1].children[2].children[1].children[1].children[1].children[3].children[8].children[2].children[1].children[3].children[1].text
     elem = _findfirst_html_id(doc, "supported-versions")
     v_str = elem.parent.children[8].children[2].children[1].children[3].children[1].text
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
