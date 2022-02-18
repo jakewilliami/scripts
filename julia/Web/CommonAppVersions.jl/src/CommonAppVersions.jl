@@ -25,6 +25,15 @@ function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     return String(reduced_v_str)
 end
 
+function _findfirst_id(doc::HTMLDocument, id::String)
+    for elem in PreOrderDFS(doc.root)
+        if elem isa HTMLElement && getattr(elem, "id", "") == id
+            return elem
+        end
+    end
+    return nothing
+end
+
 include("firefox.jl")
 include("chrome.jl")
 include("office.jl")

@@ -40,23 +40,17 @@ end
 function _get_latest_build_version(::Office365Singleton)
     r = HTTP.get(OFFICE_365_BUILD_URI)
     doc = parsehtml(String(r.body))
-    v_str = doc.root.children[2].children[2].children[1].children[2].children[1].children[1].children[1].children[3].children[8].children[2].children[1].children[3].children[1].text
+    # v_str = doc.root.children[2].children[2].children[1].children[2].children[1].children[1].children[1].children[3].children[8].children[2].children[1].children[3].children[1].text
+    elem = _findfirst_id(doc, "supported-versions")
+    v_str = elem.parent.children[8].children[2].children[1].children[3].children[1].text
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
 function get_latest_version(O365::Office365Singleton)
     r = HTTP.get(OFFICE_365_URI)
     doc = parsehtml(String(r.body))
-    table_elem = nothing
-    ## find the first element whose ID is the outer ID of the table
-    for elem in PreOrderDFS(doc.root)
-        if elem isa HTMLElement && getattr(elem, "id", "") == "Platform-supTabControlContent-1"
-            table_elem = elem
-            break
-        end
-    end
-    ## get the version string from the table
-    v_str = table_elem.children[1].children[2].children[1].text
+    elem = _findfirst_id(doc, "Platform-supTabControlContent-1")
+    v_str = elem.children[1].children[2].children[1].text
     #=
     ## verify the build version
     build_version = _get_latest_build_version(O365)
