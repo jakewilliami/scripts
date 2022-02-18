@@ -27,8 +27,8 @@ function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     return String(reduced_v_str)
 end
 
-function _findfirst_html_tag(doc::Gumbo.HTMLDocument, tag::String, value::String)
-    for elem in PreOrderDFS(doc.root)
+function _findfirst_html_tag(doc::Gumbo.HTMLDocument, tag::String, value::String; alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+    for elem in alg(doc.root)
         if elem isa HTMLElement && getattr(elem, tag, "") == value
             return elem
         end
