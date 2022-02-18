@@ -39,7 +39,7 @@ get_latest_version(::Office2010Singleton) = VersionNumber("14.0.7261")  # EOL: 1
 function get_latest_version(::Office2013Singleton)
     r = HTTP.get(OFFICE_2013_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_id(doc, "center-doc-outline")
+    elem = _findfirst_html_tag(doc, "id", "center-doc-outline")
     v_str = elem.parent.children[5].children[2].children[2].children[1].text
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
@@ -51,7 +51,7 @@ function get_latest_version(::Office2016Singleton)
     @warn("This method is potentially incorrect; WIP")
     r = HTTP.get(OFFICE_2016_BUILD_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_id(doc, "retail-versions-of-office-2016-c2r-and-office-2019")
+    elem = _findfirst_html_tag(doc, "id", "retail-versions-of-office-2016-c2r-and-office-2019")
     versions = elem.parent.children[18].children[2].children
     unmatched_build_str = versions[1].children[2].children[1].text
     m = match(OFFICE_2016_REGEX, unmatched_build_str)
@@ -68,7 +68,7 @@ end
 function _get_latest_build_version(::Office365Singleton)
     r = HTTP.get(OFFICE_365_BUILD_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_id(doc, "supported-versions")
+    elem = _findfirst_html_tag(doc, "id", "supported-versions")
     v_str = elem.parent.children[8].children[2].children[1].children[3].children[1].text
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
@@ -76,7 +76,7 @@ end
 function get_latest_version(O365::Office365Singleton)
     r = HTTP.get(OFFICE_365_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_id(doc, "Platform-supTabControlContent-1")
+    elem = _findfirst_html_tag(doc, "id", "Platform-supTabControlContent-1")
     v_str = elem.children[1].children[2].children[1].text
     #=
     ## verify the build version
