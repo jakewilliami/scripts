@@ -80,7 +80,7 @@ function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSyste
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
-function _get_latest_version(O365::Office365Singleton, ::WindowsOperatingSystem)
+function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_365_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc, "id", "Platform-supTabControlContent-1")
@@ -95,6 +95,14 @@ function _get_latest_version(O365::Office365Singleton, ::WindowsOperatingSystem)
     ## NOTE: these are not actually the same always, so no point in validating
     ## e.g., build_version = 14827.20198, but build_v_str = 14729.20260
     =#
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+end
+
+function _get_latest_version(::Office365Singleton, ::MacOSOperatingSystem)
+    r = HTTP.get(OFFICE_365_URI)
+    doc = Gumbo.parsehtml(String(r.body))
+    elem = _findfirst_html_tag(doc, "id", "Platform-supTabControlContent-2")
+    v_str = elem.children[1].children[1].children[1].children[2].children[2].children[1].text
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
