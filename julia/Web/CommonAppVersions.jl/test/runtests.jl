@@ -37,9 +37,12 @@ using Test
         @test o2013_v == expected_o2013_v
         
         # Office 2016
-        # o2013_v = get_latest_version(Office2016)
+        # o2016_v = get_latest_version(Office2016)
         # expected_o2016_v = VersionNumber("")
         # @test o2016_v == expected_o2016_v
+        o2016_retail_v = CommonAppVersions._get_latest_retail_version(Office2016)
+        expected_o2016_retail_v = VersionNumber("16.0.14827")
+        @test o2016_retail_v == expected_o2016_retail_v
         
         # Office 365
         o365_v = get_latest_version(Office365)
