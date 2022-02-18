@@ -8,4 +8,5 @@ latest_version_equal(T::U, v::String) where {U <: CommonAppVersions.CommonApplic
     @test latest_version_equal(Firefox, "97.0.1")
     @test latest_version_equal(Chrome, "98.0.4758")
     @test latest_version_equal(TeamViewer, "15.25.8")
+    @test latest_version_equal(Office365, "14827.20198.0")
 end

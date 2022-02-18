@@ -1,4 +1,4 @@
-const OFFICE_URI = ""
+const OFFICE_365_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-microsoft365-apps-by-date/"
 
 abstract type MicrosoftOfficeSingleton <: CommonApplication end
 
@@ -18,9 +18,25 @@ struct Office365Singleton <: MicrosoftOfficeSingleton end
 const Office365 = Office365Singleton()
 
 
-function get_latest_version(::MicrosoftOfficeSingleton)
+function get_latest_version(::Office2007Singleton)
     error("not implemented")
-    # r = HTTP.get(OFFICE_URI)
-    # doc = parsehtml(String(r.body))
-    # return VersionNumber(_reduce_version_major_minor_micro(v_str))
+end
+
+function get_latest_version(::Office2010Singleton)
+    error("not implemented")
+end
+
+function get_latest_version(::Office2013Singleton)
+    error("not implemented")
+end
+
+function get_latest_version(::Office2016Singleton)
+    error("not implemented")
+end
+
+function get_latest_version(::Office365Singleton)
+    r = HTTP.get(OFFICE_365_URI)
+    doc = parsehtml(String(r.body))
+    v_str = doc.root.children[2].children[2].children[1].children[2].children[1].children[1].children[1].children[3].children[8].children[2].children[1].children[3].children[1].text
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end

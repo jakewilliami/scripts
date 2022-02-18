@@ -4,7 +4,8 @@ module CommonAppVersions
 using HTTP, Gumbo
 
 export get_latest_version
-export Firefox, Chrome, TeamViewer
+export Firefox, Chrome, Adobe, TeamViewer, Office2007,
+    Office2010, Office2013, Office2016, Office365
 export COMMON_APPLICATIONS
 
 abstract type CommonApplication end
