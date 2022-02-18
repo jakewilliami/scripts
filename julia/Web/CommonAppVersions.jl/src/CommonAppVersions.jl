@@ -1,7 +1,7 @@
 module CommonAppVersions
 
 # using HTTP, EzXML
-using HTTP, Gumbo
+using HTTP, Gumbo, AbstractTrees
 
 export get_latest_version
 export Firefox, Chrome, Adobe, TeamViewer, Office2007,
