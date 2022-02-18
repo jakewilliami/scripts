@@ -1,7 +1,13 @@
+# Office 2013
+const OFFICE_2013_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-office-2013"
+
+# Office 365
 const OFFICE_365_BUILD_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-microsoft365-apps-by-date/"
 const OFFICE_365_NOGUID_URI = "https://support.microsoft.com/en-us/office/what-s-new-in-microsoft-365"
 const OFFICE_365_GUID = "95c8d81d-08ba-42c1-914f-bca4603e1426"
 const OFFICE_365_URI = OFFICE_365_NOGUID_URI * "-" * OFFICE_365_GUID
+
+# Types/structs
 
 abstract type MicrosoftOfficeSingleton <: CommonApplication end
 
@@ -20,13 +26,18 @@ const Office2016 = Office2016Singleton()
 struct Office365Singleton <: MicrosoftOfficeSingleton end
 const Office365 = Office365Singleton()
 
+# Version methods
 
 get_latest_version(::Office2007Singleton) = VersionNumber("12.0.6612")  # EOL: 10 Oct., 2017
 
 get_latest_version(::Office2010Singleton) = VersionNumber("14.0.7261")  # EOL: 13 Oct., 2020
 
 function get_latest_version(::Office2013Singleton)
-    error("not implemented")
+    r = HTTP.get(OFFICE_2013_URI)
+    doc = Gumbo.parsehtml(String(r.body))
+    elem = _findfirst_html_id(doc, "center-doc-outline")
+    v_str = elem.parent.children[5].children[2].children[2].children[1].text
+    return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
 
 function get_latest_version(::Office2016Singleton)

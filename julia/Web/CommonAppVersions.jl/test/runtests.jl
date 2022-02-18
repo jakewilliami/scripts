@@ -32,8 +32,14 @@ using Test
         @test get_latest_version(Office2010) == VersionNumber("14.0.7261")
         
         # Office 2013
+        o2013_v = get_latest_version(Office2013)
+        expected_o2013_v = VersionNumber("15.0.5423")
+        @test o2013_v == expected_o2013_v
         
         # Office 2016
+        # o2013_v = get_latest_version(Office2016)
+        # expected_o2016_v = VersionNumber("")
+        # @test o2016_v == expected_o2016_v
         
         # Office 365
         o365_v = get_latest_version(Office365)
