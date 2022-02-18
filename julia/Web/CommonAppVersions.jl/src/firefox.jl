@@ -5,7 +5,7 @@ const Firefox = FirefoxSingleton()
 
 function get_latest_version(::FirefoxSingleton)
     r = HTTP.get(FIREFOX_URI)
-    doc = parsehtml(String(r.body))
+    doc = Gumbo.parsehtml(String(r.body))
     v_str = doc.root.attributes["data-latest-firefox"]
     return VersionNumber(_reduce_version_major_minor_micro(v_str))
 end
