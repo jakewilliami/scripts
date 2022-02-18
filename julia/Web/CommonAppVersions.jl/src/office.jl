@@ -21,13 +21,9 @@ struct Office365Singleton <: MicrosoftOfficeSingleton end
 const Office365 = Office365Singleton()
 
 
-function get_latest_version(::Office2007Singleton)
-    error("not implemented")
-end
+get_latest_version(::Office2007Singleton) = VersionNumber("12.0.6612")  # EOL: 10 Oct., 2017
 
-function get_latest_version(::Office2010Singleton)
-    error("not implemented")
-end
+get_latest_version(::Office2010Singleton) = VersionNumber("14.0.7261")  # EOL: 13 Oct., 2020
 
 function get_latest_version(::Office2013Singleton)
     error("not implemented")
