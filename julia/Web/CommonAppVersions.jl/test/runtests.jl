@@ -14,11 +14,11 @@ using Test
         @test chrome_v == expected_chrome_v
     end
     
-    #=@testset "Adobe" begin
+    @testset "Adobe" begin
         adobe_v = get_latest_version(Adobe)
-        expected_adobe_v = VersionNumber("")
+        expected_adobe_v = VersionNumber("21.011.20039")
         @test adobe_v == expected_adobe_v
-    end=#
+    end
     
     @testset "TeamViewer" begin
         teamviewer_v = get_latest_version(TeamViewer)
