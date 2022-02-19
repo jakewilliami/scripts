@@ -1,3 +1,4 @@
+# NOTE: the bleeding edge release versions seem to be found on https://community.teamviewer.com/English/categories/change-logs-en
 const TEAMVIEWER_URI = "https://www.teamviewer.com/en-us/download/"
 const TEAMVIEWER_REGEX = r"Current version\: ((?:\d+\.)?(?:\d+\.)?(?:\d+))"  # not quite as complex as Base.VERSION_REGEX
 const TEAMVIEWER_OS_SUFFIXES = Dict{OperatingSystem, String}(
