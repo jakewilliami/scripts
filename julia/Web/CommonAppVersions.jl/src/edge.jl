@@ -12,5 +12,5 @@ function _get_latest_version(::EdgeSingleton, ::OperatingSystem)
     v_info = onlychild(elem).text
     m = match(EDGE_VERSION_REGEX, v_info)
     v_str = only(m.captures)
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end

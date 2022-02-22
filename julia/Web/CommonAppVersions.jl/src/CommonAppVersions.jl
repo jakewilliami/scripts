@@ -1,8 +1,8 @@
 module CommonAppVersions
 
+using VersionParsing
 using HTTP
 using Gumbo
-using EzXML
 using AbstractTrees
 
 export get_latest_version

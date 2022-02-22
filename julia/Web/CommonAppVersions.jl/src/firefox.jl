@@ -8,5 +8,5 @@ function _get_latest_version(::FirefoxSingleton, ::OperatingSystem)
     r = HTTP.get(FIREFOX_URI)
     doc = Gumbo.parsehtml(String(r.body))
     v_str = doc.root.attributes["data-latest-firefox"]
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end

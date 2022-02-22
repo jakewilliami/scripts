@@ -16,5 +16,5 @@ function _get_latest_version(::AdobeSingleton, ::WindowsOperatingSystem)
     # 19.010.20098 Out of cycle update, February 21, 2019
     v_info = onlychild(_findfirst_html_tag(versions[1], "class" => "std std-ref", tag = :span)).text
     v_str = SubString(v_info, 1, prevind(v_info, findfirst(' ', v_info)))
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end

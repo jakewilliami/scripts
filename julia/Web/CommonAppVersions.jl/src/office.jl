@@ -50,7 +50,7 @@ function _get_latest_version(::Office2013Singleton, ::WindowsOperatingSystem)
     next_elem = _nextsibling(elem, 2) # go to the 2nd next element
     note_elem = _findfirst_html_text(next_elem, :p, "The most current version of Office 2013 is", exact = false)
     v_str = onlychild(note_elem.children[2]).text # e.g., `<p>The most current version of Office 2013 is <strong>15.0.5423.1000</strong>, which was released on February 8, 2022.</p>`
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end
 
 function _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSystem)
@@ -64,7 +64,7 @@ function _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSys
     unmatched_build_str = onlychild(versions[1].children[2]).text
     m = match(OFFICE_2016_RETAIL_REGEX, unmatched_build_str)
     build_str = only(m.captures)
-    return VersionNumber(_reduce_version_major_minor_micro("16.0." * build_str))
+    return vparse("16.0." * build_str)
 end
 
 function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
@@ -98,12 +98,12 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
     
     # v_str = tbl[1].children[3].children[1].children[1].text
-    # return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    # return vparse(v_str)
     
     v_min = VersionNumber("0.0.0")
     return maximum(tbl) do tr
         v_elem = onlychild(tr.children[3]).children # the third column is the version number
-        isempty(v_elem) ? v_min : VersionNumber(_reduce_version_major_minor_micro(v_elem[1].text))
+        isempty(v_elem) ? v_min : vparse(v_elem[1].text)
     end
 end
 
@@ -114,7 +114,7 @@ function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSyste
     tbl = _nextsibling(elem)
     tbody = tbl.children[2]
     v_str = tbody.children[1].children[3].children[1].text # the third column is the version number
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end
 
 function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
@@ -122,17 +122,7 @@ function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-1", tag = :div)
     v_str = onlychild(elem.children[1].children[2]).text
-    #=
-    ## verify the build version
-    build_version = _get_latest_build_version(O365)
-    i = findlast('.', v_str)
-    j = findprev('.', v_str, prevind(v_str, i))
-    build_v_str = SubString(v_str, nextind(v_str, j))
-    @assert(string(build_version) == build_v_str)
-    ## NOTE: these are not actually the same always, so no point in validating
-    ## e.g., build_version = 14827.20198, but build_v_str = 14729.20260
-    =#
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end
 
 function _get_latest_version(::Office365Singleton, ::MacOSOperatingSystem)
@@ -140,6 +130,6 @@ function _get_latest_version(::Office365Singleton, ::MacOSOperatingSystem)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)
     v_str = onlychild(elem.children[1].children[1].children[1].children[2].children[2]).text
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end
 

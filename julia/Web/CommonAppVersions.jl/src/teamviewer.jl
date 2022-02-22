@@ -19,7 +19,7 @@ function _get_latest_version(::TeamViewerSingleton, os::OS) where {OS <: Operati
     
     m = match(TEAMVIEWER_REGEX, body)
     v_str = only(m.captures)
-    return VersionNumber(_reduce_version_major_minor_micro(v_str))
+    return vparse(v_str)
 end
 
 function _get_latest_version(::TeamViewerSingleton, ::LinuxOperatingSystem)
