@@ -1,11 +1,23 @@
 using CommonAppVersions
 using Test
 
+const EXPECTED_FIREFOX_V          = VersionNumber("97.0.1")
+const EXPECTED_CHROME_V           = VersionNumber("98.0.4758")
+const EXPECTED_ADOBE_V            = VersionNumber("21.011.20039")
+const EXPECTED_TEAMVIEWER_V       = VersionNumber("15.25.8")
+const EXPECTED_TEAMVIEWER_V_MACOS = VersionNumber("15.25.5")
+const EXPECTED_O2007_V            = VersionNumber("12.0.6612")
+const EXPECTED_O2010_V            = VersionNumber("14.0.7261")
+const EXPECTED_O2013_V            = VersionNumber("15.0.5423")
+const EXPECTED_O2016_V            = VersionNumber("16.0.5278")
+const EXPECTED_O2016_RETAIL_V     = VersionNumber("16.0.14827")
+const EXPECTED_O365_V             = VersionNumber("16.0.14827")
+const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
+
 @testset "CommonAppVersions.jl" begin
     @testset "Firefox" begin
         firefox_v = get_latest_version(Firefox)
-        expected_firefox_v = VersionNumber("97.0.1")
-        @test firefox_v == expected_firefox_v
+        @test firefox_v == EXPECTED_FIREFOX_V
         # test that `get_latest_version` defaults to Windows
         firefox_v_win = get_latest_version(Firefox, Windows)
         @test firefox_v == firefox_v_win
@@ -13,50 +25,41 @@ using Test
     
     @testset "Chrome" begin
         chrome_v = get_latest_version(Chrome)
-        expected_chrome_v = VersionNumber("98.0.4758")
-        @test chrome_v == expected_chrome_v
+        @test chrome_v == EXPECTED_CHROME_V
     end
     
     @testset "Adobe" begin
         adobe_v = get_latest_version(Adobe)
-        expected_adobe_v = VersionNumber("21.011.20039")
-        @test adobe_v == expected_adobe_v
+        @test adobe_v == EXPECTED_ADOBE_V
     end
     
     @testset "TeamViewer" begin
         teamviewer_v = get_latest_version(TeamViewer)
-        expected_teamviewer_v = VersionNumber("15.25.8")
-        @test teamviewer_v == expected_teamviewer_v
+        @test teamviewer_v == EXPECTED_TEAMVIEWER_V
         teamviewer_v_macos = get_latest_version(TeamViewer, MacOS)
-        expected_teamviewer_v_macos = VersionNumber("15.25.5")
-        @test teamviewer_v_macos == expected_teamviewer_v_macos
+        @test teamviewer_v_macos == EXPECTED_TEAMVIEWER_V_MACOS
         @test_throws ArgumentError get_latest_version(TeamViewer, Linux)
     end
     
     @testset "Microsoft Office" begin
         # Office 2007/2010 (end-of-life)
-        @test get_latest_version(Office2007) == VersionNumber("12.0.6612")
-        @test get_latest_version(Office2010) == VersionNumber("14.0.7261")
+        @test get_latest_version(Office2007) == EXPECTED_O2007_V
+        @test get_latest_version(Office2010) == EXPECTED_O2010_V
         
         # Office 2013
         o2013_v = get_latest_version(Office2013)
-        expected_o2013_v = VersionNumber("15.0.5423")
-        @test o2013_v == expected_o2013_v
+        @test o2013_v == EXPECTED_O2013_V
         
         # Office 2016
         o2016_v = get_latest_version(Office2016)
-        expected_o2016_v = VersionNumber("16.0.5278")
-        @test o2016_v == expected_o2016_v
+        @test o2016_v == EXPECTED_O2016_V
         o2016_retail_v = CommonAppVersions._get_latest_retail_version(Office2016, Windows)
-        expected_o2016_retail_v = VersionNumber("16.0.14827")
-        @test o2016_retail_v == expected_o2016_retail_v
+        @test o2016_retail_v == EXPECTED_O2016_RETAIL_V
         
         # Office 365
         o365_v = get_latest_version(Office365)
-        expected_o365_v = VersionNumber("16.0.14827")
-        @test o365_v == expected_o365_v
+        @test o365_v == EXPECTED_O365_V
         o365_build_v = CommonAppVersions._get_latest_build_version(Office365, Windows)
-        expected_o365_build_v = VersionNumber("14827.20198.0")
-        @test o365_build_v == expected_o365_build_v
+        @test o365_build_v == EXPECTED_O365_BUILD_V
     end
 end
