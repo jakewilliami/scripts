@@ -1,5 +1,6 @@
 using CommonAppVersions
 using Test
+using InteractiveUtils
 
 const EXPECTED_FIREFOX_V          = VersionNumber("97.0.1")
 const EXPECTED_CHROME_V           = VersionNumber("98.0.4758")
@@ -24,8 +25,10 @@ const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
     end
     
     @testset "Chrome" begin
-        chrome_v = get_latest_version(Chrome)
-        @test chrome_v == EXPECTED_CHROME_V
+        for OS in subtypes(CommonAppVersions.OperatingSystem)
+            chrome_v = get_latest_version(Chrome, OS())
+            @test chrome_v == EXPECTED_CHROME_V
+        end
     end
     
     @testset "Adobe" begin
