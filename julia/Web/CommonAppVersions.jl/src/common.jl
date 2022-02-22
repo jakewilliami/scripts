@@ -23,21 +23,21 @@ function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     return String(reduced_v_str)
 end
 
-function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr::String, value::String; alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr::String, value::String; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
     for elem in alg(doc)
         elem isa HTMLElement || continue
-        if getattr(elem, attr, "") == value
-            return elem
-        end
+        el_attr = getattr(elem, attr, "")
+        (exact ? el_attr == value : contains(el_attr, value)) && return elem
     end
     return nothing
 end
 
-function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::String; alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::String; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
     for elem in alg(doc)
         elem isa HTMLElement || continue
-        if Gumbo.tag(elem) == tag && Gumbo.text(elem) == text
-            return elem
+        if Gumbo.tag(elem) == tag
+            el_text = Gumbo.text(elem)
+            (exact ? el_text == text : contains(el_text, text)) && return elem
         end
     end
     return nothing
