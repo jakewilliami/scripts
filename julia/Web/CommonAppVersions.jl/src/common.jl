@@ -23,6 +23,8 @@ function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     return String(reduced_v_str)
 end
 
+Base.isempty(::T) where {T <: HTMLNode} = T == NullNode
+
 function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr::String, value::String; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
     for elem in alg(doc)
         elem isa HTMLElement || continue
@@ -43,6 +45,14 @@ function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::String;
     return nothing
 end
 
+function _nextsibling(el::Gumbo.HTMLElement)
+    parent = el.parent
+    isempty(parent) && return nothing
+    siblings = parent.children
+    i = findfirst(==(el), siblings) + 1
+    return checkbounds(Bool, siblings, i) ? siblings[i] : nothing
+end
+
 #=
 treesize(node) = 1 + mapreduce(treesize, +, Gumbo.children(node), init=0)
 treebreadth(node) = isempty(Gumbo.children(node)) ? 1 : mapreduce(treebreadth, +, Gumbo.children(node))
@@ -51,7 +61,6 @@ treeheight(node) = isempty(Gumbo.children(node)) ? 0 : 1 + mapreduce(treeheight,
 # logic stolen from https://github.com/JuliaCollections/AbstractTrees.jl/blob/master/src/base.jl
 # AbstractTrees.children(elem::HTMLElement) = elem.children
 # AbstractTrees.children(elem::HTMLText) = ()
-Base.isempty(::T) where {T <: HTMLNode} = T == NullNode
 nodedepth(node) = isempty(node.parent) ? 0 : 1 + nodedepth(node.parent)
 
 # Base.findfirst(f, doc::Gumbo.HTMLDocument; alg::Type{T} = PreOrderDFS) where {T <: TreeIterator} = 

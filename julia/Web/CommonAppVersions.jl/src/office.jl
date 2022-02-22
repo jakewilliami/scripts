@@ -71,17 +71,15 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     r1 = HTTP.get(OFFICE_2016_MSI_URI)
     doc1 = Gumbo.parsehtml(String(r1.body))
     elem1 = _findfirst_html_tag(doc1.root, "id", "office-2016-updates")
-    siblings1 = elem1.parent.children
-    i1 = findfirst(==(elem1), siblings1)
-    up_uri = siblings1[i1 + 1].children[2].children[1].children[3].children[3].attributes["href"]
+    next_elem1 = _nextsibling(elem1)
+    up_uri = next_elem1.children[2].children[1].children[3].children[3].attributes["href"]
     
     # Find the most recently updated app, ang go to its Knowledge Base URL
     r2 = HTTP.get(up_uri)
     doc2 = Gumbo.parsehtml(String(r2.body))
     elem2 = _findfirst_html_text(doc2.root, :h3, "Microsoft Office 2016")
-    siblings2 = elem2.parent.children
-    i2 = findfirst(==(elem2), siblings2)
-    kb_uri = _findfirst_html_tag(siblings2[i2 + 1], "class", "ocpArticleLink").attributes["href"]
+    next_elem2 = _nextsibling(elem2)
+    kb_uri = _findfirst_html_tag(next_elem2, "class", "ocpArticleLink").attributes["href"]
     
     # Get the top-most element in the supported x64-based versions
     # We iterate over the table of files that have been changed and take the largest version,
