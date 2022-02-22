@@ -13,6 +13,7 @@ const EXPECTED_O2013_V            = VersionNumber("15.0.5423")
 const EXPECTED_O2016_V            = VersionNumber("16.0.5278")
 const EXPECTED_O2016_RETAIL_V     = VersionNumber("16.0.14827")
 const EXPECTED_O365_V             = VersionNumber("16.0.14827")
+const EXPECTED_O365_V_MACOS       = VersionNumber("16.58.22021501")
 const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
 
 @testset "CommonAppVersions.jl" begin
@@ -62,6 +63,8 @@ const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
         # Office 365
         o365_v = get_latest_version(Office365)
         @test o365_v == EXPECTED_O365_V
+        o365_v_macos = get_latest_version(Office365, MacOS)
+        @test o365_v_macos == EXPECTED_O365_V_MACOS
         o365_build_v = CommonAppVersions._get_latest_build_version(Office365, Windows)
         @test o365_build_v == EXPECTED_O365_BUILD_V
     end
