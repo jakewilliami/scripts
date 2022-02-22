@@ -15,7 +15,8 @@ function _get_latest_version(::TeamViewerSingleton, os::OS) where {OS <: Operati
     body = String(r.body)
     # doc = Gumbo.parsehtml(body)
     # elem = _findfirst_html_tag(doc, "id", "wd-row-download-win")
-    # v_str = elem.parent.children[5].children[1].children[1].children[1].text
+    # v_str = onlychild(elem.parent.children[5].children[1].children[1]).text
+    
     m = match(TEAMVIEWER_REGEX, body)
     v_str = only(m.captures)
     return VersionNumber(_reduce_version_major_minor_micro(v_str))

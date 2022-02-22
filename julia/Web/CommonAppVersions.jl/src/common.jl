@@ -23,18 +23,24 @@ function _reduce_version_major_minor_micro(v_str::T) where {T <: AbstractString}
     return String(reduced_v_str)
 end
 
-Base.isempty(::T) where {T <: HTMLNode} = T == NullNode
+Base.isempty(::T) where {T <: Gumbo.HTMLNode} = T == NullNode
 
-function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr::String, value::String; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+onlychild(el::Gumbo.HTMLElement) = only(el.children)
+
+function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr_val::Union{Pair{String, String}, Pair{String, Regex}}; exact::Bool = true, tag::Union{Symbol, Nothing} = nothing, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+    attr, value = attr_val
     for elem in alg(doc)
         elem isa HTMLElement || continue
+        if !isnothing(tag)
+            Gumbo.tag(elem) == tag || continue
+        end
         el_attr = getattr(elem, attr, "")
         (exact ? el_attr == value : contains(el_attr, value)) && return elem
     end
     return nothing
 end
 
-function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::String; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::Union{String, Regex}; exact::Bool = true, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
     for elem in alg(doc)
         elem isa HTMLElement || continue
         if Gumbo.tag(elem) == tag
@@ -45,11 +51,11 @@ function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::String;
     return nothing
 end
 
-function _nextsibling(el::Gumbo.HTMLElement)
+function _nextsibling(el::Gumbo.HTMLElement, j::Int = 1)
     parent = el.parent
     isempty(parent) && return nothing
     siblings = parent.children
-    i = findfirst(==(el), siblings) + 1
+    i = findfirst(==(el), siblings) + j
     return checkbounds(Bool, siblings, i) ? siblings[i] : nothing
 end
 
