@@ -15,6 +15,7 @@ const EXPECTED_O2016_RETAIL_V     = VersionNumber("16.0.14827")
 const EXPECTED_O365_V             = VersionNumber("16.0.14827")
 const EXPECTED_O365_V_MACOS       = VersionNumber("16.58.22021501")
 const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
+const EXPECTED_EDGE_V             = VersionNumber("98.0.1108")
 
 @testset "CommonAppVersions.jl" begin
     @testset "Firefox" begin
@@ -67,5 +68,10 @@ const EXPECTED_O365_BUILD_V       = VersionNumber("14827.20198.0")
         @test o365_v_macos == EXPECTED_O365_V_MACOS
         o365_build_v = CommonAppVersions._get_latest_build_version(Office365, Windows)
         @test o365_build_v == EXPECTED_O365_BUILD_V
+    end
+    
+    @testset "Edge" begin
+        edge_v = get_latest_version(Edge)
+        @test edge_v == EXPECTED_EDGE_V
     end
 end

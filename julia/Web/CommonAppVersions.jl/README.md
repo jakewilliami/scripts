@@ -30,11 +30,12 @@ ERROR: # ...
 
 julia> Dict{String, VersionNumber}(k => get_latest_version(v) for (k, v) in COMMON_APPLICATIONS)  # get all available common app versions
 Dict{String, VersionNumber} with 8 entries:
+  "Microsoft Edge"        => v"98.0.1108"
   "Team Viewer"           => v"15.25.8"
   "Google Chrome"         => v"98.0.4758"
   "Adobe Acrobat DC"      => v"21.11.20039"
-  "Mozilla Firefox"       => v"97.0.1"
   "Microsoft Office 2016" => v"16.0.5278"
+  "Mozilla Firefox"       => v"97.0.1"
   "Microsoft Office 2013" => v"15.0.5423"
   "Microsoft Office 2007" => v"12.0.6612"
   "Microsoft Office 365"  => v"16.0.14827"
