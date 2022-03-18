@@ -94,8 +94,12 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     r3 = HTTP.get(OFFICE_SUPPORT_BASE_URI * kb_uri)
     doc3 = Gumbo.parsehtml(String(r3.body))
     elem3 = _findfirst_html_tag(doc3.root, "aria-label" => "File information", tag = :section)
-    elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
-    tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
+    ## Original find version table code
+    # elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
+    # tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
+    ## Fix for finding version table after March, 2022
+    elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
+    tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
     
     # v_str = tbl[1].children[3].children[1].children[1].text
     # return vparse(v_str)

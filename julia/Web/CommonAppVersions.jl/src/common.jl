@@ -36,6 +36,23 @@ function _findfirst_html_text(doc::Gumbo.HTMLElement, tag::Symbol, text::Union{S
     return nothing
 end
 
+function _findfirst_html_class_text(doc::Gumbo.HTMLElement, attr_val::Union{Pair{String, String}, Pair{String, Regex}}, text::Union{String, Regex}; exact::Bool = true, tag::Union{Symbol, Nothing} = nothing, alg::Type{T} = PreOrderDFS) where {T <: TreeIterator}
+    attr_name, value = attr_val
+    for elem in alg(doc)
+        elem isa HTMLElement || continue
+        if !isnothing(tag)
+            Gumbo.tag(elem) == tag || continue
+        end
+        all_attrs = Gumbo.attrs(elem)
+        this_attr = get(all_attrs, attr_name, nothing)
+        if this_attr == value
+            el_text = Gumbo.text(elem)
+            (exact ? el_text == text : contains(el_text, text)) && return elem
+        end
+    end
+    return nothing
+end
+
 function _nextsibling(el::Gumbo.HTMLElement, j::Int = 1)
     parent = el.parent
     isempty(parent) && return nothing
