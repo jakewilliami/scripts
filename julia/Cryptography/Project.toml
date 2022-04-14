@@ -1,8 +1,10 @@
 [deps]
 AbstractAlgebra = "c3fe647b-3220-5bb0-a1ea-a7954cac585d"
 ClassicalCiphers = "ecf26e93-935c-5e64-9b21-bc8ac81b4723"
+CodecBase = "6c391c72-fb7b-5838-ba82-7cfb1bcfecbf"
 Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+Enigma = "68071ed3-b3ed-4442-ae89-ae359c4518d1"
 FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
