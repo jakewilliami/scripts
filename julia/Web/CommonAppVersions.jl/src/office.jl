@@ -47,7 +47,7 @@ function _get_latest_version(::Office2013Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_2013_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "center-doc-outline", tag = :nav)
-    next_elem = _nextsibling(elem, 2) # go to the 2nd next element
+    next_elem = _nextsibling(elem, 3) # go to the 3rd next element
     note_elem = _findfirst_html_text(next_elem, :p, "The most current version of Office 2013 is", exact = false)
     v_str = onlychild(note_elem.children[2]).text # e.g., `<p>The most current version of Office 2013 is <strong>15.0.5423.1000</strong>, which was released on February 8, 2022.</p>`
     return vparse(v_str)
