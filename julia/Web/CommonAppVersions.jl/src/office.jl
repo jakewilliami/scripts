@@ -94,16 +94,25 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     r3 = HTTP.get(OFFICE_SUPPORT_BASE_URI * kb_uri)
     doc3 = Gumbo.parsehtml(String(r3.body))
     elem3 = _findfirst_html_tag(doc3.root, "aria-label" => "File information", tag = :section)
-    ## Original find version table code
-    # elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
-    # tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
-    ## Fix for finding version table after March, 2022
+
+    #= ## 1. Original find version table code
+    elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
+    tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
+    =#
+
+    #= ## 2. Fix for finding version table for March, 2022
     elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
     tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
+    =#
     
+    ## 3. Fix for finding version table for April, 2022
+    # elem4 = _findfirst_html_tag(elem3, "ocpExpandoHeadTitleContainer" => "For all supported x64-based versions of"; exact = false, tag = :div)
+    elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
+    tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table head
+    
+    ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
     # return vparse(v_str)
-    
     v_min = VersionNumber("0.0.0")
     return maximum(tbl) do tr
         v_elem = onlychild(tr.children[3]).children # the third column is the version number
