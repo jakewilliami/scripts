@@ -9,3 +9,13 @@ function sleepsort(V::Vector{T}) where {T <: Real}
     end
     return U
 end
+
+
+function sleepsort!(V::Vector{T}) where {T <: Real}
+    U = sort(V, SleepSort)
+    for i in eachindex(V)
+        V[i] = U[i]
+    end
+    return V
+end
+
