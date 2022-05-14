@@ -22,3 +22,10 @@ Also note that some scripts have tests, so you can run these tests via
 ```bash
 $ rustc --test dayn.rs && ./dayn
 ```
+
+## Profiling
+
+```bash
+$ perf record --call-graph dwarf -p $(pgrep <pname>)
+$ perf script | inferno-collapse-perf | inferno-flamegraph > perf.svg
+```
