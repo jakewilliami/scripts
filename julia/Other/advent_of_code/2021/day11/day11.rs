@@ -254,7 +254,7 @@ fn part1(octopodes: &Octopodes, nsteps: usize) -> usize {
 		}
 		octopodes_final_str.push_str("\n");
 	}
-	println!("Final Octopodes State (Part 1): \n{}", octopodes_final_str);
+	// println!("Final Octopodes State (Part 1): \n{}", octopodes_final_str);
 	return flash_counter;
 }
 
