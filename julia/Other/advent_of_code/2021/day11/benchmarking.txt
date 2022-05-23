@@ -1,0 +1,4 @@
+Benchmark 1: day11
+  Time (mean ± σ):     124.3 ms ±  36.1 ms    [User: 85.5 ms, System: 7.3 ms]
+  Range (min … max):    89.1 ms … 221.8 ms    28 runs
+ 
