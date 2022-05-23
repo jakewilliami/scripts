@@ -63,3 +63,6 @@ In the root directory, there exists a trash folder: `/private/var/root/.Trash`. 
 echo 'alias clean="sudo clean"' >> ~/.bashrc
 ```
 Which allows the user to find and access the root trash directory.
+
+## Benchmarking/Profiling linux commands
+Check out [`hyperfine`](https://github.com/sharkdp/hyperfine).
