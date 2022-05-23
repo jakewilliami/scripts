@@ -170,9 +170,12 @@ fn simulate_step(octopodes: &mut Octopodes) -> usize {
 	let points = get_points(nrows, ncols);
 	
 	// First, the energy level of each octopus increases by 1
-	for p in points.iter() {
+	// for p in points.iter() {
+		// octopodes[p.y][p.x].energy += 1;
+	// }
+	points.iter().for_each(|p| { 
 		octopodes[p.y][p.x].energy += 1;
-	}
+	});
 	
 	// need to get the points that are flashing
 	let initial_flashing_points: Vec<Point2D> = points.iter()
