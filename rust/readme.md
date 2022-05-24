@@ -79,3 +79,7 @@ or
 ```
 rustc src/main.rs && ./main
 ```
+
+## Binary Size
+
+https://github.com/johnthagen/min-sized-rust
