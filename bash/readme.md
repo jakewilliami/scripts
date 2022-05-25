@@ -66,3 +66,10 @@ Which allows the user to find and access the root trash directory.
 
 ## Benchmarking/Profiling linux commands
 Check out [`hyperfine`](https://github.com/sharkdp/hyperfine).
+
+## When pulling from remote
+```console
+$ git clean -fdx
+$ git fetch --prune origin
+$ git merge origin/master
+```
