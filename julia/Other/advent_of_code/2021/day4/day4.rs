@@ -18,6 +18,7 @@ fn main() {
 
 // Structs and such
 
+// NOTE: For future optimisation, whenever we have a dictionary of values to booleans (obtained or not), let's consider that as a set.  If it is not in the set then it has already been called out
 #[derive(Debug, Clone, Copy, PartialEq)]
 struct BingoNumber {
 	val: u8, // all the numbers are positive and at most 2 digits, so can fit into 8 bits
