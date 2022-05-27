@@ -8,8 +8,6 @@ fn main() {
 	let data: Vec<_> = buf.lines()
 		.map(|l| l.expect("Could not parse line"))
 		.collect();
-	// assert!((1..(&data).len()).all(|i| &data[i].len() == &data[0].len()));
-	assert!(&data.iter().all(|s| s.len() == (&data[0]).len()));
 	let test_data: Vec<String> = vec!["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"].iter().map(|s| s.to_string()).collect();
 	
 	// part 1
@@ -29,12 +27,15 @@ fn main() {
 fn part1(data: &Vec<String>) -> isize {
 	// Find most common bits in each position
 	let gamma_rate_str = find_populist_bitstring(&data);
-	// Find least common bits in each position
-	let epsilon_rate_str = invert_bitstring(&gamma_rate_str);
-	
 	let gamma_rate = isize::from_str_radix(&gamma_rate_str, 2).unwrap();
-	let epsilon_rate = isize::from_str_radix(&epsilon_rate_str, 2).unwrap();
 	
+	// The epsilon rate is the least common bits in each position.  We can compute this by taking the
+	// bitwise negation of the value with the most common bits.  We also need to bit shift by the 
+	// length of the string, otherwise we have more bits than necessary and this changes our final
+	// value: https://stackoverflow.com/a/71248916/12069968
+	let epsilon_rate = !gamma_rate & (1isize << &gamma_rate_str.len()).wrapping_sub(1);
+	
+	// We return the product of the two rates as our answer
 	return gamma_rate * epsilon_rate;
 }
 
@@ -62,6 +63,7 @@ fn find_populist_bitstring(data: &Vec<String>) -> String {
 	return res;
 }
 
+#[allow(dead_code)]
 fn invert_bitstring(bitstr: &String) -> String {
 	let mut res = String::new();
 	let bits: Vec<_> = bitstr.chars().collect();
