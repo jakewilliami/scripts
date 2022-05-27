@@ -26,23 +26,29 @@ fn main() {
 
 fn part1(data: &Vec<String>) -> isize {
 	// Find most common bits in each position
-	let gamma_rate_str = find_populist_bitstring(&data);
-	let gamma_rate = isize::from_str_radix(&gamma_rate_str, 2).unwrap();
+	// let gamma_rate_str = dbg!(find_populist_bitstring_naive(&data));
+	// let gamma_rate = isize::from_str_radix(&gamma_rate_str, 2).unwrap();
+	let gamma_rate = find_populist_bitstring(&data);
 	
 	// The epsilon rate is the least common bits in each position.  We can compute this by taking the
 	// bitwise negation of the value with the most common bits.  We also need to bit shift by the 
 	// length of the string, otherwise we have more bits than necessary and this changes our final
 	// value: https://stackoverflow.com/a/71248916/12069968
-	let epsilon_rate = !gamma_rate & (1isize << &gamma_rate_str.len()).wrapping_sub(1);
+	// let epsilon_rate = dbg!(!gamma_rate & (1isize << &gamma_rate_str.len()).wrapping_sub(1));
+	let epsilon_rate = !gamma_rate & (1isize << &data[0].len()).wrapping_sub(1);
 	
 	// We return the product of the two rates as our answer
 	return gamma_rate * epsilon_rate;
 }
 
-fn find_populist_bitstring(data: &Vec<String>) -> String {
+#[allow(dead_code)]
+fn find_populist_bitstring_naive(data: &Vec<String>) -> String {
+	// Naïve solution
+	
 	let nbits = data[0].len(); // .chars().count()
 	let mut res = String::new();
 	let (mut ones, mut zeros) = (0, 0);
+	
 	for i in 0..nbits {
 		for bitstr in data {
 			let bits: Vec<_> = bitstr.chars().collect();
@@ -59,6 +65,35 @@ fn find_populist_bitstring(data: &Vec<String>) -> String {
 		res.push(res_char);
 		ones = 0;
 		zeros = 0;
+	}
+	
+	return res;
+}
+
+fn find_populist_bitstring(data: &Vec<String>) -> isize {
+	// Bitwise solution: The idea is to decide one bit, then shift it over and decide the next,
+	// until we have reached the end of the input data, and we have our solution
+	
+	let nbits = data[0].len();
+	
+	// First we need to count the number of ones in each position
+	let mut counts = vec![0; nbits];
+	for bitstr in data {
+		for (i, c) in bitstr.chars().enumerate() {
+			if c == '1' {
+				counts[i] += 1;
+			}
+		}
+	}
+	
+	let half_of_population = data.len() / 2;
+	let mut res = 0;
+	
+	for i in 0..nbits {
+		res <<= 1;
+		if counts[i] > half_of_population {
+			res += 1
+		}
 	}
 	return res;
 }
