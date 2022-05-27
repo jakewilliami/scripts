@@ -8,6 +8,8 @@ fn main() {
 	let data: Vec<_> = buf.lines()
 		.map(|l| l.expect("Could not parse line"))
 		.collect();
+	// assert!((1..(&data).len()).all(|i| &data[i].len() == &data[0].len()));
+	assert!(&data.iter().all(|s| s.len() == (&data[0]).len()));
 	let test_data: Vec<String> = vec!["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"].iter().map(|s| s.to_string()).collect();
 	
 	// part 1
