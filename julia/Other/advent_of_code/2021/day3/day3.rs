@@ -122,6 +122,7 @@ enum RatingCriteria {
 }
 
 fn part2(data: &Vec<String>) -> isize {
+	// Note: this solution has not been optimised as the one above has
 	let oxygen_generator_rating_str = get_bit_criteria(data, RatingCriteria::OxygenGenerator);
 	let co2_scrubber_rating_str = get_bit_criteria(data, RatingCriteria::CO2Scrubber);
 	
