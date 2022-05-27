@@ -27,7 +27,9 @@ fn main() {
 // Part 1
 
 fn part1(data: &Vec<String>) -> isize {
+	// Find most common bits in each position
 	let gamma_rate_str = find_populist_bitstring(&data);
+	// Find least common bits in each position
 	let epsilon_rate_str = invert_bitstring(&gamma_rate_str);
 	
 	let gamma_rate = isize::from_str_radix(&gamma_rate_str, 2).unwrap();
