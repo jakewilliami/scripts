@@ -16,87 +16,93 @@ fn main() {
 	// let lines = parse_input("test.txt");
 	
 	// part 1
+	let args: Vec<String> = std::env::args().collect();
+    let allowed_args: (String, String, String) = ("1".to_string(), "2".to_string(), "t".to_string());
 	
 	// tests for intersecting lines
-	let p1 = Line {
-		p: Point { x: 1, y: 1, },
-		q: Point { x: 10, y: 1, },
-	};
-	let p2 = Line {
-		p: Point { x: 1, y: 2, },
-		q: Point { x: 10, y: 2, },
-	};
-	let p3 = Line {
-		p: Point { x: 10, y: 0, },
-		q: Point { x: 0, y: 10, },
-	};
-	let p4 = Line {
-		p: Point { x: 0, y: 0, },
-		q: Point { x: 10, y: 10, },
-	};
-	let p5 = Line {
-		p: Point { x: -5, y: -5, },
-		q: Point { x: 0, y: 0, },
-	};
-	let p6 = Line {
-		p: Point { x: 1, y: 1, },
-		q: Point { x: 10, y: 10, },
-	};
-	assert!(!p1.intersects(&p2));
-	assert!(p3.intersects(&p4));
-	assert!(!p5.intersects(&p6));
-	assert!(!p2.intersects(&p1));
-	assert!(p4.intersects(&p3));
-	assert!(!p6.intersects(&p5));
+    if *(&args.contains(&allowed_args.2)) {
+		let p1 = Line {
+			p: Point { x: 1, y: 1, },
+			q: Point { x: 10, y: 1, },
+		};
+		let p2 = Line {
+			p: Point { x: 1, y: 2, },
+			q: Point { x: 10, y: 2, },
+		};
+		let p3 = Line {
+			p: Point { x: 10, y: 0, },
+			q: Point { x: 0, y: 10, },
+		};
+		let p4 = Line {
+			p: Point { x: 0, y: 0, },
+			q: Point { x: 10, y: 10, },
+		};
+		let p5 = Line {
+			p: Point { x: -5, y: -5, },
+			q: Point { x: 0, y: 0, },
+		};
+		let p6 = Line {
+			p: Point { x: 1, y: 1, },
+			q: Point { x: 10, y: 10, },
+		};
+		assert!(!p1.intersects(&p2));
+		assert!(p3.intersects(&p4));
+		assert!(!p5.intersects(&p6));
+		assert!(!p2.intersects(&p1));
+		assert!(p4.intersects(&p3));
+		assert!(!p6.intersects(&p5));
 	
-	// test for getting points on line
-	let line = Line {
-		p: Point { x: 0, y: 1, },
-		q: Point { x: 6, y: 4, },
-	};
-	assert_eq!(line.points().unwrap(), vec![Point{ x: 0, y: 1, }, Point{ x: 1, y: 1, }, Point{ x: 2, y: 2, }, Point{ x: 3, y: 2, }, Point{ x: 4, y: 3, }, Point{ x: 5, y: 3, }, Point{ x: 6, y: 4, }]);
+		// test for getting points on line
+		let line = Line {
+			p: Point { x: 0, y: 1, },
+			q: Point { x: 6, y: 4, },
+		};
+		assert_eq!(line.points().unwrap(), vec![Point{ x: 0, y: 1, }, Point{ x: 1, y: 1, }, Point{ x: 2, y: 2, }, Point{ x: 3, y: 2, }, Point{ x: 4, y: 3, }, Point{ x: 5, y: 3, }, Point{ x: 6, y: 4, }]);
 	
-	// test for points of intersection
-	let p7 = Line {
-		p: Point { x: 1, y: 1, },
-		q: Point { x: 10, y: 10, },
-	};
-	let p8 = Line {
-		p: Point { x: 2, y: 2, },
-		q: Point { x: 11, y: 11, },
-	};
-	let p9 = Line {
-		p: Point { x: 1, y: 1, },
-		q: Point { x: 10, y: 10, },
-	};
-	let p10 = Line {
-		p: Point { x: 0, y: 1, },
-		q: Point { x: 8, y: 10, },
-	};
-	let p11 = Line {
-		p: Point { x: 3, y: 4, },
-		q: Point { x: 1, y: 4, },
-	};
-	let p12 = Line {
-		p: Point { x: 9, y: 4, },
-		q: Point { x: 3, y: 4, },
-	};
-	assert_eq!(p11.points_of_intersection(&p12), vec![Point { x: 3, y: 4 }]);
-	assert_eq!(p11.points().unwrap(), vec![Point { x: 1, y: 4 }, Point { x: 2, y: 4 }, Point { x: 3, y: 4 }]);
-	assert_eq!(p12.points().unwrap(), vec![Point { x: 3, y: 4 }, Point { x: 4, y: 4 }, Point { x: 5, y: 4 }, Point { x: 6, y: 4 }, Point { x: 7, y: 4 }, Point { x: 8, y: 4 }, Point { x: 9, y: 4 }]);
-	assert_eq!(p7.points_of_intersection(&p8), vec![Point { x: 2, y: 2 }, Point { x: 3, y: 3 }, Point { x: 4, y: 4 }, Point { x: 5, y: 5 }, Point { x: 6, y: 6 }, Point { x: 7, y: 7 }, Point { x: 8, y: 8 }, Point { x: 9, y: 9 }, Point { x: 10, y: 10 }]);
-	assert_eq!(p7.points_of_intersection(&p8), p8.points_of_intersection(&p7));
-	assert_eq!(p9.points_of_intersection(&p10), vec![]);
+		// test for points of intersection
+		let p7 = Line {
+			p: Point { x: 1, y: 1, },
+			q: Point { x: 10, y: 10, },
+		};
+		let p8 = Line {
+			p: Point { x: 2, y: 2, },
+			q: Point { x: 11, y: 11, },
+		};
+		let p9 = Line {
+			p: Point { x: 1, y: 1, },
+			q: Point { x: 10, y: 10, },
+		};
+		let p10 = Line {
+			p: Point { x: 0, y: 1, },
+			q: Point { x: 8, y: 10, },
+		};
+		let p11 = Line {
+			p: Point { x: 3, y: 4, },
+			q: Point { x: 1, y: 4, },
+		};
+		let p12 = Line {
+			p: Point { x: 9, y: 4, },
+			q: Point { x: 3, y: 4, },
+		};
+		assert_eq!(p11.points_of_intersection(&p12), vec![Point { x: 3, y: 4 }]);
+		assert_eq!(p11.points().unwrap(), vec![Point { x: 1, y: 4 }, Point { x: 2, y: 4 }, Point { x: 3, y: 4 }]);
+		assert_eq!(p12.points().unwrap(), vec![Point { x: 3, y: 4 }, Point { x: 4, y: 4 }, Point { x: 5, y: 4 }, Point { x: 6, y: 4 }, Point { x: 7, y: 4 }, Point { x: 8, y: 4 }, Point { x: 9, y: 4 }]);
+		assert_eq!(p7.points_of_intersection(&p8), vec![Point { x: 2, y: 2 }, Point { x: 3, y: 3 }, Point { x: 4, y: 4 }, Point { x: 5, y: 5 }, Point { x: 6, y: 6 }, Point { x: 7, y: 7 }, Point { x: 8, y: 8 }, Point { x: 9, y: 9 }, Point { x: 10, y: 10 }]);
+		assert_eq!(p7.points_of_intersection(&p8), p8.points_of_intersection(&p7));
+		assert_eq!(p9.points_of_intersection(&p10), vec![]);
+	}
 	
-	// solution
-	let part1_solution = part1(&lines);
-	println!("Part 1: {}", part1_solution);
+	// part 1
+    if *(&args.contains(&allowed_args.0)) {
+		let part1_solution = part1(&lines);
+		println!("Part 1: {}", part1_solution);
+	}
 	
 	// part 2
-	
-	// solution
-	let part2_solution = part2(&lines);
-	println!("Part 2: {}", part2_solution);
+    if *(&args.contains(&allowed_args.1)) {
+		let part2_solution = part2(&lines);
+		println!("Part 2: {}", part2_solution);
+	}
 }
 
 // Structs and such
