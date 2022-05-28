@@ -21,25 +21,19 @@ fn main() {
 // Part 1
 
 fn part1(data: &Vec<isize>) -> usize {
-	let mut cnt: usize = 0;
-	for i in 1..data.len() {
-		if data[i - 1] < data[i] {
-			cnt += 1;
-		}
-	}
-	return cnt;
+	(1..data.len())
+		.filter(|i| {
+			data[*i - 1] < data[*i]
+		})
+		.count()
 }
 
 // Part 2
 
 fn part2(data: &Vec<isize>) -> usize {
-	let mut cnt: usize = 0;
-	for i in 3..data.len() {
-		let a = data[i - 1] + data[i - 2] + data[i - 3];
-		let b = data[i] + data[i - 1] + data[i - 2];
-		if a < b {
-			cnt += 1;
-		}
-	}
-	return cnt;
+	(3..data.len())
+		.filter(|i| {
+			(data[*i - 1] + data[*i - 2] + data[*i - 3]) < (data[*i] + data[*i - 1] + data[*i - 2])
+		})
+		.count()
 }
