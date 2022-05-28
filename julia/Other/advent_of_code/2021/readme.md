@@ -11,7 +11,11 @@ Main command:
 $ hyperfine --warmup=3 -N --export-markdown=benchmark.md ./day1
 ```
 
-However, I have adapted some of these to use simple command line arguments for parts 1 and 2, so that we can benchmark the baseline and then each part:
+However, I have adapted some of these to use simple subcommands for parts 1 and 2, so that we can benchmark the baseline and then each part:
 ```bash
 $ hyperfine --warmup=100 -N --export-markdown=benchmark.md "./day2" "./day2 1" "./day2 2"
 ```
+
+Note that we explicitly put `./dayn` rather than `dayn` as it is considerably faster for the command not to be searched in the path, but rather to be absolute.
+
+Also note that some scripts (as well as `1` and `2`) also have subcommand `t` to run any tests.
