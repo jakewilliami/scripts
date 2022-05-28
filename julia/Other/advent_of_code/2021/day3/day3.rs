@@ -8,16 +8,9 @@ fn main() {
 	let data: Vec<_> = buf.lines()
 		.map(|l| l.expect("Could not parse line"))
 		.collect();
-	let test_data: Vec<String> = vec!["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"].iter().map(|s| s.to_string()).collect();
 	
 	let args: Vec<String> = std::env::args().collect();
-    let allowed_args: (String, String, String) = ("1".to_string(), "2".to_string(), "t".to_string());
-	
-	// tests
-    if *(&args.contains(&allowed_args.2)) {
-		assert_eq!(part1(&test_data), 198);
-		assert_eq!(part2(&test_data), 230);
-	}
+    let allowed_args: (String, String) = ("1".to_string(), "2".to_string());
 
     // part 1
     if *(&args.contains(&allowed_args.0)) {
@@ -31,6 +24,14 @@ fn main() {
 		println!("Part 2: {}", part2_solution);
 	}
 	
+}
+
+#[test]
+fn run_tests() {
+	let test_data: Vec<String> = vec!["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"].iter().map(|s| s.to_string()).collect();
+	
+	assert_eq!(part1(&test_data), 198);
+	assert_eq!(part2(&test_data), 230);
 }
 
 // Part 1

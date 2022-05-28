@@ -18,4 +18,7 @@ $ hyperfine --warmup=100 -N --export-markdown=benchmark.md "./day2" "./day2 1" "
 
 Note that we explicitly put `./dayn` rather than `dayn` as it is considerably faster for the command not to be searched in the path, but rather to be absolute.
 
-Also note that some scripts (as well as `1` and `2`) also have subcommand `t` to run any tests.
+Also note that some scripts have tests, so you can run these tests via
+```bash
+$ rustc --test dayn.rs && ./dayn
+```
