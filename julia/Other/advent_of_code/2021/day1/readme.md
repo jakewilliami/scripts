@@ -14,5 +14,6 @@ $ go build -o day1_go day1.go  # Go
 $ nim c -o=day1_nim day1.nim  # Nim
 $ zig cc -o day1_zig day1.zig  # Zig
 $ ring2exe day1.ring && mv day1 day1_ring  # Ring
-$ hyperfine --warmup=3 -N --export-markdown=benchmark.md day1_rs day1_go day1_nim day1_zig day1_ring
+$ ghc day1.hs -o day1_hs -outputdir /tmp  # Haskell
+$ hyperfine --warmup=3 -N --export-markdown=benchmark.md ./day1_rs ./day1_go ./day1_nim ./day1_zig ./day1_ring
 ```
