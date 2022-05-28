@@ -1,16 +1,26 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
+use std::env;
 
 fn main() {
 	// parse input
 	let data = parse_input("data2.txt");
 	
-	// part 1
-	let part1_solution = part1(&data);
-	println!("{}", part1_solution);
+	let args: Vec<String> = env::args().collect();
+	let allowed_args: (String, String) = ("1".to_string(), "2".to_string());
+	// assert!((1..args.len()).all(|a| &allowed_args.contains(&args[a])));
 	
-	let part2_solution = part2(&data);
-	println!("{}", part2_solution);
+	// part 1
+	if *(&args.contains(&allowed_args.0)) {
+		let part1_solution = part1(&data);
+		println!("Part 1: {}", part1_solution);
+	}
+	
+	// part 2
+	if *(&args.contains(&allowed_args.1)) {
+		let part2_solution = part2(&data);
+		println!("Part 2: {}", part2_solution);
+	}
 }
 
 // Structs and such
