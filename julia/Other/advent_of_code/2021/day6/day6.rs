@@ -100,7 +100,13 @@ fn part2(lanternfish_population: &Vec<Lanternfish>) -> usize {
 	
 	for _ in 0..PART2_DAYS_TO_MODEL {
 		let offspring = new[0] + old[0];
-		// e.g. [0, 1, 2, 3, 4, 5] -> [1, 2, 3, 4, 5, 5]
+		// Example of `copy_within` from Rust docs:
+		// let mut bytes = *b"Hello, World!";
+		// bytes.copy_within(1..5, 8);
+		// assert_eq!(&bytes, b"Hello, Wello!");
+		//
+		// This should do:
+		// [0, 1, 2, 3, 4, 5] -> [1, 2, 3, 4, 5, 5]
 		new.copy_within(1..(LANTERNFISH_REPRODUCE_PERIOD + 2), 0);
 		old.copy_within(1..(LANTERNFISH_REPRODUCE_PERIOD + 2), 0);
 		new[LANTERNFISH_REPRODUCE_PERIOD + 1] = offspring;
