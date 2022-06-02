@@ -1,19 +1,40 @@
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::collections::HashMap;
+use std::ops::{BitAnd, Not, BitXor, Sub};
 
 fn main() {
-	let observations = parse_input("data8.txt");
-	// let observations = parse_input("test.txt");
+	// let observations = parse_input("data8.txt");
+	let observations = parse_input("test.txt");
 	
-	// part 1
-	let part1_solution = part1(&observations);
-	println!("Part 1: {}", part1_solution);
+	let args: Vec<String> = std::env::args().collect();
+    let allowed_args: (String, String) = ("1".to_string(), "2".to_string());
+
+    // part 1
+    if *(&args.contains(&allowed_args.0)) {
+		let part1_solution = part1(&observations);
+		println!("Part 1: {}", part1_solution);
+	}
+	
+	// part 2
+    if *(&args.contains(&allowed_args.1)) {
+		let mut top_segment = SevenSegmentDisplay { ..Default::default() };
+		top_segment.a = true;
+		let digital_one = SEVEN_SEGMENT_DISPLAYS[1];
+		let digital_seven = SEVEN_SEGMENT_DISPLAYS[7];
+		assert_eq!(digital_seven - digital_one, top_segment);
+		assert_eq!(digital_one - digital_seven, SevenSegmentDisplay { ..Default::default() }); // order matters
+		// let (a, b) = (8, 4);
+		// println!("{:?}", SEVEN_SEGMENT_DISPLAYS[a] - SEVEN_SEGMENT_DISPLAYS[b]);
+		// let part2_solution = part2(&observations);
+		// println!("Part 2: {}", part2_solution);
+		todo!()
+	}
 }
 
 // Structs and such
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 struct SevenSegmentDisplay {
 	a: bool,
 	b: bool,
@@ -44,7 +65,7 @@ impl Default for SevenSegmentDisplay {
 	}
 }
 
-static SEVEN_SEGMENT_DISPLAYS: [SevenSegmentDisplay; 10] = [
+const SEVEN_SEGMENT_DISPLAYS: [SevenSegmentDisplay; 10] = [
 	SevenSegmentDisplay { a: true, b: true, c: true, d: false, e: true, f: true, g: true, },
 	SevenSegmentDisplay { a: false, b: false, c: true, d: false, e: false, f: true, g: false, },
 	SevenSegmentDisplay { a: true, b: false, c: true, d: true, e: true, f: false, g: true, },
@@ -56,6 +77,11 @@ static SEVEN_SEGMENT_DISPLAYS: [SevenSegmentDisplay; 10] = [
 	SevenSegmentDisplay { a: true, b: true, c: true, d: true, e: true, f: true, g: true, },
 	SevenSegmentDisplay { a: true, b: true, c: true, d: true, e: false, f: true, g: true, },
 ];
+
+const ATOMIC_SEGMENT_NUMBERS: [usize; 4] = [1, 4, 7, 8];
+const ATOMIC_SEGMENT_COUNTS: [usize; 4] = [2, 4, 3, 7];
+
+const SEVEN_SEGMENT_COUNTS: [usize; 10] = [6, 2, 5, 5, 4, 5, 6, 3, 7, 6];
 
 // Parse input
 
@@ -140,6 +166,103 @@ fn part1(observations: &Vec<Observations>) -> usize {
 
 // Part 2
 
+impl BitAnd for SevenSegmentDisplay {
+	type Output = Self;
+	
+	// rhs is the "right-hand side" of the expression `a & b`
+	fn bitand(self, rhs: Self) -> Self::Output {
+		SevenSegmentDisplay {
+			a: self.a & rhs.a,
+			b: self.b & rhs.b,
+			c: self.c & rhs.c,
+			d: self.d & rhs.d,
+			e: self.e & rhs.e,
+			f: self.f & rhs.f,
+			g: self.g & rhs.g,
+		}
+	}
+}
+
+impl Not for SevenSegmentDisplay {
+	type Output = Self;
+	
+	fn not(self) -> Self::Output {
+		SevenSegmentDisplay {
+			a: !self.a,
+			b: !self.b,
+			c: !self.c,
+			d: !self.d,
+			e: !self.e,
+			f: !self.f,
+			g: !self.g,
+		}
+	}
+}
+
+impl Sub for SevenSegmentDisplay {
+	type Output = Self;
+	
+	fn sub(self, other: Self) -> Self::Output {
+		self & !other
+	}
+}
+
+/*
+impl BitXor for SevenSegmentDisplay {
+	type Output = Self;
+	
+	// rhs is the "right-hand side" of the expression `a ^ b`
+	fn bitxor(self, rhs: Self) -> Self::Output {
+		SevenSegmentDisplay {
+			a: self.a ^ rhs.a,
+			b: self.b ^ rhs.b,
+			c: self.c ^ rhs.c,
+			d: self.d ^ rhs.d,
+			e: self.e ^ rhs.e,
+			f: self.f ^ rhs.f,
+			g: self.g ^ rhs.g,
+		}
+	}
+}
+*/
+
+trait AtomicSegmentMappings {
+	fn get_atomic_mappings(&self) -> HashMap<usize, SevenSegmentDisplay>;
+	fn get_seg_a(&self, atomic_mappings: HashMap<usize, SevenSegmentDisplay>) -> SevenSegmentDisplay;
+}
+
+impl AtomicSegmentMappings for Observations {
+	fn get_atomic_mappings(&self) -> HashMap<usize, SevenSegmentDisplay> {
+		let mut mappings: HashMap<usize, SevenSegmentDisplay> = HashMap::new();
+		for display in self.signal_patterns {
+			let n = display.count_segments();
+			if ATOMIC_SEGMENT_COUNTS.contains(&n) {
+				let i = SEVEN_SEGMENT_COUNTS.iter().position(|&m| m == n).unwrap();
+				mappings.insert(i, display);
+			}
+		}
+		assert_eq!(mappings.len(), ATOMIC_SEGMENT_NUMBERS.len()); // observations should have complete mappings
+		return mappings;
+	}
+	
+	fn get_seg_a(&self, atomic_mappings: HashMap<usize, SevenSegmentDisplay>) -> SevenSegmentDisplay {
+		let digital_one = atomic_mappings[&1];
+		let digital_seven = atomic_mappings[&7];
+		return digital_seven - digital_one;
+	}
+}
+
+/*
+fn part2(observations: &Vec<Observations>) -> usize {
+	for observation in observations {
+		println!("{:?}", observation.get_atomic_mappings());
+	}
+	
+	return 1;
+}
+*/
+
+/*
 trait GetField {
 	fn get_field(&self, field: &str) -> bool;
 	fn get_field(&self, field: String) -> bool;
@@ -168,17 +291,63 @@ impl GetField for SevenSegmentDisplay {
 	}
 }
 
+trait GetTrueFields {
+	fn get_true_fields(&self) -> Vec<char>;
+}
+
+impl GetTrueFields for SevenSegmentDisplay {
+	fn get_true_fields(&self) -> Vec<char> {
+		let mut s = String::new();
+		if self.a { s.push_str('a'); }
+		if self.b { s.push_str('b'); }
+		if self.c { s.push_str('c'); }
+		if self.d { s.push_str('d'); }
+		if self.e { s.push_str('e'); }
+		if self.f { s.push_str('f'); }
+		if self.g { s.push_str('g'); }
+		return s.chars().collect()
+	}
+}
+
+fn determine_simple_segments(observation: Observations, segment_counts: HashMap<usize, usize>) -> HashMap<char, char> {
+	let mut simple_segment_mappings: HashMap<char, char> = HashMap::new();
+	for signal_pattern in observation.signal_patterns {
+		for digit in signal_pattern {
+			// if ATOMIC_SEGMENT_NUMBERS.contains(digit)
+			// let segment_count = digit.count_segments();
+			if segment_counts.has_key(&digit) {
+				let true_fields = digit.get_true_fields();
+				match segment_counts[digit] {
+					2 => { // => digit = 1
+						
+					},
+					4 => { // => digit = 4
+						
+					},
+					3 => { // => digit = 7
+						
+					},
+					7 => { // => digit = 8
+						
+					},
+				}
+			}
+		}
+	}
+	return simple_segment_mappings;
+}
+
 fn part2(observations: &Vec<Observations>) -> usize {
 	// simple segment definitions
 	let mut simple_segments: HashMap<usize: usize> = HashMap::new();
-	let simple_segment_numbers: [usize; 4] = [1, 4, 7, 8];
-	for i in simple_segment_numbers {
+	for i in ATOMIC_SEGMENT_NUMBERS {
 		let simple_segment_count = SEVEN_SEGMENT_DISPLAYS[*i].count_segments();
 		simple_segments.insert(simple_segment_count, *i);
 	}
 	
 	// determine simple segment mappings
 	let mut simple_segments_parts: HashMap<usize, Vec<char>> = HashMap::new();
+	/*
 	let num_observations = observations.len();
 	let mut i: usize = 0;
 	while i < num_observations {
@@ -195,9 +364,16 @@ fn part2(observations: &Vec<Observations>) -> usize {
 		}
 		i += 1
 	}
+	*/
+	for observation in observations {
+	}
 	
 	// initialise result hashmap
 	let mut segment_wire_map: HashMap<&str, &str> = HashMap::new();
 	
 	return 1;
 }
+
+//
+*/
+ 
