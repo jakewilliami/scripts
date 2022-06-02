@@ -5,13 +5,20 @@ fn main() {
 	let crab_submarines = parse_input("data7.txt");
 	// let crab_submarines = parse_input("test.txt");
 	
-	// part 1
-	let part1_solution = part1(&crab_submarines);
-	println!("Part 1: {}", part1_solution);
+	let args: Vec<String> = std::env::args().collect();
+    let allowed_args: (String, String) = ("1".to_string(), "2".to_string());
+
+    // part 1
+    if *(&args.contains(&allowed_args.0)) {
+		let part1_solution = part1(&crab_submarines);
+		println!("Part 1: {}", part1_solution);
+	}
 	
 	// part 2
-	let part2_solution = part2(&crab_submarines);
-	println!("Part 2: {}", part2_solution);
+    if *(&args.contains(&allowed_args.1)) {
+		let part2_solution = part2(&crab_submarines);
+		println!("Part 2: {}", part2_solution);
+	}
 }
 
 // Structs and such
