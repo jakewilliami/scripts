@@ -7,6 +7,9 @@ use std::str;
 
 static BASE_DIR: &str = "/Users/jakeireland/projects/";
 
+// TODO: Allow programme to use a command line argument with git status.
+// E.g., `gl -s .` == `git status --short .` for current directory
+
 pub fn get_git_status() {
 	// let red = "\u001b[0;31m";
 	let curr_dir: PathBuf = std::env::current_dir().unwrap();
