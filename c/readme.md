@@ -26,3 +26,13 @@ brew install gcc splint
 ```
 
 See `~/scripts/c/pun.c` for my first program.
+
+### Useful tools
+  - `gdb`
+    - `break <func_name>`
+    - `run`
+    - `tui enable`
+    - `p <var_name>` (print)
+    - `n` (do nothing?)
+    - 
+  - `valgrind`
