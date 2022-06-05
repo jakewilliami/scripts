@@ -7,13 +7,15 @@ use std::str;
 
 static BASE_DIR: &str = "/Users/jakeireland/projects/";
 
-// TODO: Allow programme to use a command line argument with git status.
-// E.g., `gl -s .` == `git status --short .` for current directory
-
-pub fn get_git_status() {
+pub fn get_git_status(dir: &Option<String>) {
 	// let red = "\u001b[0;31m";
-	let curr_dir: PathBuf = std::env::current_dir().unwrap();
-	let status: String = git_status(&curr_dir.into_os_string());
+	// let curr_dir: PathBuf = std::env::current_dir().unwrap();
+	let given_dir: PathBuf = if (&dir).is_none() {
+		std::env::current_dir().unwrap()
+	} else {
+		PathBuf::from(dir.clone().unwrap())
+	};
+	let status: String = git_status(&given_dir.into_os_string());
 	// println!("{:?}", status);
 	// THE FOLLOWING IS OUTDATED CODE, BEFORE I COULD CAPTURE THE COLOUR OUTPUT
 	// for (i, s) in status.split_terminator('\n').enumerate() {
@@ -50,11 +52,11 @@ fn git_status(dir: &OsString) -> String {
 	let mut cmd = Command::new("git");
 	cmd.arg("-c");
 	cmd.arg("color.status=always");
-	cmd.arg("-C");
-	cmd.arg(dir);
+	// cmd.arg("-C");
 	cmd.arg("status");
 	cmd.arg("--short");
 	cmd.arg("--branch");
+	cmd.arg(dir);
 	// println!("{:?}", cmd);
 	let output = cmd
 		.stdout(Stdio::piped())

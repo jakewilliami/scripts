@@ -75,7 +75,9 @@ fn main() {
 								.long("status")
 								// .value_name("FILE")
 								.help("Prints current git status minimally.")
-								.takes_value(false)
+								.takes_value(true)
+								// .default_value(None)
+								.min_values(0)
 								.required(false)
 								.multiple(false)
 						   	)
@@ -174,7 +176,15 @@ fn main() {
 	
 	// show status of git repo
 	if matches.is_present("STATUS") {
-		status::get_git_status();
+		let dir = value_t!(matches, "STATUS", String)
+			.unwrap_or("".to_string());
+		let maybe_dir = if dir.len() == 0 {
+			None
+		} else {
+			Some(dir)
+		};
+		// std::path::PathBuf::from(dir.clone().unwrap())
+		status::get_git_status(&maybe_dir);
 		// for i in s.iter() {
 			// println!("{}", i)
 		// }
