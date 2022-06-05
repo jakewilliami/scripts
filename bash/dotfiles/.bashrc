@@ -60,6 +60,7 @@ function parse_git_dirty {
 PS1="\n\[\033[0;31m\]\342\224\214\342\224\200\$()[\[\033[1;38;5;2m\]\u\[\033[0;1m\]@\033[1;33m\]\h: \[\033[1;34m\]\W\[\033[1;33m\]\[\033[0;31m\]]\[\033[0;32m\] \[\033[1;33m\]\`parse_git_branch\`\[\033[0;31m\]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0;1m\]\$\[\033[0;38m\] "
 export PS1
 
+alias lsl="ls -l"
 # Aliases to change cd not in subshell
 alias pdfsearch.rb="ruby ~/projects/scripts/pdfsearches/pdfsearch.rb"
 alias pdfsearch.py="python3 ~/projects/scripts/pdfsearches/pdfsearch.py"
@@ -96,12 +97,19 @@ alias ssh-converter="ssh jakeireland@192.168.1.203 -p 24"
 alias ssh-plex="ssh jakeireland@192.168.1.202 -p 24"
 alias ssh-server="ssh jakeireland@192.168.1.100"
 alias aoc="cd $HOME/projects/scripts/julia/Other/advent_of_code/2020"
-alias gl.rs="$HOME/projects/scripts/rust/gl/target/debug/gl"
+alias gl="$HOME/projects/scripts/rust/gl/gl"
+alias gl.rs="$HOME/projects/scripts/rust/gl/gl"
+alias filmls="$HOME/projects/scripts/rust/filmls/filmls"
 alias shuffle="sort -R"
 alias pythong="python"
 alias emacsc="emacsclient"
-alias compile.rs="cargo build && cp -f ./target/debug/$(basename $PWD) ./"
-alias ls.rs="$HOME/projects/scripts/rust/pere/target/debug/pere"
+alias ls.rs="$HOME/projects/scripts/rust/pere/pere"
+alias огдшф="julia"
+
+function Words.jl() {
+	echo 'Words.find_anagrams("word", Words.WORDLIST)'
+	julia --project="~/projects/scripts/julia/Other/Words.jl/" -e 'include(joinpath(homedir(), "projects", "scripts", "julia", "Other", "Words.jl", "src", "Words.jl")); using .Words' -i
+}
 
 function pdfsearch.rs() {
 	PATH_TO_PROJECT="${HOME}"/projects/scripts/pdfsearches/pdfsearch.rs/
@@ -158,6 +166,10 @@ function search-macros() {
 	done
 }
 
+function compile.rs() {
+	cargo build && cp -f "./target/debug/$(basename "$(pwd)")" ./
+}
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+export PATH="$PATH:$HOME/.julia/bin"
