@@ -1,0 +1,6 @@
+https://stackoverflow.com/a/11426261/12069968
+
+cd repository
+git log --pretty=email --patch-with-stat --reverse --full-index --binary -- path/to/file_or_folder > patch
+cd ../another_repository
+git am --committer-date-is-author-date < ../repository/patch
