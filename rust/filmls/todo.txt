@@ -1,0 +1,3 @@
+  - Check to see if series have episode titles
+  - Check to see if series has consecutive seasons
+  - Check to see if series has all episodes in one season
