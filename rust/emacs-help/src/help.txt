@@ -61,3 +61,4 @@
 {shell, command, command line, bash, zsh}	M-x shell ;; I don't know how to switch buffers back!
 {split, split screen}	M-x find-file-other-window, M-x split-window-vertically, M-x split-window-horizontally, M-x other-window, M-x select-window ;; https://stackoverflow.com/questions/50005734/
 {kill buffer, close window}	C-x 0
+{move up lines, move down lines} C-u 3 C-p|C-n ;; go up|down 3 lines
