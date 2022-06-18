@@ -64,6 +64,7 @@ then
 	export PATH=$PATH:$HOME/perl5/perlbrew/bin/
 	export PATH=$PATH:$HOME/projects/scripts/julia/Other/advent_of_code/2020/
 	export PATH=$PATH:$HOME/projects/scripts/rust/emacs-help/
+	export PATH=$PATH:$HOME/projects/pentesting/HTB/exploitdb/
 	if [ -e /Users/jakeireland/.nix-profile/etc/profile.d/nix.sh ]
 	then
         	. /Users/jakeireland/.nix-profile/etc/profile.d/nix.sh
@@ -101,3 +102,19 @@ eval "$(rbenv init -)"
 echo "( .-.)"
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/usr/local/Caskroom/miniconda/base/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/usr/local/Caskroom/miniconda/base/etc/profile.d/conda.sh"
+    else
+        export PATH="/usr/local/Caskroom/miniconda/base/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

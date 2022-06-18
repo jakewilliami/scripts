@@ -130,6 +130,12 @@
 (add-to-list 'load-path "~/.emacs.d/rust-mode/")
 (require 'rust-mode)
 
+;;;; add zig support
+(unless (version< emacs-version "24")
+  (add-to-list 'load-path "~/.emacs.d/zig-mode/")
+  (autoload 'zig-mode "zig-mode" nil t)
+  (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-mode)))
+
 ;;;; Represent whitespace as dots
 (setq whitespace-style '(space-mark))
 (setq whitespace-display-mappings '((space-mark 32 [183] [46])))
@@ -244,3 +250,8 @@
 ;; Making regex a little bit easier
 (require 're-builder)
 ;; (setq reb-re-syntax 'string) ;; switch to `string`; there's little reason tu use `read`
+
+;; Relative line numbers
+(display-line-numbers-mode)
+;; (setq display-line-numbers 'relative)
+(setq display-line-numbers-type 'relative)
