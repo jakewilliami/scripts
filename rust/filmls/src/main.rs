@@ -48,7 +48,7 @@ const _AUDIOBOOK_TYPES: [&str; 20] = ["m4b", "mp3", "mp4", "m4a", "ogg", "pdf", 
 
 fn main() {
     let matches = App::new("filmls")
-                      .version("1.4")
+                      .version("1.5")
                       .author("Jake W. Ireland. <jakewilliami@icloud.com>")
                       .about("A command line interface for listing films in order of date")
 					  .arg(Arg::with_name("FILMS")
@@ -121,7 +121,7 @@ fn main() {
 		films_dir.push(FILMS_DIR_NAME);
 		
 		// This regex will match the year at the end of the film name
-		let re = Regex::new(r"^.*\((\d{4})\).*$").unwrap();	
+		let re = Regex::new(r"^(?P<fname>.+)\s+\((?P<fyear>\d{4})\)$").unwrap();	
 		// We want to store films in a hashmap with <film name -> year> so that
 		// we can sort it by year
 		let mut film_map = HashMap::<String, isize>::new();
@@ -163,14 +163,16 @@ fn main() {
 			if re.is_match(&film_name) {
 				let caps = re.captures(&film_name).unwrap();
 				// film_year = film_name.captures(&re)
-				film_year = caps.get(1)
+				film_year = caps.name("fyear")
 					.unwrap()
 					.as_str()
 					.parse::<isize>()
 					.unwrap();
+			film_map.insert(film_name, film_year);
+			} else {
+				eprintln!("Warning: film \"{}\" does not match regex", &film_name)
 			}
 			// Update the hashmap
-			film_map.insert(film_name, film_year);
 		}
 		
 		/*
@@ -266,7 +268,8 @@ fn main() {
 		let mut series_dir = dirname.clone();
 		series_dir.push(SERIES_DIR_NAME);
 		let season_re = Regex::new(r"^Season\s\d+$").unwrap();
-		let ep_re = Regex::new(r"^(.*)\s\-\sS(\d+)E(\d+)(?:\s\-\s.*)\.(.*)$").unwrap();
+		// let ep_re = Regex::new(r"^(.*)\s\-\sS(\d+)E(\d+)(?:\s\-\s)(?:.*)\.(.*)$").unwrap();  // THIS WAS BUGGED - DOES NOT WORK!
+		let ep_re = Regex::new(r"^(?P<sname>.+)\s\-\sS(?P<snum>\d+)E(?P<epnum>\d{2,})(\s-\s)?(?P<epname>.+)?\.(?P<ext>\w+)$").unwrap();
 		// Construct a hashmap for storing results
 		let mut missing_ep_names_map = HashMap::<String, Vec<isize>>::new();
 		// Get series available
@@ -309,10 +312,10 @@ fn main() {
 					for ep in season_content {
 						if ep_re.is_match(&ep) {
 							let caps = ep_re.captures(&ep).unwrap();
-							// Check if episode has fifth group (implying it must have a fourth pertaining to ep name)
-							if caps.get(5).is_none() {
-								let series_name = caps.get(1).unwrap().as_str().to_string();
-								let season_num = caps.get(2).unwrap().as_str().parse::<isize>().unwrap();
+							// Check if episode has a name
+							if caps.name("epname").is_none() {
+								let series_name = caps.name("sname").unwrap().as_str().to_string();
+								let season_num = caps.name("snum").unwrap().as_str().parse::<isize>().unwrap();
 								if let Some(v) = missing_ep_names_map.get_mut(&series_name) {
 								   (*v).push(season_num);
 								}
@@ -343,7 +346,7 @@ fn main() {
 	if matches.is_present("CONSEC_SEASONS") {
 		let mut series_dir = dirname.clone();
 		series_dir.push(SERIES_DIR_NAME);
-		let season_re = Regex::new(r"^Season\s(\d+)$").unwrap();
+		let season_re = Regex::new(r"^Season\s(?P<snum>\d{2,})$").unwrap();
 		// Construct a hashmap for storing results
 		let mut missing_seasons_map = HashMap::<String, Vec<isize>>::new();
 		// Get series available
@@ -375,7 +378,7 @@ fn main() {
 				let season_numbers: Vec<isize> = contents.iter().filter_map(|d| {
 					if season_re.is_match(d) {
 						let caps = season_re.captures(&d).unwrap();
-						if let Some(season_num) = caps.get(1) {
+						if let Some(season_num) = caps.name("snum") {
 							Some(season_num.as_str().parse::<isize>().unwrap())
 						} else {
 							None
@@ -410,8 +413,6 @@ fn main() {
 			}
 		}
 	}
-	
-	if matches.is_present("COMPLETE_EPS") { todo!() }
 }
 
 // fn find_key_for_value<'a>(map: &'a HashMap<i32, &'static str>, value: &str) -> Option<&'a i32> {
