@@ -48,7 +48,7 @@ const _AUDIOBOOK_TYPES: [&str; 20] = ["m4b", "mp3", "mp4", "m4a", "ogg", "pdf", 
 
 fn main() {
     let matches = App::new("filmls")
-                      .version("1.2")
+                      .version("1.4")
                       .author("Jake W. Ireland. <jakewilliami@icloud.com>")
                       .about("A command line interface for listing films in order of date")
 					  .arg(Arg::with_name("FILMS")
@@ -327,7 +327,9 @@ fn main() {
 		for (s, v) in missing_ep_names_map.iter() {
 			if !v.is_empty() {
 				println!("{}", &s.blue().bold())
-			}
+			} /*else {
+				println!("{}", &s.green())
+			}*/
 			let mut w = v.clone();
 			w.sort();
 			for si in w.iter() {
@@ -337,7 +339,78 @@ fn main() {
 	}
 	
 	
-	if matches.is_present("CONSEC_SEASONS") { todo!() }
+	//// Alert on non-consecutive seasons
+	if matches.is_present("CONSEC_SEASONS") {
+		let mut series_dir = dirname.clone();
+		series_dir.push(SERIES_DIR_NAME);
+		let season_re = Regex::new(r"^Season\s(\d+)$").unwrap();
+		// Construct a hashmap for storing results
+		let mut missing_seasons_map = HashMap::<String, Vec<isize>>::new();
+		// Get series available
+		let series: Vec<_> = fs::read_dir(&series_dir)
+			.expect(format!("Cannot read directory: {:?}", series_dir).as_str())
+			.map(|e| 
+				e.expect("Cannot retreive file information")
+				 .path()
+			)
+	        .collect();
+		// Search through series
+		for path in series {
+			let series_name_outer = &path.file_name().unwrap().to_str().unwrap().to_string();
+			if path.is_dir() {
+				missing_seasons_map.insert(series_name_outer.to_string(), vec![]);
+				let contents: Vec<_> = fs::read_dir(&path)
+					.expect("Cannot read directory")
+					.map(|e| 
+						e.expect("Cannot retreive file information")
+							.path()
+							.file_name()
+							.expect("Cannot get file name from file")
+							.to_str()
+							.unwrap()
+							.to_string()
+					)
+			        .collect();
+				// Collect the season numbers within the series
+				let season_numbers: Vec<isize> = contents.iter().filter_map(|d| {
+					if season_re.is_match(d) {
+						let caps = season_re.captures(&d).unwrap();
+						if let Some(season_num) = caps.get(1) {
+							Some(season_num.as_str().parse::<isize>().unwrap())
+						} else {
+							None
+						}
+					} else {
+						None
+					}
+				}).collect();
+				// Check if these are consecutive
+				let max_se_num = season_numbers.iter().max().expect("Cannot determine maximum season number");
+				// let is_consecutive = (1..=max_se_num).iter().all(|n| season_numbers.contains(n));
+				for i in 1..=*max_se_num {
+					if !season_numbers.contains(&i) {
+						if let Some(v) = missing_seasons_map.get_mut(series_name_outer) {
+							   (*v).push(i);
+						}
+					}
+				}
+			}
+		}
+		// Display results
+		for (s, v) in missing_seasons_map.iter() {
+			if !v.is_empty() {
+				println!("{}", &s.blue().bold())
+			} /*else {
+				println!("{}", &s.green())
+			}*/
+			let mut w = v.clone();
+			w.sort();
+			for si in w.iter() {
+				println!("\t{}{}", "Missing Season ".blue(), si.to_string().blue())
+			}
+		}
+	}
+	
 	if matches.is_present("COMPLETE_EPS") { todo!() }
 }
 
