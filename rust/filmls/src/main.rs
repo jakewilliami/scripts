@@ -1,4 +1,4 @@
-use std::{fs, io};
+use std::{env, fs, io};
 use std::path::{Path, PathBuf};
 use std::ffi::OsStr;
 use std::collections::HashMap;
@@ -10,7 +10,7 @@ use regex::Regex;
 
 
 // Set constant directories
-const NAS_MEDIA_DIR: &str = "/mnt/Media/";
+const NAS_MEDIA_DIR: &str = "/mnt/Primary/Media/";
 const MAC_MEDIA_DIR: &str = "/Volumes/Media/";
 const FILMS_DIR_NAME: &str = "Films";
 const SERIES_DIR_NAME: &str = "Series";
@@ -48,11 +48,11 @@ const _AUDIOBOOK_TYPES: [&str; 20] = ["m4b", "mp3", "mp4", "m4a", "ogg", "pdf", 
 
 fn main() {
     let matches = App::new("filmls")
-                      .version("1.1")
+                      .version("1.2")
                       .author("Jake W. Ireland. <jakewilliami@icloud.com>")
                       .about("A command line interface for listing films in order of date")
 					  .arg(Arg::with_name("FILMS")
-							.help("Count the number of films in the film directory")
+							.help("Look in the film directory.  You can use this flag with -c.")
 							.short("f")
 							.long("films")
 							.takes_value(false)
@@ -60,9 +60,41 @@ fn main() {
 							.multiple(false)
 					  )
 					  .arg(Arg::with_name("SERIES")
-							.help("Count the number of series in the series directory")
+							.help("Look in the series directory.  You can use this flag with -c.")
 							.short("s")
 							.long("series")
+							.takes_value(false)
+							.required(false)
+							.multiple(false)
+					  )
+					  .arg(Arg::with_name("COUNT")
+							.help("Count the number of films or series in a directory.  Choose -f or -s for the programme to find the directory for you, otherwise specify a directory.")
+							.short("c")
+							.long("count")
+							.takes_value(false)
+							.required(false)
+							.multiple(false)
+					  )
+					  .arg(Arg::with_name("TITLES")
+							.help("Check if series have titles for each episode")
+							.short("t")
+							.long("titles")
+							.takes_value(false)
+							.required(false)
+							.multiple(false)
+					  )
+					  .arg(Arg::with_name("CONSEC_SEASONS")
+							.help("Check if series have consecutive seasons")
+							.short("S")
+							.long("consecutive-seasons")
+							.takes_value(false)
+							.required(false)
+							.multiple(false)
+					  )
+					  .arg(Arg::with_name("COMPLETE_EPS")
+							.help("Check if series have all episodes in each season")
+							.short("e")
+							.long("complete-episodes")
 							.takes_value(false)
 							.required(false)
 							.multiple(false)
@@ -170,7 +202,7 @@ fn main() {
 	} // end default arg
 	
 	//// Count films
-	if matches.is_present("FILMS") {
+	if matches.is_present("COUNT") && matches.is_present("FILMS") {
 		let mut films_dir = dirname.clone();
 		films_dir.push(FILMS_DIR_NAME);
 		let cnt = count_media_files(&films_dir);
@@ -178,7 +210,7 @@ fn main() {
 	}
 	
 	//// Count series
-	if matches.is_present("SERIES") {
+	if matches.is_present("COUNT") && matches.is_present("SERIES") {
 		let mut series_dir = dirname.clone();
 		series_dir.push(SERIES_DIR_NAME);
 		let season_re = Regex::new(r"^Season\s\d+$").unwrap();
@@ -225,6 +257,88 @@ fn main() {
 		}
 		println!("{}{}{}", "You have ".italic(), cnt.to_string().bold(), " television series in your Plex Media Server.".italic());
 	}
+	
+	
+	//// Season utility functions
+	
+	//// Check if season episodes have titles
+	if matches.is_present("TITLES") {
+		let mut series_dir = dirname.clone();
+		series_dir.push(SERIES_DIR_NAME);
+		let season_re = Regex::new(r"^Season\s\d+$").unwrap();
+		let ep_re = Regex::new(r"^(.*)\s\-\sS(\d+)E(\d+)(?:\s\-\s.*)\.(.*)$").unwrap();
+		// Construct a hashmap for storing results
+		let mut missing_ep_names_map = HashMap::<String, Vec<isize>>::new();
+		// Get series available
+		let series: Vec<_> = fs::read_dir(&series_dir)
+			.expect(format!("Cannot read directory: {:?}", series_dir).as_str())
+			.map(|e| 
+				e.expect("Cannot retreive file information")
+				 .path()
+			)
+	        .collect();
+		// Search through series
+		for path in series {
+			let series_name_outer = &path.file_name().unwrap().to_str().unwrap().to_string();
+			if path.is_dir() {
+				missing_ep_names_map.insert(series_name_outer.to_string(), vec![]);
+				let contents: Vec<_> = fs::read_dir(&path)
+					.expect("Cannot read directory")
+					.map(|e| 
+						e.expect("Cannot retreive file information")
+							.path()
+							.file_name()
+							.expect("Cannot get file name from file")
+							.to_str()
+							.unwrap()
+							.to_string()
+					)
+			        .collect();
+				// Search through series' seasons
+				for season_dir in contents.iter().filter(|d| season_re.is_match(d)) {
+					let mut season_dir_path = path.clone();
+					season_dir_path.push(&season_dir);
+					let season_content: Vec<_> = fs::read_dir(&season_dir_path)
+						.expect("Cannot read directory")
+						.map(|e| {
+							e.expect("Cannot retrieve file information")
+								.path().file_name().expect("Cannot get file name from file")
+								.to_str().unwrap().to_string()
+						}).collect();
+					// Search through episodes
+					for ep in season_content {
+						if ep_re.is_match(&ep) {
+							let caps = ep_re.captures(&ep).unwrap();
+							// Check if episode has fifth group (implying it must have a fourth pertaining to ep name)
+							if caps.get(5).is_none() {
+								let series_name = caps.get(1).unwrap().as_str().to_string();
+								let season_num = caps.get(2).unwrap().as_str().parse::<isize>().unwrap();
+								if let Some(v) = missing_ep_names_map.get_mut(&series_name) {
+								   (*v).push(season_num);
+								}
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		// Display results
+		for (s, v) in missing_ep_names_map.iter() {
+			if !v.is_empty() {
+				println!("{}", &s.blue().bold())
+			}
+			let mut w = v.clone();
+			w.sort();
+			for si in w.iter() {
+				println!("\t{}{}", "Season ".blue(), si.to_string().blue())
+			}
+		}
+	}
+	
+	
+	if matches.is_present("CONSEC_SEASONS") { todo!() }
+	if matches.is_present("COMPLETE_EPS") { todo!() }
 }
 
 // fn find_key_for_value<'a>(map: &'a HashMap<i32, &'static str>, value: &str) -> Option<&'a i32> {
