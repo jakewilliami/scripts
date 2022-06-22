@@ -28,14 +28,14 @@ end
 penultimate_tuesday_date(d::Date) = penultimate_tuesday_date(Month(d), Year(d))
 =#
 
-function penultimate_tuesday_date2(m::Month, y::Year)
-    ft = findfirst_tuesday2(m, y)  # first Tuesday
+function penultimate_tuesday_date(m::Month, y::Year)
+    ft = findfirst_tuesday(m, y)  # first Tuesday
     d = Date(Day(ft), m, y)
     n_tuesdays = daysofweekinmonth(d)
     pt = Day(ft + 7(n_tuesdays - 2))  # penultimate Tuesday
     return Date(pt, m, y)
 end
-penultimate_tuesday_date2(d::Date) = penultimate_tuesday_date2(Month(d), Year(d))
+penultimate_tuesday_date(d::Date) = penultimate_tuesday_date(Month(d), Year(d))
 
 #=
 julia> @benchmark penultimate_tuesday_date($d)  # OLD IMPLEMENTATION USING FINDFIRST FUNCTIONS
