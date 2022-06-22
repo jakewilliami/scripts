@@ -1,8 +1,8 @@
 using Dates
 
+#= # Old implementation
 _daysinmonth(m::Month, y::Year) = daysinmonth(y.value, m.value)
 
-#= # Old implementation
 findfirst_tuesday(m::Month, y::Year) = 
     findfirst(i -> dayofweek(Date(Day(i), m, y)) == Tuesday, 1:_daysinmonth(m, y))
 findfirst_tuesday(d::Date) = findfirst_tuesday(Month(d), Year(d))
