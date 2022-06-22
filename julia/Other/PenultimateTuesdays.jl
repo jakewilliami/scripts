@@ -9,8 +9,8 @@ findfirst_tuesday(d::Date) = findfirst_tuesday(Month(d), Year(d))
 =#
 
 function findfirst_tuesday(d::Date)
-    fd = firstdayofmonth(d)
-    return Day(fd).value + 7 - dayofweek(fd) + Tuesday
+    fd = dayofweek(firstdayofmonth(d))
+    return Tuesday - fd + 1 + 7(fd > Tuesday)
 end
 findfirst_tuesday(m::Month, y::Year) = findfirst_tuesday(Date(m, y))
 
@@ -63,4 +63,3 @@ BenchmarkTools.Trial: 10000 samples with 233 evaluations.
  Memory estimate: 240 bytes, allocs estimate: 10.
 =#
 
-# TODO: use above function to find the latest date which I can set a reminder for to find the penultimate Tuesday
