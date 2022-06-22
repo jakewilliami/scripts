@@ -63,3 +63,19 @@ BenchmarkTools.Trial: 10000 samples with 233 evaluations.
  Memory estimate: 240 bytes, allocs estimate: 10.
 =#
 
+function main(nyears::Int = 100)
+    # A distribution map containing the day number => the number of times this has been a penultimate Tuesday
+    D = Dict{Int, Int}()
+    
+    # Populate the distribution map from today for the next hundred years
+    t = today()
+    for d in t:Month(1):(t + Year(nyears))
+        pt = penultimate_tuesday_date(d)
+        dᵢ = Day(pt).value
+        D[dᵢ] = get(D, dᵢ, 0) + 1
+    end
+    
+    return first(minimum(D)), D
+end
+
+_, D = main()
