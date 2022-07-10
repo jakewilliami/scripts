@@ -8,10 +8,10 @@ This is a file to explain commonly-used command-line tools within my workflow.
 If you are reading this on GitHub, then you shouldn't be suprised that `git` is likely the most essential tool in my toolkit/workflows.
 
 ### [`emacs`](https://git.savannah.gnu.org/git/emacs.git/)
-Emacs is my editor of choice.  I should probably get more familiar with `vi`, as it's on just about every system by default, but I like the power of Emacs.
+Emacs is my editor of choice.  I should probably get more familiar with [`vi`](http://ex-vi.cvs.sourceforge.net/ex-vi/ex-vi/), as it's on just about every system by default, but I like the power of Emacs.
 
 ### [`tmux`](https://github.com/tmux/tmux)
-Similar to `screen`, `tmux` is a way to manage multiple terminal sessions without having to create new tabs.  It is detachable, so is very convenient when working on many projects (which I do a lot).
+Similar to [`screen`](https://git.savannah.gnu.org/git/screen.git), `tmux` is a way to manage multiple terminal sessions without having to create new tabs.  It is detachable, so is very convenient when working on many projects (which I do a lot).
 
 ## Quality-of-Life
 
