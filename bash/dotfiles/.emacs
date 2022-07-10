@@ -11,7 +11,7 @@
 
 ;;;; Configure MEPLA:
 ;;     - https://melpa.org/#/getting-started
-;;     - https://emacs.stackexchange.com/a/10501/25429; 
+    ;; - https://emacs.stackexchange.com/a/10501/25429; 
 (package-initialize)
 (cond
  ((>= 24 emacs-major-version)
@@ -78,7 +78,7 @@
    ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(custom-enabled-themes '(tsdh-dark))
  '(package-selected-packages
-   '(yaml-mode go-mode nim-mode move-text haskell-mode nlinum ess)))
+   '(multiple-cursors yaml-mode go-mode nim-mode move-text haskell-mode nlinum ess)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -255,3 +255,16 @@
 (display-line-numbers-mode)
 ;; (setq display-line-numbers 'relative)
 (setq display-line-numbers-type 'relative)
+
+;;;; Multiple cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C->")         'mc/mark-next-like-this)
+(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->")         'mc/mark-next-like-this)
+(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
+(global-set-key (kbd "C-\"")        'mc/skip-to-next-like-this)
+(global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
+
