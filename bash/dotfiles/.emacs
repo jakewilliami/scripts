@@ -9,19 +9,18 @@
 
 ;;;; Code:
 
-;;;; Added Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;;;; Configure MEPLA:
+;;     - https://melpa.org/#/getting-started
+;;     - https://emacs.stackexchange.com/a/10501/25429; 
 (package-initialize)
 (cond
  ((>= 24 emacs-major-version)
   (require 'package)
-  (package-initialize)
   (add-to-list 'package-archives
            '("melpa-stable" . "http://stable.melpa.org/packages/") t)
   (add-to-list 'package-archives
            '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
   (package-refresh-contents)
  )
 )
@@ -78,7 +77,8 @@
  '(ansi-color-names-vector
    ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(custom-enabled-themes '(tsdh-dark))
- '(package-selected-packages '(go-mode nim-mode move-text haskell-mode nlinum ess)))
+ '(package-selected-packages
+   '(yaml-mode go-mode nim-mode move-text haskell-mode nlinum ess)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
