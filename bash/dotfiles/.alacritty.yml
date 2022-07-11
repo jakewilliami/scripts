@@ -197,11 +197,11 @@ font:
 # Colors (Tomorrow Night)
 colors:
   # Default colors
-  primary:
+  #primary:
     # background: '#1d1f21'
-    background: '#1d2021'
+    # background: '#1d2021'
     # foreground: '#c5c8c6'
-    foreground: '#d5c4a1'
+    # foreground: '#d5c4a1'
 
     # Bright and dim foreground colors
     #
@@ -218,11 +218,11 @@ colors:
   #
   # Allowed values are CellForeground/CellBackground, which reference the
   # affected cell, or hexadecimal colors like #ff00ff.
-  cursor:
+  #cursor:
   #  text: CellBackground
-    text: '#1d2021'
+  #  text: '#1d2021'
   #  cursor: CellForeground
-    cursor: '#d5c4a1'
+  #  cursor: '#d5c4a1'
 
   # Vi mode cursor colors
   #
@@ -292,42 +292,42 @@ colors:
   # Normal colors
   # https://github.com/chriskempson/base16
   # https://atelierbram.github.io/syntax-highlighting/atelier-schemes/output/preview/base16-atelierdune.html
-  normal:
+  #normal:
   #  black:   '#1d1f21'
-    black:   '#1d2021'
+  #  black:   '#1d2021'
   #  red:     '#cc6666'
-    red:     '#fb4934'
+  #  red:     '#fb4934'
   #  green:   '#b5bd68'
-    green:   '#b8bb26'
+  #  green:   '#b8bb26'
   #  yellow:  '#f0c674'
-    yellow:  '#fabd2f'
+  #  yellow:  '#fabd2f'
   #  blue:    '#81a2be'
-    blue:    '#83a598'
+  #  blue:    '#83a598'
   #  magenta: '#b294bb'
-    magenta: '#d3869b'
+  #  magenta: '#d3869b'
   #  cyan:    '#8abeb7'
-    cyan:    '#8ec07c'
+  #  cyan:    '#8ec07c'
   #  white:   '#c5c8c6'
-    white:   '#d5c4a1'
+  #  white:   '#d5c4a1'
 
   # Bright colors
-  bright:
+  #bright:
   #  black:   '#666666'
-    black:   '#665c54'
+  #  black:   '#665c54'
   #  red:     '#d54e53'
-    red:     '#fb4934'
+  #  red:     '#fb4934'
   #  green:   '#b9ca4a'
-    green:   '#b8bb26'
+  #  green:   '#b8bb26'
   #  yellow:  '#e7c547'
-    yellow:  '#fabd2f'
+  #  yellow:  '#fabd2f'
   #  blue:    '#7aa6da'
-    blue:    '#83a598'
+  #  blue:    '#83a598'
   #  magenta: '#c397d8'
-    magenta: '#d3869b'
+  #  magenta: '#d3869b'
   #  cyan:    '#70c0b1'
-    cyan:    '#8ec07c'
+  #  cyan:    '#8ec07c'
   #  white:   '#eaeaea'
-    white:   '#fbf1c7'
+  #  white:   '#fbf1c7'
 
   # Dim colors
   #
@@ -352,13 +352,13 @@ colors:
   #   `- { index: 16, color: '#ff00ff' }`
   #
   #indexed_colors: []
-  indexed_colors:
-    - { index: 16, color: '#fe8019' }
-    - { index: 17, color: '#d65d0e' }
-    - { index: 18, color: '#3c3836' }
-    - { index: 19, color: '#504945' }
-    - { index: 20, color: '#bdae93' }
-    - { index: 21, color: '#ebdbb2' }
+  #indexed_colors:
+  #  - { index: 16, color: '#fe8019' }
+  #  - { index: 17, color: '#d65d0e' }
+  #  - { index: 18, color: '#3c3836' }
+  #  - { index: 19, color: '#504945' }
+  #  - { index: 20, color: '#bdae93' }
+  #  - { index: 21, color: '#ebdbb2' }
 
   # Transparent cell backgrounds
   #
