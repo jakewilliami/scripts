@@ -105,7 +105,10 @@ alias pythong="python"
 alias emacsc="emacsclient"
 alias ls.rs="$HOME/projects/scripts/rust/pere/pere"
 alias огдшф="julia"
-alias ll="ls -la"
+
+# Redefine ls
+alias ls="exa"
+alias ll="exa -la"
 alias el="exa -la"
 alias exag="exa -l --git"
 
