@@ -12,21 +12,30 @@ I have renamed `rusty_ls/main.rs` to `rusty_ls/ls.rs`.  I first started using Ru
 
 ## Getting Started
 On macOS, run
-```
+```bash
 brew install rust
 ```
 On Fedora:
-```
+```bash
 sudo dnf install rust
 ```
 On Debian:
-```
+```bash
 sudo apt install rustc
 ```
 And on Arch:
-```
+```bash
 sudo pacman -S rust
 ```
+
+Alternatively you can install [`rustup`](https://rustup.rs/).  To do so on my macOS machine, I had to run the following[[1]](https://github.com/rust-lang/cargo/issues/6757#issuecomment-478042168):
+```bash
+sudo chown -R $(whoami) /Users/jakeireland/.cargo/
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+As I was having permission errors with my `rustup` install.  (So installing `rustup`, I had to `brew uninstall rust` first.  I still had access to the `cargo` and `rustc` binaries after installing `rustup`.
+
+For Rust Language support, download `rustup` (cannot be downloaded alongside Rust; must use `rustup` to download Rust), and follow install instructions for `rls` [here](https://github.com/rust-lang/rls).
 
 ## Notes on use of Rust
 ### Small standalone
