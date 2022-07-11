@@ -89,6 +89,12 @@ or
 rustc src/main.rs && ./main
 ```
 
+### Cargo Utilities
+
+Similar to `cargo-edit`, there are some really nice Cargo utilities such as `cargo-fmt`, `cargo-outdated`, `cargo-tree`, `cargo-readme`, and `cargo-benchcmp`.
+
+`cargo-tree` has a really nice feature that can list, for each dependency, why it is there: `cargo tree --features serde_json -p libc -i`.
+
 ## Binary Size
 
 https://github.com/johnthagen/min-sized-rust
