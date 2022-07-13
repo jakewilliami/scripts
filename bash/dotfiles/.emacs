@@ -3,7 +3,15 @@
 
 ;;;; Commentary:
 ;;
-;; I have nothing substantial to say here.
+; This is my Emacs confiration file.
+; Any non-code config. pieces will be explained in this commentary.
+; 
+;;; Remapping ctrl to caps lock
+; https://www.emacswiki.org/emacs/MovingTheCtrlKey
+; https://deskthority.net/wiki/Category:Keyboards_with_Unix_layout
+; 
+;;; use dracula theme
+; `brew install emacs-dracula`
 ;;
 
 
@@ -11,7 +19,7 @@
 
 ;;;; Configure MEPLA:
 ;;     - https://melpa.org/#/getting-started
-    ;; - https://emacs.stackexchange.com/a/10501/25429; 
+;;     - https://emacs.stackexchange.com/a/10501/25429; 
 (package-initialize)
 (cond
  ((>= 24 emacs-major-version)
@@ -20,6 +28,8 @@
            '("melpa-stable" . "http://stable.melpa.org/packages/") t)
   (add-to-list 'package-archives
            '("melpa" . "https://melpa.org/packages/") t)
+  (add-to-list 'package-archives 
+           '("gnu" . "http://elpa.gnu.org/packages/") t)
   (package-initialize)
   (package-refresh-contents)
  )
@@ -29,6 +39,20 @@
 (set-default-coding-systems 'utf-8-unix)
 (setq locale-coding-system 'utf-8-unix)
 (prefer-coding-system 'utf-8-unix)
+
+;;;; Disable arrow keys to force yourself to use default Emacs keybindings for navigation
+(global-unset-key (kbd "<left>"))
+(global-unset-key (kbd "<right>"))
+(global-unset-key (kbd "<up>"))
+(global-unset-key (kbd "<down>"))
+(global-unset-key (kbd "<C-left>"))
+(global-unset-key (kbd "<C-right>"))
+(global-unset-key (kbd "<C-up>"))
+(global-unset-key (kbd "<C-down>"))
+(global-unset-key (kbd "<M-left>"))
+(global-unset-key (kbd "<M-right>"))
+(global-unset-key (kbd "<M-up>"))
+(global-unset-key (kbd "<M-down>"))
 
 ;;;; allow tab key
 (global-set-key (kbd "TAB") 'self-insert-command)
@@ -56,13 +80,6 @@
 (add-to-list 'load-path "~/.emacs.d/no-littering/")
 (require 'no-littering)
 
-;;;; Add packages repositories
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 ;; M-x package-refresh-contents ENTER
 ;; run M-x package-install ENTER ess ENTER
 ;; namely for R syntax highlighting
@@ -78,7 +95,7 @@
    ["#2d3743" "#ff4242" "#74af68" "#dbdb95" "#34cae2" "#008b8b" "#00ede1" "#e1e1e0"])
  '(custom-enabled-themes '(tsdh-dark))
  '(package-selected-packages
-   '(multiple-cursors yaml-mode go-mode nim-mode move-text haskell-mode nlinum ess)))
+   '(hl-todo yasnippet company lsp-ui lsp-mode rustic use-package multiple-cursors yaml-mode go-mode nim-mode move-text haskell-mode nlinum ess)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -156,9 +173,6 @@
 ;; https://stackoverflow.com/questions/2151449/
 ;; (x-display-pixel-width)
 ;; (x-display-pixel-height)
-
-;;;; use dracula theme
-;; brew install emacs-dracula
 
 ;;;; adjust scroll mode
 ;; scroll one line at a time (less "jumpy" than defaults)    
@@ -238,7 +252,14 @@
 ;; nim mode
 (require 'move-text)
 
-;; Change default compilation for rust
+;; Change default compilation for Julia
+(add-hook 'julia-mode-hook
+          (lambda ()
+            (set (make-local-variable 'compile-command)
+                 (format "julia --project %s" 
+					(file-name-nondirectory buffer-file-name)))))
+
+;; Change default compilation for Rust
 (require 'compile)
 (add-hook 'rust-mode-hook
           (lambda ()
@@ -267,4 +288,93 @@
 (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
 (global-set-key (kbd "C-\"")        'mc/skip-to-next-like-this)
 (global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
+
+;;;; Rust IDE-like development environment
+;; https://robert.kra.hn/posts/rust-emacs-setup/
+;; https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/
+;; https://github.com/brotzeit/rustic
+
+;;; Rustic requires `rustic` and `use-package`
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t)))
+
+;;; lsp-mode and lsp-ui-mode
+(use-package lsp-mode
+  :ensure
+  :commands lsp
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  ;; enable / disable the hints as you prefer:
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+
+(use-package lsp-ui
+  :ensure
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
+
+;;; Code completion (autocomplete)
+(use-package company
+  :ensure
+  :custom
+  (company-idle-delay 0.5) ;; how long to wait until popup
+  ;; (company-begin-commands nil) ;; uncomment to disable popup
+  :bind
+  (:map company-active-map
+	      ("C-n". company-select-next)
+	      ("C-p". company-select-previous)
+	      ("M-<". company-select-first)
+	      ("M->". company-select-last)))
+
+(use-package yasnippet
+  :ensure
+  :config
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'text-mode-hook 'yas-minor-mode))
+
+;;; Inline errors
+(use-package flycheck :ensure)
+
+;;; Inline type hints
+(setq lsp-rust-analyzer-server-display-inlay-hints t)
 
