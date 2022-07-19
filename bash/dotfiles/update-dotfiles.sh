@@ -8,12 +8,17 @@ declare -a DOTFILES=(
 	"$HOME/.vimrc"
 	"$HOME/.tmux.conf"
 	"$HOME/.alacritty.yml"
+	"$HOME/.config/fish/config.fish"
 )
 
 for fsrc in "${DOTFILES[@]}"; do
 	fdst="$SCRIPT_DIR/$(basename "$fsrc")"
 	if [ ! -f "$fdst" ] || ! cmp -s "$fsrc" "$fdst"; then
-		cp -vi "$fsrc" "$SCRIPT_DIR"
+		case "$1" in
+			(remote) cp -vi "$fsrc" "$SCRIPT_DIR";;
+			(local)  cp -vi "$fdst" "$fsrc";;
+			(*)      cp -vi "$fsrc" "$SCRIPT_DIR";;
+		esac
 	fi
 done
 
