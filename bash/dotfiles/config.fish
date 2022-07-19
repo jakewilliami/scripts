@@ -4,7 +4,8 @@ abbr -a e emacs
 # Open tmux session
 if status --is-interactive
 	if ! set -q TMUX
-		exec tmux
+		# https://unix.stackexchange.com/a/176885/372726
+		exec tmux new-session -A -s main
 	end
 end
 
