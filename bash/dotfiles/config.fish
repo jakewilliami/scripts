@@ -1,4 +1,12 @@
+# Alias for editor
 abbr -a e emacs
+
+# Open tmux session
+if status --is-interactive
+	if ! set -q TMUX
+		exec tmux
+	end
+end
 
 # Alias for opening things
 if command -v open > /dev/null
