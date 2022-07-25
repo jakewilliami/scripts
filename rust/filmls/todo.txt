@@ -1,1 +1,3 @@
   - Check to see if series has all episodes in one season
+  - When checking episode names, only check media files
+  - Make media catalogue
