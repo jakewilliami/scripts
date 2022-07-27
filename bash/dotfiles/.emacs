@@ -21,8 +21,7 @@
 ;;     - https://melpa.org/#/getting-started
 ;;     - https://emacs.stackexchange.com/a/10501/25429; 
 (package-initialize)
-(cond
- ((>= 24 emacs-major-version)
+(when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list 'package-archives
            '("melpa-stable" . "http://stable.melpa.org/packages/") t)
@@ -30,9 +29,7 @@
            '("melpa" . "https://melpa.org/packages/") t)
   (add-to-list 'package-archives 
            '("gnu" . "http://elpa.gnu.org/packages/") t)
-  (package-initialize)
-  (package-refresh-contents)
- )
+  ;; (package-refresh-contents)
 )
 
 (setq-default buffer-file-coding-system 'utf-8-unix)
