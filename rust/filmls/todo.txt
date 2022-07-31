@@ -3,3 +3,4 @@
   - Make media catalogue
   - Check everything formatted correctly
     - See formatting guidelines in media script repo
+  - Allow different sorting options (currently sorts by film release date)
