@@ -1,3 +1,5 @@
+# NOTE: this project has moved to https://github.com/jakewilliami/HiddenFiles.jl
+
 if Sys.isunix()
     if Sys.isapple()
         error("not yet implemented")
