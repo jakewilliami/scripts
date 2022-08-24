@@ -41,3 +41,12 @@ It should be noted that, due to this shebang, `github-linguist` believes this sc
 ```
 *.jl linguist-language=Julia
 ```
+
+## Using PkgTemplates.jl to generate a project with `master` branch
+
+Since GitHub has changed their preference of the primary branch to be called `main`, so too has PkgTemplates.jl.  For those old souls such as myself, I wanted it to be called `master`.  It took some digging, but it appears you can generate a template with git specifications:
+```julia
+julia> using PkgTemplates
+julia> t = Template(; plugins = [Git(; branch = "master")]);
+julia> t("PackageName")
+```
