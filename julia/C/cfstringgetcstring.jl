@@ -28,3 +28,10 @@ function _cfstring_get_c_string(s::AbstractString, encoding::Unsigned = K_CFSTRI
     return cfbuf
 end
 
+function _cfstring_get_cstring(cfbuf::Vector{Char}, cfstr::Cstring, encoding::Unsigned = K_CFSTRING_ENCODING_MACROMAN)
+    ccall(:CFStringGetCString, Bool,
+          (Cstring, Ptr{Cvoid}, Int32, UInt32),
+          cfstr, cfbuf, sizeof(cfbuf), 0) || error("Problem calling CFStringGetCString")
+    return cfbuf
+end
+
