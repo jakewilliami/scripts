@@ -8,8 +8,6 @@
 # E.g., 1,600,000,000 seconds (n = 1, m = 6).
 # These are the seconds of Unix/Epoch time (number of seconds since 1st January, 1970).
 
-# module SignificantUnixTime
-
 using Dates, Formatting
 
 ### Struct definition and helper functions
@@ -210,15 +208,21 @@ for f in (:hectomegaunixsecond_info, :prev_hectomegaunixsecond, :prev_hectomegau
 	end
 end
 
-# const PREV_CELEBRATED = Date[
-# ]
+### Examples
 
-# end # end module
+println(next_hectomegaunixsecond_info())
+current_hectomegaunixsecond()
 
-# using .SignificantUnixTime
+println(hectomegaunixsecond_info())
+HectomegaUnixSecond(1, 6)
 
-# println(next_hectomegaunixsecond_info())
-# current_hectomegaunixsecond()
+function friday_13th_hectomegaunixsecond()
+ 	dt = next_hectomegaunixsecond()
+    while true
+        if dayofweek(last(dt)) == 5 && day(last(dt)) == 13  # Friday the 13th
+            return dt
+        end
+        dt = next_hectomegaunixsecond(last(dt) + Second(1))
+    end
+end
 
-# println(hectomegaunixsecond_info())
-# HectomegaUnixSecond(1, 6)
