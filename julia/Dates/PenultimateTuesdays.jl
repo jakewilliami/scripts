@@ -1,3 +1,8 @@
+#=
+Ported from ../Other/.  Initial commit on 22nd June, 2022.
+Project has since migrated to https://github.com/jakewilliami/PenultimateDays.jl/
+=#
+
 using Dates
 
 #= # Old implementation

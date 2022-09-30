@@ -1,10 +1,6 @@
-#!/usr/bin/env bash
-    #=
-    exec julia --project="$(realpath $(dirname $0))" --color=yes --startup-file=no -e 'include(popfirst!(ARGS))' \
-    "${BASH_SOURCE[0]}" "$@"
-    =#
-	
 #=
+Ported from ../Other/.  Initial commit on 15th August, 2020.
+
 	e.g., ./IsPrimeFermat.jl 47
 	e.g., ./IsPrimeFermat.jl 3599
 	e.g., ./IsPrimeFermat.jl 2599

@@ -11,6 +11,8 @@
 #   In future, we should add an option to allow
 #   this initial commit to be committed at the date
 #   it was last modified.
+# 
+# Ported from ../Other/ (16ed1ec7).
 
 using Dates
 
