@@ -2,6 +2,11 @@
 # terminal output.  Helping @Abraham-Alfred with his Honour's project
 # https://en.wikipedia.org/wiki/ANSI_escape_code#OSC_(Operating_System_Command)_sequences
 # Adapted from https://stackoverflow.com/a/71775190/12069968
+#
+# TODO:
+#   - Consider extracting logic from pyte to do away with terminal emulator:
+#     https://github.com/selectel/pyte/blob/efd19f2836806c3fa9f3928aff0d93fe8a7bd14a/pyte/streams.py
+#   - Strip trailing lines in output
 
 import pyte  # terminal emulator: render terminal output to visible characters
 
