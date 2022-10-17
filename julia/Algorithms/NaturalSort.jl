@@ -21,7 +21,7 @@ const NATURAL_KEY_REGEX = Regex(DIGIT_CAPTURE_KEEP_DIGIT_RE_STR)
 
 # Split a string into its (parsed) number components and its string
 # components.  This function returns a 
-# `Tuple{Vector{Union{AbstractString, Int}}, AbstractString}`.
+# `Tuple{Vector{Union{AbstractString, Int}}, AbstractString, AbstractString}`.
 # This is ultimately to be used in the `sort` function (with the
 # `by` keyword).
 # The reason it returns a tuple with a string (which is the original
@@ -29,8 +29,9 @@ const NATURAL_KEY_REGEX = Regex(DIGIT_CAPTURE_KEEP_DIGIT_RE_STR)
 # lexigraphical ordering (i.e., "300_foo.txt" and "0300_foo.txt" both
 # have the same split output, as "300" and "0300" are parsed the same;
 # however "0300_foo.txt" should be put first in the sorted array as it
-# is lexigraphically less than "300_foo.txt"
-function natural_key(s::AbstractString)
+# is lexigraphically less than "300_foo.txt".
+# Note: the second element of the tuple is used for matching case.
+function natural_key(s::AbstractString; case_insensitive::Bool = false)
     # Unfortunately, Julia does not yet have the functionality to
     # split by regex _and keep the delimiter_: JuliaLang/julia#20625.
     # We do have a workaround using some fancy regular expression: 
@@ -85,13 +86,20 @@ function natural_key(s::AbstractString)
         return out_arr
     end
     
-    split_res = split(s, NATURAL_KEY_REGEX)
-    return (_collate_split_results(split_res), s)
+    case_s = case_insensitive ? lowercase(s) : s
+    split_res = split(case_s, NATURAL_KEY_REGEX)
+    return (_collate_split_results(split_res), case_s, s)
 end
 
 
-function natural_sort(arr; kwargs...)
-    return sort(arr; by = natural_key, kwargs...)
+"""
+```julia
+    natural_sort(arr; case_insensitive::Bool = false, kwargs...)
+```
+Similar to `sort`, but uses natural sorting (i.e., similar to `sort -n`).
+"""
+function natural_sort(arr; case_insensitive::Bool = false, kwargs...)
+    return sort(arr; by = s -> natural_key(s, case_insensitive = case_insensitive), kwargs...)
 end
 
 
@@ -127,7 +135,7 @@ function test_natural_sort()
         @test r == e
     end
     
-    TEST_CASES_2 = vcat(["$(i)_foo.txt" for i in 1:10], ["300_foo.txt", "-1_foo.txt", "hello100", "0300_foo.txt"])
+    TEST_CASES_2 = vcat(["$(i)_foo.txt" for i in 1:10], ["300_foo.txt", "-1_foo.txt", "hello100", "0300_foo.txt", "10_FOO1.txt"])
     EXPECTED_OUTPUT_2 = [
         "1_foo.txt", 
         "2_foo.txt", 
@@ -138,6 +146,7 @@ function test_natural_sort()
         "7_foo.txt", 
         "8_foo.txt", 
         "9_foo.txt", 
+        "10_FOO1.txt", 
         "10_foo.txt", 
         "0300_foo.txt", 
         "300_foo.txt", 
@@ -147,6 +156,11 @@ function test_natural_sort()
     
     ns_results_2 = natural_sort(TEST_CASES_2)
     for (r, e) in zip(ns_results_2, EXPECTED_OUTPUT_2)
+        @test r == e
+    end
+    
+    ns_results_3 = natural_sort(TEST_CASES_2, case_insensitive = true)
+    for (r, e) in zip(ns_results_3, EXPECTED_OUTPUT_2)
         @test r == e
     end
 end
