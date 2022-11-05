@@ -9,11 +9,12 @@ The languages I tried here are compiled languages as I thought it was only fair 
 ## Benchmarking
 
 ```console
+$ gcc -o day1_c day1.c  # C
 $ rustc day1.rs -o day1_rs  # Rust
 $ go build -o day1_go day1.go  # Go
 $ nim c -o=day1_nim day1.nim  # Nim
 $ zig cc -o day1_zig day1.zig  # Zig
 $ ring2exe day1.ring && mv day1 day1_ring  # Ring
 $ ghc day1.hs -o day1_hs -outputdir /tmp  # Haskell
-$ hyperfine --warmup=3 -N --export-markdown=benchmark.md ./day1_rs ./day1_go ./day1_nim ./day1_zig ./day1_ring
+$ hyperfine --warmup=3 -N --export-markdown=benchmark.md ./day1_c ./day1_rs ./day1_go ./day1_nim ./day1_zig ./day1_ring
 ```
