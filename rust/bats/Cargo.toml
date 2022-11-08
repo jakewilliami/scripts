@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 battery = "0.7.8"
-clap = "4.0.19"
+clap = { version = "4.0.22", features = ["cargo", "wrap_help", "derive"] }
+
