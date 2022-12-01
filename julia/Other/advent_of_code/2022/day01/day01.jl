@@ -8,7 +8,7 @@ part2(data::Vector{Vector{Int}}) =
     sum(sort([sum(d) for d in data], rev=true)[1:3])
 
 function main()
-    data = parse_input("data1.txt")
+    data = parse_input("data01.txt")
 
     # Part 1
     part1_solution = part1(data)
