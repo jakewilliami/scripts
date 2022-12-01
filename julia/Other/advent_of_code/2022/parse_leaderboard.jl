@@ -5,6 +5,7 @@ using HTTP
 using JSON
 
 # TODO: allow --day parameter
+# TODO: say "n days, m hours, o minutes" instead of "n minutes"
 
 # Usage:
 #   julia --project=. parse_leaderboard.jl --day=1
