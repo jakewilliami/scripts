@@ -5,7 +5,7 @@ using HTTP
 using JSON
 
 # TODO: allow --day parameter
-# TODO: say "n days, m hours, o minutes" instead of "n minutes"
+# TODO: take into account number of stars in sorting!
 
 # Usage:
 #   julia --project=. parse_leaderboard.jl --day=1
@@ -13,9 +13,17 @@ using JSON
 
 # Statistics structs
 
+struct TimeSummary
+    days::Int
+    hours::Int
+    minutes::Int
+    seconds::Int
+end
+
 struct StarStats
     n::Int
-    mins::Float64
+    time::TimeSummary
+    seconds::Float64
 end
 
 struct DayStats
@@ -26,6 +34,7 @@ end
 struct UserStats
     name::String
     stats::Vector{DayStats}
+    # stars::Int  # TODO
 end
 
 
@@ -37,15 +46,45 @@ UserStats(name::String) = UserStats(name, DayStats[])
 
 # Helper functions
 
-function get_unix_time_since_day_start(dᵢ::Int, ts::Int)
+function get_seconds_since_day_start(dᵢ::Int, ts::Int)
     d = DateTime(2022, 12, dᵢ) + Hour(5)  # Account for EST/UTC–5
-    return (ts - datetime2unix(d)) / 60
+    return (ts - datetime2unix(d))
 end
 
 
 function sort_stats!(stats::Vector{UserStats})
-    sort!(stats, by = s -> sum(d.stats[2].mins for d in s.stats))
+    sort!(stats, by = s -> sum(maximum(i.seconds for i in d.stats) for d in s.stats))
     return stats
+end
+
+
+function get_time_summary(seconds::Float64)
+    n_minutes_in_day = 3600  # 60 * 60
+    n_seconds_in_day = 86_400  # 24 * 60 * 60
+
+    days = seconds ÷ n_seconds_in_day
+    seconds %= n_seconds_in_day
+    hours = seconds ÷ n_minutes_in_day
+    seconds %= n_minutes_in_day
+    minutes = seconds ÷ 60
+    seconds %= 60
+
+    return TimeSummary(days, hours, minutes, seconds)  # TODO: n days
+end
+
+
+function display_time_summary(t::TimeSummary)
+    io = IOBuffer()
+    unit_map = Pair{Symbol, Int}[f => getfield(t, f) for f in fieldnames(TimeSummary) if !iszero(getfield(t, f))]
+
+    for (i, (fieldname, value)) in enumerate(unit_map)
+        at_last_nonzero_unit = i == lastindex(unit_map)
+        at_last_nonzero_unit && print(io, "and ")
+        print(io, value, ' ', string(fieldname))
+        !at_last_nonzero_unit && print(io, length(unit_map) == 2 ? " " : ", ")
+    end
+
+    return String(take!(io))
 end
 
 
@@ -87,10 +126,11 @@ function parse_user_stats(json_data::Dict{String, Any})
 
                 # Calculate minutes since problem released
                 ts = data["completion_day_level"][dᵢˢ][sᵢˢ]["get_star_ts"]
-                m = get_unix_time_since_day_start(dᵢ, ts)
+                s = get_seconds_since_day_start(dᵢ, ts)
+                t = get_time_summary(s)
 
                 # Add star stats to day stats
-                star_stats = StarStats(sᵢ, m)
+                star_stats = StarStats(sᵢ, t, s)
                 push!(day_stats.stats, star_stats)
             end
 
@@ -123,7 +163,7 @@ function main()
         for day in user.stats
             println("    Day ", lpad(day.day, 2), ':')
             for star in day.stats
-                println("        ", lpad(star.n, 2), ": ", round(star.mins, digits = 2), " mins")
+                println("        ", lpad(star.n, 2), ": ", display_time_summary(star.time))
             end
         end
     end
