@@ -122,7 +122,7 @@ function main()
         for day in user.stats
             println("    Day ", lpad(day.day, 2), ':')
             for star in day.stats
-                println("    ", lpad(star.n, 2), ": ", star.mins, " mins")
+                println("        ", lpad(star.n, 2), ": ", round(star.mins, digits = 2), " mins")
             end
         end
     end
