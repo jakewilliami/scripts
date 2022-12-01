@@ -2,7 +2,9 @@ use std::env;
 
 use dotenv::dotenv;
 
+mod dates;
 mod request;
+mod stats;
 
 #[tokio::main]
 async fn main() {
@@ -14,4 +16,8 @@ async fn main() {
     let res = request::pull_leaderboard_data(leaderboard_id, session_cookie).await;
 
     println!("{:?}", res);
+	// let tp = dates::TimeSummary::Days(1);
+	// println!("{:?}", tp.value())
+	let tp = dates::TimeSummaryPeriod::Hours;
+	println!("{:?}", tp.to_friendly());
 }
