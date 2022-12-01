@@ -5,7 +5,6 @@ using HTTP
 using JSON
 
 # TODO: allow --day parameter
-# TODO: take into account number of stars in sorting!
 
 # Usage:
 #   julia --project=. parse_leaderboard.jl --day=1
@@ -31,17 +30,17 @@ struct DayStats
     stats::Vector{StarStats}
 end
 
-struct UserStats
+mutable struct UserStats
     name::String
     stats::Vector{DayStats}
-    # stars::Int  # TODO
+    stars::Int
 end
 
 
 # Minimal initialisation methods
 
 DayStats(day::Int) = DayStats(day, StarStats[])
-UserStats(name::String) = UserStats(name, DayStats[])
+UserStats(name::String) = UserStats(name, DayStats[], 0)
 
 
 # Helper functions
@@ -53,7 +52,7 @@ end
 
 
 function sort_stats!(stats::Vector{UserStats})
-    sort!(stats, by = s -> sum(maximum(i.seconds for i in d.stats) for d in s.stats))
+    sort!(stats, by = s -> (s.stars, sum(maximum(i.seconds for i in d.stats) for d in s.stats)))
     return stats
 end
 
@@ -69,7 +68,7 @@ function get_time_summary(seconds::Float64)
     minutes = seconds ÷ 60
     seconds %= 60
 
-    return TimeSummary(days, hours, minutes, seconds)  # TODO: n days
+    return TimeSummary(days, hours, minutes, seconds)
 end
 
 
@@ -123,6 +122,7 @@ function parse_user_stats(json_data::Dict{String, Any})
 
                 # Skip part/level/star if incomplete for this day
                 haskey(data["completion_day_level"][dᵢˢ], sᵢˢ) || continue
+                this_user_stats.stars += 1
 
                 # Calculate minutes since problem released
                 ts = data["completion_day_level"][dᵢˢ][sᵢˢ]["get_star_ts"]
