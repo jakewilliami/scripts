@@ -1,9 +1,13 @@
 using Dates
 
+using DotEnv
+using HTTP
 using JSON
 
+# TODO: allow --day parameter
+
 # Usage:
-#   julia --project=. parse_leaderboard.jl --day=1 '<JSON DATA>'
+#   julia --project=. parse_leaderboard.jl --day=1
 
 
 # Statistics structs
@@ -44,14 +48,24 @@ function sort_stats!(stats::Vector{UserStats})
 end
 
 
+# Pull data
+
+function pull_leaderboard_data(leaderboard_id::String, session_cookie::String)
+    uri = "https://adventofcode.com/2022/leaderboard/private/view/$(leaderboard_id).json"
+    cookies = Dict{String, String}("session" => session_cookie)
+    r = HTTP.get(uri, cookies = cookies)
+    return JSON.parse(String(r.body))
+end
+
+
 # Parse function
 
-function parse_user_stats(json_data::String)
+function parse_user_stats(json_data::Dict{String, Any})
     # Initialise results
     user_stats = UserStats[]
 
     # Iterate over users
-    for (_user_id, data) in JSON.parse(json_data)["members"]
+    for (_user_id, data) in json_data["members"]
         # If they have no completed days, skip user
         isempty(data["completion_day_level"]) && continue
 
@@ -93,7 +107,11 @@ end
 
 # Main function
 
-function main(json_data::String)
+function main()
+    # Pull leaderboard statistics
+    DotEnv.config()
+    json_data = pull_leaderboard_data(ENV["LEADERBOARD_ID"], ENV["SESSION_COOKIE"])
+
     # Parse statistics
     stats = parse_user_stats(json_data)
     sort_stats!(stats)
@@ -110,4 +128,4 @@ function main(json_data::String)
     end
 end
 
-main(ARGS[1])
+main()
