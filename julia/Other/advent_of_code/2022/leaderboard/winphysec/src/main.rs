@@ -14,10 +14,5 @@ async fn main() {
     let session_cookie = env::var("SESSION_COOKIE").expect("Could not find \"SESSION_COOKIE\" in .env");
 
     let res = request::pull_leaderboard_data(leaderboard_id, session_cookie).await;
-
-    println!("{:?}", res);
-	// let tp = dates::TimeSummary::Days(1);
-	// println!("{:?}", tp.value())
-	let tp = dates::TimeSummaryPeriod::Hours;
-	println!("{:?}", tp.to_friendly());
+	let user_stats = stats::parse_user_stats(res);
 }
