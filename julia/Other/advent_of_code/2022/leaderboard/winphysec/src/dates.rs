@@ -1,4 +1,4 @@
-use chrono::{NaiveDate, NaiveDateTime};
+use chrono::{Duration, NaiveDate, NaiveDateTime};
 
 pub enum TimeSummaryPeriod {
     Days = 0,
@@ -26,24 +26,6 @@ pub enum TimeSummary {
 }
 
 impl TimeSummary {
-    pub fn period_type(&self) -> TimeSummaryPeriod {
-        match self {
-            TimeSummary::Days(_) => { TimeSummaryPeriod::Days },
-            TimeSummary::Hours(_) => { TimeSummaryPeriod::Hours },
-            TimeSummary::Minutes(_) => { TimeSummaryPeriod::Minutes },
-            TimeSummary::Seconds(_) => { TimeSummaryPeriod::Seconds },
-        }
-    }
-
-    pub fn value(&self) -> usize {
-        match self {
-            TimeSummary::Days(i) => { *i },
-            TimeSummary::Hours(i) => { *i },
-            TimeSummary::Minutes(i) => { *i },
-            TimeSummary::Seconds(i) => { *i },
-        }
-    }
-
     pub fn new(mut seconds: i64) -> Vec<Self> {
         let num_seconds_in_day = 86_400;  // 24 * 60 * 60
         let num_minutes_in_day = 3600;  // 60 * 60
@@ -61,6 +43,24 @@ impl TimeSummary {
             TimeSummary::Minutes(minutes as usize),
             TimeSummary::Seconds(seconds as usize),
         ]
+    }
+
+    pub fn period_type(&self) -> TimeSummaryPeriod {
+        match self {
+            TimeSummary::Days(_) => { TimeSummaryPeriod::Days },
+            TimeSummary::Hours(_) => { TimeSummaryPeriod::Hours },
+            TimeSummary::Minutes(_) => { TimeSummaryPeriod::Minutes },
+            TimeSummary::Seconds(_) => { TimeSummaryPeriod::Seconds },
+        }
+    }
+
+    pub fn value(&self) -> usize {
+        match self {
+            TimeSummary::Days(i) => { *i },
+            TimeSummary::Hours(i) => { *i },
+            TimeSummary::Minutes(i) => { *i },
+            TimeSummary::Seconds(i) => { *i },
+        }
     }
 }
 
@@ -85,6 +85,6 @@ pub fn format_time_summary(time_summary: Vec<TimeSummary>) -> String {
 
 pub fn get_seconds_since_day_start(d_i: usize, ts: i64) -> i64 {
     let d = NaiveDate::from_ymd_opt(2022, 12, d_i as u32).unwrap().and_hms_opt(0, 0, 0).unwrap();
-    let p = d - NaiveDateTime::from_timestamp_opt(ts, 0).unwrap();
+    let p = NaiveDateTime::from_timestamp_opt(ts, 0).unwrap() - d - Duration::hours(5);
     p.num_seconds()
 }
