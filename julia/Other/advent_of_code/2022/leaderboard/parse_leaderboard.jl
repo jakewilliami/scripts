@@ -52,7 +52,13 @@ end
 
 
 function sort_stats!(stats::Vector{UserStats})
-    sort!(stats, by = s -> (s.stars, sum(maximum(i.seconds for i in d.stats) for d in s.stats)))
+    function sort_criteria(s::UserStats)
+        return (
+            50 - s.stars,
+            sum(d.stats[end].seconds for d in s.stats)
+        )
+    end
+    sort!(stats, by = sort_criteria)
     return stats
 end
 
