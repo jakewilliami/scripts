@@ -62,29 +62,29 @@ impl TimeSummary {
             TimeSummary::Seconds(seconds as usize),
         ]
     }
+}
 
-    pub fn format(time_summary: Vec<Self>) -> String {
-        let mut out = String::new();
-        let unit_map: Vec<&Self> = time_summary.iter().filter(|t| { t.value() != 0 }).collect();
+pub fn format_time_summary(time_summary: Vec<TimeSummary>) -> String {
+    let mut out = String::new();
+    let unit_map: Vec<&TimeSummary> = time_summary.iter().filter(|t| { t.value() != 0 }).collect();
 
-        for (i, t) in unit_map.iter().enumerate() {
-            let at_last_nonzero_unit = i == unit_map.len() - 1;
-            if at_last_nonzero_unit {
-                out.push_str("and ");
-            }
-            out.push_str(format!("{} {}", t.value(), (*t).period_type().to_friendly()).as_str());
-            if !at_last_nonzero_unit {
-                let sep = if unit_map.len() == 2 { " " } else { ", " };
-                out.push_str(sep);
-            }
+    for (i, t) in unit_map.iter().enumerate() {
+        let at_last_nonzero_unit = i == unit_map.len() - 1;
+        if at_last_nonzero_unit {
+            out.push_str("and ");
         }
-
-        out
+        out.push_str(format!("{} {}", t.value(), (*t).period_type().to_friendly()).as_str());
+        if !at_last_nonzero_unit {
+            let sep = if unit_map.len() == 2 { " " } else { ", " };
+            out.push_str(sep);
+        }
     }
+
+    out
 }
 
 pub fn get_seconds_since_day_start(d_i: usize, ts: i64) -> i64 {
     let d = NaiveDate::from_ymd_opt(2022, 12, d_i as u32).unwrap().and_hms_opt(0, 0, 0).unwrap();
     let p = d - NaiveDateTime::from_timestamp_opt(ts, 0).unwrap();
-    p.num_milliseconds()
+    p.num_seconds()
 }

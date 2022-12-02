@@ -1,14 +1,14 @@
 use super::dates::{TimeSummary, get_seconds_since_day_start};
 
 pub struct StarStats {
-    n: usize,
-    time_summary: Vec<TimeSummary>,
-    seconds: i64,
+    pub n: usize,
+    pub time_summary: Vec<TimeSummary>,
+    pub seconds: i64,
 }
 
 pub struct DayStats {
-    day: usize,
-    stats: Vec<StarStats>,
+    pub day: usize,
+    pub stats: Vec<StarStats>,
 }
 
 impl DayStats {
@@ -21,9 +21,9 @@ impl DayStats {
 }
 
 pub struct UserStats {
-    name: String,
-    stats: Vec<DayStats>,
-    stars: usize,
+    pub name: String,
+    pub stats: Vec<DayStats>,
+    pub stars: usize,
 }
 
 impl UserStats {
