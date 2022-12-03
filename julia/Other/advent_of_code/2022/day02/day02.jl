@@ -55,3 +55,42 @@ function main()
 end
 
 main()
+
+
+# Main (Linear Algebra)
+
+# reddit.com/r/adventofcode/comments/zac2v2/2022_day_2_solutions/iynysrx
+#
+# While this solution is really cool, it is not as efficient; 979.906 μs
+# (12500 allocations: 429.69 KiB), compared to 6.245 μs (0 allocations: 0 bytes).
+# I implemented part 1 using this anyway as I saw it on Reddit and thought
+# it was cool.
+
+using LinearAlgebra
+
+function main_lin_alg()
+    ROCK_BASIS, PAPER_BASIS, SCISSORS_BASIS  = eachcol(I(3))
+
+    RPC_M = [3  0  6
+             6  3  0
+             0  6  3]
+
+    RPC_BASES = Dict{Play, AbstractVector}(
+        Rock => ROCK_BASIS,
+        Paper => PAPER_BASIS,
+        Scissors => SCISSORS_BASIS
+    )
+
+    play_lin_alg(a::Play, b::Play) =
+        Outcome(transpose(RPC_BASES[b]) * RPC_M * RPC_BASES[a])
+    play_lin_alg(input::Vector{Pair{Play, Play}}) =
+        sum(Int(b) + Int(play_lin_alg(a, b)) for (a, b) in input)
+
+
+    raw_data = parse_input("data02.txt")
+
+    part1_data = parse_input_1(raw_data)
+    part1_solution = play_lin_alg(part1_data)
+    @assert part1_solution == 10595
+    println("Part 1 (using Linear Algebra): $part1_solution")
+end
