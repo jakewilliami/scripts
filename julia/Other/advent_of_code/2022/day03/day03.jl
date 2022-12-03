@@ -16,9 +16,9 @@ end
 function part1(data::Vector{String})
     res = 0
     for r in data
-        a, b = r[1:(length(r) ÷ 2)], r[((length(r) ÷ 2) + 1):end]
-        v = intersect(a, b)
-        for c in v
+        m = length(r) ÷ 2
+        a, b = r[1:m], r[(m + 1):end]
+        for c in a ∩ b
             res += priority(c)
         end
     end
@@ -30,8 +30,8 @@ end
 
 function part2(data::Vector{String})
     res = 0
-    for v in Base.Iterators.partition(data, 3)
-        common = only(intersect(v...))
+    for (a, b, c) in Base.Iterators.partition(data, 3)
+        common = only(a ∩ b ∩ c)
         res += priority(common)
     end
     return res
