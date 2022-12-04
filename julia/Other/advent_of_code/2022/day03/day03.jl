@@ -3,11 +3,11 @@ parse_input(data_file::String) =
 
 function priority(c::Char)
     if 'a' ≤ c ≤ 'z'
-        return Int(c) - 96
+        return c - 'a' + 1
     elseif 'A' ≤ c ≤ 'Z'
-        return Int(c) - 64 + 26
+        return c - 'A' + 26 + 1
     end
-    error("unreachable: $c")
+    error("Undefined priority for character $(repr(c))")
 end
 
 
