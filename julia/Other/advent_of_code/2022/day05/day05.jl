@@ -44,16 +44,17 @@ end
 
 # Part 1
 
-function cratemover_9000(init_state::CrateState, instructions::Vector{Instruction})
+function _cratemover_core(init_state::CrateState, instructions::Vector{Instruction}, f::Function = identity)
     state = deepcopy(init_state)
     for inst in instructions
-        for _ in 1:inst.n
-            q = popfirst!(state[inst.src])
-            pushfirst!(state[inst.dest], q)
-        end
+        a = splice!(state[inst.src], 1:inst.n)
+        prepend!(state[inst.dest], f(a))
     end
     return state
 end
+
+cratemover_9000(init_state::CrateState, instructions::Vector{Instruction}) =
+    _cratemover_core(init_state, instructions, reverse)
 
 read_top_crates(state::CrateState) = join(first(c) for c in state)
 
@@ -65,18 +66,8 @@ end
 
 # Part 2
 
-function cratemover_9001(init_state::CrateState, instructions::Vector{Instruction})
-    state = deepcopy(init_state)
-    for inst in instructions
-        d = Crate[]
-        for _ in 1:inst.n
-            q = popfirst!(state[inst.src])
-            push!(d, q)
-        end
-        prepend!(state[inst.dest], d)
-    end
-    return state
-end
+cratemover_9001(init_state::CrateState, instructions::Vector{Instruction}) =
+    _cratemover_core(init_state, instructions)
 
 function part2(init_state::CrateState, instructions::Vector{Instruction})
     new_state = cratemover_9001(init_state, instructions)
