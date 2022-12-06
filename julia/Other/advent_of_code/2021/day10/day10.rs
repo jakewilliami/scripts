@@ -26,6 +26,15 @@ fn main() {
 	// "(]" "{()()()>" "(((()))}" "<([]){()}[{}])"
 	let part1_solution = part1(&data);
 	println!("Part 1: {}", part1_solution);
+	
+	// part 2
+	assert_eq!(completion_score(&parse_parentheses("}}]])})]").unwrap()), 288957);
+	assert_eq!(completion_score(&parse_parentheses(")}>]})").unwrap()), 5566);
+	assert_eq!(completion_score(&parse_parentheses("}}>}>))))").unwrap()), 1480781);
+	assert_eq!(completion_score(&parse_parentheses("]]}}]}]}>").unwrap()), 995444);
+	assert_eq!(completion_score(&parse_parentheses("])}>").unwrap()), 294);
+	// let part2_solution = part2(&data);
+	// println!("Part 2: {}", part2_solution);
 }
 
 // Structs and such
@@ -33,8 +42,8 @@ fn main() {
 #[derive(Debug, PartialEq, Hash, Eq, Clone, Copy)]
 enum ParenthesisType {
 	Round,
-	Curly,
 	Square,
+	Curly,
 	Angle,
 }
 
@@ -90,6 +99,20 @@ fn parse_parenthesis(p: &char) -> Option<Parenthesis> {
 	};
 }
 
+fn parse_parentheses(parens_raw: &str) -> Option<Vec<ParenthesisType>> {
+	let tokens: Vec<char> = parens_raw.chars().collect();
+	let mut parentheses = Vec::new();
+	for c in tokens {
+		let parenthesis = parse_parenthesis(&c);
+		if parenthesis.is_none() {
+			return None;
+		} else {
+			parentheses.push(parenthesis.unwrap().ptype);
+		}
+	}
+	return Some(parentheses);
+}
+
 fn chunk_valid(token_str: &str) -> (ChunkParseResult, Option<ParenthesisType>) {
 	let mut tokens: VecDeque<char> = token_str.chars().collect();
 	return chunk_tokens_valid(&mut tokens);
@@ -142,13 +165,13 @@ fn part1(data: &Vec<&str>) -> usize {
 	syntax_scores.insert(ParenthesisType::Curly, 1197);
 	syntax_scores.insert(ParenthesisType::Angle, 25137);
 	
-	let corrupted: Vec<_> = data.iter().filter(|l| {
+	let corrupted: Vec<_> = data.iter().filter_map(|l| {
 			let parse_res = chunk_valid(l);
-			parse_res.0 == ChunkParseResult::Corrupted
-		})
-		.map(|l| {
-			let parse_res = chunk_valid(l);
-			parse_res.1.unwrap()
+			if parse_res.0 == ChunkParseResult::Corrupted {
+				parse_res.1
+			} else {
+				None
+			}
 		})
 		.collect();
 	
@@ -162,5 +185,35 @@ fn part1(data: &Vec<&str>) -> usize {
 			(*i, syntax_scores[ptype])
 		}).collect();
 	
-	return res.iter().map(|(i, s)| { i * s }).sum()
+	return res.iter().map(|(i, s)| { i * s }).sum();
+}
+
+// Part 2
+fn parenthesis_score(p: &ParenthesisType) -> usize {
+	return *p as usize + 1;
+}
+
+fn completion_score(parentheses: &Vec<ParenthesisType>) -> usize {
+	let mut score = 0;
+	for p in parentheses {
+		score *= 5;
+		score += parenthesis_score(p);
+	}
+	return score
+}
+
+fn part2(data: &Vec<&str>) -> usize {
+	let mut score = 0;
+	
+	let corrupted: Vec<_> = data.iter().filter_map(|l| {
+			let parse_res = chunk_valid(l);
+			if parse_res.0 == ChunkParseResult::Incomplete {
+				parse_res.1
+			} else {
+				None
+			}
+		})
+		.collect();
+	
+	return 1;
 }
