@@ -110,11 +110,11 @@ function parse_user_stats(json_data::Dict{String, Any})
     user_stats = UserStats[]
 
     # Iterate over users
-    for (_user_id, data) in json_data["members"]
+    for (user_id, data) in json_data["members"]
         # If they have no completed days, skip user
         isempty(data["completion_day_level"]) && continue
 
-        this_user_stats = UserStats(data["name"])
+        this_user_stats = UserStats(isnothing(data["name"]) ? "Anonymous User (#$(user_id))" : data["name"])
 
         for dᵢ in 1:25
             dᵢˢ = string(dᵢ)
