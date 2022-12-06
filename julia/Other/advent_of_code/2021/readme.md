@@ -1,8 +1,10 @@
+**Migration notice: this section of the repository has moved to its own repository at [jakewilliami/advent-of-code](https://github.com/jakewilliami/advent-of-code/)**
+
 # Advent of Code, 2021
 
 ## Benchmarking Results
 
-I am using [`hyperfine`](https://github.com/sharkdp/hyperfine) to benchmark results.  
+I am using [`hyperfine`](https://github.com/sharkdp/hyperfine) to benchmark results.
 
 ### Example
 

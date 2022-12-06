@@ -1,3 +1,5 @@
+**Migration notice: this section of the repository has moved to its own repository at [jakewilliami/advent-of-code](https://github.com/jakewilliami/advent-of-code/)**
+
 # Advent of Code, 2022
 
 Advent of Code solutions for 2022.

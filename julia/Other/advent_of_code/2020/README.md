@@ -1,3 +1,5 @@
+**Migration notice: this section of the repository has moved to its own repository at [jakewilliami/advent-of-code](https://github.com/jakewilliami/advent-of-code/)**
+
 # Benchmarking Results (Julia)
 
 None of these are necessarily "highly optimised".  Some of them I have optimised a little; others I have simply got working.  Oftentimes, I prefer a one-line solution using `Base` functions rather than writing my own, optimise(d|able) functions.  That said, here are some results.
@@ -110,7 +112,7 @@ The Chinese Remainder Theorem approach is adapted from @rmsrosa's solution using
 
 ### Day 14
 
-I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.  
+I found this one very difficult.  I usually get stuck on the recursive ones (namely, 7.2 and 10.2, for which I got advice from @dmipeck and @rmsrosa respectively), but this one was much worse for me, conceptually, as I haven't worked much with bits and any non-decimal numbers.  @dmipeck helped me to understand the problem and @adknudson helped me with applying the mask in the problem.
 
 A note on part 2's main function:
 ```julia
@@ -131,13 +133,13 @@ The first of those lines was my original solution.  In an attempt to avoid splat
 ```julia
 julia> @btime Base.Iterators.repeated(['0', '1'], 3);
   36.711 ns (1 allocation: 96 bytes)
-  
+
 julia> @btime Vector{Char}[['0', '1'] for _ in 1:3];
   153.447 ns (4 allocations: 400 bytes)
 
 julia> @btime [Base.Iterators.repeated(['0', '1'], 3)...];
   392.582 ns (9 allocations: 384 bytes)
-  
+
 julia> @btime [Vector{Char}[['0', '1'] for _ in 1:3]...];
   273.446 ns (5 allocations: 512 bytes)
 ```
