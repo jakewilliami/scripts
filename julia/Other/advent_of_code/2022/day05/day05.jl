@@ -18,10 +18,15 @@ function parse_input(data_file::String)
 
     # Parse initial state
     col_width = 4
-    init_state = Vector{Char}[Char[] for _ in 1:cld((findfirst('\n', A) - 1), col_width)]
+    line_len = findfirst('\n', A)
+    n_stacks = cld(line_len - 1, col_width)
+    init_state = Vector{Char}[Char[] for _ in 1:n_stacks]
     for a in split(A, "\n")
-        for (i, b) in enumerate(Base.Iterators.partition(a, col_width))
-            m = match(INIT_CRATE_STATE_REGEXP, join(b))
+        for i in 1:n_stacks
+            rₛ = (i - 1)*col_width + 1
+            rₑ = i*col_width - 1
+            b = a[rₛ:rₑ]
+            m = match(INIT_CRATE_STATE_REGEXP, b)
             isnothing(m) && continue
             b = only(m.captures)
             push!(init_state[i], only(b))
