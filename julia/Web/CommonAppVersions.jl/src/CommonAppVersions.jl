@@ -29,6 +29,8 @@ Supported common applications are in `COMMON_APPLICATIONS`.
 """
 get_latest_version(app::CommonApplication, os::OS = Windows) where {OS <: OperatingSystem} =
     _get_latest_version(app, os)
+get_latest_version(::Office365Singleton, os::OS = Windows) where {OS <: OperatingSystem} =
+    _get_latest_retail_version(Office2016, os)
 
 const COMMON_APPLICATIONS = Dict{String, CommonApplication}(
     "Mozilla Firefox" => Firefox,

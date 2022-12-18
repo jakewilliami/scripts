@@ -131,7 +131,7 @@ function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSyste
 end
 
 function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
-    @warn("Consider using _get_latest_retain_version(::Office2016Singleton, ::WindowsOperatingSystem) instead of _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem), as this seems to be the correct version")
+    @warn("Consider using _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSystem) instead of _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem), as this seems to be the correct version")
 
     r = HTTP.get(OFFICE_365_URI)
     doc = Gumbo.parsehtml(String(r.body))
