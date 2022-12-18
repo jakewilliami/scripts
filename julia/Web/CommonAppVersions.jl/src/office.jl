@@ -13,6 +13,8 @@ const OFFICE_365_BUILD_URI = "https://docs.microsoft.com/en-us/officeupdates/upd
 const OFFICE_365_NOGUID_URI = "https://support.microsoft.com/en-us/office/what-s-new-in-microsoft-365"
 const OFFICE_365_GUID = "95c8d81d-08ba-42c1-914f-bca4603e1426"
 const OFFICE_365_URI = OFFICE_365_NOGUID_URI * "-" * OFFICE_365_GUID
+const OFFICE_365_VERSION_ID_REGEX = r"version-(?:\d+)-(?:january|february|march|april|may|june|july|august|september|october|november|december)-(?:\d{1,3})"
+const OFFICE_365_VERSION_REGEX = r"Version (?:\d+) \(Build (\d+\.\d+)\)"
 
 # Types/structs
 
@@ -70,46 +72,44 @@ end
 function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # MSI version
     # NOTE: it is possible that Office 2016 is now using the same version as Office 365
-    
+
     # Follow the link in the `Latest Public Update (PU)` column for most recent updates
     r1 = HTTP.get(OFFICE_2016_MSI_URI)
     doc1 = Gumbo.parsehtml(String(r1.body))
     elem1 = _findfirst_html_tag(doc1.root, "id" => "office-2016-updates", tag = :h2)
     next_elem1 = _nextsibling(elem1)
     up_uri = _findfirst_html_text(next_elem1, :a, r"KB(\d+)", exact = false).attributes["href"]
-    
+
     # Find the most recently updated app, ang go to its Knowledge Base URL
     r2 = HTTP.get(up_uri)
     doc2 = Gumbo.parsehtml(String(r2.body))
     elem2 = _findfirst_html_text(doc2.root, :h3, "Microsoft Office 2016")
     next_elem2 = _nextsibling(elem2)
     kb_uri = _findfirst_html_tag(next_elem2, "class" => "ocpArticleLink", tag = :a).attributes["href"]
-    
+
     # Get the top-most element in the supported x64-based versions
     # We iterate over the table of files that have been changed and take the largest version,
-    # hoping that the largest version does indeed correspond to the latest version of 
+    # hoping that the largest version does indeed correspond to the latest version of
     # Office 2016 (it seems to, so far!).  The other thing to do would be to just take the
     # top-most row in the table, as the table is sorted by date, but I don't quite trust
     # that the top row will pertain to the latest version.
     r3 = HTTP.get(OFFICE_SUPPORT_BASE_URI * kb_uri)
     doc3 = Gumbo.parsehtml(String(r3.body))
     elem3 = _findfirst_html_tag(doc3.root, "aria-label" => "File information", tag = :section)
-    
-    #= ## 1. Original find version table code
-    elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
-    tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
-    =#
 
-    ## 2. Fix for finding version table for March, 2022, and May, 2022
+    ## 1. Original find version table code
+    #=elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
+    tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head=#
+
+    ## 2. Fix for finding version table for March, 2022, May, 2022, and December, 2022
     elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
     tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
-    
-    #= ## 3. Fix for finding version table for April, 2022
-    # elem4 = _findfirst_html_tag(elem3, "ocpExpandoHeadTitleContainer" => "For all supported x64-based versions of"; exact = false, tag = :div) 
-    elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
-    tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table head
-    =#
-    
+
+    ## 3. Fix for finding version table for April, 2022
+    # elem4 = _findfirst_html_tag(elem3, "ocpExpandoHeadTitleContainer" => "For all supported x64-based versions of"; exact = false, tag = :div)
+    #=elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
+    tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table head=#
+
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
     # return vparse(v_str)
@@ -131,18 +131,26 @@ function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSyste
 end
 
 function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
+    @warn("Consider using _get_latest_retain_version(::Office2016Singleton, ::WindowsOperatingSystem) instead of _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem), as this seems to be the correct version")
+
     r = HTTP.get(OFFICE_365_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-1", tag = :div)
-    v_str = onlychild(elem.children[1].children[2]).text
+
+    # Old (Office 365 GUID link
+    #=elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)
+    # elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)  # macOS version
+    v_str = onlychild(elem.children[1].children[1].children[1].children[2].children[2]).text
+    =#
+
+    # Update for December, 2022
+    elem = _findfirst_html_tag(doc.root, "id" => OFFICE_365_VERSION_ID_REGEX, tag = :h2, exact = false)
+    v_info = onlychild(onlychild(_nextsibling(elem, 1))).text
+    m = match(OFFICE_365_VERSION_REGEX, v_info)
+    v_str = only(m.captures)
+
     return vparse(v_str)
 end
 
 function _get_latest_version(::Office365Singleton, ::MacOSOperatingSystem)
-    r = HTTP.get(OFFICE_365_URI)
-    doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)
-    v_str = onlychild(elem.children[1].children[1].children[1].children[2].children[2]).text
-    return vparse(v_str)
+    error("not yet implemented")
 end
-
