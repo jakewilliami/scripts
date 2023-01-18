@@ -98,17 +98,23 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     elem3 = _findfirst_html_tag(doc3.root, "aria-label" => "File information", tag = :section)
 
     ## 1. Original find version table code
-    #=elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
-    tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head=#
+    # elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
+    # tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
 
     ## 2. Fix for finding version table for March, 2022, May, 2022, and December, 2022
-    elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
-    tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
+    # elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
+    # tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
 
     ## 3. Fix for finding version table for April, 2022
     # elem4 = _findfirst_html_tag(elem3, "ocpExpandoHeadTitleContainer" => "For all supported x64-based versions of"; exact = false, tag = :div)
-    #=elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
-    tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table head=#
+    #elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
+    # tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table header
+
+    ## 4. Fix for finding version table for January, 2023
+    elem3 = _findfirst_html_text(doc3.root, :h3, "File information", exact = true)
+    # elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
+    elem4 = _findfirst_html_tag(elem3.parent, "class" => "ocpExpandoBody")
+    tbl = onlychild(elem4).children[2].children # skip the table header
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
