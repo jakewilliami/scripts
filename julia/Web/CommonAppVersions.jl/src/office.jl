@@ -107,22 +107,37 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
 
     ## 3. Fix for finding version table for April, 2022
     # elem4 = _findfirst_html_tag(elem3, "ocpExpandoHeadTitleContainer" => "For all supported x64-based versions of"; exact = false, tag = :div)
-    #elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
+    # elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
     # tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table header
 
     ## 4. Fix for finding version table for January, 2023
     elem3 = _findfirst_html_text(doc3.root, :h3, "File information", exact = true)
-    # elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
-    elem4 = _findfirst_html_tag(elem3.parent, "class" => "ocpExpandoBody")
-    tbl = onlychild(elem4).children[2].children # skip the table header
+    ### 4.a Jan, 2023
+    # elem4 = _findfirst_html_tag(elem3.parent, "class" => "ocpExpandoBody")
+    # tbl = onlychild(elem4).children[2].children # skip the table header
+    ### 4.b Feb, 2023
+    elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
+    tbl = elem4.children[2].children  # skip the table header
+    # return tbl
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
     # return vparse(v_str)
     v_min = VersionNumber("0.0.0")
     return maximum(tbl) do tr
-        v_elem = onlychild(tr.children[3]).children # the third column is the version number
-        isempty(v_elem) ? v_min : vparse(v_elem[1].text)
+        v_elem_container = onlychild(tr.children[3])  # the third column is the version number
+
+        ## 5. Original
+        # v_elem = v_elem_container.children # the third column is the version number
+        # v = isempty(v_elem) ? v_min : vparse(v_elem[1].text)
+
+        ## 5. Fix for February, 2023
+        v = v_min
+        if !isempty(v_elem_container) && !isempty(v_elem_container.children)
+            v_elem = v_elem_container |> onlychild |> onlychild
+            v = vparse(v_elem.text)
+        end
+        v
     end
 end
 
