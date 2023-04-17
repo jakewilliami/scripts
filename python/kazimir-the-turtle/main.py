@@ -14,17 +14,8 @@ def calc_side_len(n: int, w: int):
     """
     Calculate the length of each side of a regular polygon with `n` sides of width `w`.
     """
-    # a1 = 360 / n
-    # a2 = 90 - a1
-    # l1 = n * math.sin(a2)
-    # l2 = 2 * l1 +
-    # side_lengths = {3: 30, 4: 30, 6: 25, 8: 20}
-    # side_length = side_lengths[n]
-    # if n <= 3:
-    #     return w
-    return math.sqrt(2 * (w / 2)**2 * (1 - math.cos(360 / n)))
-    # return w * math.sqrt(2 / (n * (1 + math.cos((2 * math.pi) / n))))
-    # return w / (2 * math.sin(math.pi / n))
+    # https://math.stackexchange.com/a/4680901/705172
+    return w * math.sin(math.radians(360 / (2 * n)))
 
 
 def draw_shape(t: turtle.Turtle, n: int, w: int):
