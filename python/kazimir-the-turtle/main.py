@@ -1,10 +1,10 @@
 import math
 
-import turtle
+from turtle import Turtle, Screen
 
 
-def turtle_set_up(colour: str) -> turtle.Turtle:
-    t = turtle.Turtle()
+def turtle_set_up(colour: str) -> Turtle:
+    t = Turtle()
     t.shape("turtle")
     t.color(colour)
     return t
@@ -18,7 +18,18 @@ def calc_side_len(n: int, w: int):
     return w * math.sin(math.radians(360 / (2 * n)))
 
 
-def draw_shape(t: turtle.Turtle, n: int, w: int):
+def move_outwards(t: Turtle, r: int = 0, f: int = 100):
+    """
+    Rotate turtle `t` `r` degrees clockwise, move forward `f` units, and rotate back to the original position.
+    """
+    t.penup()
+    t.right(r)
+    t.forward(f)
+    t.left(r)
+    t.pendown()
+
+
+def draw_shape(t: Turtle, n: int, w: int = 30):
     """
     Draw a shape with `n` sides of width `w` using turtle `t`.
     """
@@ -30,7 +41,7 @@ def draw_shape(t: turtle.Turtle, n: int, w: int):
 
 def main() -> int:
     # Set up screen
-    wn = turtle.Screen()
+    wn = Screen()
     wn.bgcolor("lightblue")
 
     # Turtle set up
@@ -41,19 +52,16 @@ def main() -> int:
 
     # Turtles move out from centre
     # They should always face to the right at the end of their move
-    for t, r in ((tess, 0), (alex, 180), (bex, 90), (clive, 270)):
-        t.penup()
-        t.right(r)
-        t.forward(100)
-        t.left(r)
-        t.pendown()
+    move_outwards(tess)
+    move_outwards(alex, 180)
+    move_outwards(bex, 90)
+    move_outwards(clive, 270)
 
     # Draw shapes
-    shape_width = 30
-    draw_shape(tess, 3, shape_width)  # triangle
-    draw_shape(alex, 4, shape_width)  # square
-    draw_shape(bex, 6, shape_width)  # hexagon
-    draw_shape(clive, 8, shape_width)  # octagon
+    draw_shape(tess, 3)  # triangle
+    draw_shape(alex, 4)  # square
+    draw_shape(bex, 6)  # hexagon
+    draw_shape(clive, 8)  # octagon
 
     wn.mainloop()
 
