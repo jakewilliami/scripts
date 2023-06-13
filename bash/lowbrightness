@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Jake Ireland, June 2023
+# 
+# Turn down the brightness on your macOS computer!
+# 
+# As low as I can get it without the screen going black
+# This is functionall the same as
+#     brightness 0.0005
+#     brightness 0.000977
+
+brightness 0.0004882812354480847716331482
+
+# This seems to be the minimum, as
+#     brightness 0.00048828123544808477163314819
+# seems to make the screen dark, but
+#     brightness 00048828123544808477163314819
+# does not
+#
+# Uses the command-line brightness tool for macOS:
+# https://github.com/nriley/brightness
