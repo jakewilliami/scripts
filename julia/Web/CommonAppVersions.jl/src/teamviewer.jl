@@ -26,7 +26,3 @@ function _get_latest_version(::TeamViewerSingleton, os::OS) where {OS <: Operati
     # v_str = only(m.captures)
     return vparse(v_str)
 end
-
-function _get_latest_version(::TeamViewerSingleton, ::LinuxOperatingSystem)
-    throw(ArgumentError("Linux not yet supported for TeamViewer, as the Linux TeamViewer page has multiple versions depending on arch/dist"))
-end
