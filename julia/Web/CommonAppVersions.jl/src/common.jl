@@ -19,7 +19,8 @@ function _findfirst_html_tag(doc::Gumbo.HTMLElement, attr_val::Union{Pair{String
         if !isnothing(tag)
             Gumbo.tag(elem) == tag || continue
         end
-        el_attr = getattr(elem, attr, "")
+        el_attr = getattr(elem, attr, nothing)
+        isnothing(el_attr) && continue
         (exact ? el_attr == value : contains(el_attr, value)) && return elem
     end
     return nothing
@@ -60,4 +61,3 @@ function _nextsibling(el::Gumbo.HTMLElement, j::Int = 1)
     i = findfirst(==(el), siblings) + j
     return checkbounds(Bool, siblings, i) ? siblings[i] : nothing
 end
-
