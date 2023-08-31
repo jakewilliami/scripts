@@ -52,4 +52,6 @@ HELLO_WORLD
 \ DROP     (n        -- )             Discards the top stack item
 
 : 2. . . ;
-35 34 OVER OVER 2. SWAP ." (SWAP)-> " 2.
+35 34 2DUP 2. SWAP ." (SWAP)-> " 2.
+
+\ Note: 2DUP and OVER OVER are functionally equivalent
