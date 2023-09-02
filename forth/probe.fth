@@ -1,7 +1,8 @@
 \ This is a comment!
 \ And this is a function for a hello world programme
-: HELLO_WORLD ." Hello, World!" CR ;
-( -- )
+: HELLO_WORLD ( -- )
+    ." Hello, World!" CR
+;
 
 \ CR is carriage return (new line)
 \ You can also write strings like .( Hello, World!)
@@ -23,13 +24,17 @@ HELLO_WORLD
 
 
 \ We can print a character by its code
-: ASTERISK 42 EMIT ;
-( -- )
+: ASTERISK ( -- )
+    42 EMIT
+;
 
 \ Print multiple stars in a loop
 \ The limit of the loop is on the top of the stack:
-: ASTERISKS 1 DO ASTERISK LOOP CR ; 
-( n -- )
+: ASTERISKS ( n -- )
+    1 DO
+        ASTERISK
+    LOOP CR
+;
 14 ASTERISKS
 
 \ Note that functions/subroutines are compiles, and
@@ -38,8 +43,9 @@ HELLO_WORLD
 \ Do some arithmetic!
 
 \ Add four to top of stack
-: FOUR_MORE 4 + ;
-( n -- n + 4 )
+: FOUR_MORE ( n -- n + 4 )
+    4 +
+;
 
 ." 34 + 35 = " 31 FOUR_MORE 34 + . CR
 ." 60 × 7 = " 60 7 * . CR
@@ -55,3 +61,4 @@ HELLO_WORLD
 35 34 2DUP 2. SWAP ." (SWAP)-> " 2.
 
 \ Note: 2DUP and OVER OVER are functionally equivalent
+
