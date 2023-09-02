@@ -58,7 +58,23 @@ HELLO_WORLD
 \ DROP     (n        -- )             Discards the top stack item
 
 : 2. . . ;
-35 34 2DUP 2. SWAP ." (SWAP)-> " 2.
+35 34 2DUP 2. SWAP ." (SWAP)-> " 2. CR
 
 \ Note: 2DUP and OVER OVER are functionally equivalent
+
+\ Random number generator
+\ https://excamera.com/sphinx/article-xorshift.html
+
+VARIABLE SEED
+HERE SEED !  \ can change HERE to custom seed
+
+: RANDOM    ( -- n )
+    SEED @
+    DUP 13 LSHIFT XOR
+    DUP 17 RSHIFT XOR
+    DUP 5  LSHIFT XOR
+    DUP SEED !
+;
+
+." Random number: " RANDOM . CR
 
