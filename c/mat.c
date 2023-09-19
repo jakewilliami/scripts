@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <assert.h>
 
 typedef struct {
 	size_t rows;
@@ -158,32 +159,41 @@ Mat rev_rowwise(Mat A)
 	return B;
 }
 
+Mat elementwise_mul(Mat A, Mat B)
+{
+	assert(A.rows == B.rows && A.cols == B.cols);
+	Mat C = {0};
+	C.rows = A.rows;
+	C.cols = A.cols;
+	C.data = (size_t *)malloc(A.rows * A.cols * sizeof(size_t));
+	for (size_t i = 0; i < A.rows; i++) {
+		for (size_t j = 0; j < A.cols; j++) {
+			size_t k = linear_index(i, A.cols, j);
+			C.data[k] = A.data[k] * B.data[k];
+		}
+	}
+	return C;
+}
+
+size_t sum_mat(Mat M)
+{
+	size_t sum = 0;
+	for (size_t i = 0; i < M.rows; i++) {
+		for (size_t j = 0; j < M.cols; j++) {
+			size_t k = linear_index(i, M.cols, j);
+			sum += M.data[k];
+		}
+	}
+	return sum;
+}
 
 int main()
 {
-	Mat A = init_mat(3, 4);
-	printf("Initial:\n");
-	print_mat(A);
+	Mat A = init_mat(3, 3);
+	Mat B = init_mat(3, 3);
 
-	printf("Rotate left 90°:\n");
-	Mat B = rotl90(A);
-	print_mat(B);
-
-	printf("Rotate right 90°:\n");
-	Mat C = rotr90(A);
+	Mat C = elementwise_mul(A, B);
 	print_mat(C);
-
-	printf("Rotate 180°:\n");
-	Mat D = rot180(A);
-	print_mat(D);
-
-	printf("Reverse column-wise:\n");
-	Mat E = rev_colwise(A);
-	print_mat(E);
-
-	printf("Reverse row-wise:\n");
-	Mat F = rev_rowwise(A);
-	print_mat(F);
 
 	return 0;
 }
