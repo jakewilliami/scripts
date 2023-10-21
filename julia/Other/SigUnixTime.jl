@@ -20,13 +20,13 @@ struct HectomegaUnixSecond
 	m::Integer
 	value::Integer
 	seconds::Dates.Second
-	
-	
+
+
 	function HectomegaUnixSecond(n::Integer, m::Integer)
 		if n < 0 || m < 0
 			error("n and m are used to as constructors for a number n billion and m-hundred-million, which we call a \"hectomegaunixsecond\".  These therefore cannot be negative.  For example, 1,600,000,000 is obtained from n = 1 and m = 6.")
 		end
-		
+
 		value = (n * 10) + m
 		seconds = Second((n * 1_000_000_000) + (m * 100_000_000))
 		new(n, m, value, seconds)
@@ -36,7 +36,7 @@ end
 function HectomegaUnixSecond(S::Integer)
 	S′ = S ÷ 100_000_000
 	n, m = divrem(S′, 10)
-	
+
 	return HectomegaUnixSecond(n, m)
 end
 HectomegaUnixSecond(S::Dates.Second) =
@@ -68,7 +68,7 @@ function readable_dt_format(dt::DateTime)
 		Dates.year(dt), ", at ",
 		Time(dt)
 	)
-	
+
 	return dt_str
 end
 
@@ -104,7 +104,7 @@ Dates.time(::Type{Dates.Second}) = Second(time(Int))
 function current_hectomegaunixsecond(dt::DateTime)
 	unixtime_at_dt = round(Int, datetime2unix(dt))
 	HMUS_at_dt = HectomegaUnixSecond(unixtime_at_dt)
-	
+
 	return (Second(unixtime_at_dt), HMUS_at_dt)
 end
 function current_hectomegaunixsecond()
@@ -115,24 +115,24 @@ end
 
 function _shift_hectomegaunixsecond(dt::DateTime, n::Integer)
 	dt_time, HMUS_at_dt = current_hectomegaunixsecond(dt)
-	
+
 	next_HMUS_from_dt = HectomegaUnixSecond(HMUS_at_dt.n, HMUS_at_dt.m + n)
 	next_HMUS_as_dt = Dates.unix2datetime(next_HMUS_from_dt.seconds.value)
-	
+
 	return (dt_time, next_HMUS_from_dt, next_HMUS_as_dt)
 end
 
 function next_hectomegaunixsecond(dt::DateTime)
 	dt_time, next_HMUS_from_dt, next_HMUS_as_dt =
 		_shift_hectomegaunixsecond(dt, 1)
-	
+
 	return (dt_time, next_HMUS_from_dt, next_HMUS_as_dt)
 end
 
 function prev_hectomegaunixsecond(dt::DateTime)
 	dt_time, prev_HMUS_from_dt, prev_HMUS_as_dt =
 		_shift_hectomegaunixsecond(dt, 0)
-	
+
 	return (dt_time, prev_HMUS_from_dt, prev_HMUS_as_dt)
 end
 
@@ -142,7 +142,7 @@ function current_hectomegaunixsecond_info(unixtime_at_present::Dates.Second)
 		format(unixtime_at_present.value, commas = true),
 		" seconds since 1st January, 1970."
 	)
-	
+
 	return info_str
 end
 current_hectomegaunixsecond_info(dt::DateTime) = current_hectomegaunixsecond_info(time(Second))
@@ -152,7 +152,7 @@ function prev_hectomegaunixsecond_info(
 	prev_HMUS_from_dt::HectomegaUnixSecond,
 	prev_HMUS_as_dt::DateTime
 )
-	
+
 	info_str = string(
 		"The previous milestone (at ",
 		prev_HMUS_from_dt,
@@ -162,7 +162,7 @@ function prev_hectomegaunixsecond_info(
 		readable_dt_format(prev_HMUS_as_dt),
 		"."
 	)
-	
+
 	return info_str
 end
 prev_hectomegaunixsecond_info(dt::DateTime) =
@@ -193,7 +193,7 @@ function hectomegaunixsecond_info(dt::DateTime)
 	current = current_hectomegaunixsecond_info(dt)
 	prev = prev_hectomegaunixsecond_info(dt)
 	next = next_hectomegaunixsecond_info(dt)
-	
+
 	info_str = join([current, prev, next], '\n')
 end
 
@@ -210,11 +210,22 @@ end
 
 ### Examples
 
-println(next_hectomegaunixsecond_info())
-current_hectomegaunixsecond()
+# println(next_hectomegaunixsecond_info())
+# current_hectomegaunixsecond()
 
-println(hectomegaunixsecond_info())
-HectomegaUnixSecond(1, 6)
+# println(hectomegaunixsecond_info())
+# HectomegaUnixSecond(1, 6)
+
+function main(n::Int)
+    dt = next_hectomegaunixsecond()
+    for i in 1:n
+        print("$i: ")
+        println(next_hectomegaunixsecond_info(last(dt) - Second(1)))
+        dt = next_hectomegaunixsecond(last(dt) + Second(1))
+    end
+end
+
+main(20)
 
 function friday_13th_hectomegaunixsecond()
  	dt = next_hectomegaunixsecond()
@@ -225,4 +236,3 @@ function friday_13th_hectomegaunixsecond()
         dt = next_hectomegaunixsecond(last(dt) + Second(1))
     end
 end
-

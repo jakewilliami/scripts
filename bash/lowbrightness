@@ -8,6 +8,10 @@
 # This is functionall the same as
 #     brightness 0.0005
 #     brightness 0.000977
+# 
+# This can be easily accessed by moving it into your
+# shell's path:
+#   mv ./lowbrightness /opt/local/bin/lb
 
 brightness 0.0004882812354480847716331482
 

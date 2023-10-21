@@ -49,6 +49,7 @@ HELLO_WORLD
 
 ." 34 + 35 = " 31 FOUR_MORE 34 + . CR
 ." 60 × 7 = " 60 7 * . CR
+14 ASTERISKS
 
 \ Some stack operations:
 \ SWAP     (n1 n2    -- n2 n1)        Reverses the top two stack items
@@ -59,6 +60,7 @@ HELLO_WORLD
 
 : 2. . . ;
 35 34 2DUP 2. SWAP ." (SWAP)-> " 2. CR
+14 ASTERISKS
 
 \ Note: 2DUP and OVER OVER are functionally equivalent
 
@@ -77,4 +79,11 @@ HERE SEED !  \ can change HERE to custom seed
 ;
 
 ." Random number: " RANDOM . CR
+14 ASTERISKS
+
+\ A non-destructive stack print
+\ See also: Starting FORTH (Brodie, 1981, p. 50)
+." Non-descructive stack printing: " CR
+1 2 3 .S ." | " . . . CR
+14 ASTERISKS
 

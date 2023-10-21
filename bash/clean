@@ -185,7 +185,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
         echo -e "${ITYELLOW}About to update Homebrew Casks (applications)${NORM}"
     #    brew cask upgrade --greedy --dry-run
         while true; do
-            read -p "${BWHITE}`brew cask upgrade --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+            read -p "${BWHITE}`brew upgrade --cask --greedy --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
             `echo`
             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.  ${BWHITE}Say \'no\' for fewer upgrades (less greedy upgrade).`echo -e $'\\n'`${NORM}" yn
             case $yn in
@@ -194,7 +194,7 @@ clean_brew() {  # https://superuser.com/a/975878/1100925
                         break   ;;
                 [Nn]*)
                         while true; do
-                            read -p "${BWHITE}`brew cask upgrade --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
+                            read -p "${BWHITE}`brew upgrade --cask --dry-run | tr , '\n' | sed 's/^[[:space:]]*//g'`
                             `echo`
                             ${BRED}Are you sure you want to upgrade the above casks?  It may be best to quit the applications before upgrading.`echo -e $'\\n'`${NORM}" yn
                             case $yn in
