@@ -20,15 +20,15 @@ function main()
     common_apps = [
         ("Google Chrome", "app_chrome_latest"),
         ("Mozilla Firefox", "app_firefox_latest"),
-        ("Microsoft Edge", "app_edge_latest"),
         ("Adobe Acrobat DC", "app_acrobat_dc_latest"),
         ("Team Viewer", "app_team_viewer_latest"),
-        ("Microsoft Windows 10", "app_windows_10_latest"),
         ("Microsoft Office 2007", "app_office_2007_latest"),
         ("Microsoft Office 2010", "app_office_2010_latest"),
         ("Microsoft Office 2013", "app_office_2013_latest"),
         ("Microsoft Office 2016", "app_office_2016_latest"),
         ("Microsoft Office 365", "app_office_365_latest"),
+        ("Microsoft Windows 10", "app_windows_10_latest"),
+        ("Microsoft Edge", "app_edge_latest"),
     ]
 
     io = IOBuffer()
