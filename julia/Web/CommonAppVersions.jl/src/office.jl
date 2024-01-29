@@ -95,14 +95,17 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # that the top row will pertain to the latest version.
     r3 = HTTP.get(OFFICE_SUPPORT_BASE_URI * kb_uri)
     doc3 = Gumbo.parsehtml(String(r3.body))
+
+    ## 0. Common element required for next (changeable) step
     elem3 = _findfirst_html_tag(doc3.root, "aria-label" => "File information", tag = :section)
 
     ## 1. Original find version table code
     # elem4 = _findfirst_html_tag(elem3, "aria-label" => "For all supported x64-based versions of"; exact = false, tag = :section)
     # tbl = _findfirst_html_tag(elem4, "class" => "banded", tag = :table).children[2].children # skip the table head
 
-    ## 2. Fix for finding version table for March, 2022, May, 2022, and December, 2022
+    ## 2. Fix for finding version table for March, May, and December, 2022
     # elem4 = _findfirst_html_class_text(elem3, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)
+    # println(elem4)
     # tbl = _nextsibling(elem4.parent, 1).children[1].children[2].children[1].children[1].children[2].children # ignore table header
 
     ## 3. Fix for finding version table for April, 2022
@@ -110,15 +113,22 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # elem4 = _findfirst_html_class_text(elem3, "class" => "ocpExpandoHeadTitleContainer", "For all supported x64-based versions of"; exact = false, tag = :div)
     # tbl = _findfirst_html_tag(elem4.parent.parent.parent, "class" => "banded", tag = :table).children[2].children # skip the table header
 
-    ## 4. Fix for finding version table for January, 2023
-    elem3 = _findfirst_html_text(doc3.root, :h3, "File information", exact = true)
+    ## 4. Fix for finding version table for January--February, 2023
+    # elem3 = _findfirst_html_text(doc3.root, :h3, "File information", exact = true)
     ### 4.a Jan, 2023
     # elem4 = _findfirst_html_tag(elem3.parent, "class" => "ocpExpandoBody")
     # tbl = onlychild(elem4).children[2].children # skip the table header
     ### 4.b Feb, 2023
-    elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
-    tbl = elem4.children[2].children  # skip the table header
-    # return tbl
+    # elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
+    # tbl = elem4.children[2].children  # skip the table header
+
+    ## 5. Fix for finding version table for January, 2024
+    # elem3 = _findfirst_html_text(doc3.root, "File information", tag = :h3)  # prefer to use ID (below) but can use this if ID changes
+    elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EDF", tag = :h2)
+    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
+    tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
+
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
@@ -127,16 +137,21 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     return maximum(tbl) do tr
         v_elem_container = onlychild(tr.children[3])  # the third column is the version number
 
-        ## 5. Original
+        ## 6.a. Original
         # v_elem = v_elem_container.children # the third column is the version number
         # v = isempty(v_elem) ? v_min : vparse(v_elem[1].text)
 
-        ## 5. Fix for February, 2023
-        v = v_min
-        if !isempty(v_elem_container) && !isempty(v_elem_container.children)
-            v_elem = v_elem_container |> onlychild |> onlychild
-            v = vparse(v_elem.text)
-        end
+        ## 6.b. Fix for February, 2023
+        # v = v_min
+        # if !isempty(v_elem_container) && !isempty(v_elem_container.children)
+        #     v_elem = v_elem_container |> onlychild |> onlychild
+        #     v = vparse(v_elem.text)
+        # end
+
+        ## 6.c. Fix for January 2024
+        v_elem = v_elem_container.children  # the third column is the version number
+        v = try vparse(v_elem[1].text) catch; v_min end  # to catch errors when the version is not a valid version number
+
         v
     end
 end
