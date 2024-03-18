@@ -121,19 +121,19 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # elem4 = elem3.parent.children[3].children[2] |> onlychild |> onlychild
     # tbl = elem4.children[2].children  # skip the table header
 
-    ## 5. Fix for finding version table for January, 2024
+    ## 5. Fix for finding version table for January, 2024 and late March, 2024
     # elem3 = _findfirst_html_text(doc3.root, "File information", tag = :h3)  # prefer to use ID (below) but can use this if ID changes
-    # elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EDF", tag = :h2)
-    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
-    # elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
-    # tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
+    elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EDF", tag = :h2)
+    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
+    tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
 
-    ## 6. Fix for finding version table for March, 2024
-    elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
-    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
-    elem5 = _nextsibling(elem4.parent.parent, 1)
-    elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
-    tbl = elem6.children[2].children  # ignore table header
+    ## 6. Fix for finding version table for early March, 2024
+    # elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
+    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    # elem5 = _nextsibling(elem4.parent.parent, 1)
+    # elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
+    # tbl = elem6.children[2].children  # ignore table header
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
