@@ -77,7 +77,10 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     r1 = HTTP.get(OFFICE_2016_MSI_URI)
     doc1 = Gumbo.parsehtml(String(r1.body))
     elem1 = _findfirst_html_tag(doc1.root, "id" => "office-2016-updates", tag = :h2)
-    next_elem1 = _nextsibling(elem1)
+    # Note that as of April 2024, below this heading there is an alert (class="IMPORTANT")
+    # containing information about end of life for Office 2016.  This is why we skip to the
+    # next _next_ element.
+    next_elem1 = _nextsibling(elem1, 2)
     up_uri = _findfirst_html_text(next_elem1, :a, r"KB(\d+)", exact = false).attributes["href"]
 
     # Find the most recently updated app, ang go to its Knowledge Base URL
