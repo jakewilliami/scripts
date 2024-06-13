@@ -16,7 +16,6 @@ function _get_latest_version(::AdobeSingleton, ::WindowsOperatingSystem)
         "Accept-Language" => "en-GB,en-US;q=0.9,en;q=0.8",
         "Connection" => "close"
     ])
-    println("here")
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "continuous-track-installers", tag = :div)
     versions = _findfirst_html_tag(elem, "class" => "simple", tag = :ul).children
