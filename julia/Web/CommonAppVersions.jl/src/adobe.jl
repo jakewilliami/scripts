@@ -4,7 +4,19 @@ struct AdobeSingleton <: CommonApplication end
 const Adobe = AdobeSingleton()
 
 function _get_latest_version(::AdobeSingleton, ::WindowsOperatingSystem)
-    r = HTTP.get(ADOBE_URI)
+    r = HTTP.get(ADOBE_URI,  [
+        "Sec-Ch-Ua" => "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"90\"",
+        "Accept" => "application/json",
+        "Sec-Ch-Ua-Mobile" => "?0",
+        "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
+        "Accept-Encoding" => "identity",
+        "Sec-Fetch-Site" => "same-site",
+        "Sec-Fetch-Mode" => "cors",
+        "Sec-Fetch-Dest" => "empty",
+        "Accept-Language" => "en-GB,en-US;q=0.9,en;q=0.8",
+        "Connection" => "close"
+    ])
+    println("here")
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "continuous-track-installers", tag = :div)
     versions = _findfirst_html_tag(elem, "class" => "simple", tag = :ul).children
