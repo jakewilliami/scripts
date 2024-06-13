@@ -1,18 +1,21 @@
 const WINDOWS_10_URI = "https://learn.microsoft.com/en-us/windows/release-health/release-information"
+const WINDOWS_11_URI = "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information"
 
 # Types/structs
 
 abstract type MicrosoftWindowsSingleton <: CommonApplication end
 
 struct Windows10Singleton <: MicrosoftWindowsSingleton end
+struct Windows11Singleton <: MicrosoftWindowsSingleton end
 const Windows10 = Windows10Singleton()
+const Windows11 = Windows11Singleton()
 
 # Version methods
 
-function _get_latest_version(::Windows10Singleton, ::WindowsOperatingSystem)
-    r = HTTP.get(WINDOWS_10_URI)
+function _get_latest_windows_version(uri::String, release_history_html_id::String)
+    r = HTTP.get(uri)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_tag(doc.root, "id" => "windows-10-release-history", tag = :h2)
+    elem = _findfirst_html_tag(doc.root, "id" => release_history_html_id, tag = :h2)
     tbl = onlychild(_nextsibling(elem, 5))  # go to the 5th next element (the release table)
     tbl = tbl.children[2:end]  # skip the table header
 
@@ -27,6 +30,11 @@ function _get_latest_version(::Windows10Singleton, ::WindowsOperatingSystem)
     # patch version!
     return vparse(join((10, 0, v_max), "."))
 end
+
+_get_latest_version(::Windows10Singleton, ::WindowsOperatingSystem) =
+    _get_latest_windows_version(WINDOWS_10_URI, "windows-10-release-history")
+_get_latest_version(::Windows11Singleton, ::WindowsOperatingSystem) =
+    _get_latest_windows_version(WINDOWS_11_URI, "windows-11-release-history")
 
 function _get_latest_version(::MicrosoftWindowsSingleton, ::OperatingSystem)
     throw(ArgumentError("Microsoft Windows is not supported for any other operating system, as it is itself a Windows operating system"))

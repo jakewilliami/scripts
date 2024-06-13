@@ -19,6 +19,7 @@ _reduce_version_major_minor_micro(v::VersionNumber) = join(getfield.(v, (:major,
 function main()
     common_apps = [
         "Microsoft Windows 10",
+        "Microsoft Windows 11",
         "Microsoft Office 2007",
         "Microsoft Office 2010",
         "Microsoft Office 2013",

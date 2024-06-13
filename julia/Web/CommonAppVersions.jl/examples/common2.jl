@@ -28,6 +28,7 @@ function main()
         ("Microsoft Office 2016", "app_office_2016_latest"),
         ("Microsoft Office 365", "app_office_365_latest"),
         ("Microsoft Windows 10", "app_windows_10_latest"),
+        ("Microsoft Windows 11", "app_windows_11_latest"),
         ("Microsoft Edge", "app_edge_latest"),
     ]
 
