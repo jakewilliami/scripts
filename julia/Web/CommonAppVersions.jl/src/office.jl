@@ -143,7 +143,12 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # return vparse(v_str)
     v_min = VersionNumber("0.0.0")
     return maximum(tbl) do tr
-        v_elem_container = onlychild(tr.children[3])  # the third column is the version number
+        # Specify the table index of the version number
+        # i = 3
+        # Update for June, 2024
+        i = 2
+        v_elem_container = onlychild(tr.children[i])
+
 
         ## 6.a. Original
         # v_elem = v_elem_container.children # the third column is the version number
@@ -157,8 +162,12 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
         # end
 
         ## 6.c. Fix for January 2024
-        v_elem = v_elem_container.children  # the third column is the version number
-        v = try vparse(v_elem[1].text) catch; v_min end  # to catch errors when the version is not a valid version number
+        # v_elem = v_elem_container.children
+
+        ## 6.d. Fix for June, 2024
+        v_elem = onlychild(onlychild(v_elem_container))
+        v_str = v_elem.text
+        v = try vparse(v_str) catch; v_min end  # to catch errors when the version is not a valid version number
 
         v
     end
