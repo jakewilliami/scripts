@@ -126,13 +126,19 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
 
     ## 5. Fix for finding version table for January, late March, and August, 2024
     # elem3 = _findfirst_html_text(doc3.root, "File information", tag = :h3)  # prefer to use ID (below) but can use this if ID changes
-    elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EDF", tag = :h2)
+    # elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EDF", tag = :h2)
     ### 5.a. Get x64 arch element for Jan and March, 2024
     # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
     ### 5.b. Get x64 arch element for August 2024
-    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = false, tag = :b)
-    elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
-    tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
+    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = false, tag = :b)
+    # elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
+    # tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
+    ### 5.c. Get x65 arch element for November, 2024
+    elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EFBBF", tag = :h3)
+    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)
+    elem5 = _nextsibling(elem4.parent.parent, 1) |> onlychild |> onlychild  # get inner table for x64 (different architectures)
+    tbl = elem5.children[2].children  # ignore table header
+
 
     ## 6. Fix for finding version table for early March and June, 2024
     # elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
@@ -166,10 +172,10 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
         ## 6.c. Fix for January 2024
         # v_elem = v_elem_container.children
 
-        ## 6.d. Fix for June, 2024
-        # v_elem = onlychild(onlychild(v_elem_container))
+        ## 6.d. Fix for June, 2024 and November, 2024
+        v_elem = onlychild(onlychild(v_elem_container))
         ### 6.d.i Fix for August, 2024
-        v_elem = onlychild(v_elem_container)
+        # v_elem = onlychild(v_elem_container)
         v_str = v_elem.text
         v = try vparse(v_str) catch; v_min end  # to catch errors when the version is not a valid version number
 
