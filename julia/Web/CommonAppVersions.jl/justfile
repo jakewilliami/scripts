@@ -1,0 +1,22 @@
+project_dir := justfile_dir() + "/"
+script_file := project_dir / "examples" / "common2.jl"
+
+[linux]
+run: log
+    #! /usr/bin/env bash
+    set -euo pipefail
+    SCRIPT_OUT="$(julia --project="{{project_dir}}" {{script_file}})"
+    echo "$SCRIPT_OUT" | xclip -selection clipboard
+    echo "$SCRIPT_OUT"
+
+[macos]
+run: log
+    #! /usr/bin/env bash
+    set -euo pipefail
+    SCRIPT_OUT="$(julia --project="{{project_dir}}" {{script_file}})"
+    echo "$SCRIPT_OUT" | pbcopy
+    echo "$SCRIPT_OUT"
+
+[private]
+log:
+    @echo "Running script..."
