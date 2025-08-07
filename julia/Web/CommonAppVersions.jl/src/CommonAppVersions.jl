@@ -4,7 +4,7 @@ using VersionParsing
 using HTTP
 using Gumbo
 using AbstractTrees
-using JSON
+using JSON3
 
 export get_latest_version
 export Windows, MacOS, Linux

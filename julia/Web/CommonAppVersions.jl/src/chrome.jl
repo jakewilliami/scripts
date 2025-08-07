@@ -19,7 +19,7 @@ function _get_latest_version(::ChromeSingleton, os::OperatingSystem)
         "num" => 1,
     )
     r = HTTP.get(CHROME_URI * CHROME_URI_PAGE, query = params)
-    j = only(JSON.parse(String(r.body)))
+    j = only(JSON3.parse(String(r.body)))
     v_str = j["version"]
     return vparse(v_str)
 end
