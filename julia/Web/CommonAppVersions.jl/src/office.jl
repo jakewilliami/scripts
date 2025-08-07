@@ -80,6 +80,7 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # Note that as of April 2024, below this heading there is an alert (class="IMPORTANT")
     # containing information about end of life for Office 2016.  This is why we skip to the
     # next _next_ element.
+    # next_elem1 = _nextsibling(elem1)
     next_elem1 = _nextsibling(elem1, 2)
     up_uri = _findfirst_html_text(next_elem1, :a, r"KB(\d+)", exact = false).attributes["href"]
 
@@ -134,12 +135,12 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
     # tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
     ### 5.c. Get x65 arch element for November, 2024, and January, 2025
-    elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EFBBF", tag = :h3)
+    # elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EFBBF", tag = :h3)
     #### 5.c.i Update for late November, 2024
     # elem3 = _findfirst_html_tag(doc3.root, "id" => "ID0EFBBH", tag = :h3)
-    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)
-    elem5 = _nextsibling(elem4.parent.parent, 1) |> onlychild |> onlychild  # get inner table for x64 (different architectures)
-    tbl = elem5.children[2].children  # ignore table header
+    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)
+    # elem5 = _nextsibling(elem4.parent.parent, 1) |> onlychild |> onlychild  # get inner table for x64 (different architectures)
+    # tbl = elem5.children[2].children  # ignore table header
 
 
     ## 6. Fix for finding version table for early March and June, 2024
@@ -148,6 +149,16 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # elem5 = _nextsibling(elem4.parent.parent, 1)
     # elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
     # tbl = elem6.children[2].children  # ignore table header
+    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpLegacyBold", "x64"; exact = true, tag = :b)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    # elem5 = (_nextsibling(elem4.parent, 1) |> onlychild).children[2]  # get inner table for x64 (different architectures)
+    # tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
+
+    ## 6. Fix for finding version table for early March, 2024 and for July, 2025
+    elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
+    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    elem5 = _nextsibling(elem4.parent.parent)
+    elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
+    tbl = elem6.children[2].children  # ignore table header
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
@@ -180,6 +191,14 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
         # v_elem = onlychild(v_elem_container)
         v_str = v_elem.text
         v = try vparse(v_str) catch; v_min end  # to catch errors when the version is not a valid version number
+        v_elem = v_elem_container.children  # the third column is the version number
+        # v = try vparse(v_elem[1].text) catch; v_min end  # to catch errors when the version is not a valid version number
+
+        ## 6 3. Fix for July, 2025
+        v_elem = tr.children[2] |> onlychild |> onlychild |> onlychild  # the second column is the version number
+        v_str = v_elem.text
+        v_str == "Not Applicable" && return v_min
+        v = vparse(v_str)
 
         v
     end
