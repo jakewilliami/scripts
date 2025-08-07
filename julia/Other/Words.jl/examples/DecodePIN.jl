@@ -1,7 +1,7 @@
 include(joinpath(dirname(@__DIR__), "src", "Anagrams.jl")) # WORDLIST_SCRABBLE
 
-const NUMPAD_CHARS = Vector{Char}[['\0'],                 # 0
-                                  ['\0'],                 # 1
+const NUMPAD_CHARS = Vector{Char}[['␣'],                  # 0
+                                  ['➿'],                 # 1
                                   ['a', 'b', 'c'],        # 2
                                   ['d', 'e', 'f'],        # 3
                                   ['g', 'h', 'i'],        # 4
@@ -21,7 +21,7 @@ function string2pin(s::S) where {S <: AbstractString}
     return String(take!(io))
 end
 
-possibile_char_permutations_lazy(numbers::Vector{Int}) = 
+possibile_char_permutations_lazy(numbers::Vector{Int}) =
     foldr((itr1, itr2) -> ((v, w...) for w in itr2 for v in itr1), Vector{Char}[NUMPAD_CHARS[i + 1] for i in numbers])
 # TODO: make the following code work, as it is optimised over the `foldr` code:
     # nrows, ncols = size(M)
