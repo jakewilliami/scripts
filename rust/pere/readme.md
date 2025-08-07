@@ -1,1 +1,0 @@
-Project moved to [jakewilliami/pere](https://github.com/jakewilliami/pere)
