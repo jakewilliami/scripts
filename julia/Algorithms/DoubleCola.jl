@@ -8,13 +8,27 @@
 #
 # Who will drink the nth cola?
 
+mutable struct PersonGroup
+    n::Int
+    name::String
+end
+
 function _f(n::Int)
-    V = String["Sheldon", "Leonard", "Penny", "Rajesh", "Howard"]
-    local p::String
-    for i in 1:n
+    V = map(n -> PersonGroup(1, n), ["Sheldon", "Leonard", "Penny", "Rajesh", "Howard"])
+    local p::PersonGroup
+    # i = 1
+    m = 0
+    while true
+        # j = mod1(i, length(V))
         p = popfirst!(V)
-        append!(V, (p, p))
+        p.n *= 2
+        push!(V, p)
+        m += p.n - 1
+        if m > n
+            break
+        end
     end
+    println(V)
     return V
 end
 
@@ -23,7 +37,7 @@ g(n::Int) = first(_f(n))  # Who is next?
 
 function check_result(n::Int, expected::String)
     println("Checking that f($n) = $expected")
-    res = g(n)
+    res = g(n).name
     @assert res == expected "Uh oh!  $res ≠ $expected"
 end
 
