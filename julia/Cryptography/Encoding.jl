@@ -40,7 +40,7 @@ end
 
 function hex2utf8(hexstring::String)
     bytes = hex2bytes(hexstring)
-    return Int8[Int8(b) for b in hex_bytes]
+    return Int8[Int8(b) for b in bytes]
 end
 
 function hex2string(hexstring::String)
@@ -113,4 +113,3 @@ end
 function bytes2string(bytes::Vector{UInt8})
     return String(bytes)
 end
-
