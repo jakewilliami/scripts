@@ -1,3 +1,5 @@
+using CSV, DataFrames, Downloads
+
 # Office 2013
 const OFFICE_2013_URI = "https://docs.microsoft.com/en-us/officeupdates/update-history-office-2013"
 
@@ -87,9 +89,15 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # Find the most recently updated app, ang go to its Knowledge Base URL
     r2 = HTTP.get(up_uri)
     doc2 = Gumbo.parsehtml(String(r2.body))
-    elem2 = _findfirst_html_text(doc2.root, :h3, "Microsoft Office 2016")
+
+    # elem2 = _findfirst_html_text(doc2.root, :h3, "Microsoft Office 2016")
+    # next_elem2 = _nextsibling(elem2)
+    # kb_uri = _findfirst_html_tag(next_elem2, "class" => "ocpArticleLink", tag = :a).attributes["href"]
+
+    ### Fix for July, 2026
+    elem2 = _findfirst_html_text(doc2.root, :h2, "Microsoft Office 2016")
     next_elem2 = _nextsibling(elem2)
-    kb_uri = _findfirst_html_tag(next_elem2, "class" => "ocpArticleLink", tag = :a).attributes["href"]
+    kb_uri = _findfirst_html_tag(next_elem2, "data-linktype" => "absolute-path", tag = :a).attributes["href"]
 
     # Get the top-most element in the supported x64-based versions
     # We iterate over the table of files that have been changed and take the largest version,
@@ -154,11 +162,36 @@ function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # tbl = (elem5 |> onlychild |> onlychild).children[2].children  # ignore table header
 
     ## 6. Fix for finding version table for early March, 2024 and for July, 2025
-    elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
-    elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
-    elem5 = _nextsibling(elem4.parent.parent)
-    elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
-    tbl = elem6.children[2].children  # ignore table header
+    # elem3 = _findfirst_html_text(doc3.root, :h3, "File information")
+    # elem4 = _findfirst_html_class_text(elem3.parent, "class" => "ocpExpandoHeadTitleContainer", "x64"; exact = false, tag = :div)  # once we find the section heading, we need to go to the section in which the heading is contained, as this is where the header siblings are that we need to parse
+    # elem5 = _nextsibling(elem4.parent.parent)
+    # elem6  = _findfirst_html_tag(elem5, "class" => "ocpExpandoBody", exact = true, tag = :div) |> onlychild
+    # tbl = elem6.children[2].children  # ignore table header
+
+    ## 7. Fix for finding version table for July 2026
+    ### They now put it into a CSV, which we need to download for x64-based versions
+    elem3 = _findfirst_html_tag(doc3.root, "id" => "file-information", tag = :h3)
+    # The target element is a hyperlink that looks something like:
+    #     "Download the list of files that are included in security update 5002886"
+    #
+    # Under the heading:
+    #     "For all supported x64-based versions of Excel 2016"
+    #
+    # We could try to find the element based on the architecture type:
+    #     _findfirst_html_text(doc3.root, :strong, "x64", exact = false)
+    #
+    # But this is good enough for this month.  We know that the x64 link is 5 elements
+    # after the file information header
+    elem4 = _nextsibling(elem3, 5)
+    csv_download_uri = _findfirst_html_tag(elem4, "data-linktype" => "external", tag = :a).attributes["href"]
+    df = CSV.read(Downloads.download(csv_download_uri), DataFrame)
+    v_min = VersionNumber("0.0.0")
+    return maximum(eachrow(df)) do row
+        v_str = row[Symbol("File version")]
+        v = try vparse(v_str) catch; v_min end
+        v
+    end
+
 
     ## Get maximum version from table
     # v_str = tbl[1].children[3].children[1].children[1].text
