@@ -23,7 +23,7 @@ function _get_latest_windows_10_version(uri::String, release_history_html_id::St
 
     v_min = VersionNumber("0.0.0")
     v_max = maximum(tbl) do tr
-        v_elem = onlychild(tr.children[3])  # the third column is the version number
+        v_elem = onlychild(tr.children[4])  # the third column is the version number
         isempty(v_elem) ? v_min : vparse(v_elem.text)
     end
 
@@ -42,12 +42,15 @@ function _get_latest_windows_11_version(uri::String, release_history_html_id::St
     # tbl = onlychild(_nextsibling(elem, 5))  # go to the 5th next element (the release table)
     # tbl = tbl.children[2:end]  # skip the table header
     ### 1. a. Fix for November, 2024
-    tbl = _nextsibling(elem, 6)  # go to the 6th next element (the release table)
-    tbl = onlychild(tbl.children[3]).children[2:end]  # skip the table header
+    # tbl = _nextsibling(elem, 6)  # go to the 6th next element (the release table)
+    # tbl = onlychild(tbl.children[3]).children[2:end]  # skip the table header
+    ### 1. b. Fix for July 2026
+    tbl = _nextsibling(elem, 4)  # go to the 4th next element (the release table)
+    tbl = onlychild(tbl).children[2:end]  # skip the table header
 
     v_min = VersionNumber("0.0.0")
     v_max = maximum(tbl) do tr
-        v_elem = onlychild(tr.children[3])  # the third column is the version number
+        v_elem = onlychild(tr.children[4])  # the third column is the version number
         isempty(v_elem) ? v_min : vparse(v_elem.text)
     end
 
