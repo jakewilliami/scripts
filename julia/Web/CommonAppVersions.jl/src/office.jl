@@ -61,6 +61,7 @@ function _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSys
     # Retail version - build major version is the micro version for Office 2016
     # Source: https://github.com/MicrosoftDocs/OfficeDocs-OfficeUpdates/issues/49#issuecomment-423573620
     # My plea: https://github.com/MicrosoftDocs/OfficeDocs-OfficeUpdates/issues/302#issuecomment-1044330345
+    @warn("As of July 2026, this function has been deprecated.  It is no longer accurate and will no longer work.  Please use _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem) instead, as this produces a demonstrably correct result.")
     r = HTTP.get(OFFICE_2016_RETAIL_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => "retail-versions-of-office-2016-c2r-and-office-2019", tag = :h2)
@@ -73,7 +74,6 @@ end
 
 function _get_latest_version(::Office2016Singleton, ::WindowsOperatingSystem)
     # MSI version
-    # NOTE: it is possible that Office 2016 is now using the same version as Office 365
 
     # Follow the link in the `Latest Public Update (PU)` column for most recent updates
     r1 = HTTP.get(OFFICE_2016_MSI_URI)
@@ -240,32 +240,44 @@ end
 function _get_latest_build_version(::Office365Singleton, ::WindowsOperatingSystem)
     r = HTTP.get(OFFICE_365_BUILD_URI)
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_tag(doc.root, "id" => "supported-versions", tag = :h3)
+    elem = _findfirst_html_tag(doc.root, "id" => "supported-versions", tag = :h2)
     tbl = _nextsibling(elem)
     tbody = tbl.children[2]
-    v_str = tbody.children[1].children[3].children[1].text # the third column is the version number
-    return vparse(v_str)
+    row = tbody.children[1]  # the first row is the current channel
+    v_str = row.children[3].children[1].text # the third column is the version number
+    return v_str
 end
 
 function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
-    @warn("Consider using _get_latest_retail_version(::Office2016Singleton, ::WindowsOperatingSystem) instead of _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem), as this seems to be the correct version")
+    # r = HTTP.get(OFFICE_365_URI)
+    # doc = Gumbo.parsehtml(String(r.body))
 
-    r = HTTP.get(OFFICE_365_URI)
-    doc = Gumbo.parsehtml(String(r.body))
-
-    # Old (Office 365 GUID link
+    # Old (Office 365 GUID link)
     #=elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)
     # elem = _findfirst_html_tag(doc.root, "id" => "Platform-supTabControlContent-2", tag = :div)  # macOS version
     v_str = onlychild(elem.children[1].children[1].children[1].children[2].children[2]).text
     =#
 
     # Update for December, 2022
-    elem = _findfirst_html_tag(doc.root, "id" => OFFICE_365_VERSION_ID_REGEX, tag = :h2, exact = false)
-    v_info = onlychild(onlychild(_nextsibling(elem, 1))).text
-    m = match(OFFICE_365_VERSION_REGEX, v_info)
-    v_str = only(m.captures)
+    # elem = _findfirst_html_tag(doc.root, "id" => OFFICE_365_VERSION_ID_REGEX, tag = :h2, exact = false)
+    # v_info = onlychild(onlychild(_nextsibling(elem, 1))).text
+    # m = match(OFFICE_365_VERSION_REGEX, v_info)
+    # v_str = only(m.captures)
+    # return vparse(v_str)
 
-    return vparse(v_str)
+    # Update for July 2026
+    #
+    # According to the following source, we just need to append the build version of
+    # Office 365 apps to "16.0", which is the static major version.
+    #   https://web.archive.org/web/20201001043628/https://github.com/MicrosoftDocs/OfficeDocs-OfficeUpdates/issues/49
+    #
+    # This reference was deleted by Microsoft so I had to use an archived version:
+    #   https://github.com/endoflife-date/release-data/issues/74#issuecomment-1963005134
+    #
+    # I have confirmed the correctness of this value (as of July 2026) by getting the
+    # official Office 365 version from the Word app on Windows.
+    build_version = _get_latest_build_version(Office365, Windows)
+    return vparse("16.0." * build_version)
 end
 
 function _get_latest_version(::Office365Singleton, ::MacOSOperatingSystem)
