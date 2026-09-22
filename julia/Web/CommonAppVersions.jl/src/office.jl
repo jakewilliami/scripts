@@ -276,6 +276,11 @@ function _get_latest_version(::Office365Singleton, ::WindowsOperatingSystem)
     #
     # I have confirmed the correctness of this value (as of July 2026) by getting the
     # official Office 365 version from the Word app on Windows.
+    #
+    # NOTE: see also:
+    #   https://learn.microsoft.com/en-us/officeupdates/current-channel
+    # It seems as though the latest O365 release is 16.0 with the first build number appended,
+    # like 20326.  This is true as of September 2026.
     build_version = _get_latest_build_version(Office365, Windows)
     return vparse("16.0." * build_version)
 end
