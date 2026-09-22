@@ -9,7 +9,10 @@ function _get_latest_version(::EdgeSingleton, ::OperatingSystem)
     r = HTTP.get(EDGE_URI)
     doc = Gumbo.parsehtml(String(r.body))
     elem = _findfirst_html_tag(doc.root, "id" => EDGE_VERSION_ID_REGEX, tag = :h2, exact = false)
-    v_info = onlychild(elem).text
+    # v_info = onlychild(elem).text
+
+    # Update for September 2026: Edge version now contains hyperlink in separate tag
+    v_info = elem[findfirst(e -> e isa HTMLText, elem.children)].text
     m = match(EDGE_VERSION_REGEX, v_info)
     v_str = only(m.captures)
     return vparse(v_str)
