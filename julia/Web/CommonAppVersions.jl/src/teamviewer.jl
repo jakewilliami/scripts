@@ -34,7 +34,7 @@ function _get_latest_version(::TeamViewerSingleton, os::OS) where {OS <: Operati
 
     # Version 4
     elem = _findfirst_html_tag(doc.root, "class" => "cmp-smartdownloadbutton__wrapper", tag = :div, exact = true)
-    data = JSON3.parse(elem.attributes["data-json"])
+    data = JSON.parse(elem.attributes["data-json"])
     tbl = only(data[:data])
     # sanity check for OS
     expected_os, found_os = TEAMVIEWER_OS_KEYS[os], tbl[:operatingSystem]
