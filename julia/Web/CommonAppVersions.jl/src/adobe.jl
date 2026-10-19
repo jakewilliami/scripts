@@ -17,7 +17,9 @@ function _get_latest_version(::AdobeSingleton, ::WindowsOperatingSystem)
         "Connection" => "close"
     ])
     doc = Gumbo.parsehtml(String(r.body))
-    elem = _findfirst_html_tag(doc.root, "id" => "continuous-track-installers", tag = :div)
+    # elem = _findfirst_html_tag(doc.root, "id" => "continuous-track-installers", tag = :div)
+    # Update for October 2026
+    elem = _findfirst_html_tag(doc.root, "id" => "continuous-track-installers", tag = :section)
     versions = _findfirst_html_tag(elem, "class" => "simple", tag = :ul).children
     # TODO: use regex instead of substrings here
     # Example of version listings:
