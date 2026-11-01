@@ -12,3 +12,16 @@ for repo in (gh repo list <user> --limit 4000 --source --json nameWithOwner --jq
 end
 ```
 
+---
+
+Mostly I do this for OSINT reasons, so you can use this (dependencies: [fd](https://github.com/jakewilliami/configs/blob/c66ea4bc854f3dd8b143e012e31fb394b67eaf01/command-line-tools.md#fdfdfind), [gl](https://github.com/jakewilliami/configs/blob/c66ea4bc854f3dd8b143e012e31fb394b67eaf01/command-line-tools.md#gl)):
+
+```fish
+for repo in (fd -t d -d 1)
+    cd "$repo"
+    echo "===== $repo ====="
+    gl -A
+    cd - > /dev/null
+end
+```
+
