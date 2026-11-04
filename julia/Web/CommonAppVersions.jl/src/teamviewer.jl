@@ -3,13 +3,13 @@ const TEAMVIEWER_URI = "https://www.teamviewer.com/en-us/download/"
 # const TEAMVIEWER_REGEX = r"Current version\: ((?:\d+\.)?(?:\d+\.)?(?:\d+))"  # not quite as complex as Base.VERSION_REGEX
 const TEAMVIEWER_OS_SUFFIXES = Dict{OperatingSystem, String}(
     Windows => "windows/",
-    MacOS => "mac-os/",
+    MacOS => "macos/",  # mac and mac-os redirect to this
     Linux => "linux/",
 )
 const TEAMVIEWER_OS_KEYS = Dict{OperatingSystem, String}(
-    Windows => "win",
-    MacOS => "osx",
-    Linux => "linux",
+    Windows => "Windows",
+    MacOS => "macOS",
+    Linux => "Linux",
 )
 
 struct TeamViewerSingleton <: CommonApplication end
@@ -18,28 +18,35 @@ const TeamViewer = TeamViewerSingleton()
 function _get_latest_version(::TeamViewerSingleton, os::OS) where {OS <: OperatingSystem}
     r = HTTP.get(TEAMVIEWER_URI * TEAMVIEWER_OS_SUFFIXES[os])
     body = String(r.body)
-    doc = Gumbo.parsehtml(body)
 
-    # Version 1
-    # elem = _findfirst_html_tag(doc, "id", "wd-row-download-win")
-    # v_str = onlychild(elem.parent.children[5].children[1].children[1]).text
+    # Version 5: a very gross update for early November 2026, in which we now have to
+    #   pull the version from embedded Next.js script data
+    #
+    # See previous versions at:
+    #   github.com/jakewilliami/scripts/tree/d2f6bc2/julia/Web/CommonAppVersions.jl/src/teamviewer.jl
 
-    # Version 2
-    # m = match(TEAMVIEWER_REGEX, body)
-    # v_str = only(m.captures)
+    # They are hiding the information in a blob of data in a script tag!!!
+    #
+    # We are sure to anchor the correct blob on the full client rather than the QuickSupport
+    # (QS) version
+    rx = r"""TeamViewerfullclient"\}\},"operatingSystem":\{"targetItem":\{"name":"(\w+)"\}\},"versionNumber":\{"value":"([\d.]+)"""
 
-    # Version 3:
-    # elem = _findfirst_html_tag(doc.root, "data-dl-version-label" => "", tag = :span)
-    # v_str = onlychild(elem).text
+    # Match on Next.js data blobs
+    for m in eachmatch(r"self\.__next_f\.push\((\[.*?\])\)"s, body)
+        occursin("versionNumber", m.captures[1]) || continue
+        decoded = JSON.parse(m.captures[1])[2]
 
-    # Version 4
-    elem = _findfirst_html_tag(doc.root, "class" => "cmp-smartdownloadbutton__wrapper", tag = :div, exact = true)
-    data = JSON.parse(elem.attributes["data-json"])
-    tbl = only(data[:data])
-    # sanity check for OS
-    expected_os, found_os = TEAMVIEWER_OS_KEYS[os], tbl[:operatingSystem]
-    @assert expected_os == found_os "Output validation error: $(repr(expected_os)) ≠ $(repr(found_os))"
-    v_str = tbl[:versionNumber]
+        # Find the data containing the version information we need
+        m = match(rx, decoded)
+        m === nothing && continue
+        found_os, v_str = m.captures
 
-    return vparse(v_str)
+        # Sanity check for OS
+        expected_os = TEAMVIEWER_OS_KEYS[os]
+        @assert lowercase(expected_os) == lowercase(found_os) "Output validation error: $(repr(expected_os)) ≠ $(repr(found_os))"
+
+        return vparse(v_str)
+    end
+
+    error("no TeamViewer version found")
 end
